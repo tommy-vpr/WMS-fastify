@@ -1,0 +1,388 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================================================================
+// AUTH & USERS
+// =============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String?
+  name          String?
+  image         String?
+  role          UserRole  @default(STAFF)
+  active        Boolean   @default(true)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  assignedTasks       WorkTask[]
+  taskEvents          TaskEvent[]
+  completedTaskItems  TaskItem[]
+  auditLogs           AuditLog[]
+  notifications       Notification[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+// =============================================================================
+// PRODUCTS & INVENTORY
+// =============================================================================
+
+model Product {
+  id          String   @id @default(cuid())
+  sku         String   @unique
+  name        String
+  description String?
+  brand       String?
+  category    String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  variants ProductVariant[]
+
+  @@index([brand])
+  @@index([category])
+  @@map("products")
+}
+
+model ProductVariant {
+  id           String   @id @default(cuid())
+  productId    String
+  sku          String   @unique
+  upc          String?  @unique
+  barcode      String?
+  name         String
+  imageUrl     String?
+  costPrice    Decimal? @db.Decimal(10, 2)
+  sellingPrice Decimal? @db.Decimal(10, 2)
+  weight       Decimal? @db.Decimal(8, 2)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  product   Product     @relation(fields: [productId], references: [id])
+  inventory Inventory[]
+  taskItems TaskItem[]
+
+  @@index([upc])
+  @@index([barcode])
+  @@map("product_variants")
+}
+
+model Location {
+  id         String       @id @default(cuid())
+  name       String       @unique
+  barcode    String?      @unique
+  type       LocationType @default(GENERAL)
+  zone       String?
+  isPickable Boolean      @default(true)
+  active     Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  inventory Inventory[]
+  taskItems TaskItem[]
+
+  @@index([barcode])
+  @@index([type])
+  @@map("locations")
+}
+
+model Inventory {
+  id               String   @id @default(cuid())
+  productVariantId String
+  locationId       String
+  quantityOnHand   Int      @default(0)
+  quantityReserved Int      @default(0)
+  updatedAt        DateTime @updatedAt
+
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+  location       Location       @relation(fields: [locationId], references: [id])
+
+  @@unique([productVariantId, locationId])
+  @@map("inventory")
+}
+
+// =============================================================================
+// ORDERS
+// =============================================================================
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  shopifyOrderId  String?     @unique
+  customerName    String
+  customerEmail   String?
+  shippingAddress Json
+  status          OrderStatus @default(PENDING)
+  priority        Priority    @default(STANDARD)
+  totalAmount     Decimal     @db.Decimal(10, 2)
+  trackingNumber  String?
+  shippedAt       DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items     OrderItem[]
+  taskItems TaskItem[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id               String  @id @default(cuid())
+  orderId          String
+  productVariantId String
+  quantity         Int
+  quantityPicked   Int?    @default(0)
+  unitPrice        Decimal @db.Decimal(10, 2)
+
+  order     Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  taskItems TaskItem[]
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// =============================================================================
+// WORK TASKS
+// =============================================================================
+
+model WorkTask {
+  id              String         @id @default(cuid())
+  taskNumber      String         @unique
+  type            WorkTaskType
+  status          WorkTaskStatus @default(PENDING)
+  priority        Int            @default(0)
+  idempotencyKey  String?        @unique
+  assignedTo      String?
+  assignedAt      DateTime?
+  startedAt       DateTime?
+  completedAt     DateTime?
+  orderIds        String[]
+  totalOrders     Int
+  completedOrders Int            @default(0)
+  totalItems      Int
+  completedItems  Int            @default(0)
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  assignedUser User?       @relation(fields: [assignedTo], references: [id])
+  taskItems    TaskItem[]
+  events       TaskEvent[]
+
+  @@index([type, status])
+  @@index([assignedTo])
+  @@map("work_tasks")
+}
+
+model TaskItem {
+  id                String             @id @default(cuid())
+  taskId            String
+  orderId           String
+  orderItemId       String?
+  productVariantId  String?
+  locationId        String?
+  sequence          Int
+  quantityRequired  Int
+  quantityCompleted Int                @default(0)
+  status            WorkTaskItemStatus @default(PENDING)
+  completedBy       String?
+  completedAt       DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  task            WorkTask        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  order           Order           @relation(fields: [orderId], references: [id])
+  orderItem       OrderItem?      @relation(fields: [orderItemId], references: [id])
+  productVariant  ProductVariant? @relation(fields: [productVariantId], references: [id])
+  location        Location?       @relation(fields: [locationId], references: [id])
+  completedByUser User?           @relation(fields: [completedBy], references: [id])
+
+  @@index([taskId])
+  @@index([orderId])
+  @@map("task_items")
+}
+
+model TaskEvent {
+  id        String            @id @default(cuid())
+  taskId    String
+  eventType WorkTaskEventType
+  userId    String
+  data      Json?
+  createdAt DateTime          @default(now())
+
+  task WorkTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User     @relation(fields: [userId], references: [id])
+
+  @@index([taskId])
+  @@map("task_events")
+}
+
+// =============================================================================
+// INFRASTRUCTURE
+// =============================================================================
+
+model JobRecord {
+  id          String    @id @default(cuid())
+  jobId       String    @unique
+  queue       String
+  name        String
+  data        Json
+  status      String
+  result      Json?
+  error       String?
+  attempts    Int       @default(0)
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([queue, status])
+  @@map("job_records")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String
+  changes    Json?
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@map("audit_logs")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@map("notifications")
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  STAFF
+  READONLY
+}
+
+enum OrderStatus {
+  PENDING
+  ALLOCATED
+  PICKING
+  PICKED
+  PACKING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum Priority {
+  STANDARD
+  RUSH
+  EXPRESS
+}
+
+enum LocationType {
+  RECEIVING
+  STORAGE
+  PICKING
+  PACKING
+  SHIPPING
+  RETURNS
+  GENERAL
+}
+
+enum WorkTaskType {
+  PICKING
+  PACKING
+  SHIPPING
+  QC
+}
+
+enum WorkTaskStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum WorkTaskItemStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+  SHORT
+}
+
+enum WorkTaskEventType {
+  TASK_CREATED
+  TASK_ASSIGNED
+  TASK_STARTED
+  TASK_PAUSED
+  TASK_COMPLETED
+  TASK_CANCELLED
+  ITEM_SCANNED
+  ITEM_COMPLETED
+  ITEM_SKIPPED
+}

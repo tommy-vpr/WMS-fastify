@@ -1,5 +1,5 @@
 {
-  "name": "@wms/queue",
+  "name": "@wms/domain",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -17,11 +17,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "bullmq": "^5.52.0",
-    "ioredis": "^5.9.1"
+    "@wms/db": "workspace:*",
+    "@wms/types": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29",
     "typescript": "^5.9.3"
   }
 }

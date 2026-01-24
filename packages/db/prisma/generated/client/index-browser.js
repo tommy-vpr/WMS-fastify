@@ -173,6 +173,8 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
   costPrice: 'costPrice',
   sellingPrice: 'sellingPrice',
   weight: 'weight',
+  trackLots: 'trackLots',
+  trackExpiry: 'trackExpiry',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -183,31 +185,64 @@ exports.Prisma.LocationScalarFieldEnum = {
   barcode: 'barcode',
   type: 'type',
   zone: 'zone',
+  aisle: 'aisle',
+  rack: 'rack',
+  shelf: 'shelf',
+  bin: 'bin',
+  pickSequence: 'pickSequence',
   isPickable: 'isPickable',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.InventoryScalarFieldEnum = {
+exports.Prisma.InventoryUnitScalarFieldEnum = {
   id: 'id',
   productVariantId: 'productVariantId',
   locationId: 'locationId',
-  quantityOnHand: 'quantityOnHand',
-  quantityReserved: 'quantityReserved',
+  quantity: 'quantity',
+  status: 'status',
+  lotNumber: 'lotNumber',
+  expiryDate: 'expiryDate',
+  receivedAt: 'receivedAt',
+  receivedFrom: 'receivedFrom',
+  unitCost: 'unitCost',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AllocationScalarFieldEnum = {
+  id: 'id',
+  inventoryUnitId: 'inventoryUnitId',
+  orderId: 'orderId',
+  orderItemId: 'orderItemId',
+  productVariantId: 'productVariantId',
+  locationId: 'locationId',
+  quantity: 'quantity',
+  lotNumber: 'lotNumber',
+  status: 'status',
+  allocatedAt: 'allocatedAt',
+  releasedAt: 'releasedAt',
+  pickedAt: 'pickedAt',
+  taskItemId: 'taskItemId'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
   orderNumber: 'orderNumber',
   shopifyOrderId: 'shopifyOrderId',
+  customerId: 'customerId',
   customerName: 'customerName',
   customerEmail: 'customerEmail',
   shippingAddress: 'shippingAddress',
   status: 'status',
+  paymentStatus: 'paymentStatus',
   priority: 'priority',
+  holdReason: 'holdReason',
+  holdAt: 'holdAt',
+  holdBy: 'holdBy',
   totalAmount: 'totalAmount',
+  warehouseId: 'warehouseId',
   trackingNumber: 'trackingNumber',
   shippedAt: 'shippedAt',
   createdAt: 'createdAt',
@@ -218,7 +253,9 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
   productVariantId: 'productVariantId',
+  sku: 'sku',
   quantity: 'quantity',
+  quantityAllocated: 'quantityAllocated',
   quantityPicked: 'quantityPicked',
   unitPrice: 'unitPrice'
 };
@@ -234,11 +271,15 @@ exports.Prisma.WorkTaskScalarFieldEnum = {
   assignedAt: 'assignedAt',
   startedAt: 'startedAt',
   completedAt: 'completedAt',
+  blockReason: 'blockReason',
+  blockedAt: 'blockedAt',
   orderIds: 'orderIds',
   totalOrders: 'totalOrders',
   completedOrders: 'completedOrders',
   totalItems: 'totalItems',
   completedItems: 'completedItems',
+  shortItems: 'shortItems',
+  skippedItems: 'skippedItems',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -251,12 +292,16 @@ exports.Prisma.TaskItemScalarFieldEnum = {
   orderItemId: 'orderItemId',
   productVariantId: 'productVariantId',
   locationId: 'locationId',
+  allocationId: 'allocationId',
   sequence: 'sequence',
   quantityRequired: 'quantityRequired',
   quantityCompleted: 'quantityCompleted',
   status: 'status',
   completedBy: 'completedBy',
   completedAt: 'completedAt',
+  shortReason: 'shortReason',
+  locationScanned: 'locationScanned',
+  itemScanned: 'itemScanned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -266,6 +311,7 @@ exports.Prisma.TaskEventScalarFieldEnum = {
   taskId: 'taskId',
   eventType: 'eventType',
   userId: 'userId',
+  taskItemId: 'taskItemId',
   data: 'data',
   createdAt: 'createdAt'
 };
@@ -292,6 +338,7 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   entityType: 'entityType',
   entityId: 'entityId',
   changes: 'changes',
+  correlationId: 'correlationId',
   createdAt: 'createdAt'
 };
 
@@ -348,11 +395,32 @@ exports.LocationType = exports.$Enums.LocationType = {
   PACKING: 'PACKING',
   SHIPPING: 'SHIPPING',
   RETURNS: 'RETURNS',
+  QUARANTINE: 'QUARANTINE',
   GENERAL: 'GENERAL'
+};
+
+exports.InventoryStatus = exports.$Enums.InventoryStatus = {
+  AVAILABLE: 'AVAILABLE',
+  RESERVED: 'RESERVED',
+  PICKED: 'PICKED',
+  DAMAGED: 'DAMAGED',
+  IN_TRANSIT: 'IN_TRANSIT',
+  QUARANTINE: 'QUARANTINE'
+};
+
+exports.AllocationStatus = exports.$Enums.AllocationStatus = {
+  PENDING: 'PENDING',
+  ALLOCATED: 'ALLOCATED',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED',
+  RELEASED: 'RELEASED',
+  CANCELLED: 'CANCELLED'
 };
 
 exports.OrderStatus = exports.$Enums.OrderStatus = {
   PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  READY_TO_PICK: 'READY_TO_PICK',
   ALLOCATED: 'ALLOCATED',
   PICKING: 'PICKING',
   PICKED: 'PICKED',
@@ -360,7 +428,17 @@ exports.OrderStatus = exports.$Enums.OrderStatus = {
   PACKED: 'PACKED',
   SHIPPED: 'SHIPPED',
   DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  ON_HOLD: 'ON_HOLD'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  AUTHORIZED: 'AUTHORIZED',
+  PAID: 'PAID',
+  PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED'
 };
 
 exports.Priority = exports.$Enums.Priority = {
@@ -373,6 +451,10 @@ exports.WorkTaskType = exports.$Enums.WorkTaskType = {
   PICKING: 'PICKING',
   PACKING: 'PACKING',
   SHIPPING: 'SHIPPING',
+  RECEIVING: 'RECEIVING',
+  PUTAWAY: 'PUTAWAY',
+  CYCLE_COUNT: 'CYCLE_COUNT',
+  REPLENISHMENT: 'REPLENISHMENT',
   QC: 'QC'
 };
 
@@ -380,9 +462,20 @@ exports.WorkTaskStatus = exports.$Enums.WorkTaskStatus = {
   PENDING: 'PENDING',
   ASSIGNED: 'ASSIGNED',
   IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
   PAUSED: 'PAUSED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.WorkTaskBlockReason = exports.$Enums.WorkTaskBlockReason = {
+  SHORT_PICK: 'SHORT_PICK',
+  LOCATION_EMPTY: 'LOCATION_EMPTY',
+  DAMAGED_INVENTORY: 'DAMAGED_INVENTORY',
+  PICKER_TIMEOUT: 'PICKER_TIMEOUT',
+  SUPERVISOR_HOLD: 'SUPERVISOR_HOLD',
+  EQUIPMENT_ISSUE: 'EQUIPMENT_ISSUE',
+  SYSTEM_ERROR: 'SYSTEM_ERROR'
 };
 
 exports.WorkTaskItemStatus = exports.$Enums.WorkTaskItemStatus = {
@@ -398,11 +491,16 @@ exports.WorkTaskEventType = exports.$Enums.WorkTaskEventType = {
   TASK_ASSIGNED: 'TASK_ASSIGNED',
   TASK_STARTED: 'TASK_STARTED',
   TASK_PAUSED: 'TASK_PAUSED',
+  TASK_RESUMED: 'TASK_RESUMED',
+  TASK_BLOCKED: 'TASK_BLOCKED',
+  TASK_UNBLOCKED: 'TASK_UNBLOCKED',
   TASK_COMPLETED: 'TASK_COMPLETED',
   TASK_CANCELLED: 'TASK_CANCELLED',
   ITEM_SCANNED: 'ITEM_SCANNED',
   ITEM_COMPLETED: 'ITEM_COMPLETED',
-  ITEM_SKIPPED: 'ITEM_SKIPPED'
+  ITEM_SKIPPED: 'ITEM_SKIPPED',
+  ITEM_SHORT: 'ITEM_SHORT',
+  LOCATION_VERIFIED: 'LOCATION_VERIFIED'
 };
 
 exports.Prisma.ModelName = {
@@ -412,7 +510,8 @@ exports.Prisma.ModelName = {
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   Location: 'Location',
-  Inventory: 'Inventory',
+  InventoryUnit: 'InventoryUnit',
+  Allocation: 'Allocation',
   Order: 'Order',
   OrderItem: 'OrderItem',
   WorkTask: 'WorkTask',

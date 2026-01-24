@@ -95,12 +95,16 @@ model ProductVariant {
   costPrice    Decimal? @db.Decimal(10, 2)
   sellingPrice Decimal? @db.Decimal(10, 2)
   weight       Decimal? @db.Decimal(8, 2)
+  // Track if this variant requires lot/expiry tracking
+  trackLots    Boolean  @default(false)
+  trackExpiry  Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  product   Product     @relation(fields: [productId], references: [id])
-  inventory Inventory[]
-  taskItems TaskItem[]
+  product        Product         @relation(fields: [productId], references: [id])
+  inventoryUnits InventoryUnit[]
+  taskItems      TaskItem[]
+  allocations    Allocation[]
 
   @@index([upc])
   @@index([barcode])
@@ -108,37 +112,96 @@ model ProductVariant {
 }
 
 model Location {
-  id         String       @id @default(cuid())
-  name       String       @unique
-  barcode    String?      @unique
-  type       LocationType @default(GENERAL)
-  zone       String?
-  isPickable Boolean      @default(true)
-  active     Boolean      @default(true)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id           String       @id @default(cuid())
+  name         String       @unique
+  barcode      String?      @unique
+  type         LocationType @default(GENERAL)
+  zone         String?
+  aisle        String?
+  rack         String?
+  shelf        String?
+  bin          String?
+  // For pick path optimization
+  pickSequence Int?
+  isPickable   Boolean      @default(true)
+  active       Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
-  inventory Inventory[]
-  taskItems TaskItem[]
+  inventoryUnits InventoryUnit[]
+  taskItems      TaskItem[]
+  allocations    Allocation[]
 
   @@index([barcode])
   @@index([type])
+  @@index([zone, pickSequence])
   @@map("locations")
 }
 
-model Inventory {
-  id               String   @id @default(cuid())
+// =============================================================================
+// INVENTORY UNITS (Replaces simple Inventory table)
+// =============================================================================
+
+// Individual inventory units with full tracking
+// This replaces the old aggregate Inventory table
+model InventoryUnit {
+  id               String          @id @default(cuid())
   productVariantId String
   locationId       String
-  quantityOnHand   Int      @default(0)
-  quantityReserved Int      @default(0)
-  updatedAt        DateTime @updatedAt
+  quantity         Int             @default(0)
+  status           InventoryStatus @default(AVAILABLE)
+  // Lot tracking
+  lotNumber        String?
+  expiryDate       DateTime?
+  // Receipt tracking
+  receivedAt       DateTime        @default(now())
+  receivedFrom     String? // PO number, ASN, etc.
+  // Cost tracking
+  unitCost         Decimal?        @db.Decimal(10, 2)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
   location       Location       @relation(fields: [locationId], references: [id])
+  allocations    Allocation[]
 
-  @@unique([productVariantId, locationId])
-  @@map("inventory")
+  @@index([productVariantId, status])
+  @@index([locationId])
+  @@index([lotNumber])
+  @@index([expiryDate])
+  @@map("inventory_units")
+}
+
+// =============================================================================
+// ALLOCATIONS (NEW - Critical for inventory reservation tracking)
+// =============================================================================
+
+model Allocation {
+  id               String           @id @default(cuid())
+  inventoryUnitId  String
+  orderId          String
+  orderItemId      String?
+  productVariantId String
+  locationId       String
+  quantity         Int
+  lotNumber        String?
+  status           AllocationStatus @default(ALLOCATED)
+  allocatedAt      DateTime         @default(now())
+  releasedAt       DateTime?
+  pickedAt         DateTime?
+
+  inventoryUnit  InventoryUnit  @relation(fields: [inventoryUnitId], references: [id])
+  order          Order          @relation(fields: [orderId], references: [id])
+  orderItem      OrderItem?     @relation(fields: [orderItemId], references: [id])
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+  location       Location       @relation(fields: [locationId], references: [id])
+  taskItem       TaskItem?      @relation(fields: [taskItemId], references: [id])
+  taskItemId     String?        @unique
+
+  @@index([orderId])
+  @@index([inventoryUnitId])
+  @@index([status])
+  @@map("allocations")
 }
 
 // =============================================================================
@@ -146,38 +209,56 @@ model Inventory {
 // =============================================================================
 
 model Order {
-  id              String      @id @default(cuid())
-  orderNumber     String      @unique
-  shopifyOrderId  String?     @unique
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique
+  shopifyOrderId  String?       @unique
+  // Customer info
+  customerId      String?
   customerName    String
   customerEmail   String?
   shippingAddress Json
-  status          OrderStatus @default(PENDING)
-  priority        Priority    @default(STANDARD)
-  totalAmount     Decimal     @db.Decimal(10, 2)
+  // Status tracking
+  status          OrderStatus   @default(PENDING)
+  paymentStatus   PaymentStatus @default(PENDING)
+  priority        Priority      @default(STANDARD)
+  // Hold management
+  holdReason      String?
+  holdAt          DateTime?
+  holdBy          String?
+  // Financials
+  totalAmount     Decimal       @db.Decimal(10, 2)
+  // Shipping
+  warehouseId     String?
   trackingNumber  String?
   shippedAt       DateTime?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  items     OrderItem[]
-  taskItems TaskItem[]
+  items       OrderItem[]
+  taskItems   TaskItem[]
+  allocations Allocation[]
 
   @@index([status])
+  @@index([paymentStatus])
+  @@index([status, paymentStatus, holdReason])
   @@index([createdAt])
   @@map("orders")
 }
 
 model OrderItem {
-  id               String  @id @default(cuid())
-  orderId          String
-  productVariantId String
-  quantity         Int
-  quantityPicked   Int?    @default(0)
-  unitPrice        Decimal @db.Decimal(10, 2)
+  id                String  @id @default(cuid())
+  orderId           String
+  productVariantId  String
+  sku               String
+  quantity          Int
+  quantityAllocated Int     @default(0)
+  quantityPicked    Int     @default(0)
+  unitPrice         Decimal @db.Decimal(10, 2)
 
-  order     Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  taskItems TaskItem[]
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  taskItems   TaskItem[]
+  allocations Allocation[]
 
   @@index([orderId])
   @@map("order_items")
@@ -188,24 +269,34 @@ model OrderItem {
 // =============================================================================
 
 model WorkTask {
-  id              String         @id @default(cuid())
-  taskNumber      String         @unique
+  id              String               @id @default(cuid())
+  taskNumber      String               @unique
   type            WorkTaskType
-  status          WorkTaskStatus @default(PENDING)
-  priority        Int            @default(0)
-  idempotencyKey  String?        @unique
+  status          WorkTaskStatus       @default(PENDING)
+  priority        Int                  @default(0)
+  idempotencyKey  String?              @unique
+  // Assignment
   assignedTo      String?
   assignedAt      DateTime?
+  // Progress tracking
   startedAt       DateTime?
   completedAt     DateTime?
+  // Block tracking
+  blockReason     WorkTaskBlockReason?
+  blockedAt       DateTime?
+  // Orders in this task (for batch picking)
   orderIds        String[]
   totalOrders     Int
-  completedOrders Int            @default(0)
+  completedOrders Int                  @default(0)
+  // Items tracking
   totalItems      Int
-  completedItems  Int            @default(0)
+  completedItems  Int                  @default(0)
+  shortItems      Int                  @default(0)
+  skippedItems    Int                  @default(0)
+  // Metadata
   notes           String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
 
   assignedUser User?       @relation(fields: [assignedTo], references: [id])
   taskItems    TaskItem[]
@@ -213,6 +304,7 @@ model WorkTask {
 
   @@index([type, status])
   @@index([assignedTo])
+  @@index([status, priority])
   @@map("work_tasks")
 }
 
@@ -223,12 +315,23 @@ model TaskItem {
   orderItemId       String?
   productVariantId  String?
   locationId        String?
+  allocationId      String?            @unique
+  // Pick sequence (for optimized path)
   sequence          Int
+  // Quantities
   quantityRequired  Int
   quantityCompleted Int                @default(0)
+  // Status
   status            WorkTaskItemStatus @default(PENDING)
+  // Completion tracking
   completedBy       String?
   completedAt       DateTime?
+  // Short pick details
+  shortReason       String?
+  // Scan verification
+  locationScanned   Boolean            @default(false)
+  itemScanned       Boolean            @default(false)
+  // Timestamps
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 
@@ -238,24 +341,29 @@ model TaskItem {
   productVariant  ProductVariant? @relation(fields: [productVariantId], references: [id])
   location        Location?       @relation(fields: [locationId], references: [id])
   completedByUser User?           @relation(fields: [completedBy], references: [id])
+  allocation      Allocation?
 
-  @@index([taskId])
+  @@index([taskId, sequence])
   @@index([orderId])
+  @@index([status])
   @@map("task_items")
 }
 
 model TaskEvent {
-  id        String            @id @default(cuid())
-  taskId    String
-  eventType WorkTaskEventType
-  userId    String
-  data      Json?
-  createdAt DateTime          @default(now())
+  id         String            @id @default(cuid())
+  taskId     String
+  eventType  WorkTaskEventType
+  userId     String?
+  // Event details
+  taskItemId String?
+  data       Json?
+  createdAt  DateTime          @default(now())
 
   task WorkTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user User     @relation(fields: [userId], references: [id])
+  user User?    @relation(fields: [userId], references: [id])
 
   @@index([taskId])
+  @@index([taskId, eventType])
   @@map("task_events")
 }
 
@@ -282,18 +390,20 @@ model JobRecord {
 }
 
 model AuditLog {
-  id         String   @id @default(cuid())
-  userId     String?
-  action     String
-  entityType String
-  entityId   String
-  changes    Json?
-  createdAt  DateTime @default(now())
+  id            String   @id @default(cuid())
+  userId        String?
+  action        String
+  entityType    String
+  entityId      String
+  changes       Json?
+  correlationId String? // For tracing across operations
+  createdAt     DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id])
 
   @@index([entityType, entityId])
   @@index([userId])
+  @@index([correlationId])
   @@map("audit_logs")
 }
 
@@ -323,8 +433,28 @@ enum UserRole {
   READONLY
 }
 
+enum InventoryStatus {
+  AVAILABLE
+  RESERVED
+  PICKED
+  DAMAGED
+  IN_TRANSIT
+  QUARANTINE
+}
+
+enum AllocationStatus {
+  PENDING
+  ALLOCATED
+  PARTIALLY_PICKED
+  PICKED
+  RELEASED
+  CANCELLED
+}
+
 enum OrderStatus {
   PENDING
+  CONFIRMED
+  READY_TO_PICK
   ALLOCATED
   PICKING
   PICKED
@@ -333,6 +463,16 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
+  ON_HOLD
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  PARTIALLY_REFUNDED
+  REFUNDED
+  FAILED
 }
 
 enum Priority {
@@ -348,6 +488,7 @@ enum LocationType {
   PACKING
   SHIPPING
   RETURNS
+  QUARANTINE
   GENERAL
 }
 
@@ -355,6 +496,10 @@ enum WorkTaskType {
   PICKING
   PACKING
   SHIPPING
+  RECEIVING
+  PUTAWAY
+  CYCLE_COUNT
+  REPLENISHMENT
   QC
 }
 
@@ -362,6 +507,7 @@ enum WorkTaskStatus {
   PENDING
   ASSIGNED
   IN_PROGRESS
+  BLOCKED
   PAUSED
   COMPLETED
   CANCELLED
@@ -375,14 +521,29 @@ enum WorkTaskItemStatus {
   SHORT
 }
 
+enum WorkTaskBlockReason {
+  SHORT_PICK
+  LOCATION_EMPTY
+  DAMAGED_INVENTORY
+  PICKER_TIMEOUT
+  SUPERVISOR_HOLD
+  EQUIPMENT_ISSUE
+  SYSTEM_ERROR
+}
+
 enum WorkTaskEventType {
   TASK_CREATED
   TASK_ASSIGNED
   TASK_STARTED
   TASK_PAUSED
+  TASK_RESUMED
+  TASK_BLOCKED
+  TASK_UNBLOCKED
   TASK_COMPLETED
   TASK_CANCELLED
   ITEM_SCANNED
   ITEM_COMPLETED
   ITEM_SKIPPED
+  ITEM_SHORT
+  LOCATION_VERIFIED
 }

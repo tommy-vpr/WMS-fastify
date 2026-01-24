@@ -44,10 +44,15 @@ export type ProductVariant = $Result.DefaultSelection<Prisma.$ProductVariantPayl
  */
 export type Location = $Result.DefaultSelection<Prisma.$LocationPayload>
 /**
- * Model Inventory
+ * Model InventoryUnit
  * 
  */
-export type Inventory = $Result.DefaultSelection<Prisma.$InventoryPayload>
+export type InventoryUnit = $Result.DefaultSelection<Prisma.$InventoryUnitPayload>
+/**
+ * Model Allocation
+ * 
+ */
+export type Allocation = $Result.DefaultSelection<Prisma.$AllocationPayload>
 /**
  * Model Order
  * 
@@ -103,8 +108,34 @@ export namespace $Enums {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const InventoryStatus: {
+  AVAILABLE: 'AVAILABLE',
+  RESERVED: 'RESERVED',
+  PICKED: 'PICKED',
+  DAMAGED: 'DAMAGED',
+  IN_TRANSIT: 'IN_TRANSIT',
+  QUARANTINE: 'QUARANTINE'
+};
+
+export type InventoryStatus = (typeof InventoryStatus)[keyof typeof InventoryStatus]
+
+
+export const AllocationStatus: {
+  PENDING: 'PENDING',
+  ALLOCATED: 'ALLOCATED',
+  PARTIALLY_PICKED: 'PARTIALLY_PICKED',
+  PICKED: 'PICKED',
+  RELEASED: 'RELEASED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type AllocationStatus = (typeof AllocationStatus)[keyof typeof AllocationStatus]
+
+
 export const OrderStatus: {
   PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  READY_TO_PICK: 'READY_TO_PICK',
   ALLOCATED: 'ALLOCATED',
   PICKING: 'PICKING',
   PICKED: 'PICKED',
@@ -112,10 +143,23 @@ export const OrderStatus: {
   PACKED: 'PACKED',
   SHIPPED: 'SHIPPED',
   DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  ON_HOLD: 'ON_HOLD'
 };
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const PaymentStatus: {
+  PENDING: 'PENDING',
+  AUTHORIZED: 'AUTHORIZED',
+  PAID: 'PAID',
+  PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED'
+};
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
 export const Priority: {
@@ -134,6 +178,7 @@ export const LocationType: {
   PACKING: 'PACKING',
   SHIPPING: 'SHIPPING',
   RETURNS: 'RETURNS',
+  QUARANTINE: 'QUARANTINE',
   GENERAL: 'GENERAL'
 };
 
@@ -144,6 +189,10 @@ export const WorkTaskType: {
   PICKING: 'PICKING',
   PACKING: 'PACKING',
   SHIPPING: 'SHIPPING',
+  RECEIVING: 'RECEIVING',
+  PUTAWAY: 'PUTAWAY',
+  CYCLE_COUNT: 'CYCLE_COUNT',
+  REPLENISHMENT: 'REPLENISHMENT',
   QC: 'QC'
 };
 
@@ -154,6 +203,7 @@ export const WorkTaskStatus: {
   PENDING: 'PENDING',
   ASSIGNED: 'ASSIGNED',
   IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
   PAUSED: 'PAUSED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
@@ -173,16 +223,34 @@ export const WorkTaskItemStatus: {
 export type WorkTaskItemStatus = (typeof WorkTaskItemStatus)[keyof typeof WorkTaskItemStatus]
 
 
+export const WorkTaskBlockReason: {
+  SHORT_PICK: 'SHORT_PICK',
+  LOCATION_EMPTY: 'LOCATION_EMPTY',
+  DAMAGED_INVENTORY: 'DAMAGED_INVENTORY',
+  PICKER_TIMEOUT: 'PICKER_TIMEOUT',
+  SUPERVISOR_HOLD: 'SUPERVISOR_HOLD',
+  EQUIPMENT_ISSUE: 'EQUIPMENT_ISSUE',
+  SYSTEM_ERROR: 'SYSTEM_ERROR'
+};
+
+export type WorkTaskBlockReason = (typeof WorkTaskBlockReason)[keyof typeof WorkTaskBlockReason]
+
+
 export const WorkTaskEventType: {
   TASK_CREATED: 'TASK_CREATED',
   TASK_ASSIGNED: 'TASK_ASSIGNED',
   TASK_STARTED: 'TASK_STARTED',
   TASK_PAUSED: 'TASK_PAUSED',
+  TASK_RESUMED: 'TASK_RESUMED',
+  TASK_BLOCKED: 'TASK_BLOCKED',
+  TASK_UNBLOCKED: 'TASK_UNBLOCKED',
   TASK_COMPLETED: 'TASK_COMPLETED',
   TASK_CANCELLED: 'TASK_CANCELLED',
   ITEM_SCANNED: 'ITEM_SCANNED',
   ITEM_COMPLETED: 'ITEM_COMPLETED',
-  ITEM_SKIPPED: 'ITEM_SKIPPED'
+  ITEM_SKIPPED: 'ITEM_SKIPPED',
+  ITEM_SHORT: 'ITEM_SHORT',
+  LOCATION_VERIFIED: 'LOCATION_VERIFIED'
 };
 
 export type WorkTaskEventType = (typeof WorkTaskEventType)[keyof typeof WorkTaskEventType]
@@ -193,9 +261,21 @@ export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
 
+export type InventoryStatus = $Enums.InventoryStatus
+
+export const InventoryStatus: typeof $Enums.InventoryStatus
+
+export type AllocationStatus = $Enums.AllocationStatus
+
+export const AllocationStatus: typeof $Enums.AllocationStatus
+
 export type OrderStatus = $Enums.OrderStatus
 
 export const OrderStatus: typeof $Enums.OrderStatus
+
+export type PaymentStatus = $Enums.PaymentStatus
+
+export const PaymentStatus: typeof $Enums.PaymentStatus
 
 export type Priority = $Enums.Priority
 
@@ -216,6 +296,10 @@ export const WorkTaskStatus: typeof $Enums.WorkTaskStatus
 export type WorkTaskItemStatus = $Enums.WorkTaskItemStatus
 
 export const WorkTaskItemStatus: typeof $Enums.WorkTaskItemStatus
+
+export type WorkTaskBlockReason = $Enums.WorkTaskBlockReason
+
+export const WorkTaskBlockReason: typeof $Enums.WorkTaskBlockReason
 
 export type WorkTaskEventType = $Enums.WorkTaskEventType
 
@@ -399,14 +483,24 @@ export class PrismaClient<
   get location(): Prisma.LocationDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.inventory`: Exposes CRUD operations for the **Inventory** model.
+   * `prisma.inventoryUnit`: Exposes CRUD operations for the **InventoryUnit** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Inventories
-    * const inventories = await prisma.inventory.findMany()
+    * // Fetch zero or more InventoryUnits
+    * const inventoryUnits = await prisma.inventoryUnit.findMany()
     * ```
     */
-  get inventory(): Prisma.InventoryDelegate<ExtArgs, ClientOptions>;
+  get inventoryUnit(): Prisma.InventoryUnitDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.allocation`: Exposes CRUD operations for the **Allocation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Allocations
+    * const allocations = await prisma.allocation.findMany()
+    * ```
+    */
+  get allocation(): Prisma.AllocationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.order`: Exposes CRUD operations for the **Order** model.
@@ -927,7 +1021,8 @@ export namespace Prisma {
     Product: 'Product',
     ProductVariant: 'ProductVariant',
     Location: 'Location',
-    Inventory: 'Inventory',
+    InventoryUnit: 'InventoryUnit',
+    Allocation: 'Allocation',
     Order: 'Order',
     OrderItem: 'OrderItem',
     WorkTask: 'WorkTask',
@@ -951,7 +1046,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventory" | "order" | "orderItem" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1399,77 +1494,151 @@ export namespace Prisma {
           }
         }
       }
-      Inventory: {
-        payload: Prisma.$InventoryPayload<ExtArgs>
-        fields: Prisma.InventoryFieldRefs
+      InventoryUnit: {
+        payload: Prisma.$InventoryUnitPayload<ExtArgs>
+        fields: Prisma.InventoryUnitFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.InventoryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload> | null
+            args: Prisma.InventoryUnitFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.InventoryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           findFirst: {
-            args: Prisma.InventoryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload> | null
+            args: Prisma.InventoryUnitFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.InventoryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           findMany: {
-            args: Prisma.InventoryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>[]
+            args: Prisma.InventoryUnitFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>[]
           }
           create: {
-            args: Prisma.InventoryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           createMany: {
-            args: Prisma.InventoryCreateManyArgs<ExtArgs>
+            args: Prisma.InventoryUnitCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.InventoryCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>[]
+            args: Prisma.InventoryUnitCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>[]
           }
           delete: {
-            args: Prisma.InventoryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           update: {
-            args: Prisma.InventoryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           deleteMany: {
-            args: Prisma.InventoryDeleteManyArgs<ExtArgs>
+            args: Prisma.InventoryUnitDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.InventoryUpdateManyArgs<ExtArgs>
+            args: Prisma.InventoryUnitUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.InventoryUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>[]
+            args: Prisma.InventoryUnitUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>[]
           }
           upsert: {
-            args: Prisma.InventoryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$InventoryPayload>
+            args: Prisma.InventoryUnitUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryUnitPayload>
           }
           aggregate: {
-            args: Prisma.InventoryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateInventory>
+            args: Prisma.InventoryUnitAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInventoryUnit>
           }
           groupBy: {
-            args: Prisma.InventoryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<InventoryGroupByOutputType>[]
+            args: Prisma.InventoryUnitGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InventoryUnitGroupByOutputType>[]
           }
           count: {
-            args: Prisma.InventoryCountArgs<ExtArgs>
-            result: $Utils.Optional<InventoryCountAggregateOutputType> | number
+            args: Prisma.InventoryUnitCountArgs<ExtArgs>
+            result: $Utils.Optional<InventoryUnitCountAggregateOutputType> | number
+          }
+        }
+      }
+      Allocation: {
+        payload: Prisma.$AllocationPayload<ExtArgs>
+        fields: Prisma.AllocationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AllocationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AllocationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          findFirst: {
+            args: Prisma.AllocationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AllocationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          findMany: {
+            args: Prisma.AllocationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>[]
+          }
+          create: {
+            args: Prisma.AllocationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          createMany: {
+            args: Prisma.AllocationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AllocationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>[]
+          }
+          delete: {
+            args: Prisma.AllocationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          update: {
+            args: Prisma.AllocationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          deleteMany: {
+            args: Prisma.AllocationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AllocationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AllocationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>[]
+          }
+          upsert: {
+            args: Prisma.AllocationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AllocationPayload>
+          }
+          aggregate: {
+            args: Prisma.AllocationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAllocation>
+          }
+          groupBy: {
+            args: Prisma.AllocationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AllocationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AllocationCountArgs<ExtArgs>
+            result: $Utils.Optional<AllocationCountAggregateOutputType> | number
           }
         }
       }
@@ -2179,7 +2348,8 @@ export namespace Prisma {
     product?: ProductOmit
     productVariant?: ProductVariantOmit
     location?: LocationOmit
-    inventory?: InventoryOmit
+    inventoryUnit?: InventoryUnitOmit
+    allocation?: AllocationOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
     workTask?: WorkTaskOmit
@@ -2384,13 +2554,15 @@ export namespace Prisma {
    */
 
   export type ProductVariantCountOutputType = {
-    inventory: number
+    inventoryUnits: number
     taskItems: number
+    allocations: number
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    inventory?: boolean | ProductVariantCountOutputTypeCountInventoryArgs
+    inventoryUnits?: boolean | ProductVariantCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | ProductVariantCountOutputTypeCountTaskItemsArgs
+    allocations?: boolean | ProductVariantCountOutputTypeCountAllocationsArgs
   }
 
   // Custom InputTypes
@@ -2407,8 +2579,8 @@ export namespace Prisma {
   /**
    * ProductVariantCountOutputType without action
    */
-  export type ProductVariantCountOutputTypeCountInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InventoryWhereInput
+  export type ProductVariantCountOutputTypeCountInventoryUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryUnitWhereInput
   }
 
   /**
@@ -2418,19 +2590,28 @@ export namespace Prisma {
     where?: TaskItemWhereInput
   }
 
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
+  }
+
 
   /**
    * Count Type LocationCountOutputType
    */
 
   export type LocationCountOutputType = {
-    inventory: number
+    inventoryUnits: number
     taskItems: number
+    allocations: number
   }
 
   export type LocationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    inventory?: boolean | LocationCountOutputTypeCountInventoryArgs
+    inventoryUnits?: boolean | LocationCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | LocationCountOutputTypeCountTaskItemsArgs
+    allocations?: boolean | LocationCountOutputTypeCountAllocationsArgs
   }
 
   // Custom InputTypes
@@ -2447,8 +2628,8 @@ export namespace Prisma {
   /**
    * LocationCountOutputType without action
    */
-  export type LocationCountOutputTypeCountInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InventoryWhereInput
+  export type LocationCountOutputTypeCountInventoryUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryUnitWhereInput
   }
 
   /**
@@ -2456,6 +2637,44 @@ export namespace Prisma {
    */
   export type LocationCountOutputTypeCountTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskItemWhereInput
+  }
+
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
+  }
+
+
+  /**
+   * Count Type InventoryUnitCountOutputType
+   */
+
+  export type InventoryUnitCountOutputType = {
+    allocations: number
+  }
+
+  export type InventoryUnitCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    allocations?: boolean | InventoryUnitCountOutputTypeCountAllocationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InventoryUnitCountOutputType without action
+   */
+  export type InventoryUnitCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryUnitCountOutputType
+     */
+    select?: InventoryUnitCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InventoryUnitCountOutputType without action
+   */
+  export type InventoryUnitCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
   }
 
 
@@ -2466,11 +2685,13 @@ export namespace Prisma {
   export type OrderCountOutputType = {
     items: number
     taskItems: number
+    allocations: number
   }
 
   export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | OrderCountOutputTypeCountItemsArgs
     taskItems?: boolean | OrderCountOutputTypeCountTaskItemsArgs
+    allocations?: boolean | OrderCountOutputTypeCountAllocationsArgs
   }
 
   // Custom InputTypes
@@ -2498,6 +2719,13 @@ export namespace Prisma {
     where?: TaskItemWhereInput
   }
 
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
+  }
+
 
   /**
    * Count Type OrderItemCountOutputType
@@ -2505,10 +2733,12 @@ export namespace Prisma {
 
   export type OrderItemCountOutputType = {
     taskItems: number
+    allocations: number
   }
 
   export type OrderItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     taskItems?: boolean | OrderItemCountOutputTypeCountTaskItemsArgs
+    allocations?: boolean | OrderItemCountOutputTypeCountAllocationsArgs
   }
 
   // Custom InputTypes
@@ -2527,6 +2757,13 @@ export namespace Prisma {
    */
   export type OrderItemCountOutputTypeCountTaskItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskItemWhereInput
+  }
+
+  /**
+   * OrderItemCountOutputType without action
+   */
+  export type OrderItemCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
   }
 
 
@@ -7163,6 +7400,8 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    trackLots: boolean | null
+    trackExpiry: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7178,6 +7417,8 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    trackLots: boolean | null
+    trackExpiry: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7193,6 +7434,8 @@ export namespace Prisma {
     costPrice: number
     sellingPrice: number
     weight: number
+    trackLots: number
+    trackExpiry: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7222,6 +7465,8 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    trackLots?: true
+    trackExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7237,6 +7482,8 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    trackLots?: true
+    trackExpiry?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7252,6 +7499,8 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    trackLots?: true
+    trackExpiry?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7354,6 +7603,8 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    trackLots: boolean
+    trackExpiry: boolean
     createdAt: Date
     updatedAt: Date
     _count: ProductVariantCountAggregateOutputType | null
@@ -7388,11 +7639,14 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
-    inventory?: boolean | ProductVariant$inventoryArgs<ExtArgs>
+    inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
+    allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["productVariant"]>
 
@@ -7407,6 +7661,8 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -7423,6 +7679,8 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -7439,15 +7697,18 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "costPrice" | "sellingPrice" | "weight" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
+  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
   export type ProductVariantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
-    inventory?: boolean | ProductVariant$inventoryArgs<ExtArgs>
+    inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
+    allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductVariantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7461,8 +7722,9 @@ export namespace Prisma {
     name: "ProductVariant"
     objects: {
       product: Prisma.$ProductPayload<ExtArgs>
-      inventory: Prisma.$InventoryPayload<ExtArgs>[]
+      inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
+      allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7475,6 +7737,8 @@ export namespace Prisma {
       costPrice: Prisma.Decimal | null
       sellingPrice: Prisma.Decimal | null
       weight: Prisma.Decimal | null
+      trackLots: boolean
+      trackExpiry: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["productVariant"]>
@@ -7872,8 +8136,9 @@ export namespace Prisma {
   export interface Prisma__ProductVariantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    inventory<T extends ProductVariant$inventoryArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    inventoryUnits<T extends ProductVariant$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends ProductVariant$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocations<T extends ProductVariant$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7913,6 +8178,8 @@ export namespace Prisma {
     readonly costPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly sellingPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly weight: FieldRef<"ProductVariant", 'Decimal'>
+    readonly trackLots: FieldRef<"ProductVariant", 'Boolean'>
+    readonly trackExpiry: FieldRef<"ProductVariant", 'Boolean'>
     readonly createdAt: FieldRef<"ProductVariant", 'DateTime'>
     readonly updatedAt: FieldRef<"ProductVariant", 'DateTime'>
   }
@@ -8311,27 +8578,27 @@ export namespace Prisma {
   }
 
   /**
-   * ProductVariant.inventory
+   * ProductVariant.inventoryUnits
    */
-  export type ProductVariant$inventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductVariant$inventoryUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
-    where?: InventoryWhereInput
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
-    cursor?: InventoryWhereUniqueInput
+    include?: InventoryUnitInclude<ExtArgs> | null
+    where?: InventoryUnitWhereInput
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
+    cursor?: InventoryUnitWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: InventoryScalarFieldEnum | InventoryScalarFieldEnum[]
+    distinct?: InventoryUnitScalarFieldEnum | InventoryUnitScalarFieldEnum[]
   }
 
   /**
@@ -8359,6 +8626,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProductVariant.allocations
+   */
+  export type ProductVariant$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    cursor?: AllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
    * ProductVariant without action
    */
   export type ProductVariantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8383,8 +8674,18 @@ export namespace Prisma {
 
   export type AggregateLocation = {
     _count: LocationCountAggregateOutputType | null
+    _avg: LocationAvgAggregateOutputType | null
+    _sum: LocationSumAggregateOutputType | null
     _min: LocationMinAggregateOutputType | null
     _max: LocationMaxAggregateOutputType | null
+  }
+
+  export type LocationAvgAggregateOutputType = {
+    pickSequence: number | null
+  }
+
+  export type LocationSumAggregateOutputType = {
+    pickSequence: number | null
   }
 
   export type LocationMinAggregateOutputType = {
@@ -8393,6 +8694,11 @@ export namespace Prisma {
     barcode: string | null
     type: $Enums.LocationType | null
     zone: string | null
+    aisle: string | null
+    rack: string | null
+    shelf: string | null
+    bin: string | null
+    pickSequence: number | null
     isPickable: boolean | null
     active: boolean | null
     createdAt: Date | null
@@ -8405,6 +8711,11 @@ export namespace Prisma {
     barcode: string | null
     type: $Enums.LocationType | null
     zone: string | null
+    aisle: string | null
+    rack: string | null
+    shelf: string | null
+    bin: string | null
+    pickSequence: number | null
     isPickable: boolean | null
     active: boolean | null
     createdAt: Date | null
@@ -8417,6 +8728,11 @@ export namespace Prisma {
     barcode: number
     type: number
     zone: number
+    aisle: number
+    rack: number
+    shelf: number
+    bin: number
+    pickSequence: number
     isPickable: number
     active: number
     createdAt: number
@@ -8425,12 +8741,25 @@ export namespace Prisma {
   }
 
 
+  export type LocationAvgAggregateInputType = {
+    pickSequence?: true
+  }
+
+  export type LocationSumAggregateInputType = {
+    pickSequence?: true
+  }
+
   export type LocationMinAggregateInputType = {
     id?: true
     name?: true
     barcode?: true
     type?: true
     zone?: true
+    aisle?: true
+    rack?: true
+    shelf?: true
+    bin?: true
+    pickSequence?: true
     isPickable?: true
     active?: true
     createdAt?: true
@@ -8443,6 +8772,11 @@ export namespace Prisma {
     barcode?: true
     type?: true
     zone?: true
+    aisle?: true
+    rack?: true
+    shelf?: true
+    bin?: true
+    pickSequence?: true
     isPickable?: true
     active?: true
     createdAt?: true
@@ -8455,6 +8789,11 @@ export namespace Prisma {
     barcode?: true
     type?: true
     zone?: true
+    aisle?: true
+    rack?: true
+    shelf?: true
+    bin?: true
+    pickSequence?: true
     isPickable?: true
     active?: true
     createdAt?: true
@@ -8500,6 +8839,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: LocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: LocationMinAggregateInputType
@@ -8530,6 +8881,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: LocationCountAggregateInputType | true
+    _avg?: LocationAvgAggregateInputType
+    _sum?: LocationSumAggregateInputType
     _min?: LocationMinAggregateInputType
     _max?: LocationMaxAggregateInputType
   }
@@ -8540,11 +8893,18 @@ export namespace Prisma {
     barcode: string | null
     type: $Enums.LocationType
     zone: string | null
+    aisle: string | null
+    rack: string | null
+    shelf: string | null
+    bin: string | null
+    pickSequence: number | null
     isPickable: boolean
     active: boolean
     createdAt: Date
     updatedAt: Date
     _count: LocationCountAggregateOutputType | null
+    _avg: LocationAvgAggregateOutputType | null
+    _sum: LocationSumAggregateOutputType | null
     _min: LocationMinAggregateOutputType | null
     _max: LocationMaxAggregateOutputType | null
   }
@@ -8569,12 +8929,18 @@ export namespace Prisma {
     barcode?: boolean
     type?: boolean
     zone?: boolean
+    aisle?: boolean
+    rack?: boolean
+    shelf?: boolean
+    bin?: boolean
+    pickSequence?: boolean
     isPickable?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    inventory?: boolean | Location$inventoryArgs<ExtArgs>
+    inventoryUnits?: boolean | Location$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
+    allocations?: boolean | Location$allocationsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["location"]>
 
@@ -8584,6 +8950,11 @@ export namespace Prisma {
     barcode?: boolean
     type?: boolean
     zone?: boolean
+    aisle?: boolean
+    rack?: boolean
+    shelf?: boolean
+    bin?: boolean
+    pickSequence?: boolean
     isPickable?: boolean
     active?: boolean
     createdAt?: boolean
@@ -8596,6 +8967,11 @@ export namespace Prisma {
     barcode?: boolean
     type?: boolean
     zone?: boolean
+    aisle?: boolean
+    rack?: boolean
+    shelf?: boolean
+    bin?: boolean
+    pickSequence?: boolean
     isPickable?: boolean
     active?: boolean
     createdAt?: boolean
@@ -8608,16 +8984,22 @@ export namespace Prisma {
     barcode?: boolean
     type?: boolean
     zone?: boolean
+    aisle?: boolean
+    rack?: boolean
+    shelf?: boolean
+    bin?: boolean
+    pickSequence?: boolean
     isPickable?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "barcode" | "type" | "zone" | "isPickable" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["location"]>
+  export type LocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "barcode" | "type" | "zone" | "aisle" | "rack" | "shelf" | "bin" | "pickSequence" | "isPickable" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["location"]>
   export type LocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    inventory?: boolean | Location$inventoryArgs<ExtArgs>
+    inventoryUnits?: boolean | Location$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
+    allocations?: boolean | Location$allocationsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8626,8 +9008,9 @@ export namespace Prisma {
   export type $LocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Location"
     objects: {
-      inventory: Prisma.$InventoryPayload<ExtArgs>[]
+      inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
+      allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8635,6 +9018,11 @@ export namespace Prisma {
       barcode: string | null
       type: $Enums.LocationType
       zone: string | null
+      aisle: string | null
+      rack: string | null
+      shelf: string | null
+      bin: string | null
+      pickSequence: number | null
       isPickable: boolean
       active: boolean
       createdAt: Date
@@ -9033,8 +9421,9 @@ export namespace Prisma {
    */
   export interface Prisma__LocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    inventory<T extends Location$inventoryArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    inventoryUnits<T extends Location$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends Location$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Location$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocations<T extends Location$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Location$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9069,6 +9458,11 @@ export namespace Prisma {
     readonly barcode: FieldRef<"Location", 'String'>
     readonly type: FieldRef<"Location", 'LocationType'>
     readonly zone: FieldRef<"Location", 'String'>
+    readonly aisle: FieldRef<"Location", 'String'>
+    readonly rack: FieldRef<"Location", 'String'>
+    readonly shelf: FieldRef<"Location", 'String'>
+    readonly bin: FieldRef<"Location", 'String'>
+    readonly pickSequence: FieldRef<"Location", 'Int'>
     readonly isPickable: FieldRef<"Location", 'Boolean'>
     readonly active: FieldRef<"Location", 'Boolean'>
     readonly createdAt: FieldRef<"Location", 'DateTime'>
@@ -9461,27 +9855,27 @@ export namespace Prisma {
   }
 
   /**
-   * Location.inventory
+   * Location.inventoryUnits
    */
-  export type Location$inventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Location$inventoryUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
-    where?: InventoryWhereInput
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
-    cursor?: InventoryWhereUniqueInput
+    include?: InventoryUnitInclude<ExtArgs> | null
+    where?: InventoryUnitWhereInput
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
+    cursor?: InventoryUnitWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: InventoryScalarFieldEnum | InventoryScalarFieldEnum[]
+    distinct?: InventoryUnitScalarFieldEnum | InventoryUnitScalarFieldEnum[]
   }
 
   /**
@@ -9509,6 +9903,30 @@ export namespace Prisma {
   }
 
   /**
+   * Location.allocations
+   */
+  export type Location$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    cursor?: AllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
    * Location without action
    */
   export type LocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9528,407 +9946,484 @@ export namespace Prisma {
 
 
   /**
-   * Model Inventory
+   * Model InventoryUnit
    */
 
-  export type AggregateInventory = {
-    _count: InventoryCountAggregateOutputType | null
-    _avg: InventoryAvgAggregateOutputType | null
-    _sum: InventorySumAggregateOutputType | null
-    _min: InventoryMinAggregateOutputType | null
-    _max: InventoryMaxAggregateOutputType | null
+  export type AggregateInventoryUnit = {
+    _count: InventoryUnitCountAggregateOutputType | null
+    _avg: InventoryUnitAvgAggregateOutputType | null
+    _sum: InventoryUnitSumAggregateOutputType | null
+    _min: InventoryUnitMinAggregateOutputType | null
+    _max: InventoryUnitMaxAggregateOutputType | null
   }
 
-  export type InventoryAvgAggregateOutputType = {
-    quantityOnHand: number | null
-    quantityReserved: number | null
+  export type InventoryUnitAvgAggregateOutputType = {
+    quantity: number | null
+    unitCost: Decimal | null
   }
 
-  export type InventorySumAggregateOutputType = {
-    quantityOnHand: number | null
-    quantityReserved: number | null
+  export type InventoryUnitSumAggregateOutputType = {
+    quantity: number | null
+    unitCost: Decimal | null
   }
 
-  export type InventoryMinAggregateOutputType = {
+  export type InventoryUnitMinAggregateOutputType = {
     id: string | null
     productVariantId: string | null
     locationId: string | null
-    quantityOnHand: number | null
-    quantityReserved: number | null
+    quantity: number | null
+    status: $Enums.InventoryStatus | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    receivedAt: Date | null
+    receivedFrom: string | null
+    unitCost: Decimal | null
+    createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type InventoryMaxAggregateOutputType = {
+  export type InventoryUnitMaxAggregateOutputType = {
     id: string | null
     productVariantId: string | null
     locationId: string | null
-    quantityOnHand: number | null
-    quantityReserved: number | null
+    quantity: number | null
+    status: $Enums.InventoryStatus | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    receivedAt: Date | null
+    receivedFrom: string | null
+    unitCost: Decimal | null
+    createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type InventoryCountAggregateOutputType = {
+  export type InventoryUnitCountAggregateOutputType = {
     id: number
     productVariantId: number
     locationId: number
-    quantityOnHand: number
-    quantityReserved: number
+    quantity: number
+    status: number
+    lotNumber: number
+    expiryDate: number
+    receivedAt: number
+    receivedFrom: number
+    unitCost: number
+    createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type InventoryAvgAggregateInputType = {
-    quantityOnHand?: true
-    quantityReserved?: true
+  export type InventoryUnitAvgAggregateInputType = {
+    quantity?: true
+    unitCost?: true
   }
 
-  export type InventorySumAggregateInputType = {
-    quantityOnHand?: true
-    quantityReserved?: true
+  export type InventoryUnitSumAggregateInputType = {
+    quantity?: true
+    unitCost?: true
   }
 
-  export type InventoryMinAggregateInputType = {
+  export type InventoryUnitMinAggregateInputType = {
     id?: true
     productVariantId?: true
     locationId?: true
-    quantityOnHand?: true
-    quantityReserved?: true
+    quantity?: true
+    status?: true
+    lotNumber?: true
+    expiryDate?: true
+    receivedAt?: true
+    receivedFrom?: true
+    unitCost?: true
+    createdAt?: true
     updatedAt?: true
   }
 
-  export type InventoryMaxAggregateInputType = {
+  export type InventoryUnitMaxAggregateInputType = {
     id?: true
     productVariantId?: true
     locationId?: true
-    quantityOnHand?: true
-    quantityReserved?: true
+    quantity?: true
+    status?: true
+    lotNumber?: true
+    expiryDate?: true
+    receivedAt?: true
+    receivedFrom?: true
+    unitCost?: true
+    createdAt?: true
     updatedAt?: true
   }
 
-  export type InventoryCountAggregateInputType = {
+  export type InventoryUnitCountAggregateInputType = {
     id?: true
     productVariantId?: true
     locationId?: true
-    quantityOnHand?: true
-    quantityReserved?: true
+    quantity?: true
+    status?: true
+    lotNumber?: true
+    expiryDate?: true
+    receivedAt?: true
+    receivedFrom?: true
+    unitCost?: true
+    createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type InventoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Inventory to aggregate.
+     * Filter which InventoryUnit to aggregate.
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Inventories to fetch.
+     * Determine the order of InventoryUnits to fetch.
      */
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: InventoryWhereUniqueInput
+    cursor?: InventoryUnitWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Inventories from the position of the cursor.
+     * Take `±n` InventoryUnits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Inventories.
+     * Skip the first `n` InventoryUnits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Inventories
+     * Count returned InventoryUnits
     **/
-    _count?: true | InventoryCountAggregateInputType
+    _count?: true | InventoryUnitCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: InventoryAvgAggregateInputType
+    _avg?: InventoryUnitAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: InventorySumAggregateInputType
+    _sum?: InventoryUnitSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: InventoryMinAggregateInputType
+    _min?: InventoryUnitMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: InventoryMaxAggregateInputType
+    _max?: InventoryUnitMaxAggregateInputType
   }
 
-  export type GetInventoryAggregateType<T extends InventoryAggregateArgs> = {
-        [P in keyof T & keyof AggregateInventory]: P extends '_count' | 'count'
+  export type GetInventoryUnitAggregateType<T extends InventoryUnitAggregateArgs> = {
+        [P in keyof T & keyof AggregateInventoryUnit]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateInventory[P]>
-      : GetScalarType<T[P], AggregateInventory[P]>
+        : GetScalarType<T[P], AggregateInventoryUnit[P]>
+      : GetScalarType<T[P], AggregateInventoryUnit[P]>
   }
 
 
 
 
-  export type InventoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InventoryWhereInput
-    orderBy?: InventoryOrderByWithAggregationInput | InventoryOrderByWithAggregationInput[]
-    by: InventoryScalarFieldEnum[] | InventoryScalarFieldEnum
-    having?: InventoryScalarWhereWithAggregatesInput
+  export type InventoryUnitGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryUnitWhereInput
+    orderBy?: InventoryUnitOrderByWithAggregationInput | InventoryUnitOrderByWithAggregationInput[]
+    by: InventoryUnitScalarFieldEnum[] | InventoryUnitScalarFieldEnum
+    having?: InventoryUnitScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: InventoryCountAggregateInputType | true
-    _avg?: InventoryAvgAggregateInputType
-    _sum?: InventorySumAggregateInputType
-    _min?: InventoryMinAggregateInputType
-    _max?: InventoryMaxAggregateInputType
+    _count?: InventoryUnitCountAggregateInputType | true
+    _avg?: InventoryUnitAvgAggregateInputType
+    _sum?: InventoryUnitSumAggregateInputType
+    _min?: InventoryUnitMinAggregateInputType
+    _max?: InventoryUnitMaxAggregateInputType
   }
 
-  export type InventoryGroupByOutputType = {
+  export type InventoryUnitGroupByOutputType = {
     id: string
     productVariantId: string
     locationId: string
-    quantityOnHand: number
-    quantityReserved: number
+    quantity: number
+    status: $Enums.InventoryStatus
+    lotNumber: string | null
+    expiryDate: Date | null
+    receivedAt: Date
+    receivedFrom: string | null
+    unitCost: Decimal | null
+    createdAt: Date
     updatedAt: Date
-    _count: InventoryCountAggregateOutputType | null
-    _avg: InventoryAvgAggregateOutputType | null
-    _sum: InventorySumAggregateOutputType | null
-    _min: InventoryMinAggregateOutputType | null
-    _max: InventoryMaxAggregateOutputType | null
+    _count: InventoryUnitCountAggregateOutputType | null
+    _avg: InventoryUnitAvgAggregateOutputType | null
+    _sum: InventoryUnitSumAggregateOutputType | null
+    _min: InventoryUnitMinAggregateOutputType | null
+    _max: InventoryUnitMaxAggregateOutputType | null
   }
 
-  type GetInventoryGroupByPayload<T extends InventoryGroupByArgs> = Prisma.PrismaPromise<
+  type GetInventoryUnitGroupByPayload<T extends InventoryUnitGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<InventoryGroupByOutputType, T['by']> &
+      PickEnumerable<InventoryUnitGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof InventoryGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof InventoryUnitGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], InventoryGroupByOutputType[P]>
-            : GetScalarType<T[P], InventoryGroupByOutputType[P]>
+              : GetScalarType<T[P], InventoryUnitGroupByOutputType[P]>
+            : GetScalarType<T[P], InventoryUnitGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type InventorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type InventoryUnitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productVariantId?: boolean
     locationId?: boolean
-    quantityOnHand?: boolean
-    quantityReserved?: boolean
+    quantity?: boolean
+    status?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    receivedAt?: boolean
+    receivedFrom?: boolean
+    unitCost?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["inventory"]>
+    allocations?: boolean | InventoryUnit$allocationsArgs<ExtArgs>
+    _count?: boolean | InventoryUnitCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryUnit"]>
 
-  export type InventorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type InventoryUnitSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productVariantId?: boolean
     locationId?: boolean
-    quantityOnHand?: boolean
-    quantityReserved?: boolean
+    quantity?: boolean
+    status?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    receivedAt?: boolean
+    receivedFrom?: boolean
+    unitCost?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["inventory"]>
+  }, ExtArgs["result"]["inventoryUnit"]>
 
-  export type InventorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type InventoryUnitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productVariantId?: boolean
     locationId?: boolean
-    quantityOnHand?: boolean
-    quantityReserved?: boolean
+    quantity?: boolean
+    status?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    receivedAt?: boolean
+    receivedFrom?: boolean
+    unitCost?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["inventory"]>
+  }, ExtArgs["result"]["inventoryUnit"]>
 
-  export type InventorySelectScalar = {
+  export type InventoryUnitSelectScalar = {
     id?: boolean
     productVariantId?: boolean
     locationId?: boolean
-    quantityOnHand?: boolean
-    quantityReserved?: boolean
+    quantity?: boolean
+    status?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    receivedAt?: boolean
+    receivedFrom?: boolean
+    unitCost?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type InventoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productVariantId" | "locationId" | "quantityOnHand" | "quantityReserved" | "updatedAt", ExtArgs["result"]["inventory"]>
-  export type InventoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productVariantId" | "locationId" | "quantity" | "status" | "lotNumber" | "expiryDate" | "receivedAt" | "receivedFrom" | "unitCost" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryUnit"]>
+  export type InventoryUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    allocations?: boolean | InventoryUnit$allocationsArgs<ExtArgs>
+    _count?: boolean | InventoryUnitCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type InventoryUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
   }
-  export type InventoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
-    location?: boolean | LocationDefaultArgs<ExtArgs>
-  }
-  export type InventoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
   }
 
-  export type $InventoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Inventory"
+  export type $InventoryUnitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InventoryUnit"
     objects: {
       productVariant: Prisma.$ProductVariantPayload<ExtArgs>
       location: Prisma.$LocationPayload<ExtArgs>
+      allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productVariantId: string
       locationId: string
-      quantityOnHand: number
-      quantityReserved: number
+      quantity: number
+      status: $Enums.InventoryStatus
+      lotNumber: string | null
+      expiryDate: Date | null
+      receivedAt: Date
+      receivedFrom: string | null
+      unitCost: Prisma.Decimal | null
+      createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["inventory"]>
+    }, ExtArgs["result"]["inventoryUnit"]>
     composites: {}
   }
 
-  type InventoryGetPayload<S extends boolean | null | undefined | InventoryDefaultArgs> = $Result.GetResult<Prisma.$InventoryPayload, S>
+  type InventoryUnitGetPayload<S extends boolean | null | undefined | InventoryUnitDefaultArgs> = $Result.GetResult<Prisma.$InventoryUnitPayload, S>
 
-  type InventoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<InventoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: InventoryCountAggregateInputType | true
+  type InventoryUnitCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InventoryUnitFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InventoryUnitCountAggregateInputType | true
     }
 
-  export interface InventoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Inventory'], meta: { name: 'Inventory' } }
+  export interface InventoryUnitDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InventoryUnit'], meta: { name: 'InventoryUnit' } }
     /**
-     * Find zero or one Inventory that matches the filter.
-     * @param {InventoryFindUniqueArgs} args - Arguments to find a Inventory
+     * Find zero or one InventoryUnit that matches the filter.
+     * @param {InventoryUnitFindUniqueArgs} args - Arguments to find a InventoryUnit
      * @example
-     * // Get one Inventory
-     * const inventory = await prisma.inventory.findUnique({
+     * // Get one InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends InventoryFindUniqueArgs>(args: SelectSubset<T, InventoryFindUniqueArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends InventoryUnitFindUniqueArgs>(args: SelectSubset<T, InventoryUnitFindUniqueArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Inventory that matches the filter or throw an error with `error.code='P2025'`
+     * Find one InventoryUnit that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {InventoryFindUniqueOrThrowArgs} args - Arguments to find a Inventory
+     * @param {InventoryUnitFindUniqueOrThrowArgs} args - Arguments to find a InventoryUnit
      * @example
-     * // Get one Inventory
-     * const inventory = await prisma.inventory.findUniqueOrThrow({
+     * // Get one InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends InventoryFindUniqueOrThrowArgs>(args: SelectSubset<T, InventoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends InventoryUnitFindUniqueOrThrowArgs>(args: SelectSubset<T, InventoryUnitFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Inventory that matches the filter.
+     * Find the first InventoryUnit that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryFindFirstArgs} args - Arguments to find a Inventory
+     * @param {InventoryUnitFindFirstArgs} args - Arguments to find a InventoryUnit
      * @example
-     * // Get one Inventory
-     * const inventory = await prisma.inventory.findFirst({
+     * // Get one InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends InventoryFindFirstArgs>(args?: SelectSubset<T, InventoryFindFirstArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends InventoryUnitFindFirstArgs>(args?: SelectSubset<T, InventoryUnitFindFirstArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Inventory that matches the filter or
+     * Find the first InventoryUnit that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryFindFirstOrThrowArgs} args - Arguments to find a Inventory
+     * @param {InventoryUnitFindFirstOrThrowArgs} args - Arguments to find a InventoryUnit
      * @example
-     * // Get one Inventory
-     * const inventory = await prisma.inventory.findFirstOrThrow({
+     * // Get one InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends InventoryFindFirstOrThrowArgs>(args?: SelectSubset<T, InventoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends InventoryUnitFindFirstOrThrowArgs>(args?: SelectSubset<T, InventoryUnitFindFirstOrThrowArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Inventories that matches the filter.
+     * Find zero or more InventoryUnits that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {InventoryUnitFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Inventories
-     * const inventories = await prisma.inventory.findMany()
+     * // Get all InventoryUnits
+     * const inventoryUnits = await prisma.inventoryUnit.findMany()
      * 
-     * // Get first 10 Inventories
-     * const inventories = await prisma.inventory.findMany({ take: 10 })
+     * // Get first 10 InventoryUnits
+     * const inventoryUnits = await prisma.inventoryUnit.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const inventoryWithIdOnly = await prisma.inventory.findMany({ select: { id: true } })
+     * const inventoryUnitWithIdOnly = await prisma.inventoryUnit.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends InventoryFindManyArgs>(args?: SelectSubset<T, InventoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends InventoryUnitFindManyArgs>(args?: SelectSubset<T, InventoryUnitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Inventory.
-     * @param {InventoryCreateArgs} args - Arguments to create a Inventory.
+     * Create a InventoryUnit.
+     * @param {InventoryUnitCreateArgs} args - Arguments to create a InventoryUnit.
      * @example
-     * // Create one Inventory
-     * const Inventory = await prisma.inventory.create({
+     * // Create one InventoryUnit
+     * const InventoryUnit = await prisma.inventoryUnit.create({
      *   data: {
-     *     // ... data to create a Inventory
+     *     // ... data to create a InventoryUnit
      *   }
      * })
      * 
      */
-    create<T extends InventoryCreateArgs>(args: SelectSubset<T, InventoryCreateArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends InventoryUnitCreateArgs>(args: SelectSubset<T, InventoryUnitCreateArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Inventories.
-     * @param {InventoryCreateManyArgs} args - Arguments to create many Inventories.
+     * Create many InventoryUnits.
+     * @param {InventoryUnitCreateManyArgs} args - Arguments to create many InventoryUnits.
      * @example
-     * // Create many Inventories
-     * const inventory = await prisma.inventory.createMany({
+     * // Create many InventoryUnits
+     * const inventoryUnit = await prisma.inventoryUnit.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends InventoryCreateManyArgs>(args?: SelectSubset<T, InventoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends InventoryUnitCreateManyArgs>(args?: SelectSubset<T, InventoryUnitCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Inventories and returns the data saved in the database.
-     * @param {InventoryCreateManyAndReturnArgs} args - Arguments to create many Inventories.
+     * Create many InventoryUnits and returns the data saved in the database.
+     * @param {InventoryUnitCreateManyAndReturnArgs} args - Arguments to create many InventoryUnits.
      * @example
-     * // Create many Inventories
-     * const inventory = await prisma.inventory.createManyAndReturn({
+     * // Create many InventoryUnits
+     * const inventoryUnit = await prisma.inventoryUnit.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Inventories and only return the `id`
-     * const inventoryWithIdOnly = await prisma.inventory.createManyAndReturn({
+     * // Create many InventoryUnits and only return the `id`
+     * const inventoryUnitWithIdOnly = await prisma.inventoryUnit.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -9938,28 +10433,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends InventoryCreateManyAndReturnArgs>(args?: SelectSubset<T, InventoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends InventoryUnitCreateManyAndReturnArgs>(args?: SelectSubset<T, InventoryUnitCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Inventory.
-     * @param {InventoryDeleteArgs} args - Arguments to delete one Inventory.
+     * Delete a InventoryUnit.
+     * @param {InventoryUnitDeleteArgs} args - Arguments to delete one InventoryUnit.
      * @example
-     * // Delete one Inventory
-     * const Inventory = await prisma.inventory.delete({
+     * // Delete one InventoryUnit
+     * const InventoryUnit = await prisma.inventoryUnit.delete({
      *   where: {
-     *     // ... filter to delete one Inventory
+     *     // ... filter to delete one InventoryUnit
      *   }
      * })
      * 
      */
-    delete<T extends InventoryDeleteArgs>(args: SelectSubset<T, InventoryDeleteArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends InventoryUnitDeleteArgs>(args: SelectSubset<T, InventoryUnitDeleteArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Inventory.
-     * @param {InventoryUpdateArgs} args - Arguments to update one Inventory.
+     * Update one InventoryUnit.
+     * @param {InventoryUnitUpdateArgs} args - Arguments to update one InventoryUnit.
      * @example
-     * // Update one Inventory
-     * const inventory = await prisma.inventory.update({
+     * // Update one InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9969,30 +10464,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends InventoryUpdateArgs>(args: SelectSubset<T, InventoryUpdateArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends InventoryUnitUpdateArgs>(args: SelectSubset<T, InventoryUnitUpdateArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Inventories.
-     * @param {InventoryDeleteManyArgs} args - Arguments to filter Inventories to delete.
+     * Delete zero or more InventoryUnits.
+     * @param {InventoryUnitDeleteManyArgs} args - Arguments to filter InventoryUnits to delete.
      * @example
-     * // Delete a few Inventories
-     * const { count } = await prisma.inventory.deleteMany({
+     * // Delete a few InventoryUnits
+     * const { count } = await prisma.inventoryUnit.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends InventoryDeleteManyArgs>(args?: SelectSubset<T, InventoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends InventoryUnitDeleteManyArgs>(args?: SelectSubset<T, InventoryUnitDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Inventories.
+     * Update zero or more InventoryUnits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {InventoryUnitUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Inventories
-     * const inventory = await prisma.inventory.updateMany({
+     * // Update many InventoryUnits
+     * const inventoryUnit = await prisma.inventoryUnit.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10002,14 +10497,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends InventoryUpdateManyArgs>(args: SelectSubset<T, InventoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends InventoryUnitUpdateManyArgs>(args: SelectSubset<T, InventoryUnitUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Inventories and returns the data updated in the database.
-     * @param {InventoryUpdateManyAndReturnArgs} args - Arguments to update many Inventories.
+     * Update zero or more InventoryUnits and returns the data updated in the database.
+     * @param {InventoryUnitUpdateManyAndReturnArgs} args - Arguments to update many InventoryUnits.
      * @example
-     * // Update many Inventories
-     * const inventory = await prisma.inventory.updateManyAndReturn({
+     * // Update many InventoryUnits
+     * const inventoryUnit = await prisma.inventoryUnit.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10018,8 +10513,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Inventories and only return the `id`
-     * const inventoryWithIdOnly = await prisma.inventory.updateManyAndReturn({
+     * // Update zero or more InventoryUnits and only return the `id`
+     * const inventoryUnitWithIdOnly = await prisma.inventoryUnit.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -10032,56 +10527,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends InventoryUpdateManyAndReturnArgs>(args: SelectSubset<T, InventoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends InventoryUnitUpdateManyAndReturnArgs>(args: SelectSubset<T, InventoryUnitUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Inventory.
-     * @param {InventoryUpsertArgs} args - Arguments to update or create a Inventory.
+     * Create or update one InventoryUnit.
+     * @param {InventoryUnitUpsertArgs} args - Arguments to update or create a InventoryUnit.
      * @example
-     * // Update or create a Inventory
-     * const inventory = await prisma.inventory.upsert({
+     * // Update or create a InventoryUnit
+     * const inventoryUnit = await prisma.inventoryUnit.upsert({
      *   create: {
-     *     // ... data to create a Inventory
+     *     // ... data to create a InventoryUnit
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Inventory we want to update
+     *     // ... the filter for the InventoryUnit we want to update
      *   }
      * })
      */
-    upsert<T extends InventoryUpsertArgs>(args: SelectSubset<T, InventoryUpsertArgs<ExtArgs>>): Prisma__InventoryClient<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends InventoryUnitUpsertArgs>(args: SelectSubset<T, InventoryUnitUpsertArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Inventories.
+     * Count the number of InventoryUnits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryCountArgs} args - Arguments to filter Inventories to count.
+     * @param {InventoryUnitCountArgs} args - Arguments to filter InventoryUnits to count.
      * @example
-     * // Count the number of Inventories
-     * const count = await prisma.inventory.count({
+     * // Count the number of InventoryUnits
+     * const count = await prisma.inventoryUnit.count({
      *   where: {
-     *     // ... the filter for the Inventories we want to count
+     *     // ... the filter for the InventoryUnits we want to count
      *   }
      * })
     **/
-    count<T extends InventoryCountArgs>(
-      args?: Subset<T, InventoryCountArgs>,
+    count<T extends InventoryUnitCountArgs>(
+      args?: Subset<T, InventoryUnitCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], InventoryCountAggregateOutputType>
+          : GetScalarType<T['select'], InventoryUnitCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Inventory.
+     * Allows you to perform aggregations operations on a InventoryUnit.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {InventoryUnitAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -10101,13 +10596,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends InventoryAggregateArgs>(args: Subset<T, InventoryAggregateArgs>): Prisma.PrismaPromise<GetInventoryAggregateType<T>>
+    aggregate<T extends InventoryUnitAggregateArgs>(args: Subset<T, InventoryUnitAggregateArgs>): Prisma.PrismaPromise<GetInventoryUnitAggregateType<T>>
 
     /**
-     * Group by Inventory.
+     * Group by InventoryUnit.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {InventoryGroupByArgs} args - Group by arguments.
+     * @param {InventoryUnitGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -10122,14 +10617,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends InventoryGroupByArgs,
+      T extends InventoryUnitGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: InventoryGroupByArgs['orderBy'] }
-        : { orderBy?: InventoryGroupByArgs['orderBy'] },
+        ? { orderBy: InventoryUnitGroupByArgs['orderBy'] }
+        : { orderBy?: InventoryUnitGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -10178,23 +10673,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, InventoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInventoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, InventoryUnitGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInventoryUnitGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Inventory model
+   * Fields of the InventoryUnit model
    */
-  readonly fields: InventoryFieldRefs;
+  readonly fields: InventoryUnitFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Inventory.
+   * The delegate class that acts as a "Promise-like" for InventoryUnit.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__InventoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__InventoryUnitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     productVariant<T extends ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariantDefaultArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     location<T extends LocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocationDefaultArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    allocations<T extends InventoryUnit$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, InventoryUnit$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10221,426 +10717,1730 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Inventory model
+   * Fields of the InventoryUnit model
    */
-  interface InventoryFieldRefs {
-    readonly id: FieldRef<"Inventory", 'String'>
-    readonly productVariantId: FieldRef<"Inventory", 'String'>
-    readonly locationId: FieldRef<"Inventory", 'String'>
-    readonly quantityOnHand: FieldRef<"Inventory", 'Int'>
-    readonly quantityReserved: FieldRef<"Inventory", 'Int'>
-    readonly updatedAt: FieldRef<"Inventory", 'DateTime'>
+  interface InventoryUnitFieldRefs {
+    readonly id: FieldRef<"InventoryUnit", 'String'>
+    readonly productVariantId: FieldRef<"InventoryUnit", 'String'>
+    readonly locationId: FieldRef<"InventoryUnit", 'String'>
+    readonly quantity: FieldRef<"InventoryUnit", 'Int'>
+    readonly status: FieldRef<"InventoryUnit", 'InventoryStatus'>
+    readonly lotNumber: FieldRef<"InventoryUnit", 'String'>
+    readonly expiryDate: FieldRef<"InventoryUnit", 'DateTime'>
+    readonly receivedAt: FieldRef<"InventoryUnit", 'DateTime'>
+    readonly receivedFrom: FieldRef<"InventoryUnit", 'String'>
+    readonly unitCost: FieldRef<"InventoryUnit", 'Decimal'>
+    readonly createdAt: FieldRef<"InventoryUnit", 'DateTime'>
+    readonly updatedAt: FieldRef<"InventoryUnit", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Inventory findUnique
+   * InventoryUnit findUnique
    */
-  export type InventoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter, which Inventory to fetch.
+     * Filter, which InventoryUnit to fetch.
      */
-    where: InventoryWhereUniqueInput
+    where: InventoryUnitWhereUniqueInput
   }
 
   /**
-   * Inventory findUniqueOrThrow
+   * InventoryUnit findUniqueOrThrow
    */
-  export type InventoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter, which Inventory to fetch.
+     * Filter, which InventoryUnit to fetch.
      */
-    where: InventoryWhereUniqueInput
+    where: InventoryUnitWhereUniqueInput
   }
 
   /**
-   * Inventory findFirst
+   * InventoryUnit findFirst
    */
-  export type InventoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter, which Inventory to fetch.
+     * Filter, which InventoryUnit to fetch.
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Inventories to fetch.
+     * Determine the order of InventoryUnits to fetch.
      */
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Inventories.
+     * Sets the position for searching for InventoryUnits.
      */
-    cursor?: InventoryWhereUniqueInput
+    cursor?: InventoryUnitWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Inventories from the position of the cursor.
+     * Take `±n` InventoryUnits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Inventories.
+     * Skip the first `n` InventoryUnits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Inventories.
+     * Filter by unique combinations of InventoryUnits.
      */
-    distinct?: InventoryScalarFieldEnum | InventoryScalarFieldEnum[]
+    distinct?: InventoryUnitScalarFieldEnum | InventoryUnitScalarFieldEnum[]
   }
 
   /**
-   * Inventory findFirstOrThrow
+   * InventoryUnit findFirstOrThrow
    */
-  export type InventoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter, which Inventory to fetch.
+     * Filter, which InventoryUnit to fetch.
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Inventories to fetch.
+     * Determine the order of InventoryUnits to fetch.
      */
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Inventories.
+     * Sets the position for searching for InventoryUnits.
      */
-    cursor?: InventoryWhereUniqueInput
+    cursor?: InventoryUnitWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Inventories from the position of the cursor.
+     * Take `±n` InventoryUnits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Inventories.
+     * Skip the first `n` InventoryUnits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Inventories.
+     * Filter by unique combinations of InventoryUnits.
      */
-    distinct?: InventoryScalarFieldEnum | InventoryScalarFieldEnum[]
+    distinct?: InventoryUnitScalarFieldEnum | InventoryUnitScalarFieldEnum[]
   }
 
   /**
-   * Inventory findMany
+   * InventoryUnit findMany
    */
-  export type InventoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter, which Inventories to fetch.
+     * Filter, which InventoryUnits to fetch.
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Inventories to fetch.
+     * Determine the order of InventoryUnits to fetch.
      */
-    orderBy?: InventoryOrderByWithRelationInput | InventoryOrderByWithRelationInput[]
+    orderBy?: InventoryUnitOrderByWithRelationInput | InventoryUnitOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Inventories.
+     * Sets the position for listing InventoryUnits.
      */
-    cursor?: InventoryWhereUniqueInput
+    cursor?: InventoryUnitWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Inventories from the position of the cursor.
+     * Take `±n` InventoryUnits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Inventories.
+     * Skip the first `n` InventoryUnits.
      */
     skip?: number
-    distinct?: InventoryScalarFieldEnum | InventoryScalarFieldEnum[]
+    distinct?: InventoryUnitScalarFieldEnum | InventoryUnitScalarFieldEnum[]
   }
 
   /**
-   * Inventory create
+   * InventoryUnit create
    */
-  export type InventoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * The data needed to create a Inventory.
+     * The data needed to create a InventoryUnit.
      */
-    data: XOR<InventoryCreateInput, InventoryUncheckedCreateInput>
+    data: XOR<InventoryUnitCreateInput, InventoryUnitUncheckedCreateInput>
   }
 
   /**
-   * Inventory createMany
+   * InventoryUnit createMany
    */
-  export type InventoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Inventories.
+     * The data used to create many InventoryUnits.
      */
-    data: InventoryCreateManyInput | InventoryCreateManyInput[]
+    data: InventoryUnitCreateManyInput | InventoryUnitCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Inventory createManyAndReturn
+   * InventoryUnit createManyAndReturn
    */
-  export type InventoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelectCreateManyAndReturn<ExtArgs> | null
+    select?: InventoryUnitSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
-     * The data used to create many Inventories.
+     * The data used to create many InventoryUnits.
      */
-    data: InventoryCreateManyInput | InventoryCreateManyInput[]
+    data: InventoryUnitCreateManyInput | InventoryUnitCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: InventoryUnitIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Inventory update
+   * InventoryUnit update
    */
-  export type InventoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * The data needed to update a Inventory.
+     * The data needed to update a InventoryUnit.
      */
-    data: XOR<InventoryUpdateInput, InventoryUncheckedUpdateInput>
+    data: XOR<InventoryUnitUpdateInput, InventoryUnitUncheckedUpdateInput>
     /**
-     * Choose, which Inventory to update.
+     * Choose, which InventoryUnit to update.
      */
-    where: InventoryWhereUniqueInput
+    where: InventoryUnitWhereUniqueInput
   }
 
   /**
-   * Inventory updateMany
+   * InventoryUnit updateMany
    */
-  export type InventoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Inventories.
+     * The data used to update InventoryUnits.
      */
-    data: XOR<InventoryUpdateManyMutationInput, InventoryUncheckedUpdateManyInput>
+    data: XOR<InventoryUnitUpdateManyMutationInput, InventoryUnitUncheckedUpdateManyInput>
     /**
-     * Filter which Inventories to update
+     * Filter which InventoryUnits to update
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
-     * Limit how many Inventories to update.
+     * Limit how many InventoryUnits to update.
      */
     limit?: number
   }
 
   /**
-   * Inventory updateManyAndReturn
+   * InventoryUnit updateManyAndReturn
    */
-  export type InventoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelectUpdateManyAndReturn<ExtArgs> | null
+    select?: InventoryUnitSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
-     * The data used to update Inventories.
+     * The data used to update InventoryUnits.
      */
-    data: XOR<InventoryUpdateManyMutationInput, InventoryUncheckedUpdateManyInput>
+    data: XOR<InventoryUnitUpdateManyMutationInput, InventoryUnitUncheckedUpdateManyInput>
     /**
-     * Filter which Inventories to update
+     * Filter which InventoryUnits to update
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
-     * Limit how many Inventories to update.
+     * Limit how many InventoryUnits to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: InventoryUnitIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Inventory upsert
+   * InventoryUnit upsert
    */
-  export type InventoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * The filter to search for the Inventory to update in case it exists.
+     * The filter to search for the InventoryUnit to update in case it exists.
      */
-    where: InventoryWhereUniqueInput
+    where: InventoryUnitWhereUniqueInput
     /**
-     * In case the Inventory found by the `where` argument doesn't exist, create a new Inventory with this data.
+     * In case the InventoryUnit found by the `where` argument doesn't exist, create a new InventoryUnit with this data.
      */
-    create: XOR<InventoryCreateInput, InventoryUncheckedCreateInput>
+    create: XOR<InventoryUnitCreateInput, InventoryUnitUncheckedCreateInput>
     /**
-     * In case the Inventory was found with the provided `where` argument, update it with this data.
+     * In case the InventoryUnit was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<InventoryUpdateInput, InventoryUncheckedUpdateInput>
+    update: XOR<InventoryUnitUpdateInput, InventoryUnitUncheckedUpdateInput>
   }
 
   /**
-   * Inventory delete
+   * InventoryUnit delete
    */
-  export type InventoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the InventoryUnit
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: InventoryUnitSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the InventoryUnit
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: InventoryUnitOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: InventoryUnitInclude<ExtArgs> | null
     /**
-     * Filter which Inventory to delete.
+     * Filter which InventoryUnit to delete.
      */
-    where: InventoryWhereUniqueInput
+    where: InventoryUnitWhereUniqueInput
   }
 
   /**
-   * Inventory deleteMany
+   * InventoryUnit deleteMany
    */
-  export type InventoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnitDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Inventories to delete
+     * Filter which InventoryUnits to delete
      */
-    where?: InventoryWhereInput
+    where?: InventoryUnitWhereInput
     /**
-     * Limit how many Inventories to delete.
+     * Limit how many InventoryUnits to delete.
      */
     limit?: number
   }
 
   /**
-   * Inventory without action
+   * InventoryUnit.allocations
    */
-  export type InventoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type InventoryUnit$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Inventory
+     * Select specific fields to fetch from the Allocation
      */
-    select?: InventorySelect<ExtArgs> | null
+    select?: AllocationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Inventory
+     * Omit specific fields from the Allocation
      */
-    omit?: InventoryOmit<ExtArgs> | null
+    omit?: AllocationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: InventoryInclude<ExtArgs> | null
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    cursor?: AllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryUnit without action
+   */
+  export type InventoryUnitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryUnit
+     */
+    select?: InventoryUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryUnit
+     */
+    omit?: InventoryUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryUnitInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Allocation
+   */
+
+  export type AggregateAllocation = {
+    _count: AllocationCountAggregateOutputType | null
+    _avg: AllocationAvgAggregateOutputType | null
+    _sum: AllocationSumAggregateOutputType | null
+    _min: AllocationMinAggregateOutputType | null
+    _max: AllocationMaxAggregateOutputType | null
+  }
+
+  export type AllocationAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type AllocationSumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type AllocationMinAggregateOutputType = {
+    id: string | null
+    inventoryUnitId: string | null
+    orderId: string | null
+    orderItemId: string | null
+    productVariantId: string | null
+    locationId: string | null
+    quantity: number | null
+    lotNumber: string | null
+    status: $Enums.AllocationStatus | null
+    allocatedAt: Date | null
+    releasedAt: Date | null
+    pickedAt: Date | null
+    taskItemId: string | null
+  }
+
+  export type AllocationMaxAggregateOutputType = {
+    id: string | null
+    inventoryUnitId: string | null
+    orderId: string | null
+    orderItemId: string | null
+    productVariantId: string | null
+    locationId: string | null
+    quantity: number | null
+    lotNumber: string | null
+    status: $Enums.AllocationStatus | null
+    allocatedAt: Date | null
+    releasedAt: Date | null
+    pickedAt: Date | null
+    taskItemId: string | null
+  }
+
+  export type AllocationCountAggregateOutputType = {
+    id: number
+    inventoryUnitId: number
+    orderId: number
+    orderItemId: number
+    productVariantId: number
+    locationId: number
+    quantity: number
+    lotNumber: number
+    status: number
+    allocatedAt: number
+    releasedAt: number
+    pickedAt: number
+    taskItemId: number
+    _all: number
+  }
+
+
+  export type AllocationAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type AllocationSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type AllocationMinAggregateInputType = {
+    id?: true
+    inventoryUnitId?: true
+    orderId?: true
+    orderItemId?: true
+    productVariantId?: true
+    locationId?: true
+    quantity?: true
+    lotNumber?: true
+    status?: true
+    allocatedAt?: true
+    releasedAt?: true
+    pickedAt?: true
+    taskItemId?: true
+  }
+
+  export type AllocationMaxAggregateInputType = {
+    id?: true
+    inventoryUnitId?: true
+    orderId?: true
+    orderItemId?: true
+    productVariantId?: true
+    locationId?: true
+    quantity?: true
+    lotNumber?: true
+    status?: true
+    allocatedAt?: true
+    releasedAt?: true
+    pickedAt?: true
+    taskItemId?: true
+  }
+
+  export type AllocationCountAggregateInputType = {
+    id?: true
+    inventoryUnitId?: true
+    orderId?: true
+    orderItemId?: true
+    productVariantId?: true
+    locationId?: true
+    quantity?: true
+    lotNumber?: true
+    status?: true
+    allocatedAt?: true
+    releasedAt?: true
+    pickedAt?: true
+    taskItemId?: true
+    _all?: true
+  }
+
+  export type AllocationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Allocation to aggregate.
+     */
+    where?: AllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Allocations to fetch.
+     */
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Allocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Allocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Allocations
+    **/
+    _count?: true | AllocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AllocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AllocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AllocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AllocationMaxAggregateInputType
+  }
+
+  export type GetAllocationAggregateType<T extends AllocationAggregateArgs> = {
+        [P in keyof T & keyof AggregateAllocation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAllocation[P]>
+      : GetScalarType<T[P], AggregateAllocation[P]>
+  }
+
+
+
+
+  export type AllocationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithAggregationInput | AllocationOrderByWithAggregationInput[]
+    by: AllocationScalarFieldEnum[] | AllocationScalarFieldEnum
+    having?: AllocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AllocationCountAggregateInputType | true
+    _avg?: AllocationAvgAggregateInputType
+    _sum?: AllocationSumAggregateInputType
+    _min?: AllocationMinAggregateInputType
+    _max?: AllocationMaxAggregateInputType
+  }
+
+  export type AllocationGroupByOutputType = {
+    id: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber: string | null
+    status: $Enums.AllocationStatus
+    allocatedAt: Date
+    releasedAt: Date | null
+    pickedAt: Date | null
+    taskItemId: string | null
+    _count: AllocationCountAggregateOutputType | null
+    _avg: AllocationAvgAggregateOutputType | null
+    _sum: AllocationSumAggregateOutputType | null
+    _min: AllocationMinAggregateOutputType | null
+    _max: AllocationMaxAggregateOutputType | null
+  }
+
+  type GetAllocationGroupByPayload<T extends AllocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AllocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AllocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AllocationGroupByOutputType[P]>
+            : GetScalarType<T[P], AllocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AllocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    inventoryUnitId?: boolean
+    orderId?: boolean
+    orderItemId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    quantity?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    allocatedAt?: boolean
+    releasedAt?: boolean
+    pickedAt?: boolean
+    taskItemId?: boolean
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }, ExtArgs["result"]["allocation"]>
+
+  export type AllocationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    inventoryUnitId?: boolean
+    orderId?: boolean
+    orderItemId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    quantity?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    allocatedAt?: boolean
+    releasedAt?: boolean
+    pickedAt?: boolean
+    taskItemId?: boolean
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }, ExtArgs["result"]["allocation"]>
+
+  export type AllocationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    inventoryUnitId?: boolean
+    orderId?: boolean
+    orderItemId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    quantity?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    allocatedAt?: boolean
+    releasedAt?: boolean
+    pickedAt?: boolean
+    taskItemId?: boolean
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }, ExtArgs["result"]["allocation"]>
+
+  export type AllocationSelectScalar = {
+    id?: boolean
+    inventoryUnitId?: boolean
+    orderId?: boolean
+    orderItemId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    quantity?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    allocatedAt?: boolean
+    releasedAt?: boolean
+    pickedAt?: boolean
+    taskItemId?: boolean
+  }
+
+  export type AllocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "inventoryUnitId" | "orderId" | "orderItemId" | "productVariantId" | "locationId" | "quantity" | "lotNumber" | "status" | "allocatedAt" | "releasedAt" | "pickedAt" | "taskItemId", ExtArgs["result"]["allocation"]>
+  export type AllocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }
+  export type AllocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }
+  export type AllocationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    inventoryUnit?: boolean | InventoryUnitDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    orderItem?: boolean | Allocation$orderItemArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    taskItem?: boolean | Allocation$taskItemArgs<ExtArgs>
+  }
+
+  export type $AllocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Allocation"
+    objects: {
+      inventoryUnit: Prisma.$InventoryUnitPayload<ExtArgs>
+      order: Prisma.$OrderPayload<ExtArgs>
+      orderItem: Prisma.$OrderItemPayload<ExtArgs> | null
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs>
+      location: Prisma.$LocationPayload<ExtArgs>
+      taskItem: Prisma.$TaskItemPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      inventoryUnitId: string
+      orderId: string
+      orderItemId: string | null
+      productVariantId: string
+      locationId: string
+      quantity: number
+      lotNumber: string | null
+      status: $Enums.AllocationStatus
+      allocatedAt: Date
+      releasedAt: Date | null
+      pickedAt: Date | null
+      taskItemId: string | null
+    }, ExtArgs["result"]["allocation"]>
+    composites: {}
+  }
+
+  type AllocationGetPayload<S extends boolean | null | undefined | AllocationDefaultArgs> = $Result.GetResult<Prisma.$AllocationPayload, S>
+
+  type AllocationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AllocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AllocationCountAggregateInputType | true
+    }
+
+  export interface AllocationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Allocation'], meta: { name: 'Allocation' } }
+    /**
+     * Find zero or one Allocation that matches the filter.
+     * @param {AllocationFindUniqueArgs} args - Arguments to find a Allocation
+     * @example
+     * // Get one Allocation
+     * const allocation = await prisma.allocation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AllocationFindUniqueArgs>(args: SelectSubset<T, AllocationFindUniqueArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Allocation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AllocationFindUniqueOrThrowArgs} args - Arguments to find a Allocation
+     * @example
+     * // Get one Allocation
+     * const allocation = await prisma.allocation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AllocationFindUniqueOrThrowArgs>(args: SelectSubset<T, AllocationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Allocation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationFindFirstArgs} args - Arguments to find a Allocation
+     * @example
+     * // Get one Allocation
+     * const allocation = await prisma.allocation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AllocationFindFirstArgs>(args?: SelectSubset<T, AllocationFindFirstArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Allocation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationFindFirstOrThrowArgs} args - Arguments to find a Allocation
+     * @example
+     * // Get one Allocation
+     * const allocation = await prisma.allocation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AllocationFindFirstOrThrowArgs>(args?: SelectSubset<T, AllocationFindFirstOrThrowArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Allocations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Allocations
+     * const allocations = await prisma.allocation.findMany()
+     * 
+     * // Get first 10 Allocations
+     * const allocations = await prisma.allocation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const allocationWithIdOnly = await prisma.allocation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AllocationFindManyArgs>(args?: SelectSubset<T, AllocationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Allocation.
+     * @param {AllocationCreateArgs} args - Arguments to create a Allocation.
+     * @example
+     * // Create one Allocation
+     * const Allocation = await prisma.allocation.create({
+     *   data: {
+     *     // ... data to create a Allocation
+     *   }
+     * })
+     * 
+     */
+    create<T extends AllocationCreateArgs>(args: SelectSubset<T, AllocationCreateArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Allocations.
+     * @param {AllocationCreateManyArgs} args - Arguments to create many Allocations.
+     * @example
+     * // Create many Allocations
+     * const allocation = await prisma.allocation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AllocationCreateManyArgs>(args?: SelectSubset<T, AllocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Allocations and returns the data saved in the database.
+     * @param {AllocationCreateManyAndReturnArgs} args - Arguments to create many Allocations.
+     * @example
+     * // Create many Allocations
+     * const allocation = await prisma.allocation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Allocations and only return the `id`
+     * const allocationWithIdOnly = await prisma.allocation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AllocationCreateManyAndReturnArgs>(args?: SelectSubset<T, AllocationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Allocation.
+     * @param {AllocationDeleteArgs} args - Arguments to delete one Allocation.
+     * @example
+     * // Delete one Allocation
+     * const Allocation = await prisma.allocation.delete({
+     *   where: {
+     *     // ... filter to delete one Allocation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AllocationDeleteArgs>(args: SelectSubset<T, AllocationDeleteArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Allocation.
+     * @param {AllocationUpdateArgs} args - Arguments to update one Allocation.
+     * @example
+     * // Update one Allocation
+     * const allocation = await prisma.allocation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AllocationUpdateArgs>(args: SelectSubset<T, AllocationUpdateArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Allocations.
+     * @param {AllocationDeleteManyArgs} args - Arguments to filter Allocations to delete.
+     * @example
+     * // Delete a few Allocations
+     * const { count } = await prisma.allocation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AllocationDeleteManyArgs>(args?: SelectSubset<T, AllocationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Allocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Allocations
+     * const allocation = await prisma.allocation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AllocationUpdateManyArgs>(args: SelectSubset<T, AllocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Allocations and returns the data updated in the database.
+     * @param {AllocationUpdateManyAndReturnArgs} args - Arguments to update many Allocations.
+     * @example
+     * // Update many Allocations
+     * const allocation = await prisma.allocation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Allocations and only return the `id`
+     * const allocationWithIdOnly = await prisma.allocation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AllocationUpdateManyAndReturnArgs>(args: SelectSubset<T, AllocationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Allocation.
+     * @param {AllocationUpsertArgs} args - Arguments to update or create a Allocation.
+     * @example
+     * // Update or create a Allocation
+     * const allocation = await prisma.allocation.upsert({
+     *   create: {
+     *     // ... data to create a Allocation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Allocation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AllocationUpsertArgs>(args: SelectSubset<T, AllocationUpsertArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Allocations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationCountArgs} args - Arguments to filter Allocations to count.
+     * @example
+     * // Count the number of Allocations
+     * const count = await prisma.allocation.count({
+     *   where: {
+     *     // ... the filter for the Allocations we want to count
+     *   }
+     * })
+    **/
+    count<T extends AllocationCountArgs>(
+      args?: Subset<T, AllocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AllocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Allocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AllocationAggregateArgs>(args: Subset<T, AllocationAggregateArgs>): Prisma.PrismaPromise<GetAllocationAggregateType<T>>
+
+    /**
+     * Group by Allocation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AllocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AllocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AllocationGroupByArgs['orderBy'] }
+        : { orderBy?: AllocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AllocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAllocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Allocation model
+   */
+  readonly fields: AllocationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Allocation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AllocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    inventoryUnit<T extends InventoryUnitDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InventoryUnitDefaultArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    orderItem<T extends Allocation$orderItemArgs<ExtArgs> = {}>(args?: Subset<T, Allocation$orderItemArgs<ExtArgs>>): Prisma__OrderItemClient<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariantDefaultArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    location<T extends LocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocationDefaultArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    taskItem<T extends Allocation$taskItemArgs<ExtArgs> = {}>(args?: Subset<T, Allocation$taskItemArgs<ExtArgs>>): Prisma__TaskItemClient<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Allocation model
+   */
+  interface AllocationFieldRefs {
+    readonly id: FieldRef<"Allocation", 'String'>
+    readonly inventoryUnitId: FieldRef<"Allocation", 'String'>
+    readonly orderId: FieldRef<"Allocation", 'String'>
+    readonly orderItemId: FieldRef<"Allocation", 'String'>
+    readonly productVariantId: FieldRef<"Allocation", 'String'>
+    readonly locationId: FieldRef<"Allocation", 'String'>
+    readonly quantity: FieldRef<"Allocation", 'Int'>
+    readonly lotNumber: FieldRef<"Allocation", 'String'>
+    readonly status: FieldRef<"Allocation", 'AllocationStatus'>
+    readonly allocatedAt: FieldRef<"Allocation", 'DateTime'>
+    readonly releasedAt: FieldRef<"Allocation", 'DateTime'>
+    readonly pickedAt: FieldRef<"Allocation", 'DateTime'>
+    readonly taskItemId: FieldRef<"Allocation", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Allocation findUnique
+   */
+  export type AllocationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Allocation to fetch.
+     */
+    where: AllocationWhereUniqueInput
+  }
+
+  /**
+   * Allocation findUniqueOrThrow
+   */
+  export type AllocationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Allocation to fetch.
+     */
+    where: AllocationWhereUniqueInput
+  }
+
+  /**
+   * Allocation findFirst
+   */
+  export type AllocationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Allocation to fetch.
+     */
+    where?: AllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Allocations to fetch.
+     */
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Allocations.
+     */
+    cursor?: AllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Allocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Allocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Allocations.
+     */
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Allocation findFirstOrThrow
+   */
+  export type AllocationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Allocation to fetch.
+     */
+    where?: AllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Allocations to fetch.
+     */
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Allocations.
+     */
+    cursor?: AllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Allocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Allocations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Allocations.
+     */
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Allocation findMany
+   */
+  export type AllocationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Allocations to fetch.
+     */
+    where?: AllocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Allocations to fetch.
+     */
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Allocations.
+     */
+    cursor?: AllocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Allocations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Allocations.
+     */
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Allocation create
+   */
+  export type AllocationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Allocation.
+     */
+    data: XOR<AllocationCreateInput, AllocationUncheckedCreateInput>
+  }
+
+  /**
+   * Allocation createMany
+   */
+  export type AllocationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Allocations.
+     */
+    data: AllocationCreateManyInput | AllocationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Allocation createManyAndReturn
+   */
+  export type AllocationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Allocations.
+     */
+    data: AllocationCreateManyInput | AllocationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Allocation update
+   */
+  export type AllocationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Allocation.
+     */
+    data: XOR<AllocationUpdateInput, AllocationUncheckedUpdateInput>
+    /**
+     * Choose, which Allocation to update.
+     */
+    where: AllocationWhereUniqueInput
+  }
+
+  /**
+   * Allocation updateMany
+   */
+  export type AllocationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Allocations.
+     */
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which Allocations to update
+     */
+    where?: AllocationWhereInput
+    /**
+     * Limit how many Allocations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Allocation updateManyAndReturn
+   */
+  export type AllocationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * The data used to update Allocations.
+     */
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyInput>
+    /**
+     * Filter which Allocations to update
+     */
+    where?: AllocationWhereInput
+    /**
+     * Limit how many Allocations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Allocation upsert
+   */
+  export type AllocationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Allocation to update in case it exists.
+     */
+    where: AllocationWhereUniqueInput
+    /**
+     * In case the Allocation found by the `where` argument doesn't exist, create a new Allocation with this data.
+     */
+    create: XOR<AllocationCreateInput, AllocationUncheckedCreateInput>
+    /**
+     * In case the Allocation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AllocationUpdateInput, AllocationUncheckedUpdateInput>
+  }
+
+  /**
+   * Allocation delete
+   */
+  export type AllocationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    /**
+     * Filter which Allocation to delete.
+     */
+    where: AllocationWhereUniqueInput
+  }
+
+  /**
+   * Allocation deleteMany
+   */
+  export type AllocationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Allocations to delete
+     */
+    where?: AllocationWhereInput
+    /**
+     * Limit how many Allocations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Allocation.orderItem
+   */
+  export type Allocation$orderItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderItem
+     */
+    select?: OrderItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderItem
+     */
+    omit?: OrderItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderItemInclude<ExtArgs> | null
+    where?: OrderItemWhereInput
+  }
+
+  /**
+   * Allocation.taskItem
+   */
+  export type Allocation$taskItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaskItem
+     */
+    select?: TaskItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaskItem
+     */
+    omit?: TaskItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskItemInclude<ExtArgs> | null
+    where?: TaskItemWhereInput
+  }
+
+  /**
+   * Allocation without action
+   */
+  export type AllocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
   }
 
 
@@ -10668,11 +12468,17 @@ export namespace Prisma {
     id: string | null
     orderNumber: string | null
     shopifyOrderId: string | null
+    customerId: string | null
     customerName: string | null
     customerEmail: string | null
     status: $Enums.OrderStatus | null
+    paymentStatus: $Enums.PaymentStatus | null
     priority: $Enums.Priority | null
+    holdReason: string | null
+    holdAt: Date | null
+    holdBy: string | null
     totalAmount: Decimal | null
+    warehouseId: string | null
     trackingNumber: string | null
     shippedAt: Date | null
     createdAt: Date | null
@@ -10683,11 +12489,17 @@ export namespace Prisma {
     id: string | null
     orderNumber: string | null
     shopifyOrderId: string | null
+    customerId: string | null
     customerName: string | null
     customerEmail: string | null
     status: $Enums.OrderStatus | null
+    paymentStatus: $Enums.PaymentStatus | null
     priority: $Enums.Priority | null
+    holdReason: string | null
+    holdAt: Date | null
+    holdBy: string | null
     totalAmount: Decimal | null
+    warehouseId: string | null
     trackingNumber: string | null
     shippedAt: Date | null
     createdAt: Date | null
@@ -10698,12 +12510,18 @@ export namespace Prisma {
     id: number
     orderNumber: number
     shopifyOrderId: number
+    customerId: number
     customerName: number
     customerEmail: number
     shippingAddress: number
     status: number
+    paymentStatus: number
     priority: number
+    holdReason: number
+    holdAt: number
+    holdBy: number
     totalAmount: number
+    warehouseId: number
     trackingNumber: number
     shippedAt: number
     createdAt: number
@@ -10724,11 +12542,17 @@ export namespace Prisma {
     id?: true
     orderNumber?: true
     shopifyOrderId?: true
+    customerId?: true
     customerName?: true
     customerEmail?: true
     status?: true
+    paymentStatus?: true
     priority?: true
+    holdReason?: true
+    holdAt?: true
+    holdBy?: true
     totalAmount?: true
+    warehouseId?: true
     trackingNumber?: true
     shippedAt?: true
     createdAt?: true
@@ -10739,11 +12563,17 @@ export namespace Prisma {
     id?: true
     orderNumber?: true
     shopifyOrderId?: true
+    customerId?: true
     customerName?: true
     customerEmail?: true
     status?: true
+    paymentStatus?: true
     priority?: true
+    holdReason?: true
+    holdAt?: true
+    holdBy?: true
     totalAmount?: true
+    warehouseId?: true
     trackingNumber?: true
     shippedAt?: true
     createdAt?: true
@@ -10754,12 +12584,18 @@ export namespace Prisma {
     id?: true
     orderNumber?: true
     shopifyOrderId?: true
+    customerId?: true
     customerName?: true
     customerEmail?: true
     shippingAddress?: true
     status?: true
+    paymentStatus?: true
     priority?: true
+    holdReason?: true
+    holdAt?: true
+    holdBy?: true
     totalAmount?: true
+    warehouseId?: true
     trackingNumber?: true
     shippedAt?: true
     createdAt?: true
@@ -10857,12 +12693,18 @@ export namespace Prisma {
     id: string
     orderNumber: string
     shopifyOrderId: string | null
+    customerId: string | null
     customerName: string
     customerEmail: string | null
     shippingAddress: JsonValue
     status: $Enums.OrderStatus
+    paymentStatus: $Enums.PaymentStatus
     priority: $Enums.Priority
+    holdReason: string | null
+    holdAt: Date | null
+    holdBy: string | null
     totalAmount: Decimal
+    warehouseId: string | null
     trackingNumber: string | null
     shippedAt: Date | null
     createdAt: Date
@@ -10892,18 +12734,25 @@ export namespace Prisma {
     id?: boolean
     orderNumber?: boolean
     shopifyOrderId?: boolean
+    customerId?: boolean
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
     status?: boolean
+    paymentStatus?: boolean
     priority?: boolean
+    holdReason?: boolean
+    holdAt?: boolean
+    holdBy?: boolean
     totalAmount?: boolean
+    warehouseId?: boolean
     trackingNumber?: boolean
     shippedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
+    allocations?: boolean | Order$allocationsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -10911,12 +12760,18 @@ export namespace Prisma {
     id?: boolean
     orderNumber?: boolean
     shopifyOrderId?: boolean
+    customerId?: boolean
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
     status?: boolean
+    paymentStatus?: boolean
     priority?: boolean
+    holdReason?: boolean
+    holdAt?: boolean
+    holdBy?: boolean
     totalAmount?: boolean
+    warehouseId?: boolean
     trackingNumber?: boolean
     shippedAt?: boolean
     createdAt?: boolean
@@ -10927,12 +12782,18 @@ export namespace Prisma {
     id?: boolean
     orderNumber?: boolean
     shopifyOrderId?: boolean
+    customerId?: boolean
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
     status?: boolean
+    paymentStatus?: boolean
     priority?: boolean
+    holdReason?: boolean
+    holdAt?: boolean
+    holdBy?: boolean
     totalAmount?: boolean
+    warehouseId?: boolean
     trackingNumber?: boolean
     shippedAt?: boolean
     createdAt?: boolean
@@ -10943,22 +12804,29 @@ export namespace Prisma {
     id?: boolean
     orderNumber?: boolean
     shopifyOrderId?: boolean
+    customerId?: boolean
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
     status?: boolean
+    paymentStatus?: boolean
     priority?: boolean
+    holdReason?: boolean
+    holdAt?: boolean
+    holdBy?: boolean
     totalAmount?: boolean
+    warehouseId?: boolean
     trackingNumber?: boolean
     shippedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerName" | "customerEmail" | "shippingAddress" | "status" | "priority" | "totalAmount" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
+    allocations?: boolean | Order$allocationsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -10969,17 +12837,24 @@ export namespace Prisma {
     objects: {
       items: Prisma.$OrderItemPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
+      allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderNumber: string
       shopifyOrderId: string | null
+      customerId: string | null
       customerName: string
       customerEmail: string | null
       shippingAddress: Prisma.JsonValue
       status: $Enums.OrderStatus
+      paymentStatus: $Enums.PaymentStatus
       priority: $Enums.Priority
+      holdReason: string | null
+      holdAt: Date | null
+      holdBy: string | null
       totalAmount: Prisma.Decimal
+      warehouseId: string | null
       trackingNumber: string | null
       shippedAt: Date | null
       createdAt: Date
@@ -11380,6 +13255,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     items<T extends Order$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends Order$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocations<T extends Order$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Order$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11412,12 +13288,18 @@ export namespace Prisma {
     readonly id: FieldRef<"Order", 'String'>
     readonly orderNumber: FieldRef<"Order", 'String'>
     readonly shopifyOrderId: FieldRef<"Order", 'String'>
+    readonly customerId: FieldRef<"Order", 'String'>
     readonly customerName: FieldRef<"Order", 'String'>
     readonly customerEmail: FieldRef<"Order", 'String'>
     readonly shippingAddress: FieldRef<"Order", 'Json'>
     readonly status: FieldRef<"Order", 'OrderStatus'>
+    readonly paymentStatus: FieldRef<"Order", 'PaymentStatus'>
     readonly priority: FieldRef<"Order", 'Priority'>
+    readonly holdReason: FieldRef<"Order", 'String'>
+    readonly holdAt: FieldRef<"Order", 'DateTime'>
+    readonly holdBy: FieldRef<"Order", 'String'>
     readonly totalAmount: FieldRef<"Order", 'Decimal'>
+    readonly warehouseId: FieldRef<"Order", 'String'>
     readonly trackingNumber: FieldRef<"Order", 'String'>
     readonly shippedAt: FieldRef<"Order", 'DateTime'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
@@ -11858,6 +13740,30 @@ export namespace Prisma {
   }
 
   /**
+   * Order.allocations
+   */
+  export type Order$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    cursor?: AllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
    * Order without action
    */
   export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11890,12 +13796,14 @@ export namespace Prisma {
 
   export type OrderItemAvgAggregateOutputType = {
     quantity: number | null
+    quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
   }
 
   export type OrderItemSumAggregateOutputType = {
     quantity: number | null
+    quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
   }
@@ -11904,7 +13812,9 @@ export namespace Prisma {
     id: string | null
     orderId: string | null
     productVariantId: string | null
+    sku: string | null
     quantity: number | null
+    quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
   }
@@ -11913,7 +13823,9 @@ export namespace Prisma {
     id: string | null
     orderId: string | null
     productVariantId: string | null
+    sku: string | null
     quantity: number | null
+    quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
   }
@@ -11922,7 +13834,9 @@ export namespace Prisma {
     id: number
     orderId: number
     productVariantId: number
+    sku: number
     quantity: number
+    quantityAllocated: number
     quantityPicked: number
     unitPrice: number
     _all: number
@@ -11931,12 +13845,14 @@ export namespace Prisma {
 
   export type OrderItemAvgAggregateInputType = {
     quantity?: true
+    quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
   }
 
   export type OrderItemSumAggregateInputType = {
     quantity?: true
+    quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
   }
@@ -11945,7 +13861,9 @@ export namespace Prisma {
     id?: true
     orderId?: true
     productVariantId?: true
+    sku?: true
     quantity?: true
+    quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
   }
@@ -11954,7 +13872,9 @@ export namespace Prisma {
     id?: true
     orderId?: true
     productVariantId?: true
+    sku?: true
     quantity?: true
+    quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
   }
@@ -11963,7 +13883,9 @@ export namespace Prisma {
     id?: true
     orderId?: true
     productVariantId?: true
+    sku?: true
     quantity?: true
+    quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
     _all?: true
@@ -12059,8 +13981,10 @@ export namespace Prisma {
     id: string
     orderId: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked: number | null
+    quantityAllocated: number
+    quantityPicked: number
     unitPrice: Decimal
     _count: OrderItemCountAggregateOutputType | null
     _avg: OrderItemAvgAggregateOutputType | null
@@ -12087,11 +14011,14 @@ export namespace Prisma {
     id?: boolean
     orderId?: boolean
     productVariantId?: boolean
+    sku?: boolean
     quantity?: boolean
+    quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
+    allocations?: boolean | OrderItem$allocationsArgs<ExtArgs>
     _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
@@ -12099,7 +14026,9 @@ export namespace Prisma {
     id?: boolean
     orderId?: boolean
     productVariantId?: boolean
+    sku?: boolean
     quantity?: boolean
+    quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -12109,7 +14038,9 @@ export namespace Prisma {
     id?: boolean
     orderId?: boolean
     productVariantId?: boolean
+    sku?: boolean
     quantity?: boolean
+    quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -12119,15 +14050,18 @@ export namespace Prisma {
     id?: boolean
     orderId?: boolean
     productVariantId?: boolean
+    sku?: boolean
     quantity?: boolean
+    quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "quantity" | "quantityPicked" | "unitPrice", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
+    allocations?: boolean | OrderItem$allocationsArgs<ExtArgs>
     _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12142,13 +14076,16 @@ export namespace Prisma {
     objects: {
       order: Prisma.$OrderPayload<ExtArgs>
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
+      allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
       productVariantId: string
+      sku: string
       quantity: number
-      quantityPicked: number | null
+      quantityAllocated: number
+      quantityPicked: number
       unitPrice: Prisma.Decimal
     }, ExtArgs["result"]["orderItem"]>
     composites: {}
@@ -12546,6 +14483,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     taskItems<T extends OrderItem$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    allocations<T extends OrderItem$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12578,7 +14516,9 @@ export namespace Prisma {
     readonly id: FieldRef<"OrderItem", 'String'>
     readonly orderId: FieldRef<"OrderItem", 'String'>
     readonly productVariantId: FieldRef<"OrderItem", 'String'>
+    readonly sku: FieldRef<"OrderItem", 'String'>
     readonly quantity: FieldRef<"OrderItem", 'Int'>
+    readonly quantityAllocated: FieldRef<"OrderItem", 'Int'>
     readonly quantityPicked: FieldRef<"OrderItem", 'Int'>
     readonly unitPrice: FieldRef<"OrderItem", 'Decimal'>
   }
@@ -13001,6 +14941,30 @@ export namespace Prisma {
   }
 
   /**
+   * OrderItem.allocations
+   */
+  export type OrderItem$allocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+    orderBy?: AllocationOrderByWithRelationInput | AllocationOrderByWithRelationInput[]
+    cursor?: AllocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
    * OrderItem without action
    */
   export type OrderItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13037,6 +15001,8 @@ export namespace Prisma {
     completedOrders: number | null
     totalItems: number | null
     completedItems: number | null
+    shortItems: number | null
+    skippedItems: number | null
   }
 
   export type WorkTaskSumAggregateOutputType = {
@@ -13045,6 +15011,8 @@ export namespace Prisma {
     completedOrders: number | null
     totalItems: number | null
     completedItems: number | null
+    shortItems: number | null
+    skippedItems: number | null
   }
 
   export type WorkTaskMinAggregateOutputType = {
@@ -13058,10 +15026,14 @@ export namespace Prisma {
     assignedAt: Date | null
     startedAt: Date | null
     completedAt: Date | null
+    blockReason: $Enums.WorkTaskBlockReason | null
+    blockedAt: Date | null
     totalOrders: number | null
     completedOrders: number | null
     totalItems: number | null
     completedItems: number | null
+    shortItems: number | null
+    skippedItems: number | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -13078,10 +15050,14 @@ export namespace Prisma {
     assignedAt: Date | null
     startedAt: Date | null
     completedAt: Date | null
+    blockReason: $Enums.WorkTaskBlockReason | null
+    blockedAt: Date | null
     totalOrders: number | null
     completedOrders: number | null
     totalItems: number | null
     completedItems: number | null
+    shortItems: number | null
+    skippedItems: number | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -13098,11 +15074,15 @@ export namespace Prisma {
     assignedAt: number
     startedAt: number
     completedAt: number
+    blockReason: number
+    blockedAt: number
     orderIds: number
     totalOrders: number
     completedOrders: number
     totalItems: number
     completedItems: number
+    shortItems: number
+    skippedItems: number
     notes: number
     createdAt: number
     updatedAt: number
@@ -13116,6 +15096,8 @@ export namespace Prisma {
     completedOrders?: true
     totalItems?: true
     completedItems?: true
+    shortItems?: true
+    skippedItems?: true
   }
 
   export type WorkTaskSumAggregateInputType = {
@@ -13124,6 +15106,8 @@ export namespace Prisma {
     completedOrders?: true
     totalItems?: true
     completedItems?: true
+    shortItems?: true
+    skippedItems?: true
   }
 
   export type WorkTaskMinAggregateInputType = {
@@ -13137,10 +15121,14 @@ export namespace Prisma {
     assignedAt?: true
     startedAt?: true
     completedAt?: true
+    blockReason?: true
+    blockedAt?: true
     totalOrders?: true
     completedOrders?: true
     totalItems?: true
     completedItems?: true
+    shortItems?: true
+    skippedItems?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -13157,10 +15145,14 @@ export namespace Prisma {
     assignedAt?: true
     startedAt?: true
     completedAt?: true
+    blockReason?: true
+    blockedAt?: true
     totalOrders?: true
     completedOrders?: true
     totalItems?: true
     completedItems?: true
+    shortItems?: true
+    skippedItems?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -13177,11 +15169,15 @@ export namespace Prisma {
     assignedAt?: true
     startedAt?: true
     completedAt?: true
+    blockReason?: true
+    blockedAt?: true
     orderIds?: true
     totalOrders?: true
     completedOrders?: true
     totalItems?: true
     completedItems?: true
+    shortItems?: true
+    skippedItems?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -13285,11 +15281,15 @@ export namespace Prisma {
     assignedAt: Date | null
     startedAt: Date | null
     completedAt: Date | null
+    blockReason: $Enums.WorkTaskBlockReason | null
+    blockedAt: Date | null
     orderIds: string[]
     totalOrders: number
     completedOrders: number
     totalItems: number
     completedItems: number
+    shortItems: number
+    skippedItems: number
     notes: string | null
     createdAt: Date
     updatedAt: Date
@@ -13325,11 +15325,15 @@ export namespace Prisma {
     assignedAt?: boolean
     startedAt?: boolean
     completedAt?: boolean
+    blockReason?: boolean
+    blockedAt?: boolean
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
     totalItems?: boolean
     completedItems?: boolean
+    shortItems?: boolean
+    skippedItems?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13350,11 +15354,15 @@ export namespace Prisma {
     assignedAt?: boolean
     startedAt?: boolean
     completedAt?: boolean
+    blockReason?: boolean
+    blockedAt?: boolean
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
     totalItems?: boolean
     completedItems?: boolean
+    shortItems?: boolean
+    skippedItems?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13372,11 +15380,15 @@ export namespace Prisma {
     assignedAt?: boolean
     startedAt?: boolean
     completedAt?: boolean
+    blockReason?: boolean
+    blockedAt?: boolean
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
     totalItems?: boolean
     completedItems?: boolean
+    shortItems?: boolean
+    skippedItems?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -13394,17 +15406,21 @@ export namespace Prisma {
     assignedAt?: boolean
     startedAt?: boolean
     completedAt?: boolean
+    blockReason?: boolean
+    blockedAt?: boolean
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
     totalItems?: boolean
     completedItems?: boolean
+    shortItems?: boolean
+    skippedItems?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WorkTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "type" | "status" | "priority" | "idempotencyKey" | "assignedTo" | "assignedAt" | "startedAt" | "completedAt" | "orderIds" | "totalOrders" | "completedOrders" | "totalItems" | "completedItems" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workTask"]>
+  export type WorkTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "type" | "status" | "priority" | "idempotencyKey" | "assignedTo" | "assignedAt" | "startedAt" | "completedAt" | "blockReason" | "blockedAt" | "orderIds" | "totalOrders" | "completedOrders" | "totalItems" | "completedItems" | "shortItems" | "skippedItems" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workTask"]>
   export type WorkTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
@@ -13436,11 +15452,15 @@ export namespace Prisma {
       assignedAt: Date | null
       startedAt: Date | null
       completedAt: Date | null
+      blockReason: $Enums.WorkTaskBlockReason | null
+      blockedAt: Date | null
       orderIds: string[]
       totalOrders: number
       completedOrders: number
       totalItems: number
       completedItems: number
+      shortItems: number
+      skippedItems: number
       notes: string | null
       createdAt: Date
       updatedAt: Date
@@ -13880,11 +15900,15 @@ export namespace Prisma {
     readonly assignedAt: FieldRef<"WorkTask", 'DateTime'>
     readonly startedAt: FieldRef<"WorkTask", 'DateTime'>
     readonly completedAt: FieldRef<"WorkTask", 'DateTime'>
+    readonly blockReason: FieldRef<"WorkTask", 'WorkTaskBlockReason'>
+    readonly blockedAt: FieldRef<"WorkTask", 'DateTime'>
     readonly orderIds: FieldRef<"WorkTask", 'String[]'>
     readonly totalOrders: FieldRef<"WorkTask", 'Int'>
     readonly completedOrders: FieldRef<"WorkTask", 'Int'>
     readonly totalItems: FieldRef<"WorkTask", 'Int'>
     readonly completedItems: FieldRef<"WorkTask", 'Int'>
+    readonly shortItems: FieldRef<"WorkTask", 'Int'>
+    readonly skippedItems: FieldRef<"WorkTask", 'Int'>
     readonly notes: FieldRef<"WorkTask", 'String'>
     readonly createdAt: FieldRef<"WorkTask", 'DateTime'>
     readonly updatedAt: FieldRef<"WorkTask", 'DateTime'>
@@ -14400,12 +16424,16 @@ export namespace Prisma {
     orderItemId: string | null
     productVariantId: string | null
     locationId: string | null
+    allocationId: string | null
     sequence: number | null
     quantityRequired: number | null
     quantityCompleted: number | null
     status: $Enums.WorkTaskItemStatus | null
     completedBy: string | null
     completedAt: Date | null
+    shortReason: string | null
+    locationScanned: boolean | null
+    itemScanned: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14417,12 +16445,16 @@ export namespace Prisma {
     orderItemId: string | null
     productVariantId: string | null
     locationId: string | null
+    allocationId: string | null
     sequence: number | null
     quantityRequired: number | null
     quantityCompleted: number | null
     status: $Enums.WorkTaskItemStatus | null
     completedBy: string | null
     completedAt: Date | null
+    shortReason: string | null
+    locationScanned: boolean | null
+    itemScanned: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14434,12 +16466,16 @@ export namespace Prisma {
     orderItemId: number
     productVariantId: number
     locationId: number
+    allocationId: number
     sequence: number
     quantityRequired: number
     quantityCompleted: number
     status: number
     completedBy: number
     completedAt: number
+    shortReason: number
+    locationScanned: number
+    itemScanned: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -14465,12 +16501,16 @@ export namespace Prisma {
     orderItemId?: true
     productVariantId?: true
     locationId?: true
+    allocationId?: true
     sequence?: true
     quantityRequired?: true
     quantityCompleted?: true
     status?: true
     completedBy?: true
     completedAt?: true
+    shortReason?: true
+    locationScanned?: true
+    itemScanned?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14482,12 +16522,16 @@ export namespace Prisma {
     orderItemId?: true
     productVariantId?: true
     locationId?: true
+    allocationId?: true
     sequence?: true
     quantityRequired?: true
     quantityCompleted?: true
     status?: true
     completedBy?: true
     completedAt?: true
+    shortReason?: true
+    locationScanned?: true
+    itemScanned?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14499,12 +16543,16 @@ export namespace Prisma {
     orderItemId?: true
     productVariantId?: true
     locationId?: true
+    allocationId?: true
     sequence?: true
     quantityRequired?: true
     quantityCompleted?: true
     status?: true
     completedBy?: true
     completedAt?: true
+    shortReason?: true
+    locationScanned?: true
+    itemScanned?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14603,12 +16651,16 @@ export namespace Prisma {
     orderItemId: string | null
     productVariantId: string | null
     locationId: string | null
+    allocationId: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted: number
     status: $Enums.WorkTaskItemStatus
     completedBy: string | null
     completedAt: Date | null
+    shortReason: string | null
+    locationScanned: boolean
+    itemScanned: boolean
     createdAt: Date
     updatedAt: Date
     _count: TaskItemCountAggregateOutputType | null
@@ -14639,12 +16691,16 @@ export namespace Prisma {
     orderItemId?: boolean
     productVariantId?: boolean
     locationId?: boolean
+    allocationId?: boolean
     sequence?: boolean
     quantityRequired?: boolean
     quantityCompleted?: boolean
     status?: boolean
     completedBy?: boolean
     completedAt?: boolean
+    shortReason?: boolean
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
@@ -14653,6 +16709,7 @@ export namespace Prisma {
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
     completedByUser?: boolean | TaskItem$completedByUserArgs<ExtArgs>
+    allocation?: boolean | TaskItem$allocationArgs<ExtArgs>
   }, ExtArgs["result"]["taskItem"]>
 
   export type TaskItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14662,12 +16719,16 @@ export namespace Prisma {
     orderItemId?: boolean
     productVariantId?: boolean
     locationId?: boolean
+    allocationId?: boolean
     sequence?: boolean
     quantityRequired?: boolean
     quantityCompleted?: boolean
     status?: boolean
     completedBy?: boolean
     completedAt?: boolean
+    shortReason?: boolean
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
@@ -14685,12 +16746,16 @@ export namespace Prisma {
     orderItemId?: boolean
     productVariantId?: boolean
     locationId?: boolean
+    allocationId?: boolean
     sequence?: boolean
     quantityRequired?: boolean
     quantityCompleted?: boolean
     status?: boolean
     completedBy?: boolean
     completedAt?: boolean
+    shortReason?: boolean
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
@@ -14708,17 +16773,21 @@ export namespace Prisma {
     orderItemId?: boolean
     productVariantId?: boolean
     locationId?: boolean
+    allocationId?: boolean
     sequence?: boolean
     quantityRequired?: boolean
     quantityCompleted?: boolean
     status?: boolean
     completedBy?: boolean
     completedAt?: boolean
+    shortReason?: boolean
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TaskItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "orderId" | "orderItemId" | "productVariantId" | "locationId" | "sequence" | "quantityRequired" | "quantityCompleted" | "status" | "completedBy" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["taskItem"]>
+  export type TaskItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "orderId" | "orderItemId" | "productVariantId" | "locationId" | "allocationId" | "sequence" | "quantityRequired" | "quantityCompleted" | "status" | "completedBy" | "completedAt" | "shortReason" | "locationScanned" | "itemScanned" | "createdAt" | "updatedAt", ExtArgs["result"]["taskItem"]>
   export type TaskItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -14726,6 +16795,7 @@ export namespace Prisma {
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
     completedByUser?: boolean | TaskItem$completedByUserArgs<ExtArgs>
+    allocation?: boolean | TaskItem$allocationArgs<ExtArgs>
   }
   export type TaskItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
@@ -14753,6 +16823,7 @@ export namespace Prisma {
       productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
       location: Prisma.$LocationPayload<ExtArgs> | null
       completedByUser: Prisma.$UserPayload<ExtArgs> | null
+      allocation: Prisma.$AllocationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14761,12 +16832,16 @@ export namespace Prisma {
       orderItemId: string | null
       productVariantId: string | null
       locationId: string | null
+      allocationId: string | null
       sequence: number
       quantityRequired: number
       quantityCompleted: number
       status: $Enums.WorkTaskItemStatus
       completedBy: string | null
       completedAt: Date | null
+      shortReason: string | null
+      locationScanned: boolean
+      itemScanned: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["taskItem"]>
@@ -15169,6 +17244,7 @@ export namespace Prisma {
     productVariant<T extends TaskItem$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     location<T extends TaskItem$locationArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$locationArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     completedByUser<T extends TaskItem$completedByUserArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$completedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    allocation<T extends TaskItem$allocationArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$allocationArgs<ExtArgs>>): Prisma__AllocationClient<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15204,12 +17280,16 @@ export namespace Prisma {
     readonly orderItemId: FieldRef<"TaskItem", 'String'>
     readonly productVariantId: FieldRef<"TaskItem", 'String'>
     readonly locationId: FieldRef<"TaskItem", 'String'>
+    readonly allocationId: FieldRef<"TaskItem", 'String'>
     readonly sequence: FieldRef<"TaskItem", 'Int'>
     readonly quantityRequired: FieldRef<"TaskItem", 'Int'>
     readonly quantityCompleted: FieldRef<"TaskItem", 'Int'>
     readonly status: FieldRef<"TaskItem", 'WorkTaskItemStatus'>
     readonly completedBy: FieldRef<"TaskItem", 'String'>
     readonly completedAt: FieldRef<"TaskItem", 'DateTime'>
+    readonly shortReason: FieldRef<"TaskItem", 'String'>
+    readonly locationScanned: FieldRef<"TaskItem", 'Boolean'>
+    readonly itemScanned: FieldRef<"TaskItem", 'Boolean'>
     readonly createdAt: FieldRef<"TaskItem", 'DateTime'>
     readonly updatedAt: FieldRef<"TaskItem", 'DateTime'>
   }
@@ -15684,6 +17764,25 @@ export namespace Prisma {
   }
 
   /**
+   * TaskItem.allocation
+   */
+  export type TaskItem$allocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Allocation
+     */
+    select?: AllocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Allocation
+     */
+    omit?: AllocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AllocationInclude<ExtArgs> | null
+    where?: AllocationWhereInput
+  }
+
+  /**
    * TaskItem without action
    */
   export type TaskItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15717,6 +17816,7 @@ export namespace Prisma {
     taskId: string | null
     eventType: $Enums.WorkTaskEventType | null
     userId: string | null
+    taskItemId: string | null
     createdAt: Date | null
   }
 
@@ -15725,6 +17825,7 @@ export namespace Prisma {
     taskId: string | null
     eventType: $Enums.WorkTaskEventType | null
     userId: string | null
+    taskItemId: string | null
     createdAt: Date | null
   }
 
@@ -15733,6 +17834,7 @@ export namespace Prisma {
     taskId: number
     eventType: number
     userId: number
+    taskItemId: number
     data: number
     createdAt: number
     _all: number
@@ -15744,6 +17846,7 @@ export namespace Prisma {
     taskId?: true
     eventType?: true
     userId?: true
+    taskItemId?: true
     createdAt?: true
   }
 
@@ -15752,6 +17855,7 @@ export namespace Prisma {
     taskId?: true
     eventType?: true
     userId?: true
+    taskItemId?: true
     createdAt?: true
   }
 
@@ -15760,6 +17864,7 @@ export namespace Prisma {
     taskId?: true
     eventType?: true
     userId?: true
+    taskItemId?: true
     data?: true
     createdAt?: true
     _all?: true
@@ -15841,7 +17946,8 @@ export namespace Prisma {
     id: string
     taskId: string
     eventType: $Enums.WorkTaskEventType
-    userId: string
+    userId: string | null
+    taskItemId: string | null
     data: JsonValue | null
     createdAt: Date
     _count: TaskEventCountAggregateOutputType | null
@@ -15868,10 +17974,11 @@ export namespace Prisma {
     taskId?: boolean
     eventType?: boolean
     userId?: boolean
+    taskItemId?: boolean
     data?: boolean
     createdAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }, ExtArgs["result"]["taskEvent"]>
 
   export type TaskEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15879,10 +17986,11 @@ export namespace Prisma {
     taskId?: boolean
     eventType?: boolean
     userId?: boolean
+    taskItemId?: boolean
     data?: boolean
     createdAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }, ExtArgs["result"]["taskEvent"]>
 
   export type TaskEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15890,10 +17998,11 @@ export namespace Prisma {
     taskId?: boolean
     eventType?: boolean
     userId?: boolean
+    taskItemId?: boolean
     data?: boolean
     createdAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }, ExtArgs["result"]["taskEvent"]>
 
   export type TaskEventSelectScalar = {
@@ -15901,35 +18010,37 @@ export namespace Prisma {
     taskId?: boolean
     eventType?: boolean
     userId?: boolean
+    taskItemId?: boolean
     data?: boolean
     createdAt?: boolean
   }
 
-  export type TaskEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "eventType" | "userId" | "data" | "createdAt", ExtArgs["result"]["taskEvent"]>
+  export type TaskEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "eventType" | "userId" | "taskItemId" | "data" | "createdAt", ExtArgs["result"]["taskEvent"]>
   export type TaskEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }
   export type TaskEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }
   export type TaskEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | TaskEvent$userArgs<ExtArgs>
   }
 
   export type $TaskEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TaskEvent"
     objects: {
       task: Prisma.$WorkTaskPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       taskId: string
       eventType: $Enums.WorkTaskEventType
-      userId: string
+      userId: string | null
+      taskItemId: string | null
       data: Prisma.JsonValue | null
       createdAt: Date
     }, ExtArgs["result"]["taskEvent"]>
@@ -16327,7 +18438,7 @@ export namespace Prisma {
   export interface Prisma__TaskEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     task<T extends WorkTaskDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkTaskDefaultArgs<ExtArgs>>): Prisma__WorkTaskClient<$Result.GetResult<Prisma.$WorkTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends TaskEvent$userArgs<ExtArgs> = {}>(args?: Subset<T, TaskEvent$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16361,6 +18472,7 @@ export namespace Prisma {
     readonly taskId: FieldRef<"TaskEvent", 'String'>
     readonly eventType: FieldRef<"TaskEvent", 'WorkTaskEventType'>
     readonly userId: FieldRef<"TaskEvent", 'String'>
+    readonly taskItemId: FieldRef<"TaskEvent", 'String'>
     readonly data: FieldRef<"TaskEvent", 'Json'>
     readonly createdAt: FieldRef<"TaskEvent", 'DateTime'>
   }
@@ -16756,6 +18868,25 @@ export namespace Prisma {
      * Limit how many TaskEvents to delete.
      */
     limit?: number
+  }
+
+  /**
+   * TaskEvent.user
+   */
+  export type TaskEvent$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -17905,6 +20036,7 @@ export namespace Prisma {
     action: string | null
     entityType: string | null
     entityId: string | null
+    correlationId: string | null
     createdAt: Date | null
   }
 
@@ -17914,6 +20046,7 @@ export namespace Prisma {
     action: string | null
     entityType: string | null
     entityId: string | null
+    correlationId: string | null
     createdAt: Date | null
   }
 
@@ -17924,6 +20057,7 @@ export namespace Prisma {
     entityType: number
     entityId: number
     changes: number
+    correlationId: number
     createdAt: number
     _all: number
   }
@@ -17935,6 +20069,7 @@ export namespace Prisma {
     action?: true
     entityType?: true
     entityId?: true
+    correlationId?: true
     createdAt?: true
   }
 
@@ -17944,6 +20079,7 @@ export namespace Prisma {
     action?: true
     entityType?: true
     entityId?: true
+    correlationId?: true
     createdAt?: true
   }
 
@@ -17954,6 +20090,7 @@ export namespace Prisma {
     entityType?: true
     entityId?: true
     changes?: true
+    correlationId?: true
     createdAt?: true
     _all?: true
   }
@@ -18037,6 +20174,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes: JsonValue | null
+    correlationId: string | null
     createdAt: Date
     _count: AuditLogCountAggregateOutputType | null
     _min: AuditLogMinAggregateOutputType | null
@@ -18064,6 +20202,7 @@ export namespace Prisma {
     entityType?: boolean
     entityId?: boolean
     changes?: boolean
+    correlationId?: boolean
     createdAt?: boolean
     user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -18075,6 +20214,7 @@ export namespace Prisma {
     entityType?: boolean
     entityId?: boolean
     changes?: boolean
+    correlationId?: boolean
     createdAt?: boolean
     user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -18086,6 +20226,7 @@ export namespace Prisma {
     entityType?: boolean
     entityId?: boolean
     changes?: boolean
+    correlationId?: boolean
     createdAt?: boolean
     user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -18097,10 +20238,11 @@ export namespace Prisma {
     entityType?: boolean
     entityId?: boolean
     changes?: boolean
+    correlationId?: boolean
     createdAt?: boolean
   }
 
-  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "action" | "entityType" | "entityId" | "changes" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "action" | "entityType" | "entityId" | "changes" | "correlationId" | "createdAt", ExtArgs["result"]["auditLog"]>
   export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | AuditLog$userArgs<ExtArgs>
   }
@@ -18123,6 +20265,7 @@ export namespace Prisma {
       entityType: string
       entityId: string
       changes: Prisma.JsonValue | null
+      correlationId: string | null
       createdAt: Date
     }, ExtArgs["result"]["auditLog"]>
     composites: {}
@@ -18554,6 +20697,7 @@ export namespace Prisma {
     readonly entityType: FieldRef<"AuditLog", 'String'>
     readonly entityId: FieldRef<"AuditLog", 'String'>
     readonly changes: FieldRef<"AuditLog", 'Json'>
+    readonly correlationId: FieldRef<"AuditLog", 'String'>
     readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
   }
     
@@ -20151,6 +22295,8 @@ export namespace Prisma {
     costPrice: 'costPrice',
     sellingPrice: 'sellingPrice',
     weight: 'weight',
+    trackLots: 'trackLots',
+    trackExpiry: 'trackExpiry',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20164,6 +22310,11 @@ export namespace Prisma {
     barcode: 'barcode',
     type: 'type',
     zone: 'zone',
+    aisle: 'aisle',
+    rack: 'rack',
+    shelf: 'shelf',
+    bin: 'bin',
+    pickSequence: 'pickSequence',
     isPickable: 'isPickable',
     active: 'active',
     createdAt: 'createdAt',
@@ -20173,28 +22324,59 @@ export namespace Prisma {
   export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
 
 
-  export const InventoryScalarFieldEnum: {
+  export const InventoryUnitScalarFieldEnum: {
     id: 'id',
     productVariantId: 'productVariantId',
     locationId: 'locationId',
-    quantityOnHand: 'quantityOnHand',
-    quantityReserved: 'quantityReserved',
+    quantity: 'quantity',
+    status: 'status',
+    lotNumber: 'lotNumber',
+    expiryDate: 'expiryDate',
+    receivedAt: 'receivedAt',
+    receivedFrom: 'receivedFrom',
+    unitCost: 'unitCost',
+    createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type InventoryScalarFieldEnum = (typeof InventoryScalarFieldEnum)[keyof typeof InventoryScalarFieldEnum]
+  export type InventoryUnitScalarFieldEnum = (typeof InventoryUnitScalarFieldEnum)[keyof typeof InventoryUnitScalarFieldEnum]
+
+
+  export const AllocationScalarFieldEnum: {
+    id: 'id',
+    inventoryUnitId: 'inventoryUnitId',
+    orderId: 'orderId',
+    orderItemId: 'orderItemId',
+    productVariantId: 'productVariantId',
+    locationId: 'locationId',
+    quantity: 'quantity',
+    lotNumber: 'lotNumber',
+    status: 'status',
+    allocatedAt: 'allocatedAt',
+    releasedAt: 'releasedAt',
+    pickedAt: 'pickedAt',
+    taskItemId: 'taskItemId'
+  };
+
+  export type AllocationScalarFieldEnum = (typeof AllocationScalarFieldEnum)[keyof typeof AllocationScalarFieldEnum]
 
 
   export const OrderScalarFieldEnum: {
     id: 'id',
     orderNumber: 'orderNumber',
     shopifyOrderId: 'shopifyOrderId',
+    customerId: 'customerId',
     customerName: 'customerName',
     customerEmail: 'customerEmail',
     shippingAddress: 'shippingAddress',
     status: 'status',
+    paymentStatus: 'paymentStatus',
     priority: 'priority',
+    holdReason: 'holdReason',
+    holdAt: 'holdAt',
+    holdBy: 'holdBy',
     totalAmount: 'totalAmount',
+    warehouseId: 'warehouseId',
     trackingNumber: 'trackingNumber',
     shippedAt: 'shippedAt',
     createdAt: 'createdAt',
@@ -20208,7 +22390,9 @@ export namespace Prisma {
     id: 'id',
     orderId: 'orderId',
     productVariantId: 'productVariantId',
+    sku: 'sku',
     quantity: 'quantity',
+    quantityAllocated: 'quantityAllocated',
     quantityPicked: 'quantityPicked',
     unitPrice: 'unitPrice'
   };
@@ -20227,11 +22411,15 @@ export namespace Prisma {
     assignedAt: 'assignedAt',
     startedAt: 'startedAt',
     completedAt: 'completedAt',
+    blockReason: 'blockReason',
+    blockedAt: 'blockedAt',
     orderIds: 'orderIds',
     totalOrders: 'totalOrders',
     completedOrders: 'completedOrders',
     totalItems: 'totalItems',
     completedItems: 'completedItems',
+    shortItems: 'shortItems',
+    skippedItems: 'skippedItems',
     notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -20247,12 +22435,16 @@ export namespace Prisma {
     orderItemId: 'orderItemId',
     productVariantId: 'productVariantId',
     locationId: 'locationId',
+    allocationId: 'allocationId',
     sequence: 'sequence',
     quantityRequired: 'quantityRequired',
     quantityCompleted: 'quantityCompleted',
     status: 'status',
     completedBy: 'completedBy',
     completedAt: 'completedAt',
+    shortReason: 'shortReason',
+    locationScanned: 'locationScanned',
+    itemScanned: 'itemScanned',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20265,6 +22457,7 @@ export namespace Prisma {
     taskId: 'taskId',
     eventType: 'eventType',
     userId: 'userId',
+    taskItemId: 'taskItemId',
     data: 'data',
     createdAt: 'createdAt'
   };
@@ -20297,6 +22490,7 @@ export namespace Prisma {
     entityType: 'entityType',
     entityId: 'entityId',
     changes: 'changes',
+    correlationId: 'correlationId',
     createdAt: 'createdAt'
   };
 
@@ -20461,6 +22655,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'InventoryStatus'
+   */
+  export type EnumInventoryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'InventoryStatus[]'
+   */
+  export type ListEnumInventoryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AllocationStatus'
+   */
+  export type EnumAllocationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AllocationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AllocationStatus[]'
+   */
+  export type ListEnumAllocationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AllocationStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -20485,6 +22707,20 @@ export namespace Prisma {
    * Reference to a field of type 'OrderStatus[]'
    */
   export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus'
+   */
+  export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus[]'
+   */
+  export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
 
 
@@ -20527,6 +22763,20 @@ export namespace Prisma {
    * Reference to a field of type 'WorkTaskStatus[]'
    */
   export type ListEnumWorkTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkTaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'WorkTaskBlockReason'
+   */
+  export type EnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkTaskBlockReason'>
+    
+
+
+  /**
+   * Reference to a field of type 'WorkTaskBlockReason[]'
+   */
+  export type ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkTaskBlockReason[]'>
     
 
 
@@ -20877,11 +23127,14 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFilter<"ProductVariant"> | boolean
+    trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    inventory?: InventoryListRelationFilter
+    inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }
 
   export type ProductVariantOrderByWithRelationInput = {
@@ -20895,11 +23148,14 @@ export namespace Prisma {
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
+    trackLots?: SortOrder
+    trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     product?: ProductOrderByWithRelationInput
-    inventory?: InventoryOrderByRelationAggregateInput
+    inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
+    allocations?: AllocationOrderByRelationAggregateInput
   }
 
   export type ProductVariantWhereUniqueInput = Prisma.AtLeast<{
@@ -20916,11 +23172,14 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFilter<"ProductVariant"> | boolean
+    trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    inventory?: InventoryListRelationFilter
+    inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }, "id" | "sku" | "upc">
 
   export type ProductVariantOrderByWithAggregationInput = {
@@ -20934,6 +23193,8 @@ export namespace Prisma {
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
+    trackLots?: SortOrder
+    trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProductVariantCountOrderByAggregateInput
@@ -20957,6 +23218,8 @@ export namespace Prisma {
     costPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolWithAggregatesFilter<"ProductVariant"> | boolean
+    trackExpiry?: BoolWithAggregatesFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductVariant"> | Date | string
   }
@@ -20970,12 +23233,18 @@ export namespace Prisma {
     barcode?: StringNullableFilter<"Location"> | string | null
     type?: EnumLocationTypeFilter<"Location"> | $Enums.LocationType
     zone?: StringNullableFilter<"Location"> | string | null
+    aisle?: StringNullableFilter<"Location"> | string | null
+    rack?: StringNullableFilter<"Location"> | string | null
+    shelf?: StringNullableFilter<"Location"> | string | null
+    bin?: StringNullableFilter<"Location"> | string | null
+    pickSequence?: IntNullableFilter<"Location"> | number | null
     isPickable?: BoolFilter<"Location"> | boolean
     active?: BoolFilter<"Location"> | boolean
     createdAt?: DateTimeFilter<"Location"> | Date | string
     updatedAt?: DateTimeFilter<"Location"> | Date | string
-    inventory?: InventoryListRelationFilter
+    inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -20984,12 +23253,18 @@ export namespace Prisma {
     barcode?: SortOrderInput | SortOrder
     type?: SortOrder
     zone?: SortOrderInput | SortOrder
+    aisle?: SortOrderInput | SortOrder
+    rack?: SortOrderInput | SortOrder
+    shelf?: SortOrderInput | SortOrder
+    bin?: SortOrderInput | SortOrder
+    pickSequence?: SortOrderInput | SortOrder
     isPickable?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    inventory?: InventoryOrderByRelationAggregateInput
+    inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
+    allocations?: AllocationOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = Prisma.AtLeast<{
@@ -21001,12 +23276,18 @@ export namespace Prisma {
     NOT?: LocationWhereInput | LocationWhereInput[]
     type?: EnumLocationTypeFilter<"Location"> | $Enums.LocationType
     zone?: StringNullableFilter<"Location"> | string | null
+    aisle?: StringNullableFilter<"Location"> | string | null
+    rack?: StringNullableFilter<"Location"> | string | null
+    shelf?: StringNullableFilter<"Location"> | string | null
+    bin?: StringNullableFilter<"Location"> | string | null
+    pickSequence?: IntNullableFilter<"Location"> | number | null
     isPickable?: BoolFilter<"Location"> | boolean
     active?: BoolFilter<"Location"> | boolean
     createdAt?: DateTimeFilter<"Location"> | Date | string
     updatedAt?: DateTimeFilter<"Location"> | Date | string
-    inventory?: InventoryListRelationFilter
+    inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }, "id" | "name" | "barcode">
 
   export type LocationOrderByWithAggregationInput = {
@@ -21015,13 +23296,20 @@ export namespace Prisma {
     barcode?: SortOrderInput | SortOrder
     type?: SortOrder
     zone?: SortOrderInput | SortOrder
+    aisle?: SortOrderInput | SortOrder
+    rack?: SortOrderInput | SortOrder
+    shelf?: SortOrderInput | SortOrder
+    bin?: SortOrderInput | SortOrder
+    pickSequence?: SortOrderInput | SortOrder
     isPickable?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LocationCountOrderByAggregateInput
+    _avg?: LocationAvgOrderByAggregateInput
     _max?: LocationMaxOrderByAggregateInput
     _min?: LocationMinOrderByAggregateInput
+    _sum?: LocationSumOrderByAggregateInput
   }
 
   export type LocationScalarWhereWithAggregatesInput = {
@@ -21033,76 +23321,225 @@ export namespace Prisma {
     barcode?: StringNullableWithAggregatesFilter<"Location"> | string | null
     type?: EnumLocationTypeWithAggregatesFilter<"Location"> | $Enums.LocationType
     zone?: StringNullableWithAggregatesFilter<"Location"> | string | null
+    aisle?: StringNullableWithAggregatesFilter<"Location"> | string | null
+    rack?: StringNullableWithAggregatesFilter<"Location"> | string | null
+    shelf?: StringNullableWithAggregatesFilter<"Location"> | string | null
+    bin?: StringNullableWithAggregatesFilter<"Location"> | string | null
+    pickSequence?: IntNullableWithAggregatesFilter<"Location"> | number | null
     isPickable?: BoolWithAggregatesFilter<"Location"> | boolean
     active?: BoolWithAggregatesFilter<"Location"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Location"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Location"> | Date | string
   }
 
-  export type InventoryWhereInput = {
-    AND?: InventoryWhereInput | InventoryWhereInput[]
-    OR?: InventoryWhereInput[]
-    NOT?: InventoryWhereInput | InventoryWhereInput[]
-    id?: StringFilter<"Inventory"> | string
-    productVariantId?: StringFilter<"Inventory"> | string
-    locationId?: StringFilter<"Inventory"> | string
-    quantityOnHand?: IntFilter<"Inventory"> | number
-    quantityReserved?: IntFilter<"Inventory"> | number
-    updatedAt?: DateTimeFilter<"Inventory"> | Date | string
+  export type InventoryUnitWhereInput = {
+    AND?: InventoryUnitWhereInput | InventoryUnitWhereInput[]
+    OR?: InventoryUnitWhereInput[]
+    NOT?: InventoryUnitWhereInput | InventoryUnitWhereInput[]
+    id?: StringFilter<"InventoryUnit"> | string
+    productVariantId?: StringFilter<"InventoryUnit"> | string
+    locationId?: StringFilter<"InventoryUnit"> | string
+    quantity?: IntFilter<"InventoryUnit"> | number
+    status?: EnumInventoryStatusFilter<"InventoryUnit"> | $Enums.InventoryStatus
+    lotNumber?: StringNullableFilter<"InventoryUnit"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InventoryUnit"> | Date | string | null
+    receivedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    receivedFrom?: StringNullableFilter<"InventoryUnit"> | string | null
+    unitCost?: DecimalNullableFilter<"InventoryUnit"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
     productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
     location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    allocations?: AllocationListRelationFilter
   }
 
-  export type InventoryOrderByWithRelationInput = {
+  export type InventoryUnitOrderByWithRelationInput = {
     id?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    receivedAt?: SortOrder
+    receivedFrom?: SortOrderInput | SortOrder
+    unitCost?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     productVariant?: ProductVariantOrderByWithRelationInput
     location?: LocationOrderByWithRelationInput
+    allocations?: AllocationOrderByRelationAggregateInput
   }
 
-  export type InventoryWhereUniqueInput = Prisma.AtLeast<{
+  export type InventoryUnitWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    productVariantId_locationId?: InventoryProductVariantIdLocationIdCompoundUniqueInput
-    AND?: InventoryWhereInput | InventoryWhereInput[]
-    OR?: InventoryWhereInput[]
-    NOT?: InventoryWhereInput | InventoryWhereInput[]
-    productVariantId?: StringFilter<"Inventory"> | string
-    locationId?: StringFilter<"Inventory"> | string
-    quantityOnHand?: IntFilter<"Inventory"> | number
-    quantityReserved?: IntFilter<"Inventory"> | number
-    updatedAt?: DateTimeFilter<"Inventory"> | Date | string
+    AND?: InventoryUnitWhereInput | InventoryUnitWhereInput[]
+    OR?: InventoryUnitWhereInput[]
+    NOT?: InventoryUnitWhereInput | InventoryUnitWhereInput[]
+    productVariantId?: StringFilter<"InventoryUnit"> | string
+    locationId?: StringFilter<"InventoryUnit"> | string
+    quantity?: IntFilter<"InventoryUnit"> | number
+    status?: EnumInventoryStatusFilter<"InventoryUnit"> | $Enums.InventoryStatus
+    lotNumber?: StringNullableFilter<"InventoryUnit"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InventoryUnit"> | Date | string | null
+    receivedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    receivedFrom?: StringNullableFilter<"InventoryUnit"> | string | null
+    unitCost?: DecimalNullableFilter<"InventoryUnit"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
     productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
     location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
-  }, "id" | "productVariantId_locationId">
+    allocations?: AllocationListRelationFilter
+  }, "id">
 
-  export type InventoryOrderByWithAggregationInput = {
+  export type InventoryUnitOrderByWithAggregationInput = {
     id?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    receivedAt?: SortOrder
+    receivedFrom?: SortOrderInput | SortOrder
+    unitCost?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: InventoryCountOrderByAggregateInput
-    _avg?: InventoryAvgOrderByAggregateInput
-    _max?: InventoryMaxOrderByAggregateInput
-    _min?: InventoryMinOrderByAggregateInput
-    _sum?: InventorySumOrderByAggregateInput
+    _count?: InventoryUnitCountOrderByAggregateInput
+    _avg?: InventoryUnitAvgOrderByAggregateInput
+    _max?: InventoryUnitMaxOrderByAggregateInput
+    _min?: InventoryUnitMinOrderByAggregateInput
+    _sum?: InventoryUnitSumOrderByAggregateInput
   }
 
-  export type InventoryScalarWhereWithAggregatesInput = {
-    AND?: InventoryScalarWhereWithAggregatesInput | InventoryScalarWhereWithAggregatesInput[]
-    OR?: InventoryScalarWhereWithAggregatesInput[]
-    NOT?: InventoryScalarWhereWithAggregatesInput | InventoryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Inventory"> | string
-    productVariantId?: StringWithAggregatesFilter<"Inventory"> | string
-    locationId?: StringWithAggregatesFilter<"Inventory"> | string
-    quantityOnHand?: IntWithAggregatesFilter<"Inventory"> | number
-    quantityReserved?: IntWithAggregatesFilter<"Inventory"> | number
-    updatedAt?: DateTimeWithAggregatesFilter<"Inventory"> | Date | string
+  export type InventoryUnitScalarWhereWithAggregatesInput = {
+    AND?: InventoryUnitScalarWhereWithAggregatesInput | InventoryUnitScalarWhereWithAggregatesInput[]
+    OR?: InventoryUnitScalarWhereWithAggregatesInput[]
+    NOT?: InventoryUnitScalarWhereWithAggregatesInput | InventoryUnitScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InventoryUnit"> | string
+    productVariantId?: StringWithAggregatesFilter<"InventoryUnit"> | string
+    locationId?: StringWithAggregatesFilter<"InventoryUnit"> | string
+    quantity?: IntWithAggregatesFilter<"InventoryUnit"> | number
+    status?: EnumInventoryStatusWithAggregatesFilter<"InventoryUnit"> | $Enums.InventoryStatus
+    lotNumber?: StringNullableWithAggregatesFilter<"InventoryUnit"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"InventoryUnit"> | Date | string | null
+    receivedAt?: DateTimeWithAggregatesFilter<"InventoryUnit"> | Date | string
+    receivedFrom?: StringNullableWithAggregatesFilter<"InventoryUnit"> | string | null
+    unitCost?: DecimalNullableWithAggregatesFilter<"InventoryUnit"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InventoryUnit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InventoryUnit"> | Date | string
+  }
+
+  export type AllocationWhereInput = {
+    AND?: AllocationWhereInput | AllocationWhereInput[]
+    OR?: AllocationWhereInput[]
+    NOT?: AllocationWhereInput | AllocationWhereInput[]
+    id?: StringFilter<"Allocation"> | string
+    inventoryUnitId?: StringFilter<"Allocation"> | string
+    orderId?: StringFilter<"Allocation"> | string
+    orderItemId?: StringNullableFilter<"Allocation"> | string | null
+    productVariantId?: StringFilter<"Allocation"> | string
+    locationId?: StringFilter<"Allocation"> | string
+    quantity?: IntFilter<"Allocation"> | number
+    lotNumber?: StringNullableFilter<"Allocation"> | string | null
+    status?: EnumAllocationStatusFilter<"Allocation"> | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFilter<"Allocation"> | Date | string
+    releasedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    pickedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    taskItemId?: StringNullableFilter<"Allocation"> | string | null
+    inventoryUnit?: XOR<InventoryUnitScalarRelationFilter, InventoryUnitWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    taskItem?: XOR<TaskItemNullableScalarRelationFilter, TaskItemWhereInput> | null
+  }
+
+  export type AllocationOrderByWithRelationInput = {
+    id?: SortOrder
+    inventoryUnitId?: SortOrder
+    orderId?: SortOrder
+    orderItemId?: SortOrderInput | SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    quantity?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    allocatedAt?: SortOrder
+    releasedAt?: SortOrderInput | SortOrder
+    pickedAt?: SortOrderInput | SortOrder
+    taskItemId?: SortOrderInput | SortOrder
+    inventoryUnit?: InventoryUnitOrderByWithRelationInput
+    order?: OrderOrderByWithRelationInput
+    orderItem?: OrderItemOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+    location?: LocationOrderByWithRelationInput
+    taskItem?: TaskItemOrderByWithRelationInput
+  }
+
+  export type AllocationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    taskItemId?: string
+    AND?: AllocationWhereInput | AllocationWhereInput[]
+    OR?: AllocationWhereInput[]
+    NOT?: AllocationWhereInput | AllocationWhereInput[]
+    inventoryUnitId?: StringFilter<"Allocation"> | string
+    orderId?: StringFilter<"Allocation"> | string
+    orderItemId?: StringNullableFilter<"Allocation"> | string | null
+    productVariantId?: StringFilter<"Allocation"> | string
+    locationId?: StringFilter<"Allocation"> | string
+    quantity?: IntFilter<"Allocation"> | number
+    lotNumber?: StringNullableFilter<"Allocation"> | string | null
+    status?: EnumAllocationStatusFilter<"Allocation"> | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFilter<"Allocation"> | Date | string
+    releasedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    pickedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    inventoryUnit?: XOR<InventoryUnitScalarRelationFilter, InventoryUnitWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    taskItem?: XOR<TaskItemNullableScalarRelationFilter, TaskItemWhereInput> | null
+  }, "id" | "taskItemId">
+
+  export type AllocationOrderByWithAggregationInput = {
+    id?: SortOrder
+    inventoryUnitId?: SortOrder
+    orderId?: SortOrder
+    orderItemId?: SortOrderInput | SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    quantity?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    allocatedAt?: SortOrder
+    releasedAt?: SortOrderInput | SortOrder
+    pickedAt?: SortOrderInput | SortOrder
+    taskItemId?: SortOrderInput | SortOrder
+    _count?: AllocationCountOrderByAggregateInput
+    _avg?: AllocationAvgOrderByAggregateInput
+    _max?: AllocationMaxOrderByAggregateInput
+    _min?: AllocationMinOrderByAggregateInput
+    _sum?: AllocationSumOrderByAggregateInput
+  }
+
+  export type AllocationScalarWhereWithAggregatesInput = {
+    AND?: AllocationScalarWhereWithAggregatesInput | AllocationScalarWhereWithAggregatesInput[]
+    OR?: AllocationScalarWhereWithAggregatesInput[]
+    NOT?: AllocationScalarWhereWithAggregatesInput | AllocationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Allocation"> | string
+    inventoryUnitId?: StringWithAggregatesFilter<"Allocation"> | string
+    orderId?: StringWithAggregatesFilter<"Allocation"> | string
+    orderItemId?: StringNullableWithAggregatesFilter<"Allocation"> | string | null
+    productVariantId?: StringWithAggregatesFilter<"Allocation"> | string
+    locationId?: StringWithAggregatesFilter<"Allocation"> | string
+    quantity?: IntWithAggregatesFilter<"Allocation"> | number
+    lotNumber?: StringNullableWithAggregatesFilter<"Allocation"> | string | null
+    status?: EnumAllocationStatusWithAggregatesFilter<"Allocation"> | $Enums.AllocationStatus
+    allocatedAt?: DateTimeWithAggregatesFilter<"Allocation"> | Date | string
+    releasedAt?: DateTimeNullableWithAggregatesFilter<"Allocation"> | Date | string | null
+    pickedAt?: DateTimeNullableWithAggregatesFilter<"Allocation"> | Date | string | null
+    taskItemId?: StringNullableWithAggregatesFilter<"Allocation"> | string | null
   }
 
   export type OrderWhereInput = {
@@ -21112,36 +23549,50 @@ export namespace Prisma {
     id?: StringFilter<"Order"> | string
     orderNumber?: StringFilter<"Order"> | string
     shopifyOrderId?: StringNullableFilter<"Order"> | string | null
+    customerId?: StringNullableFilter<"Order"> | string | null
     customerName?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     shippingAddress?: JsonFilter<"Order">
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityFilter<"Order"> | $Enums.Priority
+    holdReason?: StringNullableFilter<"Order"> | string | null
+    holdAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    holdBy?: StringNullableFilter<"Order"> | string | null
     totalAmount?: DecimalFilter<"Order"> | Decimal | DecimalJsLike | number | string
+    warehouseId?: StringNullableFilter<"Order"> | string | null
     trackingNumber?: StringNullableFilter<"Order"> | string | null
     shippedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
     orderNumber?: SortOrder
     shopifyOrderId?: SortOrderInput | SortOrder
+    customerId?: SortOrderInput | SortOrder
     customerName?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     shippingAddress?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
     priority?: SortOrder
+    holdReason?: SortOrderInput | SortOrder
+    holdAt?: SortOrderInput | SortOrder
+    holdBy?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
+    warehouseId?: SortOrderInput | SortOrder
     trackingNumber?: SortOrderInput | SortOrder
     shippedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     items?: OrderItemOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
+    allocations?: AllocationOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -21151,30 +23602,43 @@ export namespace Prisma {
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
+    customerId?: StringNullableFilter<"Order"> | string | null
     customerName?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     shippingAddress?: JsonFilter<"Order">
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityFilter<"Order"> | $Enums.Priority
+    holdReason?: StringNullableFilter<"Order"> | string | null
+    holdAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    holdBy?: StringNullableFilter<"Order"> | string | null
     totalAmount?: DecimalFilter<"Order"> | Decimal | DecimalJsLike | number | string
+    warehouseId?: StringNullableFilter<"Order"> | string | null
     trackingNumber?: StringNullableFilter<"Order"> | string | null
     shippedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }, "id" | "orderNumber" | "shopifyOrderId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
     orderNumber?: SortOrder
     shopifyOrderId?: SortOrderInput | SortOrder
+    customerId?: SortOrderInput | SortOrder
     customerName?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     shippingAddress?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
     priority?: SortOrder
+    holdReason?: SortOrderInput | SortOrder
+    holdAt?: SortOrderInput | SortOrder
+    holdBy?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
+    warehouseId?: SortOrderInput | SortOrder
     trackingNumber?: SortOrderInput | SortOrder
     shippedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -21193,12 +23657,18 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Order"> | string
     orderNumber?: StringWithAggregatesFilter<"Order"> | string
     shopifyOrderId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    customerId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     customerName?: StringWithAggregatesFilter<"Order"> | string
     customerEmail?: StringNullableWithAggregatesFilter<"Order"> | string | null
     shippingAddress?: JsonWithAggregatesFilter<"Order">
     status?: EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusWithAggregatesFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityWithAggregatesFilter<"Order"> | $Enums.Priority
+    holdReason?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    holdAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    holdBy?: StringNullableWithAggregatesFilter<"Order"> | string | null
     totalAmount?: DecimalWithAggregatesFilter<"Order"> | Decimal | DecimalJsLike | number | string
+    warehouseId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     trackingNumber?: StringNullableWithAggregatesFilter<"Order"> | string | null
     shippedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -21212,22 +23682,28 @@ export namespace Prisma {
     id?: StringFilter<"OrderItem"> | string
     orderId?: StringFilter<"OrderItem"> | string
     productVariantId?: StringFilter<"OrderItem"> | string
+    sku?: StringFilter<"OrderItem"> | string
     quantity?: IntFilter<"OrderItem"> | number
-    quantityPicked?: IntNullableFilter<"OrderItem"> | number | null
+    quantityAllocated?: IntFilter<"OrderItem"> | number
+    quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }
 
   export type OrderItemOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
     productVariantId?: SortOrder
+    sku?: SortOrder
     quantity?: SortOrder
-    quantityPicked?: SortOrderInput | SortOrder
+    quantityAllocated?: SortOrder
+    quantityPicked?: SortOrder
     unitPrice?: SortOrder
     order?: OrderOrderByWithRelationInput
     taskItems?: TaskItemOrderByRelationAggregateInput
+    allocations?: AllocationOrderByRelationAggregateInput
   }
 
   export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
@@ -21237,19 +23713,24 @@ export namespace Prisma {
     NOT?: OrderItemWhereInput | OrderItemWhereInput[]
     orderId?: StringFilter<"OrderItem"> | string
     productVariantId?: StringFilter<"OrderItem"> | string
+    sku?: StringFilter<"OrderItem"> | string
     quantity?: IntFilter<"OrderItem"> | number
-    quantityPicked?: IntNullableFilter<"OrderItem"> | number | null
+    quantityAllocated?: IntFilter<"OrderItem"> | number
+    quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     taskItems?: TaskItemListRelationFilter
+    allocations?: AllocationListRelationFilter
   }, "id">
 
   export type OrderItemOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
     productVariantId?: SortOrder
+    sku?: SortOrder
     quantity?: SortOrder
-    quantityPicked?: SortOrderInput | SortOrder
+    quantityAllocated?: SortOrder
+    quantityPicked?: SortOrder
     unitPrice?: SortOrder
     _count?: OrderItemCountOrderByAggregateInput
     _avg?: OrderItemAvgOrderByAggregateInput
@@ -21265,8 +23746,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"OrderItem"> | string
     orderId?: StringWithAggregatesFilter<"OrderItem"> | string
     productVariantId?: StringWithAggregatesFilter<"OrderItem"> | string
+    sku?: StringWithAggregatesFilter<"OrderItem"> | string
     quantity?: IntWithAggregatesFilter<"OrderItem"> | number
-    quantityPicked?: IntNullableWithAggregatesFilter<"OrderItem"> | number | null
+    quantityAllocated?: IntWithAggregatesFilter<"OrderItem"> | number
+    quantityPicked?: IntWithAggregatesFilter<"OrderItem"> | number
     unitPrice?: DecimalWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
   }
 
@@ -21284,11 +23767,15 @@ export namespace Prisma {
     assignedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     startedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    blockReason?: EnumWorkTaskBlockReasonNullableFilter<"WorkTask"> | $Enums.WorkTaskBlockReason | null
+    blockedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
+    shortItems?: IntFilter<"WorkTask"> | number
+    skippedItems?: IntFilter<"WorkTask"> | number
     notes?: StringNullableFilter<"WorkTask"> | string | null
     createdAt?: DateTimeFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeFilter<"WorkTask"> | Date | string
@@ -21308,11 +23795,15 @@ export namespace Prisma {
     assignedAt?: SortOrderInput | SortOrder
     startedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    blockReason?: SortOrderInput | SortOrder
+    blockedAt?: SortOrderInput | SortOrder
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21335,11 +23826,15 @@ export namespace Prisma {
     assignedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     startedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    blockReason?: EnumWorkTaskBlockReasonNullableFilter<"WorkTask"> | $Enums.WorkTaskBlockReason | null
+    blockedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
+    shortItems?: IntFilter<"WorkTask"> | number
+    skippedItems?: IntFilter<"WorkTask"> | number
     notes?: StringNullableFilter<"WorkTask"> | string | null
     createdAt?: DateTimeFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeFilter<"WorkTask"> | Date | string
@@ -21359,11 +23854,15 @@ export namespace Prisma {
     assignedAt?: SortOrderInput | SortOrder
     startedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    blockReason?: SortOrderInput | SortOrder
+    blockedAt?: SortOrderInput | SortOrder
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21388,11 +23887,15 @@ export namespace Prisma {
     assignedAt?: DateTimeNullableWithAggregatesFilter<"WorkTask"> | Date | string | null
     startedAt?: DateTimeNullableWithAggregatesFilter<"WorkTask"> | Date | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"WorkTask"> | Date | string | null
+    blockReason?: EnumWorkTaskBlockReasonNullableWithAggregatesFilter<"WorkTask"> | $Enums.WorkTaskBlockReason | null
+    blockedAt?: DateTimeNullableWithAggregatesFilter<"WorkTask"> | Date | string | null
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntWithAggregatesFilter<"WorkTask"> | number
     completedOrders?: IntWithAggregatesFilter<"WorkTask"> | number
     totalItems?: IntWithAggregatesFilter<"WorkTask"> | number
     completedItems?: IntWithAggregatesFilter<"WorkTask"> | number
+    shortItems?: IntWithAggregatesFilter<"WorkTask"> | number
+    skippedItems?: IntWithAggregatesFilter<"WorkTask"> | number
     notes?: StringNullableWithAggregatesFilter<"WorkTask"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WorkTask"> | Date | string
@@ -21408,12 +23911,16 @@ export namespace Prisma {
     orderItemId?: StringNullableFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableFilter<"TaskItem"> | string | null
     locationId?: StringNullableFilter<"TaskItem"> | string | null
+    allocationId?: StringNullableFilter<"TaskItem"> | string | null
     sequence?: IntFilter<"TaskItem"> | number
     quantityRequired?: IntFilter<"TaskItem"> | number
     quantityCompleted?: IntFilter<"TaskItem"> | number
     status?: EnumWorkTaskItemStatusFilter<"TaskItem"> | $Enums.WorkTaskItemStatus
     completedBy?: StringNullableFilter<"TaskItem"> | string | null
     completedAt?: DateTimeNullableFilter<"TaskItem"> | Date | string | null
+    shortReason?: StringNullableFilter<"TaskItem"> | string | null
+    locationScanned?: BoolFilter<"TaskItem"> | boolean
+    itemScanned?: BoolFilter<"TaskItem"> | boolean
     createdAt?: DateTimeFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeFilter<"TaskItem"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
@@ -21422,6 +23929,7 @@ export namespace Prisma {
     productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
     completedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    allocation?: XOR<AllocationNullableScalarRelationFilter, AllocationWhereInput> | null
   }
 
   export type TaskItemOrderByWithRelationInput = {
@@ -21431,12 +23939,16 @@ export namespace Prisma {
     orderItemId?: SortOrderInput | SortOrder
     productVariantId?: SortOrderInput | SortOrder
     locationId?: SortOrderInput | SortOrder
+    allocationId?: SortOrderInput | SortOrder
     sequence?: SortOrder
     quantityRequired?: SortOrder
     quantityCompleted?: SortOrder
     status?: SortOrder
     completedBy?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    shortReason?: SortOrderInput | SortOrder
+    locationScanned?: SortOrder
+    itemScanned?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     task?: WorkTaskOrderByWithRelationInput
@@ -21445,10 +23957,12 @@ export namespace Prisma {
     productVariant?: ProductVariantOrderByWithRelationInput
     location?: LocationOrderByWithRelationInput
     completedByUser?: UserOrderByWithRelationInput
+    allocation?: AllocationOrderByWithRelationInput
   }
 
   export type TaskItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    allocationId?: string
     AND?: TaskItemWhereInput | TaskItemWhereInput[]
     OR?: TaskItemWhereInput[]
     NOT?: TaskItemWhereInput | TaskItemWhereInput[]
@@ -21463,6 +23977,9 @@ export namespace Prisma {
     status?: EnumWorkTaskItemStatusFilter<"TaskItem"> | $Enums.WorkTaskItemStatus
     completedBy?: StringNullableFilter<"TaskItem"> | string | null
     completedAt?: DateTimeNullableFilter<"TaskItem"> | Date | string | null
+    shortReason?: StringNullableFilter<"TaskItem"> | string | null
+    locationScanned?: BoolFilter<"TaskItem"> | boolean
+    itemScanned?: BoolFilter<"TaskItem"> | boolean
     createdAt?: DateTimeFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeFilter<"TaskItem"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
@@ -21471,7 +23988,8 @@ export namespace Prisma {
     productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
     completedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }, "id">
+    allocation?: XOR<AllocationNullableScalarRelationFilter, AllocationWhereInput> | null
+  }, "id" | "allocationId">
 
   export type TaskItemOrderByWithAggregationInput = {
     id?: SortOrder
@@ -21480,12 +23998,16 @@ export namespace Prisma {
     orderItemId?: SortOrderInput | SortOrder
     productVariantId?: SortOrderInput | SortOrder
     locationId?: SortOrderInput | SortOrder
+    allocationId?: SortOrderInput | SortOrder
     sequence?: SortOrder
     quantityRequired?: SortOrder
     quantityCompleted?: SortOrder
     status?: SortOrder
     completedBy?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    shortReason?: SortOrderInput | SortOrder
+    locationScanned?: SortOrder
+    itemScanned?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TaskItemCountOrderByAggregateInput
@@ -21505,12 +24027,16 @@ export namespace Prisma {
     orderItemId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     locationId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
+    allocationId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     sequence?: IntWithAggregatesFilter<"TaskItem"> | number
     quantityRequired?: IntWithAggregatesFilter<"TaskItem"> | number
     quantityCompleted?: IntWithAggregatesFilter<"TaskItem"> | number
     status?: EnumWorkTaskItemStatusWithAggregatesFilter<"TaskItem"> | $Enums.WorkTaskItemStatus
     completedBy?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"TaskItem"> | Date | string | null
+    shortReason?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
+    locationScanned?: BoolWithAggregatesFilter<"TaskItem"> | boolean
+    itemScanned?: BoolWithAggregatesFilter<"TaskItem"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TaskItem"> | Date | string
   }
@@ -21522,18 +24048,20 @@ export namespace Prisma {
     id?: StringFilter<"TaskEvent"> | string
     taskId?: StringFilter<"TaskEvent"> | string
     eventType?: EnumWorkTaskEventTypeFilter<"TaskEvent"> | $Enums.WorkTaskEventType
-    userId?: StringFilter<"TaskEvent"> | string
+    userId?: StringNullableFilter<"TaskEvent"> | string | null
+    taskItemId?: StringNullableFilter<"TaskEvent"> | string | null
     data?: JsonNullableFilter<"TaskEvent">
     createdAt?: DateTimeFilter<"TaskEvent"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type TaskEventOrderByWithRelationInput = {
     id?: SortOrder
     taskId?: SortOrder
     eventType?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    taskItemId?: SortOrderInput | SortOrder
     data?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     task?: WorkTaskOrderByWithRelationInput
@@ -21547,18 +24075,20 @@ export namespace Prisma {
     NOT?: TaskEventWhereInput | TaskEventWhereInput[]
     taskId?: StringFilter<"TaskEvent"> | string
     eventType?: EnumWorkTaskEventTypeFilter<"TaskEvent"> | $Enums.WorkTaskEventType
-    userId?: StringFilter<"TaskEvent"> | string
+    userId?: StringNullableFilter<"TaskEvent"> | string | null
+    taskItemId?: StringNullableFilter<"TaskEvent"> | string | null
     data?: JsonNullableFilter<"TaskEvent">
     createdAt?: DateTimeFilter<"TaskEvent"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type TaskEventOrderByWithAggregationInput = {
     id?: SortOrder
     taskId?: SortOrder
     eventType?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    taskItemId?: SortOrderInput | SortOrder
     data?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: TaskEventCountOrderByAggregateInput
@@ -21573,7 +24103,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"TaskEvent"> | string
     taskId?: StringWithAggregatesFilter<"TaskEvent"> | string
     eventType?: EnumWorkTaskEventTypeWithAggregatesFilter<"TaskEvent"> | $Enums.WorkTaskEventType
-    userId?: StringWithAggregatesFilter<"TaskEvent"> | string
+    userId?: StringNullableWithAggregatesFilter<"TaskEvent"> | string | null
+    taskItemId?: StringNullableWithAggregatesFilter<"TaskEvent"> | string | null
     data?: JsonNullableWithAggregatesFilter<"TaskEvent">
     createdAt?: DateTimeWithAggregatesFilter<"TaskEvent"> | Date | string
   }
@@ -21677,6 +24208,7 @@ export namespace Prisma {
     entityType?: StringFilter<"AuditLog"> | string
     entityId?: StringFilter<"AuditLog"> | string
     changes?: JsonNullableFilter<"AuditLog">
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
@@ -21688,6 +24220,7 @@ export namespace Prisma {
     entityType?: SortOrder
     entityId?: SortOrder
     changes?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -21702,6 +24235,7 @@ export namespace Prisma {
     entityType?: StringFilter<"AuditLog"> | string
     entityId?: StringFilter<"AuditLog"> | string
     changes?: JsonNullableFilter<"AuditLog">
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
@@ -21713,6 +24247,7 @@ export namespace Prisma {
     entityType?: SortOrder
     entityId?: SortOrder
     changes?: SortOrderInput | SortOrder
+    correlationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AuditLogCountOrderByAggregateInput
     _max?: AuditLogMaxOrderByAggregateInput
@@ -21729,6 +24264,7 @@ export namespace Prisma {
     entityType?: StringWithAggregatesFilter<"AuditLog"> | string
     entityId?: StringWithAggregatesFilter<"AuditLog"> | string
     changes?: JsonNullableWithAggregatesFilter<"AuditLog">
+    correlationId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
   }
 
@@ -22131,11 +24667,14 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
-    inventory?: InventoryCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateInput = {
@@ -22149,10 +24688,13 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUpdateInput = {
@@ -22165,11 +24707,14 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
-    inventory?: InventoryUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateInput = {
@@ -22183,10 +24728,13 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantCreateManyInput = {
@@ -22200,6 +24748,8 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22214,6 +24764,8 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22229,6 +24781,8 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22239,12 +24793,18 @@ export namespace Prisma {
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryCreateNestedManyWithoutLocationInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -22253,12 +24813,18 @@ export namespace Prisma {
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryUncheckedCreateNestedManyWithoutLocationInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUpdateInput = {
@@ -22267,12 +24833,18 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUpdateManyWithoutLocationNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -22281,12 +24853,18 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -22295,6 +24873,11 @@ export namespace Prisma {
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
@@ -22307,6 +24890,11 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22319,155 +24907,346 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type InventoryCreateInput = {
+  export type InventoryUnitCreateInput = {
     id?: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
-    productVariant: ProductVariantCreateNestedOneWithoutInventoryInput
-    location: LocationCreateNestedOneWithoutInventoryInput
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
+    location: LocationCreateNestedOneWithoutInventoryUnitsInput
+    allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
   }
 
-  export type InventoryUncheckedCreateInput = {
-    id?: string
-    productVariantId: string
-    locationId: string
-    quantityOnHand?: number
-    quantityReserved?: number
-    updatedAt?: Date | string
-  }
-
-  export type InventoryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryNestedInput
-    location?: LocationUpdateOneRequiredWithoutInventoryNestedInput
-  }
-
-  export type InventoryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InventoryCreateManyInput = {
+  export type InventoryUnitUncheckedCreateInput = {
     id?: string
     productVariantId: string
     locationId: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
+    allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
-  export type InventoryUpdateManyMutationInput = {
+  export type InventoryUnitUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
   }
 
-  export type InventoryUncheckedUpdateManyInput = {
+  export type InventoryUnitUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
     locationId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+  }
+
+  export type InventoryUnitCreateManyInput = {
+    id?: string
+    productVariantId: string
+    locationId: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryUnitUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryUnitUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AllocationCreateInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
+  }
+
+  export type AllocationUncheckedCreateInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationCreateManyInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderCreateInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
@@ -22478,12 +25257,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22494,12 +25279,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22509,57 +25300,73 @@ export namespace Prisma {
   export type OrderItemCreateInput = {
     id?: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     order: OrderCreateNestedOneWithoutItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateInput = {
     id?: string
     orderId: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemCreateManyInput = {
     id?: string
     orderId: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
   }
 
   export type OrderItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
@@ -22567,8 +25374,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
@@ -22582,11 +25391,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22606,11 +25419,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22628,11 +25445,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22652,11 +25473,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22675,11 +25500,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22695,11 +25524,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22716,11 +25549,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22728,11 +25565,15 @@ export namespace Prisma {
 
   export type TaskItemCreateInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -22741,6 +25582,7 @@ export namespace Prisma {
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateInput = {
@@ -22750,23 +25592,32 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -22775,6 +25626,7 @@ export namespace Prisma {
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateInput = {
@@ -22784,14 +25636,19 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemCreateManyInput = {
@@ -22801,23 +25658,31 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TaskItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22829,12 +25694,16 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22842,17 +25711,19 @@ export namespace Prisma {
   export type TaskEventCreateInput = {
     id?: string
     eventType: $Enums.WorkTaskEventType
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutEventsInput
-    user: UserCreateNestedOneWithoutTaskEventsInput
+    user?: UserCreateNestedOneWithoutTaskEventsInput
   }
 
   export type TaskEventUncheckedCreateInput = {
     id?: string
     taskId: string
     eventType: $Enums.WorkTaskEventType
-    userId: string
+    userId?: string | null
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -22860,17 +25731,19 @@ export namespace Prisma {
   export type TaskEventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutEventsNestedInput
-    user?: UserUpdateOneRequiredWithoutTaskEventsNestedInput
+    user?: UserUpdateOneWithoutTaskEventsNestedInput
   }
 
   export type TaskEventUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22879,7 +25752,8 @@ export namespace Prisma {
     id?: string
     taskId: string
     eventType: $Enums.WorkTaskEventType
-    userId: string
+    userId?: string | null
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -22887,6 +25761,7 @@ export namespace Prisma {
   export type TaskEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22895,7 +25770,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23011,6 +25887,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutAuditLogsInput
   }
@@ -23022,6 +25899,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
   }
 
@@ -23031,6 +25909,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutAuditLogsNestedInput
   }
@@ -23042,6 +25921,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23052,6 +25932,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
   }
 
@@ -23061,6 +25942,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23071,6 +25953,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23521,13 +26404,23 @@ export namespace Prisma {
     isNot?: ProductWhereInput
   }
 
-  export type InventoryListRelationFilter = {
-    every?: InventoryWhereInput
-    some?: InventoryWhereInput
-    none?: InventoryWhereInput
+  export type InventoryUnitListRelationFilter = {
+    every?: InventoryUnitWhereInput
+    some?: InventoryUnitWhereInput
+    none?: InventoryUnitWhereInput
   }
 
-  export type InventoryOrderByRelationAggregateInput = {
+  export type AllocationListRelationFilter = {
+    every?: AllocationWhereInput
+    some?: AllocationWhereInput
+    none?: AllocationWhereInput
+  }
+
+  export type InventoryUnitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AllocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23542,6 +26435,8 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    trackLots?: SortOrder
+    trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23563,6 +26458,8 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    trackLots?: SortOrder
+    trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23578,6 +26475,8 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    trackLots?: SortOrder
+    trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23611,16 +26510,36 @@ export namespace Prisma {
     not?: NestedEnumLocationTypeFilter<$PrismaModel> | $Enums.LocationType
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type LocationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     barcode?: SortOrder
     type?: SortOrder
     zone?: SortOrder
+    aisle?: SortOrder
+    rack?: SortOrder
+    shelf?: SortOrder
+    bin?: SortOrder
+    pickSequence?: SortOrder
     isPickable?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type LocationAvgOrderByAggregateInput = {
+    pickSequence?: SortOrder
   }
 
   export type LocationMaxOrderByAggregateInput = {
@@ -23629,6 +26548,11 @@ export namespace Prisma {
     barcode?: SortOrder
     type?: SortOrder
     zone?: SortOrder
+    aisle?: SortOrder
+    rack?: SortOrder
+    shelf?: SortOrder
+    bin?: SortOrder
+    pickSequence?: SortOrder
     isPickable?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -23641,10 +26565,19 @@ export namespace Prisma {
     barcode?: SortOrder
     type?: SortOrder
     zone?: SortOrder
+    aisle?: SortOrder
+    rack?: SortOrder
+    shelf?: SortOrder
+    bin?: SortOrder
+    pickSequence?: SortOrder
     isPickable?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type LocationSumOrderByAggregateInput = {
+    pickSequence?: SortOrder
   }
 
   export type EnumLocationTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -23655,6 +26588,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLocationTypeFilter<$PrismaModel>
     _max?: NestedEnumLocationTypeFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -23668,6 +26617,13 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type EnumInventoryStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryStatus | EnumInventoryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryStatusFilter<$PrismaModel> | $Enums.InventoryStatus
+  }
+
   export type ProductVariantScalarRelationFilter = {
     is?: ProductVariantWhereInput
     isNot?: ProductVariantWhereInput
@@ -23678,46 +26634,59 @@ export namespace Prisma {
     isNot?: LocationWhereInput
   }
 
-  export type InventoryProductVariantIdLocationIdCompoundUniqueInput = {
-    productVariantId: string
-    locationId: string
-  }
-
-  export type InventoryCountOrderByAggregateInput = {
+  export type InventoryUnitCountOrderByAggregateInput = {
     id?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    receivedAt?: SortOrder
+    receivedFrom?: SortOrder
+    unitCost?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type InventoryAvgOrderByAggregateInput = {
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+  export type InventoryUnitAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitCost?: SortOrder
   }
 
-  export type InventoryMaxOrderByAggregateInput = {
+  export type InventoryUnitMaxOrderByAggregateInput = {
     id?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    receivedAt?: SortOrder
+    receivedFrom?: SortOrder
+    unitCost?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type InventoryMinOrderByAggregateInput = {
+  export type InventoryUnitMinOrderByAggregateInput = {
     id?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    receivedAt?: SortOrder
+    receivedFrom?: SortOrder
+    unitCost?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type InventorySumOrderByAggregateInput = {
-    quantityOnHand?: SortOrder
-    quantityReserved?: SortOrder
+  export type InventoryUnitSumOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitCost?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -23734,6 +26703,109 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumInventoryStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryStatus | EnumInventoryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryStatusWithAggregatesFilter<$PrismaModel> | $Enums.InventoryStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryStatusFilter<$PrismaModel>
+    _max?: NestedEnumInventoryStatusFilter<$PrismaModel>
+  }
+
+  export type EnumAllocationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AllocationStatus | EnumAllocationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAllocationStatusFilter<$PrismaModel> | $Enums.AllocationStatus
+  }
+
+  export type InventoryUnitScalarRelationFilter = {
+    is?: InventoryUnitWhereInput
+    isNot?: InventoryUnitWhereInput
+  }
+
+  export type OrderScalarRelationFilter = {
+    is?: OrderWhereInput
+    isNot?: OrderWhereInput
+  }
+
+  export type OrderItemNullableScalarRelationFilter = {
+    is?: OrderItemWhereInput | null
+    isNot?: OrderItemWhereInput | null
+  }
+
+  export type TaskItemNullableScalarRelationFilter = {
+    is?: TaskItemWhereInput | null
+    isNot?: TaskItemWhereInput | null
+  }
+
+  export type AllocationCountOrderByAggregateInput = {
+    id?: SortOrder
+    inventoryUnitId?: SortOrder
+    orderId?: SortOrder
+    orderItemId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    quantity?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    allocatedAt?: SortOrder
+    releasedAt?: SortOrder
+    pickedAt?: SortOrder
+    taskItemId?: SortOrder
+  }
+
+  export type AllocationAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type AllocationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    inventoryUnitId?: SortOrder
+    orderId?: SortOrder
+    orderItemId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    quantity?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    allocatedAt?: SortOrder
+    releasedAt?: SortOrder
+    pickedAt?: SortOrder
+    taskItemId?: SortOrder
+  }
+
+  export type AllocationMinOrderByAggregateInput = {
+    id?: SortOrder
+    inventoryUnitId?: SortOrder
+    orderId?: SortOrder
+    orderItemId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    quantity?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    allocatedAt?: SortOrder
+    releasedAt?: SortOrder
+    pickedAt?: SortOrder
+    taskItemId?: SortOrder
+  }
+
+  export type AllocationSumOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type EnumAllocationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AllocationStatus | EnumAllocationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAllocationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AllocationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAllocationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAllocationStatusFilter<$PrismaModel>
   }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -23764,6 +26836,13 @@ export namespace Prisma {
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
+  export type EnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
   }
 
   export type EnumPriorityFilter<$PrismaModel = never> = {
@@ -23798,12 +26877,18 @@ export namespace Prisma {
     id?: SortOrder
     orderNumber?: SortOrder
     shopifyOrderId?: SortOrder
+    customerId?: SortOrder
     customerName?: SortOrder
     customerEmail?: SortOrder
     shippingAddress?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
     priority?: SortOrder
+    holdReason?: SortOrder
+    holdAt?: SortOrder
+    holdBy?: SortOrder
     totalAmount?: SortOrder
+    warehouseId?: SortOrder
     trackingNumber?: SortOrder
     shippedAt?: SortOrder
     createdAt?: SortOrder
@@ -23818,11 +26903,17 @@ export namespace Prisma {
     id?: SortOrder
     orderNumber?: SortOrder
     shopifyOrderId?: SortOrder
+    customerId?: SortOrder
     customerName?: SortOrder
     customerEmail?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
     priority?: SortOrder
+    holdReason?: SortOrder
+    holdAt?: SortOrder
+    holdBy?: SortOrder
     totalAmount?: SortOrder
+    warehouseId?: SortOrder
     trackingNumber?: SortOrder
     shippedAt?: SortOrder
     createdAt?: SortOrder
@@ -23833,11 +26924,17 @@ export namespace Prisma {
     id?: SortOrder
     orderNumber?: SortOrder
     shopifyOrderId?: SortOrder
+    customerId?: SortOrder
     customerName?: SortOrder
     customerEmail?: SortOrder
     status?: SortOrder
+    paymentStatus?: SortOrder
     priority?: SortOrder
+    holdReason?: SortOrder
+    holdAt?: SortOrder
+    holdBy?: SortOrder
     totalAmount?: SortOrder
+    warehouseId?: SortOrder
     trackingNumber?: SortOrder
     shippedAt?: SortOrder
     createdAt?: SortOrder
@@ -23884,6 +26981,16 @@ export namespace Prisma {
     _max?: NestedEnumOrderStatusFilter<$PrismaModel>
   }
 
+  export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
+  }
+
   export type EnumPriorityWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
     in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
@@ -23910,33 +27017,20 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type OrderScalarRelationFilter = {
-    is?: OrderWhereInput
-    isNot?: OrderWhereInput
-  }
-
   export type OrderItemCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
     productVariantId?: SortOrder
+    sku?: SortOrder
     quantity?: SortOrder
+    quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
   }
 
   export type OrderItemAvgOrderByAggregateInput = {
     quantity?: SortOrder
+    quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
   }
@@ -23945,7 +27039,9 @@ export namespace Prisma {
     id?: SortOrder
     orderId?: SortOrder
     productVariantId?: SortOrder
+    sku?: SortOrder
     quantity?: SortOrder
+    quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
   }
@@ -23954,31 +27050,18 @@ export namespace Prisma {
     id?: SortOrder
     orderId?: SortOrder
     productVariantId?: SortOrder
+    sku?: SortOrder
     quantity?: SortOrder
+    quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
   }
 
   export type OrderItemSumOrderByAggregateInput = {
     quantity?: SortOrder
+    quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumWorkTaskTypeFilter<$PrismaModel = never> = {
@@ -23993,6 +27076,13 @@ export namespace Prisma {
     in?: $Enums.WorkTaskStatus[] | ListEnumWorkTaskStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.WorkTaskStatus[] | ListEnumWorkTaskStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumWorkTaskStatusFilter<$PrismaModel> | $Enums.WorkTaskStatus
+  }
+
+  export type EnumWorkTaskBlockReasonNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.WorkTaskBlockReason | EnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    in?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel> | $Enums.WorkTaskBlockReason | null
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -24019,11 +27109,15 @@ export namespace Prisma {
     assignedAt?: SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrder
+    blockReason?: SortOrder
+    blockedAt?: SortOrder
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24035,6 +27129,8 @@ export namespace Prisma {
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
   }
 
   export type WorkTaskMaxOrderByAggregateInput = {
@@ -24048,10 +27144,14 @@ export namespace Prisma {
     assignedAt?: SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrder
+    blockReason?: SortOrder
+    blockedAt?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24068,10 +27168,14 @@ export namespace Prisma {
     assignedAt?: SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrder
+    blockReason?: SortOrder
+    blockedAt?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24083,6 +27187,8 @@ export namespace Prisma {
     completedOrders?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
+    shortItems?: SortOrder
+    skippedItems?: SortOrder
   }
 
   export type EnumWorkTaskTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -24105,6 +27211,16 @@ export namespace Prisma {
     _max?: NestedEnumWorkTaskStatusFilter<$PrismaModel>
   }
 
+  export type EnumWorkTaskBlockReasonNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WorkTaskBlockReason | EnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    in?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumWorkTaskBlockReasonNullableWithAggregatesFilter<$PrismaModel> | $Enums.WorkTaskBlockReason | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel>
+    _max?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel>
+  }
+
   export type EnumWorkTaskItemStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.WorkTaskItemStatus | EnumWorkTaskItemStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WorkTaskItemStatus[] | ListEnumWorkTaskItemStatusFieldRefInput<$PrismaModel>
@@ -24117,11 +27233,6 @@ export namespace Prisma {
     isNot?: WorkTaskWhereInput
   }
 
-  export type OrderItemNullableScalarRelationFilter = {
-    is?: OrderItemWhereInput | null
-    isNot?: OrderItemWhereInput | null
-  }
-
   export type ProductVariantNullableScalarRelationFilter = {
     is?: ProductVariantWhereInput | null
     isNot?: ProductVariantWhereInput | null
@@ -24132,6 +27243,11 @@ export namespace Prisma {
     isNot?: LocationWhereInput | null
   }
 
+  export type AllocationNullableScalarRelationFilter = {
+    is?: AllocationWhereInput | null
+    isNot?: AllocationWhereInput | null
+  }
+
   export type TaskItemCountOrderByAggregateInput = {
     id?: SortOrder
     taskId?: SortOrder
@@ -24139,12 +27255,16 @@ export namespace Prisma {
     orderItemId?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
+    allocationId?: SortOrder
     sequence?: SortOrder
     quantityRequired?: SortOrder
     quantityCompleted?: SortOrder
     status?: SortOrder
     completedBy?: SortOrder
     completedAt?: SortOrder
+    shortReason?: SortOrder
+    locationScanned?: SortOrder
+    itemScanned?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24162,12 +27282,16 @@ export namespace Prisma {
     orderItemId?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
+    allocationId?: SortOrder
     sequence?: SortOrder
     quantityRequired?: SortOrder
     quantityCompleted?: SortOrder
     status?: SortOrder
     completedBy?: SortOrder
     completedAt?: SortOrder
+    shortReason?: SortOrder
+    locationScanned?: SortOrder
+    itemScanned?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24179,12 +27303,16 @@ export namespace Prisma {
     orderItemId?: SortOrder
     productVariantId?: SortOrder
     locationId?: SortOrder
+    allocationId?: SortOrder
     sequence?: SortOrder
     quantityRequired?: SortOrder
     quantityCompleted?: SortOrder
     status?: SortOrder
     completedBy?: SortOrder
     completedAt?: SortOrder
+    shortReason?: SortOrder
+    locationScanned?: SortOrder
+    itemScanned?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24240,6 +27368,7 @@ export namespace Prisma {
     taskId?: SortOrder
     eventType?: SortOrder
     userId?: SortOrder
+    taskItemId?: SortOrder
     data?: SortOrder
     createdAt?: SortOrder
   }
@@ -24249,6 +27378,7 @@ export namespace Prisma {
     taskId?: SortOrder
     eventType?: SortOrder
     userId?: SortOrder
+    taskItemId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24257,6 +27387,7 @@ export namespace Prisma {
     taskId?: SortOrder
     eventType?: SortOrder
     userId?: SortOrder
+    taskItemId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24352,6 +27483,7 @@ export namespace Prisma {
     entityType?: SortOrder
     entityId?: SortOrder
     changes?: SortOrder
+    correlationId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24361,6 +27493,7 @@ export namespace Prisma {
     action?: SortOrder
     entityType?: SortOrder
     entityId?: SortOrder
+    correlationId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24370,6 +27503,7 @@ export namespace Prisma {
     action?: SortOrder
     entityType?: SortOrder
     entityId?: SortOrder
+    correlationId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24797,11 +27931,11 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
-  export type InventoryCreateNestedManyWithoutProductVariantInput = {
-    create?: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput> | InventoryCreateWithoutProductVariantInput[] | InventoryUncheckedCreateWithoutProductVariantInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutProductVariantInput | InventoryCreateOrConnectWithoutProductVariantInput[]
-    createMany?: InventoryCreateManyProductVariantInputEnvelope
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
+  export type InventoryUnitCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput> | InventoryUnitCreateWithoutProductVariantInput[] | InventoryUnitUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutProductVariantInput | InventoryUnitCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InventoryUnitCreateManyProductVariantInputEnvelope
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
   }
 
   export type TaskItemCreateNestedManyWithoutProductVariantInput = {
@@ -24811,11 +27945,18 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
-  export type InventoryUncheckedCreateNestedManyWithoutProductVariantInput = {
-    create?: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput> | InventoryCreateWithoutProductVariantInput[] | InventoryUncheckedCreateWithoutProductVariantInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutProductVariantInput | InventoryCreateOrConnectWithoutProductVariantInput[]
-    createMany?: InventoryCreateManyProductVariantInputEnvelope
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
+  export type AllocationCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput> | AllocationCreateWithoutProductVariantInput[] | AllocationUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
+    createMany?: AllocationCreateManyProductVariantInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput> | InventoryUnitCreateWithoutProductVariantInput[] | InventoryUnitUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutProductVariantInput | InventoryUnitCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InventoryUnitCreateManyProductVariantInputEnvelope
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
   }
 
   export type TaskItemUncheckedCreateNestedManyWithoutProductVariantInput = {
@@ -24823,6 +27964,13 @@ export namespace Prisma {
     connectOrCreate?: TaskItemCreateOrConnectWithoutProductVariantInput | TaskItemCreateOrConnectWithoutProductVariantInput[]
     createMany?: TaskItemCreateManyProductVariantInputEnvelope
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
+  }
+
+  export type AllocationUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput> | AllocationCreateWithoutProductVariantInput[] | AllocationUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
+    createMany?: AllocationCreateManyProductVariantInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -24841,18 +27989,18 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVariantsInput, ProductUpdateWithoutVariantsInput>, ProductUncheckedUpdateWithoutVariantsInput>
   }
 
-  export type InventoryUpdateManyWithoutProductVariantNestedInput = {
-    create?: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput> | InventoryCreateWithoutProductVariantInput[] | InventoryUncheckedCreateWithoutProductVariantInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutProductVariantInput | InventoryCreateOrConnectWithoutProductVariantInput[]
-    upsert?: InventoryUpsertWithWhereUniqueWithoutProductVariantInput | InventoryUpsertWithWhereUniqueWithoutProductVariantInput[]
-    createMany?: InventoryCreateManyProductVariantInputEnvelope
-    set?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    disconnect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    delete?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    update?: InventoryUpdateWithWhereUniqueWithoutProductVariantInput | InventoryUpdateWithWhereUniqueWithoutProductVariantInput[]
-    updateMany?: InventoryUpdateManyWithWhereWithoutProductVariantInput | InventoryUpdateManyWithWhereWithoutProductVariantInput[]
-    deleteMany?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
+  export type InventoryUnitUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput> | InventoryUnitCreateWithoutProductVariantInput[] | InventoryUnitUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutProductVariantInput | InventoryUnitCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput | InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InventoryUnitCreateManyProductVariantInputEnvelope
+    set?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    disconnect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    delete?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    update?: InventoryUnitUpdateWithWhereUniqueWithoutProductVariantInput | InventoryUnitUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InventoryUnitUpdateManyWithWhereWithoutProductVariantInput | InventoryUnitUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
   }
 
   export type TaskItemUpdateManyWithoutProductVariantNestedInput = {
@@ -24869,18 +28017,32 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
-  export type InventoryUncheckedUpdateManyWithoutProductVariantNestedInput = {
-    create?: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput> | InventoryCreateWithoutProductVariantInput[] | InventoryUncheckedCreateWithoutProductVariantInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutProductVariantInput | InventoryCreateOrConnectWithoutProductVariantInput[]
-    upsert?: InventoryUpsertWithWhereUniqueWithoutProductVariantInput | InventoryUpsertWithWhereUniqueWithoutProductVariantInput[]
-    createMany?: InventoryCreateManyProductVariantInputEnvelope
-    set?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    disconnect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    delete?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    update?: InventoryUpdateWithWhereUniqueWithoutProductVariantInput | InventoryUpdateWithWhereUniqueWithoutProductVariantInput[]
-    updateMany?: InventoryUpdateManyWithWhereWithoutProductVariantInput | InventoryUpdateManyWithWhereWithoutProductVariantInput[]
-    deleteMany?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
+  export type AllocationUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput> | AllocationCreateWithoutProductVariantInput[] | AllocationUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutProductVariantInput | AllocationUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: AllocationCreateManyProductVariantInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutProductVariantInput | AllocationUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutProductVariantInput | AllocationUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput> | InventoryUnitCreateWithoutProductVariantInput[] | InventoryUnitUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutProductVariantInput | InventoryUnitCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput | InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InventoryUnitCreateManyProductVariantInputEnvelope
+    set?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    disconnect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    delete?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    update?: InventoryUnitUpdateWithWhereUniqueWithoutProductVariantInput | InventoryUnitUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InventoryUnitUpdateManyWithWhereWithoutProductVariantInput | InventoryUnitUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
   }
 
   export type TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
@@ -24897,11 +28059,25 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
-  export type InventoryCreateNestedManyWithoutLocationInput = {
-    create?: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput> | InventoryCreateWithoutLocationInput[] | InventoryUncheckedCreateWithoutLocationInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutLocationInput | InventoryCreateOrConnectWithoutLocationInput[]
-    createMany?: InventoryCreateManyLocationInputEnvelope
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
+  export type AllocationUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput> | AllocationCreateWithoutProductVariantInput[] | AllocationUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutProductVariantInput | AllocationUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: AllocationCreateManyProductVariantInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutProductVariantInput | AllocationUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutProductVariantInput | AllocationUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type InventoryUnitCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
+    createMany?: InventoryUnitCreateManyLocationInputEnvelope
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
   }
 
   export type TaskItemCreateNestedManyWithoutLocationInput = {
@@ -24911,11 +28087,18 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
-  export type InventoryUncheckedCreateNestedManyWithoutLocationInput = {
-    create?: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput> | InventoryCreateWithoutLocationInput[] | InventoryUncheckedCreateWithoutLocationInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutLocationInput | InventoryCreateOrConnectWithoutLocationInput[]
-    createMany?: InventoryCreateManyLocationInputEnvelope
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
+  export type AllocationCreateNestedManyWithoutLocationInput = {
+    create?: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput> | AllocationCreateWithoutLocationInput[] | AllocationUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutLocationInput | AllocationCreateOrConnectWithoutLocationInput[]
+    createMany?: AllocationCreateManyLocationInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type InventoryUnitUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
+    createMany?: InventoryUnitCreateManyLocationInputEnvelope
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
   }
 
   export type TaskItemUncheckedCreateNestedManyWithoutLocationInput = {
@@ -24925,22 +28108,37 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
+  export type AllocationUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput> | AllocationCreateWithoutLocationInput[] | AllocationUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutLocationInput | AllocationCreateOrConnectWithoutLocationInput[]
+    createMany?: AllocationCreateManyLocationInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
   export type EnumLocationTypeFieldUpdateOperationsInput = {
     set?: $Enums.LocationType
   }
 
-  export type InventoryUpdateManyWithoutLocationNestedInput = {
-    create?: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput> | InventoryCreateWithoutLocationInput[] | InventoryUncheckedCreateWithoutLocationInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutLocationInput | InventoryCreateOrConnectWithoutLocationInput[]
-    upsert?: InventoryUpsertWithWhereUniqueWithoutLocationInput | InventoryUpsertWithWhereUniqueWithoutLocationInput[]
-    createMany?: InventoryCreateManyLocationInputEnvelope
-    set?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    disconnect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    delete?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    update?: InventoryUpdateWithWhereUniqueWithoutLocationInput | InventoryUpdateWithWhereUniqueWithoutLocationInput[]
-    updateMany?: InventoryUpdateManyWithWhereWithoutLocationInput | InventoryUpdateManyWithWhereWithoutLocationInput[]
-    deleteMany?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type InventoryUnitUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
+    upsert?: InventoryUnitUpsertWithWhereUniqueWithoutLocationInput | InventoryUnitUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InventoryUnitCreateManyLocationInputEnvelope
+    set?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    disconnect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    delete?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    update?: InventoryUnitUpdateWithWhereUniqueWithoutLocationInput | InventoryUnitUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InventoryUnitUpdateManyWithWhereWithoutLocationInput | InventoryUnitUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
   }
 
   export type TaskItemUpdateManyWithoutLocationNestedInput = {
@@ -24957,18 +28155,32 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
-  export type InventoryUncheckedUpdateManyWithoutLocationNestedInput = {
-    create?: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput> | InventoryCreateWithoutLocationInput[] | InventoryUncheckedCreateWithoutLocationInput[]
-    connectOrCreate?: InventoryCreateOrConnectWithoutLocationInput | InventoryCreateOrConnectWithoutLocationInput[]
-    upsert?: InventoryUpsertWithWhereUniqueWithoutLocationInput | InventoryUpsertWithWhereUniqueWithoutLocationInput[]
-    createMany?: InventoryCreateManyLocationInputEnvelope
-    set?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    disconnect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    delete?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    connect?: InventoryWhereUniqueInput | InventoryWhereUniqueInput[]
-    update?: InventoryUpdateWithWhereUniqueWithoutLocationInput | InventoryUpdateWithWhereUniqueWithoutLocationInput[]
-    updateMany?: InventoryUpdateManyWithWhereWithoutLocationInput | InventoryUpdateManyWithWhereWithoutLocationInput[]
-    deleteMany?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
+  export type AllocationUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput> | AllocationCreateWithoutLocationInput[] | AllocationUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutLocationInput | AllocationCreateOrConnectWithoutLocationInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutLocationInput | AllocationUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: AllocationCreateManyLocationInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutLocationInput | AllocationUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutLocationInput | AllocationUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
+    upsert?: InventoryUnitUpsertWithWhereUniqueWithoutLocationInput | InventoryUnitUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InventoryUnitCreateManyLocationInputEnvelope
+    set?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    disconnect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    delete?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    connect?: InventoryUnitWhereUniqueInput | InventoryUnitWhereUniqueInput[]
+    update?: InventoryUnitUpdateWithWhereUniqueWithoutLocationInput | InventoryUnitUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InventoryUnitUpdateManyWithWhereWithoutLocationInput | InventoryUnitUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
   }
 
   export type TaskItemUncheckedUpdateManyWithoutLocationNestedInput = {
@@ -24985,16 +28197,44 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
-  export type ProductVariantCreateNestedOneWithoutInventoryInput = {
-    create?: XOR<ProductVariantCreateWithoutInventoryInput, ProductVariantUncheckedCreateWithoutInventoryInput>
-    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryInput
+  export type AllocationUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput> | AllocationCreateWithoutLocationInput[] | AllocationUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutLocationInput | AllocationCreateOrConnectWithoutLocationInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutLocationInput | AllocationUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: AllocationCreateManyLocationInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutLocationInput | AllocationUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutLocationInput | AllocationUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type ProductVariantCreateNestedOneWithoutInventoryUnitsInput = {
+    create?: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryUnitsInput
     connect?: ProductVariantWhereUniqueInput
   }
 
-  export type LocationCreateNestedOneWithoutInventoryInput = {
-    create?: XOR<LocationCreateWithoutInventoryInput, LocationUncheckedCreateWithoutInventoryInput>
-    connectOrCreate?: LocationCreateOrConnectWithoutInventoryInput
+  export type LocationCreateNestedOneWithoutInventoryUnitsInput = {
+    create?: XOR<LocationCreateWithoutInventoryUnitsInput, LocationUncheckedCreateWithoutInventoryUnitsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInventoryUnitsInput
     connect?: LocationWhereUniqueInput
+  }
+
+  export type AllocationCreateNestedManyWithoutInventoryUnitInput = {
+    create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
+    createMany?: AllocationCreateManyInventoryUnitInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput = {
+    create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
+    createMany?: AllocationCreateManyInventoryUnitInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -25005,20 +28245,144 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type ProductVariantUpdateOneRequiredWithoutInventoryNestedInput = {
-    create?: XOR<ProductVariantCreateWithoutInventoryInput, ProductVariantUncheckedCreateWithoutInventoryInput>
-    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryInput
-    upsert?: ProductVariantUpsertWithoutInventoryInput
-    connect?: ProductVariantWhereUniqueInput
-    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutInventoryInput, ProductVariantUpdateWithoutInventoryInput>, ProductVariantUncheckedUpdateWithoutInventoryInput>
+  export type EnumInventoryStatusFieldUpdateOperationsInput = {
+    set?: $Enums.InventoryStatus
   }
 
-  export type LocationUpdateOneRequiredWithoutInventoryNestedInput = {
-    create?: XOR<LocationCreateWithoutInventoryInput, LocationUncheckedCreateWithoutInventoryInput>
-    connectOrCreate?: LocationCreateOrConnectWithoutInventoryInput
-    upsert?: LocationUpsertWithoutInventoryInput
+  export type ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryUnitsInput
+    upsert?: ProductVariantUpsertWithoutInventoryUnitsInput
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutInventoryUnitsInput, ProductVariantUpdateWithoutInventoryUnitsInput>, ProductVariantUncheckedUpdateWithoutInventoryUnitsInput>
+  }
+
+  export type LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput = {
+    create?: XOR<LocationCreateWithoutInventoryUnitsInput, LocationUncheckedCreateWithoutInventoryUnitsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInventoryUnitsInput
+    upsert?: LocationUpsertWithoutInventoryUnitsInput
     connect?: LocationWhereUniqueInput
-    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutInventoryInput, LocationUpdateWithoutInventoryInput>, LocationUncheckedUpdateWithoutInventoryInput>
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutInventoryUnitsInput, LocationUpdateWithoutInventoryUnitsInput>, LocationUncheckedUpdateWithoutInventoryUnitsInput>
+  }
+
+  export type AllocationUpdateManyWithoutInventoryUnitNestedInput = {
+    create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput | AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput[]
+    createMany?: AllocationCreateManyInventoryUnitInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput | AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutInventoryUnitInput | AllocationUpdateManyWithWhereWithoutInventoryUnitInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput = {
+    create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput | AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput[]
+    createMany?: AllocationCreateManyInventoryUnitInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput | AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutInventoryUnitInput | AllocationUpdateManyWithWhereWithoutInventoryUnitInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type InventoryUnitCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<InventoryUnitCreateWithoutAllocationsInput, InventoryUnitUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutAllocationsInput
+    connect?: InventoryUnitWhereUniqueInput
+  }
+
+  export type OrderCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<OrderCreateWithoutAllocationsInput, OrderUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutAllocationsInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type OrderItemCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<OrderItemCreateWithoutAllocationsInput, OrderItemUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: OrderItemCreateOrConnectWithoutAllocationsInput
+    connect?: OrderItemWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<ProductVariantCreateWithoutAllocationsInput, ProductVariantUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutAllocationsInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type LocationCreateNestedOneWithoutAllocationsInput = {
+    create?: XOR<LocationCreateWithoutAllocationsInput, LocationUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutAllocationsInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type TaskItemCreateNestedOneWithoutAllocationInput = {
+    create?: XOR<TaskItemCreateWithoutAllocationInput, TaskItemUncheckedCreateWithoutAllocationInput>
+    connectOrCreate?: TaskItemCreateOrConnectWithoutAllocationInput
+    connect?: TaskItemWhereUniqueInput
+  }
+
+  export type EnumAllocationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AllocationStatus
+  }
+
+  export type InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutAllocationsInput, InventoryUnitUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutAllocationsInput
+    upsert?: InventoryUnitUpsertWithoutAllocationsInput
+    connect?: InventoryUnitWhereUniqueInput
+    update?: XOR<XOR<InventoryUnitUpdateToOneWithWhereWithoutAllocationsInput, InventoryUnitUpdateWithoutAllocationsInput>, InventoryUnitUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type OrderUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<OrderCreateWithoutAllocationsInput, OrderUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutAllocationsInput
+    upsert?: OrderUpsertWithoutAllocationsInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutAllocationsInput, OrderUpdateWithoutAllocationsInput>, OrderUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type OrderItemUpdateOneWithoutAllocationsNestedInput = {
+    create?: XOR<OrderItemCreateWithoutAllocationsInput, OrderItemUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: OrderItemCreateOrConnectWithoutAllocationsInput
+    upsert?: OrderItemUpsertWithoutAllocationsInput
+    disconnect?: OrderItemWhereInput | boolean
+    delete?: OrderItemWhereInput | boolean
+    connect?: OrderItemWhereUniqueInput
+    update?: XOR<XOR<OrderItemUpdateToOneWithWhereWithoutAllocationsInput, OrderItemUpdateWithoutAllocationsInput>, OrderItemUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutAllocationsInput, ProductVariantUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutAllocationsInput
+    upsert?: ProductVariantUpsertWithoutAllocationsInput
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutAllocationsInput, ProductVariantUpdateWithoutAllocationsInput>, ProductVariantUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type LocationUpdateOneRequiredWithoutAllocationsNestedInput = {
+    create?: XOR<LocationCreateWithoutAllocationsInput, LocationUncheckedCreateWithoutAllocationsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutAllocationsInput
+    upsert?: LocationUpsertWithoutAllocationsInput
+    connect?: LocationWhereUniqueInput
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutAllocationsInput, LocationUpdateWithoutAllocationsInput>, LocationUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type TaskItemUpdateOneWithoutAllocationNestedInput = {
+    create?: XOR<TaskItemCreateWithoutAllocationInput, TaskItemUncheckedCreateWithoutAllocationInput>
+    connectOrCreate?: TaskItemCreateOrConnectWithoutAllocationInput
+    upsert?: TaskItemUpsertWithoutAllocationInput
+    disconnect?: TaskItemWhereInput | boolean
+    delete?: TaskItemWhereInput | boolean
+    connect?: TaskItemWhereUniqueInput
+    update?: XOR<XOR<TaskItemUpdateToOneWithWhereWithoutAllocationInput, TaskItemUpdateWithoutAllocationInput>, TaskItemUncheckedUpdateWithoutAllocationInput>
   }
 
   export type OrderItemCreateNestedManyWithoutOrderInput = {
@@ -25035,6 +28399,13 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
+  export type AllocationCreateNestedManyWithoutOrderInput = {
+    create?: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput> | AllocationCreateWithoutOrderInput[] | AllocationUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderInput | AllocationCreateOrConnectWithoutOrderInput[]
+    createMany?: AllocationCreateManyOrderInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
   export type OrderItemUncheckedCreateNestedManyWithoutOrderInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -25049,8 +28420,19 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
+  export type AllocationUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput> | AllocationCreateWithoutOrderInput[] | AllocationUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderInput | AllocationCreateOrConnectWithoutOrderInput[]
+    createMany?: AllocationCreateManyOrderInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
   export type EnumOrderStatusFieldUpdateOperationsInput = {
     set?: $Enums.OrderStatus
+  }
+
+  export type EnumPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentStatus
   }
 
   export type EnumPriorityFieldUpdateOperationsInput = {
@@ -25093,6 +28475,20 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
+  export type AllocationUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput> | AllocationCreateWithoutOrderInput[] | AllocationUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderInput | AllocationCreateOrConnectWithoutOrderInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutOrderInput | AllocationUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: AllocationCreateManyOrderInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutOrderInput | AllocationUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutOrderInput | AllocationUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -25121,6 +28517,20 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
+  export type AllocationUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput> | AllocationCreateWithoutOrderInput[] | AllocationUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderInput | AllocationCreateOrConnectWithoutOrderInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutOrderInput | AllocationUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: AllocationCreateManyOrderInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutOrderInput | AllocationUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutOrderInput | AllocationUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
   export type OrderCreateNestedOneWithoutItemsInput = {
     create?: XOR<OrderCreateWithoutItemsInput, OrderUncheckedCreateWithoutItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutItemsInput
@@ -25134,6 +28544,13 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
+  export type AllocationCreateNestedManyWithoutOrderItemInput = {
+    create?: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput> | AllocationCreateWithoutOrderItemInput[] | AllocationUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderItemInput | AllocationCreateOrConnectWithoutOrderItemInput[]
+    createMany?: AllocationCreateManyOrderItemInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
   export type TaskItemUncheckedCreateNestedManyWithoutOrderItemInput = {
     create?: XOR<TaskItemCreateWithoutOrderItemInput, TaskItemUncheckedCreateWithoutOrderItemInput> | TaskItemCreateWithoutOrderItemInput[] | TaskItemUncheckedCreateWithoutOrderItemInput[]
     connectOrCreate?: TaskItemCreateOrConnectWithoutOrderItemInput | TaskItemCreateOrConnectWithoutOrderItemInput[]
@@ -25141,12 +28558,11 @@ export namespace Prisma {
     connect?: TaskItemWhereUniqueInput | TaskItemWhereUniqueInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type AllocationUncheckedCreateNestedManyWithoutOrderItemInput = {
+    create?: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput> | AllocationCreateWithoutOrderItemInput[] | AllocationUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderItemInput | AllocationCreateOrConnectWithoutOrderItemInput[]
+    createMany?: AllocationCreateManyOrderItemInputEnvelope
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
   export type OrderUpdateOneRequiredWithoutItemsNestedInput = {
@@ -25171,6 +28587,20 @@ export namespace Prisma {
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
   }
 
+  export type AllocationUpdateManyWithoutOrderItemNestedInput = {
+    create?: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput> | AllocationCreateWithoutOrderItemInput[] | AllocationUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderItemInput | AllocationCreateOrConnectWithoutOrderItemInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutOrderItemInput | AllocationUpsertWithWhereUniqueWithoutOrderItemInput[]
+    createMany?: AllocationCreateManyOrderItemInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutOrderItemInput | AllocationUpdateWithWhereUniqueWithoutOrderItemInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutOrderItemInput | AllocationUpdateManyWithWhereWithoutOrderItemInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
   export type TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput = {
     create?: XOR<TaskItemCreateWithoutOrderItemInput, TaskItemUncheckedCreateWithoutOrderItemInput> | TaskItemCreateWithoutOrderItemInput[] | TaskItemUncheckedCreateWithoutOrderItemInput[]
     connectOrCreate?: TaskItemCreateOrConnectWithoutOrderItemInput | TaskItemCreateOrConnectWithoutOrderItemInput[]
@@ -25183,6 +28613,20 @@ export namespace Prisma {
     update?: TaskItemUpdateWithWhereUniqueWithoutOrderItemInput | TaskItemUpdateWithWhereUniqueWithoutOrderItemInput[]
     updateMany?: TaskItemUpdateManyWithWhereWithoutOrderItemInput | TaskItemUpdateManyWithWhereWithoutOrderItemInput[]
     deleteMany?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutOrderItemNestedInput = {
+    create?: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput> | AllocationCreateWithoutOrderItemInput[] | AllocationUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: AllocationCreateOrConnectWithoutOrderItemInput | AllocationCreateOrConnectWithoutOrderItemInput[]
+    upsert?: AllocationUpsertWithWhereUniqueWithoutOrderItemInput | AllocationUpsertWithWhereUniqueWithoutOrderItemInput[]
+    createMany?: AllocationCreateManyOrderItemInputEnvelope
+    set?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    disconnect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    delete?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+    update?: AllocationUpdateWithWhereUniqueWithoutOrderItemInput | AllocationUpdateWithWhereUniqueWithoutOrderItemInput[]
+    updateMany?: AllocationUpdateManyWithWhereWithoutOrderItemInput | AllocationUpdateManyWithWhereWithoutOrderItemInput[]
+    deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
   export type WorkTaskCreateorderIdsInput = {
@@ -25229,6 +28673,10 @@ export namespace Prisma {
 
   export type EnumWorkTaskStatusFieldUpdateOperationsInput = {
     set?: $Enums.WorkTaskStatus
+  }
+
+  export type NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput = {
+    set?: $Enums.WorkTaskBlockReason | null
   }
 
   export type WorkTaskUpdateorderIdsInput = {
@@ -25338,6 +28786,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AllocationCreateNestedOneWithoutTaskItemInput = {
+    create?: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+    connectOrCreate?: AllocationCreateOrConnectWithoutTaskItemInput
+    connect?: AllocationWhereUniqueInput
+  }
+
+  export type AllocationUncheckedCreateNestedOneWithoutTaskItemInput = {
+    create?: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+    connectOrCreate?: AllocationCreateOrConnectWithoutTaskItemInput
+    connect?: AllocationWhereUniqueInput
+  }
+
   export type EnumWorkTaskItemStatusFieldUpdateOperationsInput = {
     set?: $Enums.WorkTaskItemStatus
   }
@@ -25398,6 +28858,26 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompletedTaskItemsInput, UserUpdateWithoutCompletedTaskItemsInput>, UserUncheckedUpdateWithoutCompletedTaskItemsInput>
   }
 
+  export type AllocationUpdateOneWithoutTaskItemNestedInput = {
+    create?: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+    connectOrCreate?: AllocationCreateOrConnectWithoutTaskItemInput
+    upsert?: AllocationUpsertWithoutTaskItemInput
+    disconnect?: AllocationWhereInput | boolean
+    delete?: AllocationWhereInput | boolean
+    connect?: AllocationWhereUniqueInput
+    update?: XOR<XOR<AllocationUpdateToOneWithWhereWithoutTaskItemInput, AllocationUpdateWithoutTaskItemInput>, AllocationUncheckedUpdateWithoutTaskItemInput>
+  }
+
+  export type AllocationUncheckedUpdateOneWithoutTaskItemNestedInput = {
+    create?: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+    connectOrCreate?: AllocationCreateOrConnectWithoutTaskItemInput
+    upsert?: AllocationUpsertWithoutTaskItemInput
+    disconnect?: AllocationWhereInput | boolean
+    delete?: AllocationWhereInput | boolean
+    connect?: AllocationWhereUniqueInput
+    update?: XOR<XOR<AllocationUpdateToOneWithWhereWithoutTaskItemInput, AllocationUpdateWithoutTaskItemInput>, AllocationUncheckedUpdateWithoutTaskItemInput>
+  }
+
   export type WorkTaskCreateNestedOneWithoutEventsInput = {
     create?: XOR<WorkTaskCreateWithoutEventsInput, WorkTaskUncheckedCreateWithoutEventsInput>
     connectOrCreate?: WorkTaskCreateOrConnectWithoutEventsInput
@@ -25422,10 +28902,12 @@ export namespace Prisma {
     update?: XOR<XOR<WorkTaskUpdateToOneWithWhereWithoutEventsInput, WorkTaskUpdateWithoutEventsInput>, WorkTaskUncheckedUpdateWithoutEventsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutTaskEventsNestedInput = {
+  export type UserUpdateOneWithoutTaskEventsNestedInput = {
     create?: XOR<UserCreateWithoutTaskEventsInput, UserUncheckedCreateWithoutTaskEventsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTaskEventsInput
     upsert?: UserUpsertWithoutTaskEventsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTaskEventsInput, UserUpdateWithoutTaskEventsInput>, UserUncheckedUpdateWithoutTaskEventsInput>
   }
@@ -25668,6 +29150,40 @@ export namespace Prisma {
     _max?: NestedEnumLocationTypeFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumInventoryStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryStatus | EnumInventoryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryStatusFilter<$PrismaModel> | $Enums.InventoryStatus
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -25695,11 +29211,45 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumInventoryStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryStatus | EnumInventoryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryStatus[] | ListEnumInventoryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryStatusWithAggregatesFilter<$PrismaModel> | $Enums.InventoryStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryStatusFilter<$PrismaModel>
+    _max?: NestedEnumInventoryStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAllocationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AllocationStatus | EnumAllocationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAllocationStatusFilter<$PrismaModel> | $Enums.AllocationStatus
+  }
+
+  export type NestedEnumAllocationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AllocationStatus | EnumAllocationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AllocationStatus[] | ListEnumAllocationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAllocationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AllocationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAllocationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAllocationStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
+  export type NestedEnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
   }
 
   export type NestedEnumPriorityFilter<$PrismaModel = never> = {
@@ -25753,6 +29303,16 @@ export namespace Prisma {
     _max?: NestedEnumOrderStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumPriorityWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
     in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
@@ -25779,33 +29339,6 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumWorkTaskTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.WorkTaskType | EnumWorkTaskTypeFieldRefInput<$PrismaModel>
     in?: $Enums.WorkTaskType[] | ListEnumWorkTaskTypeFieldRefInput<$PrismaModel>
@@ -25818,6 +29351,13 @@ export namespace Prisma {
     in?: $Enums.WorkTaskStatus[] | ListEnumWorkTaskStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.WorkTaskStatus[] | ListEnumWorkTaskStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumWorkTaskStatusFilter<$PrismaModel> | $Enums.WorkTaskStatus
+  }
+
+  export type NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.WorkTaskBlockReason | EnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    in?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel> | $Enums.WorkTaskBlockReason | null
   }
 
   export type NestedEnumWorkTaskTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -25838,6 +29378,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWorkTaskStatusFilter<$PrismaModel>
     _max?: NestedEnumWorkTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumWorkTaskBlockReasonNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WorkTaskBlockReason | EnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    in?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.WorkTaskBlockReason[] | ListEnumWorkTaskBlockReasonFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumWorkTaskBlockReasonNullableWithAggregatesFilter<$PrismaModel> | $Enums.WorkTaskBlockReason | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel>
+    _max?: NestedEnumWorkTaskBlockReasonNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumWorkTaskItemStatusFilter<$PrismaModel = never> = {
@@ -25957,11 +29507,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25979,11 +29533,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26004,6 +29562,7 @@ export namespace Prisma {
   export type TaskEventCreateWithoutUserInput = {
     id?: string
     eventType: $Enums.WorkTaskEventType
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutEventsInput
@@ -26013,6 +29572,7 @@ export namespace Prisma {
     id?: string
     taskId: string
     eventType: $Enums.WorkTaskEventType
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -26029,11 +29589,15 @@ export namespace Prisma {
 
   export type TaskItemCreateWithoutCompletedByUserInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -26041,6 +29605,7 @@ export namespace Prisma {
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutCompletedByUserInput = {
@@ -26050,13 +29615,18 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutCompletedByUserInput = {
@@ -26075,6 +29645,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
   }
 
@@ -26084,6 +29655,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
   }
 
@@ -26210,11 +29782,15 @@ export namespace Prisma {
     assignedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     startedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    blockReason?: EnumWorkTaskBlockReasonNullableFilter<"WorkTask"> | $Enums.WorkTaskBlockReason | null
+    blockedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
+    shortItems?: IntFilter<"WorkTask"> | number
+    skippedItems?: IntFilter<"WorkTask"> | number
     notes?: StringNullableFilter<"WorkTask"> | string | null
     createdAt?: DateTimeFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeFilter<"WorkTask"> | Date | string
@@ -26243,7 +29819,8 @@ export namespace Prisma {
     id?: StringFilter<"TaskEvent"> | string
     taskId?: StringFilter<"TaskEvent"> | string
     eventType?: EnumWorkTaskEventTypeFilter<"TaskEvent"> | $Enums.WorkTaskEventType
-    userId?: StringFilter<"TaskEvent"> | string
+    userId?: StringNullableFilter<"TaskEvent"> | string | null
+    taskItemId?: StringNullableFilter<"TaskEvent"> | string | null
     data?: JsonNullableFilter<"TaskEvent">
     createdAt?: DateTimeFilter<"TaskEvent"> | Date | string
   }
@@ -26274,12 +29851,16 @@ export namespace Prisma {
     orderItemId?: StringNullableFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableFilter<"TaskItem"> | string | null
     locationId?: StringNullableFilter<"TaskItem"> | string | null
+    allocationId?: StringNullableFilter<"TaskItem"> | string | null
     sequence?: IntFilter<"TaskItem"> | number
     quantityRequired?: IntFilter<"TaskItem"> | number
     quantityCompleted?: IntFilter<"TaskItem"> | number
     status?: EnumWorkTaskItemStatusFilter<"TaskItem"> | $Enums.WorkTaskItemStatus
     completedBy?: StringNullableFilter<"TaskItem"> | string | null
     completedAt?: DateTimeNullableFilter<"TaskItem"> | Date | string | null
+    shortReason?: StringNullableFilter<"TaskItem"> | string | null
+    locationScanned?: BoolFilter<"TaskItem"> | boolean
+    itemScanned?: BoolFilter<"TaskItem"> | boolean
     createdAt?: DateTimeFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeFilter<"TaskItem"> | Date | string
   }
@@ -26310,6 +29891,7 @@ export namespace Prisma {
     entityType?: StringFilter<"AuditLog"> | string
     entityId?: StringFilter<"AuditLog"> | string
     changes?: JsonNullableFilter<"AuditLog">
+    correlationId?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
@@ -26536,10 +30118,13 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
@@ -26552,10 +30137,13 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutProductInput = {
@@ -26598,6 +30186,8 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFilter<"ProductVariant"> | boolean
+    trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
   }
@@ -26631,39 +30221,57 @@ export namespace Prisma {
     create: XOR<ProductCreateWithoutVariantsInput, ProductUncheckedCreateWithoutVariantsInput>
   }
 
-  export type InventoryCreateWithoutProductVariantInput = {
+  export type InventoryUnitCreateWithoutProductVariantInput = {
     id?: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
-    location: LocationCreateNestedOneWithoutInventoryInput
+    location: LocationCreateNestedOneWithoutInventoryUnitsInput
+    allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
   }
 
-  export type InventoryUncheckedCreateWithoutProductVariantInput = {
+  export type InventoryUnitUncheckedCreateWithoutProductVariantInput = {
     id?: string
     locationId: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
+    allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
-  export type InventoryCreateOrConnectWithoutProductVariantInput = {
-    where: InventoryWhereUniqueInput
-    create: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput>
+  export type InventoryUnitCreateOrConnectWithoutProductVariantInput = {
+    where: InventoryUnitWhereUniqueInput
+    create: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput>
   }
 
-  export type InventoryCreateManyProductVariantInputEnvelope = {
-    data: InventoryCreateManyProductVariantInput | InventoryCreateManyProductVariantInput[]
+  export type InventoryUnitCreateManyProductVariantInputEnvelope = {
+    data: InventoryUnitCreateManyProductVariantInput | InventoryUnitCreateManyProductVariantInput[]
     skipDuplicates?: boolean
   }
 
   export type TaskItemCreateWithoutProductVariantInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -26671,6 +30279,7 @@ export namespace Prisma {
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutProductVariantInput = {
@@ -26679,14 +30288,19 @@ export namespace Prisma {
     orderId: string
     orderItemId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutProductVariantInput = {
@@ -26696,6 +30310,46 @@ export namespace Prisma {
 
   export type TaskItemCreateManyProductVariantInputEnvelope = {
     data: TaskItemCreateManyProductVariantInput | TaskItemCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AllocationCreateWithoutProductVariantInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
+  }
+
+  export type AllocationUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationCreateOrConnectWithoutProductVariantInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type AllocationCreateManyProductVariantInputEnvelope = {
+    data: AllocationCreateManyProductVariantInput | AllocationCreateManyProductVariantInput[]
     skipDuplicates?: boolean
   }
 
@@ -26734,32 +30388,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type InventoryUpsertWithWhereUniqueWithoutProductVariantInput = {
-    where: InventoryWhereUniqueInput
-    update: XOR<InventoryUpdateWithoutProductVariantInput, InventoryUncheckedUpdateWithoutProductVariantInput>
-    create: XOR<InventoryCreateWithoutProductVariantInput, InventoryUncheckedCreateWithoutProductVariantInput>
+  export type InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: InventoryUnitWhereUniqueInput
+    update: XOR<InventoryUnitUpdateWithoutProductVariantInput, InventoryUnitUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput>
   }
 
-  export type InventoryUpdateWithWhereUniqueWithoutProductVariantInput = {
-    where: InventoryWhereUniqueInput
-    data: XOR<InventoryUpdateWithoutProductVariantInput, InventoryUncheckedUpdateWithoutProductVariantInput>
+  export type InventoryUnitUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: InventoryUnitWhereUniqueInput
+    data: XOR<InventoryUnitUpdateWithoutProductVariantInput, InventoryUnitUncheckedUpdateWithoutProductVariantInput>
   }
 
-  export type InventoryUpdateManyWithWhereWithoutProductVariantInput = {
-    where: InventoryScalarWhereInput
-    data: XOR<InventoryUpdateManyMutationInput, InventoryUncheckedUpdateManyWithoutProductVariantInput>
+  export type InventoryUnitUpdateManyWithWhereWithoutProductVariantInput = {
+    where: InventoryUnitScalarWhereInput
+    data: XOR<InventoryUnitUpdateManyMutationInput, InventoryUnitUncheckedUpdateManyWithoutProductVariantInput>
   }
 
-  export type InventoryScalarWhereInput = {
-    AND?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
-    OR?: InventoryScalarWhereInput[]
-    NOT?: InventoryScalarWhereInput | InventoryScalarWhereInput[]
-    id?: StringFilter<"Inventory"> | string
-    productVariantId?: StringFilter<"Inventory"> | string
-    locationId?: StringFilter<"Inventory"> | string
-    quantityOnHand?: IntFilter<"Inventory"> | number
-    quantityReserved?: IntFilter<"Inventory"> | number
-    updatedAt?: DateTimeFilter<"Inventory"> | Date | string
+  export type InventoryUnitScalarWhereInput = {
+    AND?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
+    OR?: InventoryUnitScalarWhereInput[]
+    NOT?: InventoryUnitScalarWhereInput | InventoryUnitScalarWhereInput[]
+    id?: StringFilter<"InventoryUnit"> | string
+    productVariantId?: StringFilter<"InventoryUnit"> | string
+    locationId?: StringFilter<"InventoryUnit"> | string
+    quantity?: IntFilter<"InventoryUnit"> | number
+    status?: EnumInventoryStatusFilter<"InventoryUnit"> | $Enums.InventoryStatus
+    lotNumber?: StringNullableFilter<"InventoryUnit"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InventoryUnit"> | Date | string | null
+    receivedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    receivedFrom?: StringNullableFilter<"InventoryUnit"> | string | null
+    unitCost?: DecimalNullableFilter<"InventoryUnit"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"InventoryUnit"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryUnit"> | Date | string
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutProductVariantInput = {
@@ -26778,39 +30438,92 @@ export namespace Prisma {
     data: XOR<TaskItemUpdateManyMutationInput, TaskItemUncheckedUpdateManyWithoutProductVariantInput>
   }
 
-  export type InventoryCreateWithoutLocationInput = {
-    id?: string
-    quantityOnHand?: number
-    quantityReserved?: number
-    updatedAt?: Date | string
-    productVariant: ProductVariantCreateNestedOneWithoutInventoryInput
+  export type AllocationUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: AllocationWhereUniqueInput
+    update: XOR<AllocationUpdateWithoutProductVariantInput, AllocationUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<AllocationCreateWithoutProductVariantInput, AllocationUncheckedCreateWithoutProductVariantInput>
   }
 
-  export type InventoryUncheckedCreateWithoutLocationInput = {
+  export type AllocationUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: AllocationWhereUniqueInput
+    data: XOR<AllocationUpdateWithoutProductVariantInput, AllocationUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type AllocationUpdateManyWithWhereWithoutProductVariantInput = {
+    where: AllocationScalarWhereInput
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type AllocationScalarWhereInput = {
+    AND?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+    OR?: AllocationScalarWhereInput[]
+    NOT?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+    id?: StringFilter<"Allocation"> | string
+    inventoryUnitId?: StringFilter<"Allocation"> | string
+    orderId?: StringFilter<"Allocation"> | string
+    orderItemId?: StringNullableFilter<"Allocation"> | string | null
+    productVariantId?: StringFilter<"Allocation"> | string
+    locationId?: StringFilter<"Allocation"> | string
+    quantity?: IntFilter<"Allocation"> | number
+    lotNumber?: StringNullableFilter<"Allocation"> | string | null
+    status?: EnumAllocationStatusFilter<"Allocation"> | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFilter<"Allocation"> | Date | string
+    releasedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    pickedAt?: DateTimeNullableFilter<"Allocation"> | Date | string | null
+    taskItemId?: StringNullableFilter<"Allocation"> | string | null
+  }
+
+  export type InventoryUnitCreateWithoutLocationInput = {
+    id?: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
+    allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
+  }
+
+  export type InventoryUnitUncheckedCreateWithoutLocationInput = {
     id?: string
     productVariantId: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
+    allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
-  export type InventoryCreateOrConnectWithoutLocationInput = {
-    where: InventoryWhereUniqueInput
-    create: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput>
+  export type InventoryUnitCreateOrConnectWithoutLocationInput = {
+    where: InventoryUnitWhereUniqueInput
+    create: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput>
   }
 
-  export type InventoryCreateManyLocationInputEnvelope = {
-    data: InventoryCreateManyLocationInput | InventoryCreateManyLocationInput[]
+  export type InventoryUnitCreateManyLocationInputEnvelope = {
+    data: InventoryUnitCreateManyLocationInput | InventoryUnitCreateManyLocationInput[]
     skipDuplicates?: boolean
   }
 
   export type TaskItemCreateWithoutLocationInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -26818,6 +30531,7 @@ export namespace Prisma {
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutLocationInput = {
@@ -26826,14 +30540,19 @@ export namespace Prisma {
     orderId: string
     orderItemId?: string | null
     productVariantId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutLocationInput = {
@@ -26846,20 +30565,60 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type InventoryUpsertWithWhereUniqueWithoutLocationInput = {
-    where: InventoryWhereUniqueInput
-    update: XOR<InventoryUpdateWithoutLocationInput, InventoryUncheckedUpdateWithoutLocationInput>
-    create: XOR<InventoryCreateWithoutLocationInput, InventoryUncheckedCreateWithoutLocationInput>
+  export type AllocationCreateWithoutLocationInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
   }
 
-  export type InventoryUpdateWithWhereUniqueWithoutLocationInput = {
-    where: InventoryWhereUniqueInput
-    data: XOR<InventoryUpdateWithoutLocationInput, InventoryUncheckedUpdateWithoutLocationInput>
+  export type AllocationUncheckedCreateWithoutLocationInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
   }
 
-  export type InventoryUpdateManyWithWhereWithoutLocationInput = {
-    where: InventoryScalarWhereInput
-    data: XOR<InventoryUpdateManyMutationInput, InventoryUncheckedUpdateManyWithoutLocationInput>
+  export type AllocationCreateOrConnectWithoutLocationInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput>
+  }
+
+  export type AllocationCreateManyLocationInputEnvelope = {
+    data: AllocationCreateManyLocationInput | AllocationCreateManyLocationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryUnitUpsertWithWhereUniqueWithoutLocationInput = {
+    where: InventoryUnitWhereUniqueInput
+    update: XOR<InventoryUnitUpdateWithoutLocationInput, InventoryUnitUncheckedUpdateWithoutLocationInput>
+    create: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput>
+  }
+
+  export type InventoryUnitUpdateWithWhereUniqueWithoutLocationInput = {
+    where: InventoryUnitWhereUniqueInput
+    data: XOR<InventoryUnitUpdateWithoutLocationInput, InventoryUnitUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type InventoryUnitUpdateManyWithWhereWithoutLocationInput = {
+    where: InventoryUnitScalarWhereInput
+    data: XOR<InventoryUnitUpdateManyMutationInput, InventoryUnitUncheckedUpdateManyWithoutLocationInput>
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutLocationInput = {
@@ -26878,7 +30637,23 @@ export namespace Prisma {
     data: XOR<TaskItemUpdateManyMutationInput, TaskItemUncheckedUpdateManyWithoutLocationInput>
   }
 
-  export type ProductVariantCreateWithoutInventoryInput = {
+  export type AllocationUpsertWithWhereUniqueWithoutLocationInput = {
+    where: AllocationWhereUniqueInput
+    update: XOR<AllocationUpdateWithoutLocationInput, AllocationUncheckedUpdateWithoutLocationInput>
+    create: XOR<AllocationCreateWithoutLocationInput, AllocationUncheckedCreateWithoutLocationInput>
+  }
+
+  export type AllocationUpdateWithWhereUniqueWithoutLocationInput = {
+    where: AllocationWhereUniqueInput
+    data: XOR<AllocationUpdateWithoutLocationInput, AllocationUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type AllocationUpdateManyWithWhereWithoutLocationInput = {
+    where: AllocationScalarWhereInput
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutLocationInput>
+  }
+
+  export type ProductVariantCreateWithoutInventoryUnitsInput = {
     id?: string
     sku: string
     upc?: string | null
@@ -26888,13 +30663,16 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
 
-  export type ProductVariantUncheckedCreateWithoutInventoryInput = {
+  export type ProductVariantUncheckedCreateWithoutInventoryUnitsInput = {
     id?: string
     productId: string
     sku: string
@@ -26905,59 +30683,114 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
-  export type ProductVariantCreateOrConnectWithoutInventoryInput = {
+  export type ProductVariantCreateOrConnectWithoutInventoryUnitsInput = {
     where: ProductVariantWhereUniqueInput
-    create: XOR<ProductVariantCreateWithoutInventoryInput, ProductVariantUncheckedCreateWithoutInventoryInput>
+    create: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
   }
 
-  export type LocationCreateWithoutInventoryInput = {
+  export type LocationCreateWithoutInventoryUnitsInput = {
     id?: string
     name: string
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
   }
 
-  export type LocationUncheckedCreateWithoutInventoryInput = {
+  export type LocationUncheckedCreateWithoutInventoryUnitsInput = {
     id?: string
     name: string
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
   }
 
-  export type LocationCreateOrConnectWithoutInventoryInput = {
+  export type LocationCreateOrConnectWithoutInventoryUnitsInput = {
     where: LocationWhereUniqueInput
-    create: XOR<LocationCreateWithoutInventoryInput, LocationUncheckedCreateWithoutInventoryInput>
+    create: XOR<LocationCreateWithoutInventoryUnitsInput, LocationUncheckedCreateWithoutInventoryUnitsInput>
   }
 
-  export type ProductVariantUpsertWithoutInventoryInput = {
-    update: XOR<ProductVariantUpdateWithoutInventoryInput, ProductVariantUncheckedUpdateWithoutInventoryInput>
-    create: XOR<ProductVariantCreateWithoutInventoryInput, ProductVariantUncheckedCreateWithoutInventoryInput>
+  export type AllocationCreateWithoutInventoryUnitInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
+  }
+
+  export type AllocationUncheckedCreateWithoutInventoryUnitInput = {
+    id?: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationCreateOrConnectWithoutInventoryUnitInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput>
+  }
+
+  export type AllocationCreateManyInventoryUnitInputEnvelope = {
+    data: AllocationCreateManyInventoryUnitInput | AllocationCreateManyInventoryUnitInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductVariantUpsertWithoutInventoryUnitsInput = {
+    update: XOR<ProductVariantUpdateWithoutInventoryUnitsInput, ProductVariantUncheckedUpdateWithoutInventoryUnitsInput>
+    create: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
     where?: ProductVariantWhereInput
   }
 
-  export type ProductVariantUpdateToOneWithWhereWithoutInventoryInput = {
+  export type ProductVariantUpdateToOneWithWhereWithoutInventoryUnitsInput = {
     where?: ProductVariantWhereInput
-    data: XOR<ProductVariantUpdateWithoutInventoryInput, ProductVariantUncheckedUpdateWithoutInventoryInput>
+    data: XOR<ProductVariantUpdateWithoutInventoryUnitsInput, ProductVariantUncheckedUpdateWithoutInventoryUnitsInput>
   }
 
-  export type ProductVariantUpdateWithoutInventoryInput = {
+  export type ProductVariantUpdateWithoutInventoryUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     upc?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26967,13 +30800,16 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
 
-  export type ProductVariantUncheckedUpdateWithoutInventoryInput = {
+  export type ProductVariantUncheckedUpdateWithoutInventoryUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
@@ -26984,64 +30820,637 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
-  export type LocationUpsertWithoutInventoryInput = {
-    update: XOR<LocationUpdateWithoutInventoryInput, LocationUncheckedUpdateWithoutInventoryInput>
-    create: XOR<LocationCreateWithoutInventoryInput, LocationUncheckedCreateWithoutInventoryInput>
+  export type LocationUpsertWithoutInventoryUnitsInput = {
+    update: XOR<LocationUpdateWithoutInventoryUnitsInput, LocationUncheckedUpdateWithoutInventoryUnitsInput>
+    create: XOR<LocationCreateWithoutInventoryUnitsInput, LocationUncheckedCreateWithoutInventoryUnitsInput>
     where?: LocationWhereInput
   }
 
-  export type LocationUpdateToOneWithWhereWithoutInventoryInput = {
+  export type LocationUpdateToOneWithWhereWithoutInventoryUnitsInput = {
     where?: LocationWhereInput
-    data: XOR<LocationUpdateWithoutInventoryInput, LocationUncheckedUpdateWithoutInventoryInput>
+    data: XOR<LocationUpdateWithoutInventoryUnitsInput, LocationUncheckedUpdateWithoutInventoryUnitsInput>
   }
 
-  export type LocationUpdateWithoutInventoryInput = {
+  export type LocationUpdateWithoutInventoryUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
   }
 
-  export type LocationUncheckedUpdateWithoutInventoryInput = {
+  export type LocationUncheckedUpdateWithoutInventoryUnitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput = {
+    where: AllocationWhereUniqueInput
+    update: XOR<AllocationUpdateWithoutInventoryUnitInput, AllocationUncheckedUpdateWithoutInventoryUnitInput>
+    create: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput>
+  }
+
+  export type AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput = {
+    where: AllocationWhereUniqueInput
+    data: XOR<AllocationUpdateWithoutInventoryUnitInput, AllocationUncheckedUpdateWithoutInventoryUnitInput>
+  }
+
+  export type AllocationUpdateManyWithWhereWithoutInventoryUnitInput = {
+    where: AllocationScalarWhereInput
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutInventoryUnitInput>
+  }
+
+  export type InventoryUnitCreateWithoutAllocationsInput = {
+    id?: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
+    location: LocationCreateNestedOneWithoutInventoryUnitsInput
+  }
+
+  export type InventoryUnitUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    productVariantId: string
+    locationId: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryUnitCreateOrConnectWithoutAllocationsInput = {
+    where: InventoryUnitWhereUniqueInput
+    create: XOR<InventoryUnitCreateWithoutAllocationsInput, InventoryUnitUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type OrderCreateWithoutAllocationsInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: OrderItemCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutAllocationsInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutAllocationsInput, OrderUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type OrderItemCreateWithoutAllocationsInput = {
+    id?: string
+    productVariantId: string
+    sku: string
+    quantity: number
+    quantityAllocated?: number
+    quantityPicked?: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    order: OrderCreateNestedOneWithoutItemsInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
+  }
+
+  export type OrderItemUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    orderId: string
+    productVariantId: string
+    sku: string
+    quantity: number
+    quantityAllocated?: number
+    quantityPicked?: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
+  }
+
+  export type OrderItemCreateOrConnectWithoutAllocationsInput = {
+    where: OrderItemWhereUniqueInput
+    create: XOR<OrderItemCreateWithoutAllocationsInput, OrderItemUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type ProductVariantCreateWithoutAllocationsInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVariantsInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutAllocationsInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutAllocationsInput, ProductVariantUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type LocationCreateWithoutAllocationsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationUncheckedCreateWithoutAllocationsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationCreateOrConnectWithoutAllocationsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutAllocationsInput, LocationUncheckedCreateWithoutAllocationsInput>
+  }
+
+  export type TaskItemCreateWithoutAllocationInput = {
+    id?: string
+    allocationId?: string | null
+    sequence: number
+    quantityRequired: number
+    quantityCompleted?: number
+    status?: $Enums.WorkTaskItemStatus
+    completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task: WorkTaskCreateNestedOneWithoutTaskItemsInput
+    order: OrderCreateNestedOneWithoutTaskItemsInput
+    orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
+    location?: LocationCreateNestedOneWithoutTaskItemsInput
+    completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+  }
+
+  export type TaskItemUncheckedCreateWithoutAllocationInput = {
+    id?: string
+    taskId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId?: string | null
+    locationId?: string | null
+    allocationId?: string | null
+    sequence: number
+    quantityRequired: number
+    quantityCompleted?: number
+    status?: $Enums.WorkTaskItemStatus
+    completedBy?: string | null
+    completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskItemCreateOrConnectWithoutAllocationInput = {
+    where: TaskItemWhereUniqueInput
+    create: XOR<TaskItemCreateWithoutAllocationInput, TaskItemUncheckedCreateWithoutAllocationInput>
+  }
+
+  export type InventoryUnitUpsertWithoutAllocationsInput = {
+    update: XOR<InventoryUnitUpdateWithoutAllocationsInput, InventoryUnitUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<InventoryUnitCreateWithoutAllocationsInput, InventoryUnitUncheckedCreateWithoutAllocationsInput>
+    where?: InventoryUnitWhereInput
+  }
+
+  export type InventoryUnitUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: InventoryUnitWhereInput
+    data: XOR<InventoryUnitUpdateWithoutAllocationsInput, InventoryUnitUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type InventoryUnitUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
+  }
+
+  export type InventoryUnitUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderUpsertWithoutAllocationsInput = {
+    update: XOR<OrderUpdateWithoutAllocationsInput, OrderUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<OrderCreateWithoutAllocationsInput, OrderUncheckedCreateWithoutAllocationsInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutAllocationsInput, OrderUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type OrderUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: OrderItemUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderItemUpsertWithoutAllocationsInput = {
+    update: XOR<OrderItemUpdateWithoutAllocationsInput, OrderItemUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<OrderItemCreateWithoutAllocationsInput, OrderItemUncheckedCreateWithoutAllocationsInput>
+    where?: OrderItemWhereInput
+  }
+
+  export type OrderItemUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: OrderItemWhereInput
+    data: XOR<OrderItemUpdateWithoutAllocationsInput, OrderItemUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type OrderItemUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
+  }
+
+  export type OrderItemUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
+  }
+
+  export type ProductVariantUpsertWithoutAllocationsInput = {
+    update: XOR<ProductVariantUpdateWithoutAllocationsInput, ProductVariantUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<ProductVariantCreateWithoutAllocationsInput, ProductVariantUncheckedCreateWithoutAllocationsInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutAllocationsInput, ProductVariantUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type ProductVariantUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type LocationUpsertWithoutAllocationsInput = {
+    update: XOR<LocationUpdateWithoutAllocationsInput, LocationUncheckedUpdateWithoutAllocationsInput>
+    create: XOR<LocationCreateWithoutAllocationsInput, LocationUncheckedCreateWithoutAllocationsInput>
+    where?: LocationWhereInput
+  }
+
+  export type LocationUpdateToOneWithWhereWithoutAllocationsInput = {
+    where?: LocationWhereInput
+    data: XOR<LocationUpdateWithoutAllocationsInput, LocationUncheckedUpdateWithoutAllocationsInput>
+  }
+
+  export type LocationUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutAllocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type TaskItemUpsertWithoutAllocationInput = {
+    update: XOR<TaskItemUpdateWithoutAllocationInput, TaskItemUncheckedUpdateWithoutAllocationInput>
+    create: XOR<TaskItemCreateWithoutAllocationInput, TaskItemUncheckedCreateWithoutAllocationInput>
+    where?: TaskItemWhereInput
+  }
+
+  export type TaskItemUpdateToOneWithWhereWithoutAllocationInput = {
+    where?: TaskItemWhereInput
+    data: XOR<TaskItemUpdateWithoutAllocationInput, TaskItemUncheckedUpdateWithoutAllocationInput>
+  }
+
+  export type TaskItemUpdateWithoutAllocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    sequence?: IntFieldUpdateOperationsInput | number
+    quantityRequired?: IntFieldUpdateOperationsInput | number
+    quantityCompleted?: IntFieldUpdateOperationsInput | number
+    status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
+    location?: LocationUpdateOneWithoutTaskItemsNestedInput
+    completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+  }
+
+  export type TaskItemUncheckedUpdateWithoutAllocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    sequence?: IntFieldUpdateOperationsInput | number
+    quantityRequired?: IntFieldUpdateOperationsInput | number
+    quantityCompleted?: IntFieldUpdateOperationsInput | number
+    status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
+    completedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderItemCreateWithoutOrderInput = {
     id?: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutOrderInput = {
     id?: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutOrderInput = {
@@ -27056,11 +31465,15 @@ export namespace Prisma {
 
   export type TaskItemCreateWithoutOrderInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -27068,6 +31481,7 @@ export namespace Prisma {
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutOrderInput = {
@@ -27076,14 +31490,19 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutOrderInput = {
@@ -27093,6 +31512,46 @@ export namespace Prisma {
 
   export type TaskItemCreateManyOrderInputEnvelope = {
     data: TaskItemCreateManyOrderInput | TaskItemCreateManyOrderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AllocationCreateWithoutOrderInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
+  }
+
+  export type AllocationUncheckedCreateWithoutOrderInput = {
+    id?: string
+    inventoryUnitId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationCreateOrConnectWithoutOrderInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput>
+  }
+
+  export type AllocationCreateManyOrderInputEnvelope = {
+    data: AllocationCreateManyOrderInput | AllocationCreateManyOrderInput[]
     skipDuplicates?: boolean
   }
 
@@ -27119,8 +31578,10 @@ export namespace Prisma {
     id?: StringFilter<"OrderItem"> | string
     orderId?: StringFilter<"OrderItem"> | string
     productVariantId?: StringFilter<"OrderItem"> | string
+    sku?: StringFilter<"OrderItem"> | string
     quantity?: IntFilter<"OrderItem"> | number
-    quantityPicked?: IntNullableFilter<"OrderItem"> | number | null
+    quantityAllocated?: IntFilter<"OrderItem"> | number
+    quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
   }
 
@@ -27140,38 +31601,68 @@ export namespace Prisma {
     data: XOR<TaskItemUpdateManyMutationInput, TaskItemUncheckedUpdateManyWithoutOrderInput>
   }
 
+  export type AllocationUpsertWithWhereUniqueWithoutOrderInput = {
+    where: AllocationWhereUniqueInput
+    update: XOR<AllocationUpdateWithoutOrderInput, AllocationUncheckedUpdateWithoutOrderInput>
+    create: XOR<AllocationCreateWithoutOrderInput, AllocationUncheckedCreateWithoutOrderInput>
+  }
+
+  export type AllocationUpdateWithWhereUniqueWithoutOrderInput = {
+    where: AllocationWhereUniqueInput
+    data: XOR<AllocationUpdateWithoutOrderInput, AllocationUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type AllocationUpdateManyWithWhereWithoutOrderInput = {
+    where: AllocationScalarWhereInput
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutOrderInput>
+  }
+
   export type OrderCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutItemsInput = {
@@ -27181,11 +31672,15 @@ export namespace Prisma {
 
   export type TaskItemCreateWithoutOrderItemInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
@@ -27193,6 +31688,7 @@ export namespace Prisma {
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutOrderItemInput = {
@@ -27201,14 +31697,19 @@ export namespace Prisma {
     orderId: string
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutOrderItemInput = {
@@ -27218,6 +31719,46 @@ export namespace Prisma {
 
   export type TaskItemCreateManyOrderItemInputEnvelope = {
     data: TaskItemCreateManyOrderItemInput | TaskItemCreateManyOrderItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AllocationCreateWithoutOrderItemInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+    taskItem?: TaskItemCreateNestedOneWithoutAllocationInput
+  }
+
+  export type AllocationUncheckedCreateWithoutOrderItemInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationCreateOrConnectWithoutOrderItemInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput>
+  }
+
+  export type AllocationCreateManyOrderItemInputEnvelope = {
+    data: AllocationCreateManyOrderItemInput | AllocationCreateManyOrderItemInput[]
     skipDuplicates?: boolean
   }
 
@@ -27236,34 +31777,48 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderItemInput = {
@@ -27280,6 +31835,22 @@ export namespace Prisma {
   export type TaskItemUpdateManyWithWhereWithoutOrderItemInput = {
     where: TaskItemScalarWhereInput
     data: XOR<TaskItemUpdateManyMutationInput, TaskItemUncheckedUpdateManyWithoutOrderItemInput>
+  }
+
+  export type AllocationUpsertWithWhereUniqueWithoutOrderItemInput = {
+    where: AllocationWhereUniqueInput
+    update: XOR<AllocationUpdateWithoutOrderItemInput, AllocationUncheckedUpdateWithoutOrderItemInput>
+    create: XOR<AllocationCreateWithoutOrderItemInput, AllocationUncheckedCreateWithoutOrderItemInput>
+  }
+
+  export type AllocationUpdateWithWhereUniqueWithoutOrderItemInput = {
+    where: AllocationWhereUniqueInput
+    data: XOR<AllocationUpdateWithoutOrderItemInput, AllocationUncheckedUpdateWithoutOrderItemInput>
+  }
+
+  export type AllocationUpdateManyWithWhereWithoutOrderItemInput = {
+    where: AllocationScalarWhereInput
+    data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutOrderItemInput>
   }
 
   export type UserCreateWithoutAssignedTasksInput = {
@@ -27327,11 +31898,15 @@ export namespace Prisma {
 
   export type TaskItemCreateWithoutTaskInput = {
     id?: string
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     order: OrderCreateNestedOneWithoutTaskItemsInput
@@ -27339,6 +31914,7 @@ export namespace Prisma {
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
+    allocation?: AllocationCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemUncheckedCreateWithoutTaskInput = {
@@ -27347,14 +31923,19 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    allocation?: AllocationUncheckedCreateNestedOneWithoutTaskItemInput
   }
 
   export type TaskItemCreateOrConnectWithoutTaskInput = {
@@ -27370,15 +31951,17 @@ export namespace Prisma {
   export type TaskEventCreateWithoutTaskInput = {
     id?: string
     eventType: $Enums.WorkTaskEventType
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutTaskEventsInput
+    user?: UserCreateNestedOneWithoutTaskEventsInput
   }
 
   export type TaskEventUncheckedCreateWithoutTaskInput = {
     id?: string
     eventType: $Enums.WorkTaskEventType
-    userId: string
+    userId?: string | null
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -27484,11 +32067,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27507,11 +32094,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27527,34 +32118,48 @@ export namespace Prisma {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: OrderItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutTaskItemsInput = {
     id?: string
     orderNumber: string
     shopifyOrderId?: string | null
+    customerId?: string | null
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
     trackingNumber?: string | null
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutTaskItemsInput = {
@@ -27565,19 +32170,25 @@ export namespace Prisma {
   export type OrderItemCreateWithoutTaskItemsInput = {
     id?: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     order: OrderCreateNestedOneWithoutItemsInput
+    allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutTaskItemsInput = {
     id?: string
     orderId: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutTaskItemsInput = {
@@ -27595,10 +32206,13 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
-    inventory?: InventoryCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutTaskItemsInput = {
@@ -27612,9 +32226,12 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutTaskItemsInput = {
@@ -27628,11 +32245,17 @@ export namespace Prisma {
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryCreateNestedManyWithoutLocationInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutTaskItemsInput = {
@@ -27641,11 +32264,17 @@ export namespace Prisma {
     barcode?: string | null
     type?: $Enums.LocationType
     zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
     isPickable?: boolean
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    inventory?: InventoryUncheckedCreateNestedManyWithoutLocationInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutTaskItemsInput = {
@@ -27696,6 +32325,41 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutCompletedTaskItemsInput, UserUncheckedCreateWithoutCompletedTaskItemsInput>
   }
 
+  export type AllocationCreateWithoutTaskItemInput = {
+    id?: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    inventoryUnit: InventoryUnitCreateNestedOneWithoutAllocationsInput
+    order: OrderCreateNestedOneWithoutAllocationsInput
+    orderItem?: OrderItemCreateNestedOneWithoutAllocationsInput
+    productVariant: ProductVariantCreateNestedOneWithoutAllocationsInput
+    location: LocationCreateNestedOneWithoutAllocationsInput
+  }
+
+  export type AllocationUncheckedCreateWithoutTaskItemInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+  }
+
+  export type AllocationCreateOrConnectWithoutTaskItemInput = {
+    where: AllocationWhereUniqueInput
+    create: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+  }
+
   export type WorkTaskUpsertWithoutTaskItemsInput = {
     update: XOR<WorkTaskUpdateWithoutTaskItemsInput, WorkTaskUncheckedUpdateWithoutTaskItemsInput>
     create: XOR<WorkTaskCreateWithoutTaskItemsInput, WorkTaskUncheckedCreateWithoutTaskItemsInput>
@@ -27717,11 +32381,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27740,11 +32408,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27766,34 +32438,48 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutTaskItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderItemUpsertWithoutTaskItemsInput = {
@@ -27810,19 +32496,25 @@ export namespace Prisma {
   export type OrderItemUpdateWithoutTaskItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutTaskItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type ProductVariantUpsertWithoutTaskItemsInput = {
@@ -27846,10 +32538,13 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
-    inventory?: InventoryUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutTaskItemsInput = {
@@ -27863,9 +32558,12 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutTaskItemsInput = {
@@ -27885,11 +32583,17 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUpdateManyWithoutLocationNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutTaskItemsInput = {
@@ -27898,11 +32602,17 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
     zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
     isPickable?: BoolFieldUpdateOperationsInput | boolean
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type UserUpsertWithoutCompletedTaskItemsInput = {
@@ -27954,6 +32664,47 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type AllocationUpsertWithoutTaskItemInput = {
+    update: XOR<AllocationUpdateWithoutTaskItemInput, AllocationUncheckedUpdateWithoutTaskItemInput>
+    create: XOR<AllocationCreateWithoutTaskItemInput, AllocationUncheckedCreateWithoutTaskItemInput>
+    where?: AllocationWhereInput
+  }
+
+  export type AllocationUpdateToOneWithWhereWithoutTaskItemInput = {
+    where?: AllocationWhereInput
+    data: XOR<AllocationUpdateWithoutTaskItemInput, AllocationUncheckedUpdateWithoutTaskItemInput>
+  }
+
+  export type AllocationUpdateWithoutTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutTaskItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type WorkTaskCreateWithoutEventsInput = {
     id?: string
     taskNumber: string
@@ -27964,11 +32715,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27987,11 +32742,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28067,11 +32826,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28090,11 +32853,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28359,11 +33126,15 @@ export namespace Prisma {
     assignedAt?: Date | string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
     totalItems: number
     completedItems?: number
+    shortItems?: number
+    skippedItems?: number
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28373,6 +33144,7 @@ export namespace Prisma {
     id?: string
     taskId: string
     eventType: $Enums.WorkTaskEventType
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -28384,11 +33156,15 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28399,6 +33175,7 @@ export namespace Prisma {
     entityType: string
     entityId: string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: string | null
     createdAt?: Date | string
   }
 
@@ -28466,11 +33243,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28488,11 +33269,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28510,11 +33295,15 @@ export namespace Prisma {
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28523,6 +33312,7 @@ export namespace Prisma {
   export type TaskEventUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutEventsNestedInput
@@ -28532,6 +33322,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28540,17 +33331,22 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskItemUpdateWithoutCompletedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -28558,6 +33354,7 @@ export namespace Prisma {
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutCompletedByUserInput = {
@@ -28567,13 +33364,18 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutCompletedByUserInput = {
@@ -28583,11 +33385,15 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28598,6 +33404,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28607,6 +33414,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28616,6 +33424,7 @@ export namespace Prisma {
     entityType?: StringFieldUpdateOperationsInput | string
     entityId?: StringFieldUpdateOperationsInput | string
     changes?: NullableJsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28656,6 +33465,8 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28670,10 +33481,13 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
@@ -28686,10 +33500,13 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    inventory?: InventoryUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
@@ -28702,15 +33519,23 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type InventoryCreateManyProductVariantInput = {
+  export type InventoryUnitCreateManyProductVariantInput = {
     id?: string
     locationId: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
   }
 
@@ -28720,47 +33545,90 @@ export namespace Prisma {
     orderId: string
     orderItemId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type InventoryUpdateWithoutProductVariantInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    location?: LocationUpdateOneRequiredWithoutInventoryNestedInput
+  export type AllocationCreateManyProductVariantInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
   }
 
-  export type InventoryUncheckedUpdateWithoutProductVariantInput = {
+  export type InventoryUnitUpdateWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
   }
 
-  export type InventoryUncheckedUpdateManyWithoutProductVariantInput = {
+  export type InventoryUnitUncheckedUpdateWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     locationId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+  }
+
+  export type InventoryUnitUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskItemUpdateWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -28768,6 +33636,7 @@ export namespace Prisma {
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutProductVariantInput = {
@@ -28776,14 +33645,19 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutProductVariantInput = {
@@ -28792,21 +33666,76 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type InventoryCreateManyLocationInput = {
+  export type AllocationUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type InventoryUnitCreateManyLocationInput = {
     id?: string
     productVariantId: string
-    quantityOnHand?: number
-    quantityReserved?: number
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
     updatedAt?: Date | string
   }
 
@@ -28816,47 +33745,90 @@ export namespace Prisma {
     orderId: string
     orderItemId?: string | null
     productVariantId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type InventoryUpdateWithoutLocationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryNestedInput
+  export type AllocationCreateManyLocationInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
   }
 
-  export type InventoryUncheckedUpdateWithoutLocationInput = {
+  export type InventoryUnitUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
   }
 
-  export type InventoryUncheckedUpdateManyWithoutLocationInput = {
+  export type InventoryUnitUncheckedUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
-    quantityOnHand?: IntFieldUpdateOperationsInput | number
-    quantityReserved?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+  }
+
+  export type InventoryUnitUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskItemUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -28864,6 +33836,7 @@ export namespace Prisma {
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutLocationInput = {
@@ -28872,14 +33845,19 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutLocationInput = {
@@ -28888,21 +33866,132 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AllocationUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationCreateManyInventoryUnitInput = {
+    id?: string
+    orderId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
+  export type AllocationUpdateWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderItemCreateManyOrderInput = {
     id?: string
     productVariantId: string
+    sku: string
     quantity: number
-    quantityPicked?: number | null
+    quantityAllocated?: number
+    quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
   }
 
@@ -28912,49 +34001,80 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type AllocationCreateManyOrderInput = {
+    id?: string
+    inventoryUnitId: string
+    orderItemId?: string | null
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
   }
 
   export type OrderItemUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
-    quantityPicked?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type TaskItemUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -28962,6 +34082,7 @@ export namespace Prisma {
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutOrderInput = {
@@ -28970,14 +34091,19 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutOrderInput = {
@@ -28986,14 +34112,63 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AllocationUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskItemCreateManyOrderItemInput = {
@@ -29002,23 +34177,46 @@ export namespace Prisma {
     orderId: string
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
+  export type AllocationCreateManyOrderItemInput = {
+    id?: string
+    inventoryUnitId: string
+    orderId: string
+    productVariantId: string
+    locationId: string
+    quantity: number
+    lotNumber?: string | null
+    status?: $Enums.AllocationStatus
+    allocatedAt?: Date | string
+    releasedAt?: Date | string | null
+    pickedAt?: Date | string | null
+    taskItemId?: string | null
+  }
+
   export type TaskItemUpdateWithoutOrderItemInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -29026,6 +34224,7 @@ export namespace Prisma {
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutOrderItemInput = {
@@ -29034,14 +34233,19 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutOrderItemInput = {
@@ -29050,14 +34254,63 @@ export namespace Prisma {
     orderId?: StringFieldUpdateOperationsInput | string
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AllocationUpdateWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inventoryUnit?: InventoryUnitUpdateOneRequiredWithoutAllocationsNestedInput
+    order?: OrderUpdateOneRequiredWithoutAllocationsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutAllocationsNestedInput
+    location?: LocationUpdateOneRequiredWithoutAllocationsNestedInput
+    taskItem?: TaskItemUpdateOneWithoutAllocationNestedInput
+  }
+
+  export type AllocationUncheckedUpdateWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AllocationUncheckedUpdateManyWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAllocationStatusFieldUpdateOperationsInput | $Enums.AllocationStatus
+    allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskItemCreateManyTaskInput = {
@@ -29066,12 +34319,16 @@ export namespace Prisma {
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
+    allocationId?: string | null
     sequence: number
     quantityRequired: number
     quantityCompleted?: number
     status?: $Enums.WorkTaskItemStatus
     completedBy?: string | null
     completedAt?: Date | string | null
+    shortReason?: string | null
+    locationScanned?: boolean
+    itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29079,18 +34336,23 @@ export namespace Prisma {
   export type TaskEventCreateManyTaskInput = {
     id?: string
     eventType: $Enums.WorkTaskEventType
-    userId: string
+    userId?: string | null
+    taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type TaskItemUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
@@ -29098,6 +34360,7 @@ export namespace Prisma {
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
+    allocation?: AllocationUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateWithoutTaskInput = {
@@ -29106,14 +34369,19 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocation?: AllocationUncheckedUpdateOneWithoutTaskItemNestedInput
   }
 
   export type TaskItemUncheckedUpdateManyWithoutTaskInput = {
@@ -29122,12 +34390,16 @@ export namespace Prisma {
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    allocationId?: NullableStringFieldUpdateOperationsInput | string | null
     sequence?: IntFieldUpdateOperationsInput | number
     quantityRequired?: IntFieldUpdateOperationsInput | number
     quantityCompleted?: IntFieldUpdateOperationsInput | number
     status?: EnumWorkTaskItemStatusFieldUpdateOperationsInput | $Enums.WorkTaskItemStatus
     completedBy?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shortReason?: NullableStringFieldUpdateOperationsInput | string | null
+    locationScanned?: BoolFieldUpdateOperationsInput | boolean
+    itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29135,15 +34407,17 @@ export namespace Prisma {
   export type TaskEventUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTaskEventsNestedInput
+    user?: UserUpdateOneWithoutTaskEventsNestedInput
   }
 
   export type TaskEventUncheckedUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29151,7 +34425,8 @@ export namespace Prisma {
   export type TaskEventUncheckedUpdateManyWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventType?: EnumWorkTaskEventTypeFieldUpdateOperationsInput | $Enums.WorkTaskEventType
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

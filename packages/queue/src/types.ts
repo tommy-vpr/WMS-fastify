@@ -9,6 +9,7 @@
 
 export const QUEUES = {
   WORK_TASKS: "work-tasks",
+  SHOPIFY: "shopify",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -97,6 +98,38 @@ export interface CompleteTaskResult {
 export interface CancelTaskResult {
   taskId: string;
   cancelled: boolean;
+}
+
+// ============================================================================
+// Shopify Sync Jobs
+// ============================================================================
+
+export const SHOPIFY_JOBS = {
+  ORDER_CREATE: "shopify-order-create",
+  ORDER_UPDATE: "shopify-order-update",
+  ORDER_CANCEL: "shopify-order-cancel",
+  FULFILLMENT_CREATE: "shopify-fulfillment-create",
+} as const;
+
+export type ShopifyJobName = (typeof SHOPIFY_JOBS)[keyof typeof SHOPIFY_JOBS];
+
+export interface ShopifyOrderCreateJobData {
+  shopifyOrderId: string;
+  payload: Record<string, unknown>; // Raw Shopify webhook payload
+  receivedAt: string;
+  idempotencyKey: string;
+}
+
+export interface ShopifyOrderUpdateJobData {
+  shopifyOrderId: string;
+  payload: Record<string, unknown>;
+  receivedAt: string;
+}
+
+export interface ShopifyOrderCancelJobData {
+  shopifyOrderId: string;
+  payload: Record<string, unknown>;
+  receivedAt: string;
 }
 
 // export interface WorkTaskJobData {

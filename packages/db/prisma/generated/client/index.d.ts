@@ -6260,6 +6260,7 @@ export namespace Prisma {
     description: string | null
     brand: string | null
     category: string | null
+    shopifyProductId: string | null
     active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6272,6 +6273,7 @@ export namespace Prisma {
     description: string | null
     brand: string | null
     category: string | null
+    shopifyProductId: string | null
     active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6284,6 +6286,7 @@ export namespace Prisma {
     description: number
     brand: number
     category: number
+    shopifyProductId: number
     active: number
     createdAt: number
     updatedAt: number
@@ -6298,6 +6301,7 @@ export namespace Prisma {
     description?: true
     brand?: true
     category?: true
+    shopifyProductId?: true
     active?: true
     createdAt?: true
     updatedAt?: true
@@ -6310,6 +6314,7 @@ export namespace Prisma {
     description?: true
     brand?: true
     category?: true
+    shopifyProductId?: true
     active?: true
     createdAt?: true
     updatedAt?: true
@@ -6322,6 +6327,7 @@ export namespace Prisma {
     description?: true
     brand?: true
     category?: true
+    shopifyProductId?: true
     active?: true
     createdAt?: true
     updatedAt?: true
@@ -6407,6 +6413,7 @@ export namespace Prisma {
     description: string | null
     brand: string | null
     category: string | null
+    shopifyProductId: string | null
     active: boolean
     createdAt: Date
     updatedAt: Date
@@ -6436,6 +6443,7 @@ export namespace Prisma {
     description?: boolean
     brand?: boolean
     category?: boolean
+    shopifyProductId?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6450,6 +6458,7 @@ export namespace Prisma {
     description?: boolean
     brand?: boolean
     category?: boolean
+    shopifyProductId?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6462,6 +6471,7 @@ export namespace Prisma {
     description?: boolean
     brand?: boolean
     category?: boolean
+    shopifyProductId?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6474,12 +6484,13 @@ export namespace Prisma {
     description?: boolean
     brand?: boolean
     category?: boolean
+    shopifyProductId?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sku" | "name" | "description" | "brand" | "category" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sku" | "name" | "description" | "brand" | "category" | "shopifyProductId" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     variants?: boolean | Product$variantsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
@@ -6499,6 +6510,7 @@ export namespace Prisma {
       description: string | null
       brand: string | null
       category: string | null
+      shopifyProductId: string | null
       active: boolean
       createdAt: Date
       updatedAt: Date
@@ -6932,6 +6944,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Product", 'String'>
     readonly brand: FieldRef<"Product", 'String'>
     readonly category: FieldRef<"Product", 'String'>
+    readonly shopifyProductId: FieldRef<"Product", 'String'>
     readonly active: FieldRef<"Product", 'Boolean'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
@@ -7397,6 +7410,7 @@ export namespace Prisma {
     barcode: string | null
     name: string | null
     imageUrl: string | null
+    shopifyVariantId: string | null
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
@@ -7414,6 +7428,7 @@ export namespace Prisma {
     barcode: string | null
     name: string | null
     imageUrl: string | null
+    shopifyVariantId: string | null
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
@@ -7431,6 +7446,7 @@ export namespace Prisma {
     barcode: number
     name: number
     imageUrl: number
+    shopifyVariantId: number
     costPrice: number
     sellingPrice: number
     weight: number
@@ -7462,6 +7478,7 @@ export namespace Prisma {
     barcode?: true
     name?: true
     imageUrl?: true
+    shopifyVariantId?: true
     costPrice?: true
     sellingPrice?: true
     weight?: true
@@ -7479,6 +7496,7 @@ export namespace Prisma {
     barcode?: true
     name?: true
     imageUrl?: true
+    shopifyVariantId?: true
     costPrice?: true
     sellingPrice?: true
     weight?: true
@@ -7496,6 +7514,7 @@ export namespace Prisma {
     barcode?: true
     name?: true
     imageUrl?: true
+    shopifyVariantId?: true
     costPrice?: true
     sellingPrice?: true
     weight?: true
@@ -7600,6 +7619,7 @@ export namespace Prisma {
     barcode: string | null
     name: string
     imageUrl: string | null
+    shopifyVariantId: string | null
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
@@ -7636,6 +7656,7 @@ export namespace Prisma {
     barcode?: boolean
     name?: boolean
     imageUrl?: boolean
+    shopifyVariantId?: boolean
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
@@ -7658,6 +7679,7 @@ export namespace Prisma {
     barcode?: boolean
     name?: boolean
     imageUrl?: boolean
+    shopifyVariantId?: boolean
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
@@ -7676,6 +7698,7 @@ export namespace Prisma {
     barcode?: boolean
     name?: boolean
     imageUrl?: boolean
+    shopifyVariantId?: boolean
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
@@ -7694,6 +7717,7 @@ export namespace Prisma {
     barcode?: boolean
     name?: boolean
     imageUrl?: boolean
+    shopifyVariantId?: boolean
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
@@ -7703,7 +7727,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
+  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "shopifyVariantId" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
   export type ProductVariantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
@@ -7734,6 +7758,7 @@ export namespace Prisma {
       barcode: string | null
       name: string
       imageUrl: string | null
+      shopifyVariantId: string | null
       costPrice: Prisma.Decimal | null
       sellingPrice: Prisma.Decimal | null
       weight: Prisma.Decimal | null
@@ -8175,6 +8200,7 @@ export namespace Prisma {
     readonly barcode: FieldRef<"ProductVariant", 'String'>
     readonly name: FieldRef<"ProductVariant", 'String'>
     readonly imageUrl: FieldRef<"ProductVariant", 'String'>
+    readonly shopifyVariantId: FieldRef<"ProductVariant", 'String'>
     readonly costPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly sellingPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly weight: FieldRef<"ProductVariant", 'Decimal'>
@@ -12514,6 +12540,8 @@ export namespace Prisma {
     customerName: number
     customerEmail: number
     shippingAddress: number
+    billingAddress: number
+    shopifyLineItems: number
     status: number
     paymentStatus: number
     priority: number
@@ -12588,6 +12616,8 @@ export namespace Prisma {
     customerName?: true
     customerEmail?: true
     shippingAddress?: true
+    billingAddress?: true
+    shopifyLineItems?: true
     status?: true
     paymentStatus?: true
     priority?: true
@@ -12697,6 +12727,8 @@ export namespace Prisma {
     customerName: string
     customerEmail: string | null
     shippingAddress: JsonValue
+    billingAddress: JsonValue | null
+    shopifyLineItems: JsonValue | null
     status: $Enums.OrderStatus
     paymentStatus: $Enums.PaymentStatus
     priority: $Enums.Priority
@@ -12738,6 +12770,8 @@ export namespace Prisma {
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
+    billingAddress?: boolean
+    shopifyLineItems?: boolean
     status?: boolean
     paymentStatus?: boolean
     priority?: boolean
@@ -12764,6 +12798,8 @@ export namespace Prisma {
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
+    billingAddress?: boolean
+    shopifyLineItems?: boolean
     status?: boolean
     paymentStatus?: boolean
     priority?: boolean
@@ -12786,6 +12822,8 @@ export namespace Prisma {
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
+    billingAddress?: boolean
+    shopifyLineItems?: boolean
     status?: boolean
     paymentStatus?: boolean
     priority?: boolean
@@ -12808,6 +12846,8 @@ export namespace Prisma {
     customerName?: boolean
     customerEmail?: boolean
     shippingAddress?: boolean
+    billingAddress?: boolean
+    shopifyLineItems?: boolean
     status?: boolean
     paymentStatus?: boolean
     priority?: boolean
@@ -12822,7 +12862,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "billingAddress" | "shopifyLineItems" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
@@ -12847,6 +12887,8 @@ export namespace Prisma {
       customerName: string
       customerEmail: string | null
       shippingAddress: Prisma.JsonValue
+      billingAddress: Prisma.JsonValue | null
+      shopifyLineItems: Prisma.JsonValue | null
       status: $Enums.OrderStatus
       paymentStatus: $Enums.PaymentStatus
       priority: $Enums.Priority
@@ -13292,6 +13334,8 @@ export namespace Prisma {
     readonly customerName: FieldRef<"Order", 'String'>
     readonly customerEmail: FieldRef<"Order", 'String'>
     readonly shippingAddress: FieldRef<"Order", 'Json'>
+    readonly billingAddress: FieldRef<"Order", 'Json'>
+    readonly shopifyLineItems: FieldRef<"Order", 'Json'>
     readonly status: FieldRef<"Order", 'OrderStatus'>
     readonly paymentStatus: FieldRef<"Order", 'PaymentStatus'>
     readonly priority: FieldRef<"Order", 'Priority'>
@@ -13799,6 +13843,7 @@ export namespace Prisma {
     quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
+    totalPrice: Decimal | null
   }
 
   export type OrderItemSumAggregateOutputType = {
@@ -13806,6 +13851,7 @@ export namespace Prisma {
     quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
+    totalPrice: Decimal | null
   }
 
   export type OrderItemMinAggregateOutputType = {
@@ -13817,6 +13863,9 @@ export namespace Prisma {
     quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
+    totalPrice: Decimal | null
+    shopifyLineItemId: string | null
+    shopifyFulfillmentOrderLineItemId: string | null
   }
 
   export type OrderItemMaxAggregateOutputType = {
@@ -13828,6 +13877,9 @@ export namespace Prisma {
     quantityAllocated: number | null
     quantityPicked: number | null
     unitPrice: Decimal | null
+    totalPrice: Decimal | null
+    shopifyLineItemId: string | null
+    shopifyFulfillmentOrderLineItemId: string | null
   }
 
   export type OrderItemCountAggregateOutputType = {
@@ -13839,6 +13891,9 @@ export namespace Prisma {
     quantityAllocated: number
     quantityPicked: number
     unitPrice: number
+    totalPrice: number
+    shopifyLineItemId: number
+    shopifyFulfillmentOrderLineItemId: number
     _all: number
   }
 
@@ -13848,6 +13903,7 @@ export namespace Prisma {
     quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
+    totalPrice?: true
   }
 
   export type OrderItemSumAggregateInputType = {
@@ -13855,6 +13911,7 @@ export namespace Prisma {
     quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
+    totalPrice?: true
   }
 
   export type OrderItemMinAggregateInputType = {
@@ -13866,6 +13923,9 @@ export namespace Prisma {
     quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
+    totalPrice?: true
+    shopifyLineItemId?: true
+    shopifyFulfillmentOrderLineItemId?: true
   }
 
   export type OrderItemMaxAggregateInputType = {
@@ -13877,6 +13937,9 @@ export namespace Prisma {
     quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
+    totalPrice?: true
+    shopifyLineItemId?: true
+    shopifyFulfillmentOrderLineItemId?: true
   }
 
   export type OrderItemCountAggregateInputType = {
@@ -13888,6 +13951,9 @@ export namespace Prisma {
     quantityAllocated?: true
     quantityPicked?: true
     unitPrice?: true
+    totalPrice?: true
+    shopifyLineItemId?: true
+    shopifyFulfillmentOrderLineItemId?: true
     _all?: true
   }
 
@@ -13986,6 +14052,9 @@ export namespace Prisma {
     quantityAllocated: number
     quantityPicked: number
     unitPrice: Decimal
+    totalPrice: Decimal | null
+    shopifyLineItemId: string | null
+    shopifyFulfillmentOrderLineItemId: string | null
     _count: OrderItemCountAggregateOutputType | null
     _avg: OrderItemAvgAggregateOutputType | null
     _sum: OrderItemSumAggregateOutputType | null
@@ -14016,6 +14085,9 @@ export namespace Prisma {
     quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
+    totalPrice?: boolean
+    shopifyLineItemId?: boolean
+    shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
     allocations?: boolean | OrderItem$allocationsArgs<ExtArgs>
@@ -14031,6 +14103,9 @@ export namespace Prisma {
     quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
+    totalPrice?: boolean
+    shopifyLineItemId?: boolean
+    shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
@@ -14043,6 +14118,9 @@ export namespace Prisma {
     quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
+    totalPrice?: boolean
+    shopifyLineItemId?: boolean
+    shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
@@ -14055,9 +14133,12 @@ export namespace Prisma {
     quantityAllocated?: boolean
     quantityPicked?: boolean
     unitPrice?: boolean
+    totalPrice?: boolean
+    shopifyLineItemId?: boolean
+    shopifyFulfillmentOrderLineItemId?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice" | "totalPrice" | "shopifyLineItemId" | "shopifyFulfillmentOrderLineItemId", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
@@ -14087,6 +14168,9 @@ export namespace Prisma {
       quantityAllocated: number
       quantityPicked: number
       unitPrice: Prisma.Decimal
+      totalPrice: Prisma.Decimal | null
+      shopifyLineItemId: string | null
+      shopifyFulfillmentOrderLineItemId: string | null
     }, ExtArgs["result"]["orderItem"]>
     composites: {}
   }
@@ -14521,6 +14605,9 @@ export namespace Prisma {
     readonly quantityAllocated: FieldRef<"OrderItem", 'Int'>
     readonly quantityPicked: FieldRef<"OrderItem", 'Int'>
     readonly unitPrice: FieldRef<"OrderItem", 'Decimal'>
+    readonly totalPrice: FieldRef<"OrderItem", 'Decimal'>
+    readonly shopifyLineItemId: FieldRef<"OrderItem", 'String'>
+    readonly shopifyFulfillmentOrderLineItemId: FieldRef<"OrderItem", 'String'>
   }
     
 
@@ -22276,6 +22363,7 @@ export namespace Prisma {
     description: 'description',
     brand: 'brand',
     category: 'category',
+    shopifyProductId: 'shopifyProductId',
     active: 'active',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -22292,6 +22380,7 @@ export namespace Prisma {
     barcode: 'barcode',
     name: 'name',
     imageUrl: 'imageUrl',
+    shopifyVariantId: 'shopifyVariantId',
     costPrice: 'costPrice',
     sellingPrice: 'sellingPrice',
     weight: 'weight',
@@ -22369,6 +22458,8 @@ export namespace Prisma {
     customerName: 'customerName',
     customerEmail: 'customerEmail',
     shippingAddress: 'shippingAddress',
+    billingAddress: 'billingAddress',
+    shopifyLineItems: 'shopifyLineItems',
     status: 'status',
     paymentStatus: 'paymentStatus',
     priority: 'priority',
@@ -22394,7 +22485,10 @@ export namespace Prisma {
     quantity: 'quantity',
     quantityAllocated: 'quantityAllocated',
     quantityPicked: 'quantityPicked',
-    unitPrice: 'unitPrice'
+    unitPrice: 'unitPrice',
+    totalPrice: 'totalPrice',
+    shopifyLineItemId: 'shopifyLineItemId',
+    shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
   };
 
   export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
@@ -23048,6 +23142,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Product"> | string | null
     brand?: StringNullableFilter<"Product"> | string | null
     category?: StringNullableFilter<"Product"> | string | null
+    shopifyProductId?: StringNullableFilter<"Product"> | string | null
     active?: BoolFilter<"Product"> | boolean
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -23061,6 +23156,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     brand?: SortOrderInput | SortOrder
     category?: SortOrderInput | SortOrder
+    shopifyProductId?: SortOrderInput | SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23070,6 +23166,7 @@ export namespace Prisma {
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     sku?: string
+    shopifyProductId?: string
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
@@ -23081,7 +23178,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     variants?: ProductVariantListRelationFilter
-  }, "id" | "sku">
+  }, "id" | "sku" | "shopifyProductId">
 
   export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
@@ -23090,6 +23187,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     brand?: SortOrderInput | SortOrder
     category?: SortOrderInput | SortOrder
+    shopifyProductId?: SortOrderInput | SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23108,6 +23206,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     brand?: StringNullableWithAggregatesFilter<"Product"> | string | null
     category?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    shopifyProductId?: StringNullableWithAggregatesFilter<"Product"> | string | null
     active?: BoolWithAggregatesFilter<"Product"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
@@ -23124,6 +23223,7 @@ export namespace Prisma {
     barcode?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
     imageUrl?: StringNullableFilter<"ProductVariant"> | string | null
+    shopifyVariantId?: StringNullableFilter<"ProductVariant"> | string | null
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
@@ -23145,6 +23245,7 @@ export namespace Prisma {
     barcode?: SortOrderInput | SortOrder
     name?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
+    shopifyVariantId?: SortOrderInput | SortOrder
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
@@ -23162,6 +23263,7 @@ export namespace Prisma {
     id?: string
     sku?: string
     upc?: string
+    shopifyVariantId?: string
     AND?: ProductVariantWhereInput | ProductVariantWhereInput[]
     OR?: ProductVariantWhereInput[]
     NOT?: ProductVariantWhereInput | ProductVariantWhereInput[]
@@ -23180,7 +23282,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
-  }, "id" | "sku" | "upc">
+  }, "id" | "sku" | "upc" | "shopifyVariantId">
 
   export type ProductVariantOrderByWithAggregationInput = {
     id?: SortOrder
@@ -23190,6 +23292,7 @@ export namespace Prisma {
     barcode?: SortOrderInput | SortOrder
     name?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
+    shopifyVariantId?: SortOrderInput | SortOrder
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
@@ -23215,6 +23318,7 @@ export namespace Prisma {
     barcode?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     name?: StringWithAggregatesFilter<"ProductVariant"> | string
     imageUrl?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
+    shopifyVariantId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     costPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
@@ -23553,6 +23657,8 @@ export namespace Prisma {
     customerName?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     shippingAddress?: JsonFilter<"Order">
+    billingAddress?: JsonNullableFilter<"Order">
+    shopifyLineItems?: JsonNullableFilter<"Order">
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityFilter<"Order"> | $Enums.Priority
@@ -23578,6 +23684,8 @@ export namespace Prisma {
     customerName?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     shippingAddress?: SortOrder
+    billingAddress?: SortOrderInput | SortOrder
+    shopifyLineItems?: SortOrderInput | SortOrder
     status?: SortOrder
     paymentStatus?: SortOrder
     priority?: SortOrder
@@ -23606,6 +23714,8 @@ export namespace Prisma {
     customerName?: StringFilter<"Order"> | string
     customerEmail?: StringNullableFilter<"Order"> | string | null
     shippingAddress?: JsonFilter<"Order">
+    billingAddress?: JsonNullableFilter<"Order">
+    shopifyLineItems?: JsonNullableFilter<"Order">
     status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityFilter<"Order"> | $Enums.Priority
@@ -23631,6 +23741,8 @@ export namespace Prisma {
     customerName?: SortOrder
     customerEmail?: SortOrderInput | SortOrder
     shippingAddress?: SortOrder
+    billingAddress?: SortOrderInput | SortOrder
+    shopifyLineItems?: SortOrderInput | SortOrder
     status?: SortOrder
     paymentStatus?: SortOrder
     priority?: SortOrder
@@ -23661,6 +23773,8 @@ export namespace Prisma {
     customerName?: StringWithAggregatesFilter<"Order"> | string
     customerEmail?: StringNullableWithAggregatesFilter<"Order"> | string | null
     shippingAddress?: JsonWithAggregatesFilter<"Order">
+    billingAddress?: JsonNullableWithAggregatesFilter<"Order">
+    shopifyLineItems?: JsonNullableWithAggregatesFilter<"Order">
     status?: EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusWithAggregatesFilter<"Order"> | $Enums.PaymentStatus
     priority?: EnumPriorityWithAggregatesFilter<"Order"> | $Enums.Priority
@@ -23687,6 +23801,9 @@ export namespace Prisma {
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
+    shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -23701,6 +23818,9 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrderInput | SortOrder
+    shopifyLineItemId?: SortOrderInput | SortOrder
+    shopifyFulfillmentOrderLineItemId?: SortOrderInput | SortOrder
     order?: OrderOrderByWithRelationInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
@@ -23718,6 +23838,9 @@ export namespace Prisma {
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
+    shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -23732,6 +23855,9 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrderInput | SortOrder
+    shopifyLineItemId?: SortOrderInput | SortOrder
+    shopifyFulfillmentOrderLineItemId?: SortOrderInput | SortOrder
     _count?: OrderItemCountOrderByAggregateInput
     _avg?: OrderItemAvgOrderByAggregateInput
     _max?: OrderItemMaxOrderByAggregateInput
@@ -23751,6 +23877,9 @@ export namespace Prisma {
     quantityAllocated?: IntWithAggregatesFilter<"OrderItem"> | number
     quantityPicked?: IntWithAggregatesFilter<"OrderItem"> | number
     unitPrice?: DecimalWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalNullableWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
+    shopifyFulfillmentOrderLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   }
 
   export type WorkTaskWhereInput = {
@@ -24576,6 +24705,7 @@ export namespace Prisma {
     description?: string | null
     brand?: string | null
     category?: string | null
+    shopifyProductId?: string | null
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24589,6 +24719,7 @@ export namespace Prisma {
     description?: string | null
     brand?: string | null
     category?: string | null
+    shopifyProductId?: string | null
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24602,6 +24733,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24615,6 +24747,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24628,6 +24761,7 @@ export namespace Prisma {
     description?: string | null
     brand?: string | null
     category?: string | null
+    shopifyProductId?: string | null
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24640,6 +24774,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24652,6 +24787,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24664,6 +24800,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -24685,6 +24822,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -24704,6 +24842,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -24725,6 +24864,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -24745,6 +24885,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -24761,6 +24902,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -24778,6 +24920,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -25139,6 +25282,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -25164,6 +25309,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -25189,6 +25336,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -25214,6 +25363,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -25239,6 +25390,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -25261,6 +25414,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -25283,6 +25438,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -25305,6 +25462,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
@@ -25319,6 +25479,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
@@ -25331,6 +25494,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
@@ -25345,6 +25511,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
@@ -25358,6 +25527,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
   }
 
   export type OrderItemUpdateManyMutationInput = {
@@ -25368,6 +25540,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderItemUncheckedUpdateManyInput = {
@@ -25379,6 +25554,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkTaskCreateInput = {
@@ -26359,6 +26537,7 @@ export namespace Prisma {
     description?: SortOrder
     brand?: SortOrder
     category?: SortOrder
+    shopifyProductId?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26371,6 +26550,7 @@ export namespace Prisma {
     description?: SortOrder
     brand?: SortOrder
     category?: SortOrder
+    shopifyProductId?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26383,6 +26563,7 @@ export namespace Prisma {
     description?: SortOrder
     brand?: SortOrder
     category?: SortOrder
+    shopifyProductId?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26432,6 +26613,7 @@ export namespace Prisma {
     barcode?: SortOrder
     name?: SortOrder
     imageUrl?: SortOrder
+    shopifyVariantId?: SortOrder
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
@@ -26455,6 +26637,7 @@ export namespace Prisma {
     barcode?: SortOrder
     name?: SortOrder
     imageUrl?: SortOrder
+    shopifyVariantId?: SortOrder
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
@@ -26472,6 +26655,7 @@ export namespace Prisma {
     barcode?: SortOrder
     name?: SortOrder
     imageUrl?: SortOrder
+    shopifyVariantId?: SortOrder
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
@@ -26830,6 +27014,29 @@ export namespace Prisma {
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type EnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
@@ -26881,6 +27088,8 @@ export namespace Prisma {
     customerName?: SortOrder
     customerEmail?: SortOrder
     shippingAddress?: SortOrder
+    billingAddress?: SortOrder
+    shopifyLineItems?: SortOrder
     status?: SortOrder
     paymentStatus?: SortOrder
     priority?: SortOrder
@@ -26970,6 +27179,32 @@ export namespace Prisma {
     _min?: NestedJsonFilter<$PrismaModel>
     _max?: NestedJsonFilter<$PrismaModel>
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
 
   export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
@@ -27026,6 +27261,9 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrder
+    shopifyLineItemId?: SortOrder
+    shopifyFulfillmentOrderLineItemId?: SortOrder
   }
 
   export type OrderItemAvgOrderByAggregateInput = {
@@ -27033,6 +27271,7 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrder
   }
 
   export type OrderItemMaxOrderByAggregateInput = {
@@ -27044,6 +27283,9 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrder
+    shopifyLineItemId?: SortOrder
+    shopifyFulfillmentOrderLineItemId?: SortOrder
   }
 
   export type OrderItemMinOrderByAggregateInput = {
@@ -27055,6 +27297,9 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrder
+    shopifyLineItemId?: SortOrder
+    shopifyFulfillmentOrderLineItemId?: SortOrder
   }
 
   export type OrderItemSumOrderByAggregateInput = {
@@ -27062,6 +27307,7 @@ export namespace Prisma {
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
+    totalPrice?: SortOrder
   }
 
   export type EnumWorkTaskTypeFilter<$PrismaModel = never> = {
@@ -27339,29 +27585,6 @@ export namespace Prisma {
     notIn?: $Enums.WorkTaskEventType[] | ListEnumWorkTaskEventTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel> | $Enums.WorkTaskEventType
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type TaskEventCountOrderByAggregateInput = {
     id?: SortOrder
@@ -27399,32 +27622,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel>
     _max?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type JobRecordCountOrderByAggregateInput = {
@@ -29292,6 +29489,29 @@ export namespace Prisma {
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
@@ -29422,29 +29642,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel>
     _max?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type RefreshTokenCreateWithoutUserInput = {
@@ -30115,6 +30312,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -30134,6 +30332,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -30183,6 +30382,7 @@ export namespace Prisma {
     barcode?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
     imageUrl?: StringNullableFilter<"ProductVariant"> | string | null
+    shopifyVariantId?: StringNullableFilter<"ProductVariant"> | string | null
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
@@ -30199,6 +30399,7 @@ export namespace Prisma {
     description?: string | null
     brand?: string | null
     category?: string | null
+    shopifyProductId?: string | null
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30211,6 +30412,7 @@ export namespace Prisma {
     description?: string | null
     brand?: string | null
     category?: string | null
+    shopifyProductId?: string | null
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30371,6 +30573,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30383,6 +30586,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyProductId?: NullableStringFieldUpdateOperationsInput | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30660,6 +30864,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -30680,6 +30885,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -30797,6 +31003,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -30817,6 +31024,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -30936,6 +31144,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -30960,6 +31170,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -30989,6 +31201,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
   }
@@ -31002,6 +31217,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
@@ -31017,6 +31235,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -31037,6 +31256,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -31203,6 +31423,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -31227,6 +31449,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -31262,6 +31486,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
   }
@@ -31275,6 +31502,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
@@ -31296,6 +31526,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -31316,6 +31547,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -31437,6 +31669,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
@@ -31449,6 +31684,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
@@ -31583,6 +31821,9 @@ export namespace Prisma {
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
+    shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderInput = {
@@ -31625,6 +31866,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -31649,6 +31892,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -31781,6 +32026,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -31805,6 +32052,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -32122,6 +32371,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -32146,6 +32397,8 @@ export namespace Prisma {
     customerName: string
     customerEmail?: string | null
     shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.OrderStatus
     paymentStatus?: $Enums.PaymentStatus
     priority?: $Enums.Priority
@@ -32175,6 +32428,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
@@ -32188,6 +32444,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
@@ -32203,6 +32462,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -32223,6 +32483,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -32442,6 +32703,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -32466,6 +32729,8 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
     paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -32501,6 +32766,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
@@ -32514,6 +32782,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
@@ -32535,6 +32806,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -32555,6 +32827,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -33462,6 +33735,7 @@ export namespace Prisma {
     barcode?: string | null
     name: string
     imageUrl?: string | null
+    shopifyVariantId?: string | null
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
@@ -33478,6 +33752,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -33497,6 +33772,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -33516,6 +33792,7 @@ export namespace Prisma {
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -33993,6 +34270,9 @@ export namespace Prisma {
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
   }
 
   export type TaskItemCreateManyOrderInput = {
@@ -34038,6 +34318,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
@@ -34050,6 +34333,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
   }
@@ -34062,6 +34348,9 @@ export namespace Prisma {
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskItemUpdateWithoutOrderInput = {

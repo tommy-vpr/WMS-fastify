@@ -5,8 +5,40 @@
 
 import "dotenv/config";
 import { Worker, type Job } from "bullmq";
-import { getConnection, QUEUES, WORK_TASK_JOBS } from "@wms/queue";
+import {
+  getConnection,
+  QUEUES,
+  WORK_TASK_JOBS,
+  SHOPIFY_JOBS,
+} from "@wms/queue";
 import { processWorkTaskJob } from "./processors/index.js";
+import { processShopifyJob } from "./processors/shopify.processor.js";
+
+// Add Shopify worker
+function createShopifyWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.SHOPIFY,
+    async (job: Job) => processShopifyJob(job),
+    {
+      connection,
+      concurrency: 3, // Lower concurrency for external API calls
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () => console.log("[Worker] shopify worker ready"));
+  worker.on("completed", (job, result) => {
+    console.log(`[Shopify] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Shopify] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
 
 // ============================================================================
 // Configuration
@@ -95,7 +127,9 @@ async function main() {
 
   // Work Tasks Worker
   const workTaskWorker = createWorkTaskWorker();
-  workers.push(workTaskWorker);
+  const shopifyWorker = createShopifyWorker();
+
+  workers.push(workTaskWorker, shopifyWorker);
 
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
@@ -106,6 +140,9 @@ async function main() {
   console.log("Available job types:");
   Object.values(WORK_TASK_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.WORK_TASKS}:${job}`);
+  });
+  Object.values(SHOPIFY_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.SHOPIFY}:${job}`);
   });
   console.log("");
 }

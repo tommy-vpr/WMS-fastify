@@ -157,6 +157,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   description: 'description',
   brand: 'brand',
   category: 'category',
+  shopifyProductId: 'shopifyProductId',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -170,6 +171,7 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
   barcode: 'barcode',
   name: 'name',
   imageUrl: 'imageUrl',
+  shopifyVariantId: 'shopifyVariantId',
   costPrice: 'costPrice',
   sellingPrice: 'sellingPrice',
   weight: 'weight',
@@ -235,6 +237,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   customerName: 'customerName',
   customerEmail: 'customerEmail',
   shippingAddress: 'shippingAddress',
+  billingAddress: 'billingAddress',
+  shopifyLineItems: 'shopifyLineItems',
   status: 'status',
   paymentStatus: 'paymentStatus',
   priority: 'priority',
@@ -257,7 +261,10 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   quantity: 'quantity',
   quantityAllocated: 'quantityAllocated',
   quantityPicked: 'quantityPicked',
-  unitPrice: 'unitPrice'
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
+  shopifyLineItemId: 'shopifyLineItemId',
+  shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
 };
 
 exports.Prisma.WorkTaskScalarFieldEnum = {

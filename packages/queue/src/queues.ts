@@ -8,10 +8,12 @@ import { getConnection } from "./connection.js";
 import {
   QUEUES,
   WORK_TASK_JOBS,
+  SHOPIFY_JOBS,
   type CreatePickingTaskJobData,
   type AssignTaskJobData,
   type StartTaskJobData,
   type CancelTaskJobData,
+  type ShopifyOrderCreateJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -19,6 +21,36 @@ import {
 // ============================================================================
 
 let workTaskQueue: Queue | null = null;
+let shopifyQueue: Queue | null = null;
+
+export function getShopifyQueue(): Queue {
+  if (!shopifyQueue) {
+    shopifyQueue = new Queue(QUEUES.SHOPIFY, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 5, // More retries for external webhooks
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return shopifyQueue;
+}
+
+export async function enqueueShopifyOrderCreate(
+  data: ShopifyOrderCreateJobData,
+  options?: JobsOptions,
+) {
+  const queue = getShopifyQueue();
+  return queue.add(SHOPIFY_JOBS.ORDER_CREATE, data, {
+    ...options,
+    jobId: data.idempotencyKey, // Prevent duplicates
+  });
+}
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {

@@ -73,6 +73,7 @@ model Product {
   description String?
   brand       String?
   category    String?
+  shopifyProductId String?  @unique
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -81,25 +82,26 @@ model Product {
 
   @@index([brand])
   @@index([category])
+  @@index([shopifyProductId])
   @@map("products")
 }
 
 model ProductVariant {
-  id           String   @id @default(cuid())
-  productId    String
-  sku          String   @unique
-  upc          String?  @unique
-  barcode      String?
-  name         String
-  imageUrl     String?
-  costPrice    Decimal? @db.Decimal(10, 2)
-  sellingPrice Decimal? @db.Decimal(10, 2)
-  weight       Decimal? @db.Decimal(8, 2)
-  // Track if this variant requires lot/expiry tracking
-  trackLots    Boolean  @default(false)
-  trackExpiry  Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id               String   @id @default(cuid())
+  productId        String
+  sku              String   @unique
+  upc              String?  @unique
+  barcode          String?
+  name             String
+  imageUrl         String?
+  shopifyVariantId String?  @unique  // ADD THIS
+  costPrice        Decimal? @db.Decimal(10, 2)
+  sellingPrice     Decimal? @db.Decimal(10, 2)
+  weight           Decimal? @db.Decimal(8, 2)
+  trackLots        Boolean  @default(false)
+  trackExpiry      Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   product        Product          @relation(fields: [productId], references: [id])
   inventoryUnits InventoryUnit[]
@@ -108,6 +110,7 @@ model ProductVariant {
 
   @@index([upc])
   @@index([barcode])
+  @@index([shopifyVariantId])  // ADD THIS
   @@map("product_variants")
 }
 
@@ -217,6 +220,9 @@ model Order {
   customerName    String
   customerEmail   String?
   shippingAddress Json
+  billingAddress  Json?         // ADD
+  // Shopify line items reference
+  shopifyLineItems Json?        // ADD - stores raw Shopify line item data
   // Status tracking
   status          OrderStatus   @default(PENDING)
   paymentStatus   PaymentStatus @default(PENDING)
@@ -247,20 +253,25 @@ model Order {
 }
 
 model OrderItem {
-  id               String  @id @default(cuid())
-  orderId          String
-  productVariantId String
-  sku              String
-  quantity         Int
-  quantityAllocated Int    @default(0)
-  quantityPicked   Int     @default(0)
-  unitPrice        Decimal @db.Decimal(10, 2)
+  id                              String  @id @default(cuid())
+  orderId                         String
+  productVariantId                String
+  sku                             String
+  quantity                        Int
+  quantityAllocated               Int     @default(0)
+  quantityPicked                  Int     @default(0)
+  unitPrice                       Decimal @db.Decimal(10, 2)
+  totalPrice                      Decimal? @db.Decimal(10, 2)  // ADD
+  // Shopify references
+  shopifyLineItemId               String?  // ADD
+  shopifyFulfillmentOrderLineItemId String?  // ADD
 
   order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
   taskItems   TaskItem[]
   allocations Allocation[]
 
   @@index([orderId])
+  @@index([shopifyLineItemId])  // ADD
   @@map("order_items")
 }
 

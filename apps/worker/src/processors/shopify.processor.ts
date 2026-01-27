@@ -8,24 +8,24 @@ import { prisma } from "@wms/db";
 import { SHOPIFY_JOBS, type ShopifyOrderCreateJobData } from "@wms/queue";
 
 // ============================================================================
-// Order Processing (moved from your webhook handler)
+// Order Processing
 // ============================================================================
 
 async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
   const { shopifyOrderId, payload } = job.data;
   const shopifyOrder = payload as any;
 
-  // Debug - see what we actually received
+  // Debug logging
   console.log("[Shopify] Payload keys:", Object.keys(payload));
   console.log("[Shopify] payload.id:", shopifyOrder.id);
   console.log("[Shopify] payload.name:", shopifyOrder.name);
   console.log("[Shopify] payload.order_number:", shopifyOrder.order_number);
 
-  // Use the REAL Shopify order ID from payload, not the job data
+  // Use the REAL Shopify order ID from payload
   const realShopifyOrderId = shopifyOrder.id?.toString() || shopifyOrderId;
   const orderNumber =
     shopifyOrder.name ||
-    shopifyOrder.order_number ||
+    shopifyOrder.order_number?.toString() ||
     `SHOP-${realShopifyOrderId}`;
 
   console.log(`[Shopify] Processing order: ${orderNumber}`);
@@ -33,7 +33,7 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
   return await prisma.$transaction(async (tx) => {
     // 1. Idempotency check
     const existing = await tx.order.findUnique({
-      where: { shopifyOrderId },
+      where: { shopifyOrderId: realShopifyOrderId },
     });
 
     if (existing) {
@@ -49,45 +49,59 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
     } else if (shopifyOrder.customer) {
       customerName =
         `${shopifyOrder.customer.first_name || ""} ${shopifyOrder.customer.last_name || ""}`.trim();
+    } else if (shopifyOrder.billing_address) {
+      customerName =
+        `${shopifyOrder.billing_address.first_name || ""} ${shopifyOrder.billing_address.last_name || ""}`.trim();
+    }
+
+    if (!customerName) {
+      customerName = "Unknown Customer";
     }
 
     // 3. Fetch fulfillment order line items (for modern Shopify API)
     const fulfillmentLineItems =
-      await fetchFulfillmentOrderLineItems(shopifyOrderId);
+      await fetchFulfillmentOrderLineItems(realShopifyOrderId);
 
-    // 4. Create order
+    // 4. Create order (we'll update unmatchedItems count after creating items)
     const order = await tx.order.create({
       data: {
         shopifyOrderId: realShopifyOrderId,
-        orderNumber, // Now guaranteed to have a value
+        orderNumber,
         customerName,
-        customerEmail: shopifyOrder.email,
-        totalAmount: parseFloat(shopifyOrder.total_price || "0"),
+        customerEmail: shopifyOrder.email || shopifyOrder.contact_email,
+        totalAmount: parseFloat(
+          shopifyOrder.total_price || shopifyOrder.current_total_price || "0",
+        ),
         shippingAddress: shopifyOrder.shipping_address || {},
         billingAddress: shopifyOrder.billing_address || {},
         status: "PENDING",
         paymentStatus: mapPaymentStatus(shopifyOrder.financial_status),
+        priority: mapPriority(shopifyOrder.tags),
         shopifyLineItems: shopifyOrder.line_items?.map((li: any) => ({
           id: li.id?.toString(),
           variantId: li.variant_id?.toString(),
           sku: li.sku,
           quantity: li.quantity,
+          title: li.title,
+          price: li.price,
         })),
       },
     });
 
-    // 5. Create order items
+    // 5. Create order items - ALWAYS create, even if variant not found
     const lineItems = shopifyOrder.line_items || [];
     let itemsCreated = 0;
+    let unmatchedCount = 0;
 
     for (const lineItem of lineItems) {
-      const productVariant = await findOrCreateVariant(tx, lineItem);
+      const productVariant = await findVariant(tx, lineItem);
+      const isMatched = !!productVariant;
 
-      if (!productVariant) {
-        console.warn(
-          `[Shopify] Skipping item - variant not found: ${lineItem.sku}`,
+      if (!isMatched) {
+        unmatchedCount++;
+        console.log(
+          `[Shopify] Unmatched item - SKU: ${lineItem.sku}, Shopify Variant: ${lineItem.variant_id}`,
         );
-        continue;
       }
 
       const variantGid = lineItem.variant_id
@@ -100,10 +114,15 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
       await tx.orderItem.create({
         data: {
           orderId: order.id,
-          productVariantId: productVariant.id,
-          sku: productVariant.sku,
+          productVariantId: productVariant?.id || null,
+          sku: lineItem.sku || `UNKNOWN-${lineItem.variant_id || lineItem.id}`,
           quantity: lineItem.quantity,
           unitPrice: parseFloat(lineItem.price || "0"),
+          totalPrice: parseFloat(lineItem.price || "0") * lineItem.quantity,
+          matched: isMatched,
+          matchError: isMatched
+            ? null
+            : `SKU not found: ${lineItem.sku || "N/A"}, Shopify Variant ID: ${lineItem.variant_id || "N/A"}`,
           shopifyLineItemId: lineItem.id?.toString(),
           shopifyFulfillmentOrderLineItemId: foLineItemId || undefined,
         },
@@ -112,23 +131,42 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
       itemsCreated++;
     }
 
+    // 6. Update order with unmatched count and possibly hold it
+    if (unmatchedCount > 0) {
+      await tx.order.update({
+        where: { id: order.id },
+        data: {
+          unmatchedItems: unmatchedCount,
+          // Optionally hold the order if items are unmatched
+          // status: 'ON_HOLD',
+          // holdReason: `${unmatchedCount} item(s) could not be matched to inventory`,
+          // holdAt: new Date(),
+        },
+      });
+
+      console.log(
+        `[Shopify] Order ${orderNumber} has ${unmatchedCount} unmatched items`,
+      );
+    }
+
     console.log(
-      `[Shopify] Created order ${order.orderNumber} with ${itemsCreated} items`,
+      `[Shopify] Created order ${orderNumber} with ${itemsCreated} items (${unmatchedCount} unmatched)`,
     );
 
-    // 6. Notify via Ably (optional)
-    // await notifyRole('STAFF', 'new-order', { ... });
-
-    // 7. Auto-allocate if enabled
-    if (process.env.AUTO_ALLOCATE_ORDERS === "true") {
-      // Enqueue allocation job
-      // await enqueueCreatePickingTask({ orderIds: [order.id], ... });
+    // 7. Auto-confirm if payment is complete
+    if (shopifyOrder.financial_status === "paid") {
+      await tx.order.update({
+        where: { id: order.id },
+        data: { status: "CONFIRMED" },
+      });
+      console.log(`[Shopify] Order ${orderNumber} auto-confirmed (paid)`);
     }
 
     return {
       orderId: order.id,
       orderNumber: order.orderNumber,
       itemsCreated,
+      unmatchedItems: unmatchedCount,
       status: "created",
     };
   });
@@ -209,8 +247,12 @@ async function fetchFulfillmentOrderLineItems(
   return map;
 }
 
-async function findOrCreateVariant(tx: any, lineItem: any) {
-  // Try by SKU
+/**
+ * Find variant by SKU or Shopify Variant ID
+ * Does NOT auto-create - returns null if not found
+ */
+async function findVariant(tx: any, lineItem: any) {
+  // Try by SKU first (most reliable)
   if (lineItem.sku) {
     const variant = await tx.productVariant.findUnique({
       where: { sku: lineItem.sku },
@@ -220,48 +262,53 @@ async function findOrCreateVariant(tx: any, lineItem: any) {
 
   // Try by Shopify variant ID
   if (lineItem.variant_id) {
-    const variant = await tx.productVariant.findUnique({
+    const variant = await tx.productVariant.findFirst({
       where: { shopifyVariantId: lineItem.variant_id.toString() },
     });
     if (variant) return variant;
   }
 
-  // Create if enabled
-  if (process.env.CREATE_MISSING_PRODUCTS === "true") {
-    const product = await tx.product.create({
-      data: {
-        sku: lineItem.sku || `SHOPIFY-${lineItem.variant_id}`,
-        name: lineItem.title || lineItem.name,
-        shopifyProductId: lineItem.product_id?.toString(),
+  // Try by barcode/UPC if available
+  if (lineItem.barcode) {
+    const variant = await tx.productVariant.findFirst({
+      where: {
+        OR: [{ barcode: lineItem.barcode }, { upc: lineItem.barcode }],
       },
     });
-
-    return tx.productVariant.create({
-      data: {
-        productId: product.id,
-        sku: lineItem.sku || `SHOPIFY-${lineItem.variant_id}`,
-        name: lineItem.variant_title || lineItem.title,
-        shopifyVariantId: lineItem.variant_id?.toString(),
-        sellingPrice: parseFloat(lineItem.price || "0"),
-      },
-    });
+    if (variant) return variant;
   }
 
   return null;
 }
 
 function mapPaymentStatus(
-  shopifyStatus: string,
-): "PENDING" | "PAID" | "REFUNDED" {
+  shopifyStatus: string | null | undefined,
+): "PENDING" | "PAID" | "REFUNDED" | "AUTHORIZED" {
   switch (shopifyStatus) {
     case "paid":
       return "PAID";
+    case "authorized":
+      return "AUTHORIZED";
     case "refunded":
     case "partially_refunded":
       return "REFUNDED";
     default:
       return "PENDING";
   }
+}
+
+function mapPriority(
+  tags: string | null | undefined,
+): "STANDARD" | "RUSH" | "EXPRESS" {
+  if (!tags) return "STANDARD";
+  const tagLower = tags.toLowerCase();
+  if (tagLower.includes("express") || tagLower.includes("overnight")) {
+    return "EXPRESS";
+  }
+  if (tagLower.includes("rush") || tagLower.includes("priority")) {
+    return "RUSH";
+  }
+  return "STANDARD";
 }
 
 // ============================================================================
@@ -276,11 +323,13 @@ export async function processShopifyJob(job: Job): Promise<unknown> {
       return processShopifyOrderCreate(job as Job<ShopifyOrderCreateJobData>);
 
     case SHOPIFY_JOBS.ORDER_UPDATE:
-      // TODO: Handle order updates
+      // TODO: Handle order updates (address changes, etc.)
+      console.log("[Shopify] ORDER_UPDATE not implemented yet");
       return { status: "not_implemented" };
 
     case SHOPIFY_JOBS.ORDER_CANCEL:
-      // TODO: Handle cancellations (release allocations)
+      // TODO: Handle cancellations (release allocations, update status)
+      console.log("[Shopify] ORDER_CANCEL not implemented yet");
       return { status: "not_implemented" };
 
     default:

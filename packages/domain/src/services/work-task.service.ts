@@ -161,15 +161,15 @@ export interface OrderServiceInterface {
       status: string;
       items: Array<{
         id: string;
-        productVariantId: string;
+        productVariantId: string | null; // Changed from string
         sku: string;
         quantity: number;
+        matched?: boolean; // Added
       }>;
     }>
   >;
   updateStatus(orderId: string, status: string): Promise<void>;
 }
-
 // ============================================================================
 // Service Dependencies
 // ============================================================================

@@ -94,23 +94,25 @@ model ProductVariant {
   barcode          String?
   name             String
   imageUrl         String?
-  shopifyVariantId String?  @unique // ADD THIS
+  shopifyVariantId String?  @unique
   costPrice        Decimal? @db.Decimal(10, 2)
   sellingPrice     Decimal? @db.Decimal(10, 2)
   weight           Decimal? @db.Decimal(8, 2)
+  // Track if this variant requires lot/expiry tracking
   trackLots        Boolean  @default(false)
   trackExpiry      Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
   product        Product         @relation(fields: [productId], references: [id])
+  orderItems     OrderItem[]
   inventoryUnits InventoryUnit[]
   taskItems      TaskItem[]
   allocations    Allocation[]
 
   @@index([upc])
   @@index([barcode])
-  @@index([shopifyVariantId]) // ADD THIS
+  @@index([shopifyVariantId])
   @@map("product_variants")
 }
 
@@ -220,9 +222,9 @@ model Order {
   customerName     String
   customerEmail    String?
   shippingAddress  Json
-  billingAddress   Json? // ADD
-  // Shopify line items reference
-  shopifyLineItems Json? // ADD - stores raw Shopify line item data
+  billingAddress   Json?
+  // Shopify raw data
+  shopifyLineItems Json?
   // Status tracking
   status           OrderStatus   @default(PENDING)
   paymentStatus    PaymentStatus @default(PENDING)
@@ -231,6 +233,8 @@ model Order {
   holdReason       String?
   holdAt           DateTime?
   holdBy           String?
+  // Item matching
+  unmatchedItems   Int           @default(0) // Count of items with matched=false
   // Financials
   totalAmount      Decimal       @db.Decimal(10, 2)
   // Shipping
@@ -255,23 +259,28 @@ model Order {
 model OrderItem {
   id                                String   @id @default(cuid())
   orderId                           String
-  productVariantId                  String
+  productVariantId                  String? // Nullable - may not match a variant
   sku                               String
   quantity                          Int
   quantityAllocated                 Int      @default(0)
   quantityPicked                    Int      @default(0)
   unitPrice                         Decimal  @db.Decimal(10, 2)
-  totalPrice                        Decimal? @db.Decimal(10, 2) // ADD
+  totalPrice                        Decimal? @db.Decimal(10, 2)
+  // Matching status
+  matched                           Boolean  @default(true) // false if SKU not found
+  matchError                        String? // "SKU not found: XYZ"
   // Shopify references
-  shopifyLineItemId                 String? // ADD
-  shopifyFulfillmentOrderLineItemId String? // ADD
+  shopifyLineItemId                 String?
+  shopifyFulfillmentOrderLineItemId String?
 
-  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  taskItems   TaskItem[]
-  allocations Allocation[]
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id])
+  taskItems      TaskItem[]
+  allocations    Allocation[]
 
   @@index([orderId])
-  @@index([shopifyLineItemId]) // ADD
+  @@index([matched])
+  @@index([shopifyLineItemId])
   @@map("order_items")
 }
 
@@ -467,6 +476,8 @@ enum OrderStatus {
   CONFIRMED
   READY_TO_PICK
   ALLOCATED
+  PARTIALLY_ALLOCATED // Some items allocated, some backordered
+  BACKORDERED // No inventory available
   PICKING
   PICKED
   PACKING

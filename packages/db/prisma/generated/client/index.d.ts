@@ -137,6 +137,8 @@ export const OrderStatus: {
   CONFIRMED: 'CONFIRMED',
   READY_TO_PICK: 'READY_TO_PICK',
   ALLOCATED: 'ALLOCATED',
+  PARTIALLY_ALLOCATED: 'PARTIALLY_ALLOCATED',
+  BACKORDERED: 'BACKORDERED',
   PICKING: 'PICKING',
   PICKED: 'PICKED',
   PACKING: 'PACKING',
@@ -2554,12 +2556,14 @@ export namespace Prisma {
    */
 
   export type ProductVariantCountOutputType = {
+    orderItems: number
     inventoryUnits: number
     taskItems: number
     allocations: number
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    orderItems?: boolean | ProductVariantCountOutputTypeCountOrderItemsArgs
     inventoryUnits?: boolean | ProductVariantCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | ProductVariantCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | ProductVariantCountOutputTypeCountAllocationsArgs
@@ -2574,6 +2578,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the ProductVariantCountOutputType
      */
     select?: ProductVariantCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderItemWhereInput
   }
 
   /**
@@ -7665,6 +7676,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItems?: boolean | ProductVariant$orderItemsArgs<ExtArgs>
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
@@ -7730,6 +7742,7 @@ export namespace Prisma {
   export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "shopifyVariantId" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
   export type ProductVariantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItems?: boolean | ProductVariant$orderItemsArgs<ExtArgs>
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
@@ -7746,6 +7759,7 @@ export namespace Prisma {
     name: "ProductVariant"
     objects: {
       product: Prisma.$ProductPayload<ExtArgs>
+      orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
       inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
@@ -8161,6 +8175,7 @@ export namespace Prisma {
   export interface Prisma__ProductVariantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    orderItems<T extends ProductVariant$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryUnits<T extends ProductVariant$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends ProductVariant$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends ProductVariant$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8601,6 +8616,30 @@ export namespace Prisma {
      * Limit how many ProductVariants to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ProductVariant.orderItems
+   */
+  export type ProductVariant$orderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderItem
+     */
+    select?: OrderItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderItem
+     */
+    omit?: OrderItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderItemInclude<ExtArgs> | null
+    where?: OrderItemWhereInput
+    orderBy?: OrderItemOrderByWithRelationInput | OrderItemOrderByWithRelationInput[]
+    cursor?: OrderItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderItemScalarFieldEnum | OrderItemScalarFieldEnum[]
   }
 
   /**
@@ -12483,10 +12522,12 @@ export namespace Prisma {
   }
 
   export type OrderAvgAggregateOutputType = {
+    unmatchedItems: number | null
     totalAmount: Decimal | null
   }
 
   export type OrderSumAggregateOutputType = {
+    unmatchedItems: number | null
     totalAmount: Decimal | null
   }
 
@@ -12503,6 +12544,7 @@ export namespace Prisma {
     holdReason: string | null
     holdAt: Date | null
     holdBy: string | null
+    unmatchedItems: number | null
     totalAmount: Decimal | null
     warehouseId: string | null
     trackingNumber: string | null
@@ -12524,6 +12566,7 @@ export namespace Prisma {
     holdReason: string | null
     holdAt: Date | null
     holdBy: string | null
+    unmatchedItems: number | null
     totalAmount: Decimal | null
     warehouseId: string | null
     trackingNumber: string | null
@@ -12548,6 +12591,7 @@ export namespace Prisma {
     holdReason: number
     holdAt: number
     holdBy: number
+    unmatchedItems: number
     totalAmount: number
     warehouseId: number
     trackingNumber: number
@@ -12559,10 +12603,12 @@ export namespace Prisma {
 
 
   export type OrderAvgAggregateInputType = {
+    unmatchedItems?: true
     totalAmount?: true
   }
 
   export type OrderSumAggregateInputType = {
+    unmatchedItems?: true
     totalAmount?: true
   }
 
@@ -12579,6 +12625,7 @@ export namespace Prisma {
     holdReason?: true
     holdAt?: true
     holdBy?: true
+    unmatchedItems?: true
     totalAmount?: true
     warehouseId?: true
     trackingNumber?: true
@@ -12600,6 +12647,7 @@ export namespace Prisma {
     holdReason?: true
     holdAt?: true
     holdBy?: true
+    unmatchedItems?: true
     totalAmount?: true
     warehouseId?: true
     trackingNumber?: true
@@ -12624,6 +12672,7 @@ export namespace Prisma {
     holdReason?: true
     holdAt?: true
     holdBy?: true
+    unmatchedItems?: true
     totalAmount?: true
     warehouseId?: true
     trackingNumber?: true
@@ -12735,6 +12784,7 @@ export namespace Prisma {
     holdReason: string | null
     holdAt: Date | null
     holdBy: string | null
+    unmatchedItems: number
     totalAmount: Decimal
     warehouseId: string | null
     trackingNumber: string | null
@@ -12778,6 +12828,7 @@ export namespace Prisma {
     holdReason?: boolean
     holdAt?: boolean
     holdBy?: boolean
+    unmatchedItems?: boolean
     totalAmount?: boolean
     warehouseId?: boolean
     trackingNumber?: boolean
@@ -12806,6 +12857,7 @@ export namespace Prisma {
     holdReason?: boolean
     holdAt?: boolean
     holdBy?: boolean
+    unmatchedItems?: boolean
     totalAmount?: boolean
     warehouseId?: boolean
     trackingNumber?: boolean
@@ -12830,6 +12882,7 @@ export namespace Prisma {
     holdReason?: boolean
     holdAt?: boolean
     holdBy?: boolean
+    unmatchedItems?: boolean
     totalAmount?: boolean
     warehouseId?: boolean
     trackingNumber?: boolean
@@ -12854,6 +12907,7 @@ export namespace Prisma {
     holdReason?: boolean
     holdAt?: boolean
     holdBy?: boolean
+    unmatchedItems?: boolean
     totalAmount?: boolean
     warehouseId?: boolean
     trackingNumber?: boolean
@@ -12862,7 +12916,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "billingAddress" | "shopifyLineItems" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "billingAddress" | "shopifyLineItems" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "unmatchedItems" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
@@ -12895,6 +12949,7 @@ export namespace Prisma {
       holdReason: string | null
       holdAt: Date | null
       holdBy: string | null
+      unmatchedItems: number
       totalAmount: Prisma.Decimal
       warehouseId: string | null
       trackingNumber: string | null
@@ -13342,6 +13397,7 @@ export namespace Prisma {
     readonly holdReason: FieldRef<"Order", 'String'>
     readonly holdAt: FieldRef<"Order", 'DateTime'>
     readonly holdBy: FieldRef<"Order", 'String'>
+    readonly unmatchedItems: FieldRef<"Order", 'Int'>
     readonly totalAmount: FieldRef<"Order", 'Decimal'>
     readonly warehouseId: FieldRef<"Order", 'String'>
     readonly trackingNumber: FieldRef<"Order", 'String'>
@@ -13864,6 +13920,8 @@ export namespace Prisma {
     quantityPicked: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
+    matched: boolean | null
+    matchError: string | null
     shopifyLineItemId: string | null
     shopifyFulfillmentOrderLineItemId: string | null
   }
@@ -13878,6 +13936,8 @@ export namespace Prisma {
     quantityPicked: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
+    matched: boolean | null
+    matchError: string | null
     shopifyLineItemId: string | null
     shopifyFulfillmentOrderLineItemId: string | null
   }
@@ -13892,6 +13952,8 @@ export namespace Prisma {
     quantityPicked: number
     unitPrice: number
     totalPrice: number
+    matched: number
+    matchError: number
     shopifyLineItemId: number
     shopifyFulfillmentOrderLineItemId: number
     _all: number
@@ -13924,6 +13986,8 @@ export namespace Prisma {
     quantityPicked?: true
     unitPrice?: true
     totalPrice?: true
+    matched?: true
+    matchError?: true
     shopifyLineItemId?: true
     shopifyFulfillmentOrderLineItemId?: true
   }
@@ -13938,6 +14002,8 @@ export namespace Prisma {
     quantityPicked?: true
     unitPrice?: true
     totalPrice?: true
+    matched?: true
+    matchError?: true
     shopifyLineItemId?: true
     shopifyFulfillmentOrderLineItemId?: true
   }
@@ -13952,6 +14018,8 @@ export namespace Prisma {
     quantityPicked?: true
     unitPrice?: true
     totalPrice?: true
+    matched?: true
+    matchError?: true
     shopifyLineItemId?: true
     shopifyFulfillmentOrderLineItemId?: true
     _all?: true
@@ -14046,13 +14114,15 @@ export namespace Prisma {
   export type OrderItemGroupByOutputType = {
     id: string
     orderId: string
-    productVariantId: string
+    productVariantId: string | null
     sku: string
     quantity: number
     quantityAllocated: number
     quantityPicked: number
     unitPrice: Decimal
     totalPrice: Decimal | null
+    matched: boolean
+    matchError: string | null
     shopifyLineItemId: string | null
     shopifyFulfillmentOrderLineItemId: string | null
     _count: OrderItemCountAggregateOutputType | null
@@ -14086,9 +14156,12 @@ export namespace Prisma {
     quantityPicked?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
+    matched?: boolean
+    matchError?: boolean
     shopifyLineItemId?: boolean
     shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
     allocations?: boolean | OrderItem$allocationsArgs<ExtArgs>
     _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -14104,9 +14177,12 @@ export namespace Prisma {
     quantityPicked?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
+    matched?: boolean
+    matchError?: boolean
     shopifyLineItemId?: boolean
     shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
   export type OrderItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14119,9 +14195,12 @@ export namespace Prisma {
     quantityPicked?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
+    matched?: boolean
+    matchError?: boolean
     shopifyLineItemId?: boolean
     shopifyFulfillmentOrderLineItemId?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
   export type OrderItemSelectScalar = {
@@ -14134,41 +14213,49 @@ export namespace Prisma {
     quantityPicked?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
+    matched?: boolean
+    matchError?: boolean
     shopifyLineItemId?: boolean
     shopifyFulfillmentOrderLineItemId?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice" | "totalPrice" | "shopifyLineItemId" | "shopifyFulfillmentOrderLineItemId", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice" | "totalPrice" | "matched" | "matchError" | "shopifyLineItemId" | "shopifyFulfillmentOrderLineItemId", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
     taskItems?: boolean | OrderItem$taskItemsArgs<ExtArgs>
     allocations?: boolean | OrderItem$allocationsArgs<ExtArgs>
     _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
   }
   export type OrderItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
   }
 
   export type $OrderItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "OrderItem"
     objects: {
       order: Prisma.$OrderPayload<ExtArgs>
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
-      productVariantId: string
+      productVariantId: string | null
       sku: string
       quantity: number
       quantityAllocated: number
       quantityPicked: number
       unitPrice: Prisma.Decimal
       totalPrice: Prisma.Decimal | null
+      matched: boolean
+      matchError: string | null
       shopifyLineItemId: string | null
       shopifyFulfillmentOrderLineItemId: string | null
     }, ExtArgs["result"]["orderItem"]>
@@ -14566,6 +14653,7 @@ export namespace Prisma {
   export interface Prisma__OrderItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends OrderItem$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     taskItems<T extends OrderItem$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends OrderItem$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -14606,6 +14694,8 @@ export namespace Prisma {
     readonly quantityPicked: FieldRef<"OrderItem", 'Int'>
     readonly unitPrice: FieldRef<"OrderItem", 'Decimal'>
     readonly totalPrice: FieldRef<"OrderItem", 'Decimal'>
+    readonly matched: FieldRef<"OrderItem", 'Boolean'>
+    readonly matchError: FieldRef<"OrderItem", 'String'>
     readonly shopifyLineItemId: FieldRef<"OrderItem", 'String'>
     readonly shopifyFulfillmentOrderLineItemId: FieldRef<"OrderItem", 'String'>
   }
@@ -15001,6 +15091,25 @@ export namespace Prisma {
      * Limit how many OrderItems to delete.
      */
     limit?: number
+  }
+
+  /**
+   * OrderItem.productVariant
+   */
+  export type OrderItem$productVariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductVariant
+     */
+    select?: ProductVariantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductVariant
+     */
+    omit?: ProductVariantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductVariantInclude<ExtArgs> | null
+    where?: ProductVariantWhereInput
   }
 
   /**
@@ -22466,6 +22575,7 @@ export namespace Prisma {
     holdReason: 'holdReason',
     holdAt: 'holdAt',
     holdBy: 'holdBy',
+    unmatchedItems: 'unmatchedItems',
     totalAmount: 'totalAmount',
     warehouseId: 'warehouseId',
     trackingNumber: 'trackingNumber',
@@ -22487,6 +22597,8 @@ export namespace Prisma {
     quantityPicked: 'quantityPicked',
     unitPrice: 'unitPrice',
     totalPrice: 'totalPrice',
+    matched: 'matched',
+    matchError: 'matchError',
     shopifyLineItemId: 'shopifyLineItemId',
     shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
   };
@@ -23232,6 +23344,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    orderItems?: OrderItemListRelationFilter
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -23254,6 +23367,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     product?: ProductOrderByWithRelationInput
+    orderItems?: OrderItemOrderByRelationAggregateInput
     inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
@@ -23279,6 +23393,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    orderItems?: OrderItemListRelationFilter
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -23665,6 +23780,7 @@ export namespace Prisma {
     holdReason?: StringNullableFilter<"Order"> | string | null
     holdAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     holdBy?: StringNullableFilter<"Order"> | string | null
+    unmatchedItems?: IntFilter<"Order"> | number
     totalAmount?: DecimalFilter<"Order"> | Decimal | DecimalJsLike | number | string
     warehouseId?: StringNullableFilter<"Order"> | string | null
     trackingNumber?: StringNullableFilter<"Order"> | string | null
@@ -23692,6 +23808,7 @@ export namespace Prisma {
     holdReason?: SortOrderInput | SortOrder
     holdAt?: SortOrderInput | SortOrder
     holdBy?: SortOrderInput | SortOrder
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
     warehouseId?: SortOrderInput | SortOrder
     trackingNumber?: SortOrderInput | SortOrder
@@ -23722,6 +23839,7 @@ export namespace Prisma {
     holdReason?: StringNullableFilter<"Order"> | string | null
     holdAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     holdBy?: StringNullableFilter<"Order"> | string | null
+    unmatchedItems?: IntFilter<"Order"> | number
     totalAmount?: DecimalFilter<"Order"> | Decimal | DecimalJsLike | number | string
     warehouseId?: StringNullableFilter<"Order"> | string | null
     trackingNumber?: StringNullableFilter<"Order"> | string | null
@@ -23749,6 +23867,7 @@ export namespace Prisma {
     holdReason?: SortOrderInput | SortOrder
     holdAt?: SortOrderInput | SortOrder
     holdBy?: SortOrderInput | SortOrder
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
     warehouseId?: SortOrderInput | SortOrder
     trackingNumber?: SortOrderInput | SortOrder
@@ -23781,6 +23900,7 @@ export namespace Prisma {
     holdReason?: StringNullableWithAggregatesFilter<"Order"> | string | null
     holdAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     holdBy?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    unmatchedItems?: IntWithAggregatesFilter<"Order"> | number
     totalAmount?: DecimalWithAggregatesFilter<"Order"> | Decimal | DecimalJsLike | number | string
     warehouseId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     trackingNumber?: StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -23795,16 +23915,19 @@ export namespace Prisma {
     NOT?: OrderItemWhereInput | OrderItemWhereInput[]
     id?: StringFilter<"OrderItem"> | string
     orderId?: StringFilter<"OrderItem"> | string
-    productVariantId?: StringFilter<"OrderItem"> | string
+    productVariantId?: StringNullableFilter<"OrderItem"> | string | null
     sku?: StringFilter<"OrderItem"> | string
     quantity?: IntFilter<"OrderItem"> | number
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFilter<"OrderItem"> | boolean
+    matchError?: StringNullableFilter<"OrderItem"> | string | null
     shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
   }
@@ -23812,16 +23935,19 @@ export namespace Prisma {
   export type OrderItemOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
-    productVariantId?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
     sku?: SortOrder
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrderInput | SortOrder
+    matched?: SortOrder
+    matchError?: SortOrderInput | SortOrder
     shopifyLineItemId?: SortOrderInput | SortOrder
     shopifyFulfillmentOrderLineItemId?: SortOrderInput | SortOrder
     order?: OrderOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
   }
@@ -23832,16 +23958,19 @@ export namespace Prisma {
     OR?: OrderItemWhereInput[]
     NOT?: OrderItemWhereInput | OrderItemWhereInput[]
     orderId?: StringFilter<"OrderItem"> | string
-    productVariantId?: StringFilter<"OrderItem"> | string
+    productVariantId?: StringNullableFilter<"OrderItem"> | string | null
     sku?: StringFilter<"OrderItem"> | string
     quantity?: IntFilter<"OrderItem"> | number
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFilter<"OrderItem"> | boolean
+    matchError?: StringNullableFilter<"OrderItem"> | string | null
     shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
   }, "id">
@@ -23849,13 +23978,15 @@ export namespace Prisma {
   export type OrderItemOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
-    productVariantId?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
     sku?: SortOrder
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrderInput | SortOrder
+    matched?: SortOrder
+    matchError?: SortOrderInput | SortOrder
     shopifyLineItemId?: SortOrderInput | SortOrder
     shopifyFulfillmentOrderLineItemId?: SortOrderInput | SortOrder
     _count?: OrderItemCountOrderByAggregateInput
@@ -23871,13 +24002,15 @@ export namespace Prisma {
     NOT?: OrderItemScalarWhereWithAggregatesInput | OrderItemScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"OrderItem"> | string
     orderId?: StringWithAggregatesFilter<"OrderItem"> | string
-    productVariantId?: StringWithAggregatesFilter<"OrderItem"> | string
+    productVariantId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     sku?: StringWithAggregatesFilter<"OrderItem"> | string
     quantity?: IntWithAggregatesFilter<"OrderItem"> | number
     quantityAllocated?: IntWithAggregatesFilter<"OrderItem"> | number
     quantityPicked?: IntWithAggregatesFilter<"OrderItem"> | number
     unitPrice?: DecimalWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolWithAggregatesFilter<"OrderItem"> | boolean
+    matchError?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     shopifyLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     shopifyFulfillmentOrderLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   }
@@ -24809,6 +24942,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
@@ -24830,6 +24964,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
@@ -24851,6 +24986,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
@@ -24872,6 +25008,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -25290,6 +25427,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -25317,6 +25455,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -25344,6 +25483,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25371,6 +25511,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25398,6 +25539,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -25422,6 +25564,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25446,6 +25589,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25456,16 +25600,18 @@ export namespace Prisma {
 
   export type OrderItemCreateInput = {
     id?: string
-    productVariantId: string
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
@@ -25473,13 +25619,15 @@ export namespace Prisma {
   export type OrderItemUncheckedCreateInput = {
     id?: string
     orderId: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
@@ -25488,16 +25636,18 @@ export namespace Prisma {
 
   export type OrderItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
@@ -25505,13 +25655,15 @@ export namespace Prisma {
   export type OrderItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
@@ -25521,26 +25673,29 @@ export namespace Prisma {
   export type OrderItemCreateManyInput = {
     id?: string
     orderId: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
   }
 
   export type OrderItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -25548,13 +25703,15 @@ export namespace Prisma {
   export type OrderItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -26585,6 +26742,12 @@ export namespace Prisma {
     isNot?: ProductWhereInput
   }
 
+  export type OrderItemListRelationFilter = {
+    every?: OrderItemWhereInput
+    some?: OrderItemWhereInput
+    none?: OrderItemWhereInput
+  }
+
   export type InventoryUnitListRelationFilter = {
     every?: InventoryUnitWhereInput
     some?: InventoryUnitWhereInput
@@ -26595,6 +26758,10 @@ export namespace Prisma {
     every?: AllocationWhereInput
     some?: AllocationWhereInput
     none?: AllocationWhereInput
+  }
+
+  export type OrderItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type InventoryUnitOrderByRelationAggregateInput = {
@@ -27070,16 +27237,6 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type OrderItemListRelationFilter = {
-    every?: OrderItemWhereInput
-    some?: OrderItemWhereInput
-    none?: OrderItemWhereInput
-  }
-
-  export type OrderItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -27096,6 +27253,7 @@ export namespace Prisma {
     holdReason?: SortOrder
     holdAt?: SortOrder
     holdBy?: SortOrder
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
     warehouseId?: SortOrder
     trackingNumber?: SortOrder
@@ -27105,6 +27263,7 @@ export namespace Prisma {
   }
 
   export type OrderAvgOrderByAggregateInput = {
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
   }
 
@@ -27121,6 +27280,7 @@ export namespace Prisma {
     holdReason?: SortOrder
     holdAt?: SortOrder
     holdBy?: SortOrder
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
     warehouseId?: SortOrder
     trackingNumber?: SortOrder
@@ -27142,6 +27302,7 @@ export namespace Prisma {
     holdReason?: SortOrder
     holdAt?: SortOrder
     holdBy?: SortOrder
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
     warehouseId?: SortOrder
     trackingNumber?: SortOrder
@@ -27151,6 +27312,7 @@ export namespace Prisma {
   }
 
   export type OrderSumOrderByAggregateInput = {
+    unmatchedItems?: SortOrder
     totalAmount?: SortOrder
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
@@ -27252,6 +27414,11 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type ProductVariantNullableScalarRelationFilter = {
+    is?: ProductVariantWhereInput | null
+    isNot?: ProductVariantWhereInput | null
+  }
+
   export type OrderItemCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
@@ -27262,6 +27429,8 @@ export namespace Prisma {
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
+    matched?: SortOrder
+    matchError?: SortOrder
     shopifyLineItemId?: SortOrder
     shopifyFulfillmentOrderLineItemId?: SortOrder
   }
@@ -27284,6 +27453,8 @@ export namespace Prisma {
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
+    matched?: SortOrder
+    matchError?: SortOrder
     shopifyLineItemId?: SortOrder
     shopifyFulfillmentOrderLineItemId?: SortOrder
   }
@@ -27298,6 +27469,8 @@ export namespace Prisma {
     quantityPicked?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
+    matched?: SortOrder
+    matchError?: SortOrder
     shopifyLineItemId?: SortOrder
     shopifyFulfillmentOrderLineItemId?: SortOrder
   }
@@ -27477,11 +27650,6 @@ export namespace Prisma {
   export type WorkTaskScalarRelationFilter = {
     is?: WorkTaskWhereInput
     isNot?: WorkTaskWhereInput
-  }
-
-  export type ProductVariantNullableScalarRelationFilter = {
-    is?: ProductVariantWhereInput | null
-    isNot?: ProductVariantWhereInput | null
   }
 
   export type LocationNullableScalarRelationFilter = {
@@ -28128,6 +28296,13 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
+  export type OrderItemCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput> | OrderItemCreateWithoutProductVariantInput[] | OrderItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: OrderItemCreateOrConnectWithoutProductVariantInput | OrderItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: OrderItemCreateManyProductVariantInputEnvelope
+    connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
   export type InventoryUnitCreateNestedManyWithoutProductVariantInput = {
     create?: XOR<InventoryUnitCreateWithoutProductVariantInput, InventoryUnitUncheckedCreateWithoutProductVariantInput> | InventoryUnitCreateWithoutProductVariantInput[] | InventoryUnitUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutProductVariantInput | InventoryUnitCreateOrConnectWithoutProductVariantInput[]
@@ -28147,6 +28322,13 @@ export namespace Prisma {
     connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
     createMany?: AllocationCreateManyProductVariantInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type OrderItemUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput> | OrderItemCreateWithoutProductVariantInput[] | OrderItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: OrderItemCreateOrConnectWithoutProductVariantInput | OrderItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: OrderItemCreateManyProductVariantInputEnvelope
+    connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
   export type InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput = {
@@ -28184,6 +28366,20 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutVariantsInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVariantsInput, ProductUpdateWithoutVariantsInput>, ProductUncheckedUpdateWithoutVariantsInput>
+  }
+
+  export type OrderItemUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput> | OrderItemCreateWithoutProductVariantInput[] | OrderItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: OrderItemCreateOrConnectWithoutProductVariantInput | OrderItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: OrderItemUpsertWithWhereUniqueWithoutProductVariantInput | OrderItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: OrderItemCreateManyProductVariantInputEnvelope
+    set?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    disconnect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    delete?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    update?: OrderItemUpdateWithWhereUniqueWithoutProductVariantInput | OrderItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: OrderItemUpdateManyWithWhereWithoutProductVariantInput | OrderItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
   export type InventoryUnitUpdateManyWithoutProductVariantNestedInput = {
@@ -28226,6 +28422,20 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutProductVariantInput | AllocationUpdateWithWhereUniqueWithoutProductVariantInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutProductVariantInput | AllocationUpdateManyWithWhereWithoutProductVariantInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput> | OrderItemCreateWithoutProductVariantInput[] | OrderItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: OrderItemCreateOrConnectWithoutProductVariantInput | OrderItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: OrderItemUpsertWithWhereUniqueWithoutProductVariantInput | OrderItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: OrderItemCreateManyProductVariantInputEnvelope
+    set?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    disconnect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    delete?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+    update?: OrderItemUpdateWithWhereUniqueWithoutProductVariantInput | OrderItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: OrderItemUpdateManyWithWhereWithoutProductVariantInput | OrderItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
   export type InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput = {
@@ -28734,6 +28944,12 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput
   }
 
+  export type ProductVariantCreateNestedOneWithoutOrderItemsInput = {
+    create?: XOR<ProductVariantCreateWithoutOrderItemsInput, ProductVariantUncheckedCreateWithoutOrderItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutOrderItemsInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
   export type TaskItemCreateNestedManyWithoutOrderItemInput = {
     create?: XOR<TaskItemCreateWithoutOrderItemInput, TaskItemUncheckedCreateWithoutOrderItemInput> | TaskItemCreateWithoutOrderItemInput[] | TaskItemUncheckedCreateWithoutOrderItemInput[]
     connectOrCreate?: TaskItemCreateOrConnectWithoutOrderItemInput | TaskItemCreateOrConnectWithoutOrderItemInput[]
@@ -28768,6 +28984,16 @@ export namespace Prisma {
     upsert?: OrderUpsertWithoutItemsInput
     connect?: OrderWhereUniqueInput
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutItemsInput, OrderUpdateWithoutItemsInput>, OrderUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ProductVariantUpdateOneWithoutOrderItemsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutOrderItemsInput, ProductVariantUncheckedCreateWithoutOrderItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutOrderItemsInput
+    upsert?: ProductVariantUpsertWithoutOrderItemsInput
+    disconnect?: ProductVariantWhereInput | boolean
+    delete?: ProductVariantWhereInput | boolean
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutOrderItemsInput, ProductVariantUpdateWithoutOrderItemsInput>, ProductVariantUncheckedUpdateWithoutOrderItemsInput>
   }
 
   export type TaskItemUpdateManyWithoutOrderItemNestedInput = {
@@ -30320,6 +30546,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
@@ -30340,6 +30567,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
@@ -30421,6 +30649,50 @@ export namespace Prisma {
   export type ProductCreateOrConnectWithoutVariantsInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutVariantsInput, ProductUncheckedCreateWithoutVariantsInput>
+  }
+
+  export type OrderItemCreateWithoutProductVariantInput = {
+    id?: string
+    sku: string
+    quantity: number
+    quantityAllocated?: number
+    quantityPicked?: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
+    order: OrderCreateNestedOneWithoutItemsInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationCreateNestedManyWithoutOrderItemInput
+  }
+
+  export type OrderItemUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    orderId: string
+    sku: string
+    quantity: number
+    quantityAllocated?: number
+    quantityPicked?: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
+  }
+
+  export type OrderItemCreateOrConnectWithoutProductVariantInput = {
+    where: OrderItemWhereUniqueInput
+    create: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type OrderItemCreateManyProductVariantInputEnvelope = {
+    data: OrderItemCreateManyProductVariantInput | OrderItemCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
   }
 
   export type InventoryUnitCreateWithoutProductVariantInput = {
@@ -30590,6 +30862,41 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderItemUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: OrderItemWhereUniqueInput
+    update: XOR<OrderItemUpdateWithoutProductVariantInput, OrderItemUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<OrderItemCreateWithoutProductVariantInput, OrderItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type OrderItemUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: OrderItemWhereUniqueInput
+    data: XOR<OrderItemUpdateWithoutProductVariantInput, OrderItemUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type OrderItemUpdateManyWithWhereWithoutProductVariantInput = {
+    where: OrderItemScalarWhereInput
+    data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type OrderItemScalarWhereInput = {
+    AND?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+    OR?: OrderItemScalarWhereInput[]
+    NOT?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+    id?: StringFilter<"OrderItem"> | string
+    orderId?: StringFilter<"OrderItem"> | string
+    productVariantId?: StringNullableFilter<"OrderItem"> | string | null
+    sku?: StringFilter<"OrderItem"> | string
+    quantity?: IntFilter<"OrderItem"> | number
+    quantityAllocated?: IntFilter<"OrderItem"> | number
+    quantityPicked?: IntFilter<"OrderItem"> | number
+    unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFilter<"OrderItem"> | boolean
+    matchError?: StringNullableFilter<"OrderItem"> | string | null
+    shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
+    shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
   }
 
   export type InventoryUnitUpsertWithWhereUniqueWithoutProductVariantInput = {
@@ -30873,6 +31180,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
@@ -30893,6 +31201,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
@@ -31012,6 +31321,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
@@ -31032,6 +31342,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
@@ -31152,6 +31463,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -31178,6 +31490,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -31195,29 +31508,33 @@ export namespace Prisma {
 
   export type OrderItemCreateWithoutAllocationsInput = {
     id?: string
-    productVariantId: string
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutAllocationsInput = {
     id?: string
     orderId: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
@@ -31244,6 +31561,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
   }
@@ -31264,6 +31582,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
@@ -31431,6 +31750,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31457,6 +31777,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31480,29 +31801,33 @@ export namespace Prisma {
 
   export type OrderItemUpdateWithoutAllocationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutAllocationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
@@ -31535,6 +31860,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
   }
@@ -31555,6 +31881,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
@@ -31663,28 +31990,32 @@ export namespace Prisma {
 
   export type OrderItemCreateWithoutOrderInput = {
     id?: string
-    productVariantId: string
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
+    productVariant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderItemInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutOrderInput = {
     id?: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderItemInput
@@ -31809,23 +32140,6 @@ export namespace Prisma {
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutOrderInput>
   }
 
-  export type OrderItemScalarWhereInput = {
-    AND?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
-    OR?: OrderItemScalarWhereInput[]
-    NOT?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
-    id?: StringFilter<"OrderItem"> | string
-    orderId?: StringFilter<"OrderItem"> | string
-    productVariantId?: StringFilter<"OrderItem"> | string
-    sku?: StringFilter<"OrderItem"> | string
-    quantity?: IntFilter<"OrderItem"> | number
-    quantityAllocated?: IntFilter<"OrderItem"> | number
-    quantityPicked?: IntFilter<"OrderItem"> | number
-    unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
-    totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
-    shopifyLineItemId?: StringNullableFilter<"OrderItem"> | string | null
-    shopifyFulfillmentOrderLineItemId?: StringNullableFilter<"OrderItem"> | string | null
-  }
-
   export type TaskItemUpsertWithWhereUniqueWithoutOrderInput = {
     where: TaskItemWhereUniqueInput
     update: XOR<TaskItemUpdateWithoutOrderInput, TaskItemUncheckedUpdateWithoutOrderInput>
@@ -31874,6 +32188,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -31900,6 +32215,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -31913,6 +32229,53 @@ export namespace Prisma {
   export type OrderCreateOrConnectWithoutItemsInput = {
     where: OrderWhereUniqueInput
     create: XOR<OrderCreateWithoutItemsInput, OrderUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ProductVariantCreateWithoutOrderItemsInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVariantsInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutOrderItemsInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutOrderItemsInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutOrderItemsInput, ProductVariantUncheckedCreateWithoutOrderItemsInput>
   }
 
   export type TaskItemCreateWithoutOrderItemInput = {
@@ -32034,6 +32397,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32060,6 +32424,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32068,6 +32433,59 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type ProductVariantUpsertWithoutOrderItemsInput = {
+    update: XOR<ProductVariantUpdateWithoutOrderItemsInput, ProductVariantUncheckedUpdateWithoutOrderItemsInput>
+    create: XOR<ProductVariantCreateWithoutOrderItemsInput, ProductVariantUncheckedCreateWithoutOrderItemsInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutOrderItemsInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutOrderItemsInput, ProductVariantUncheckedUpdateWithoutOrderItemsInput>
+  }
+
+  export type ProductVariantUpdateWithoutOrderItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutOrderItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderItemInput = {
@@ -32379,6 +32797,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -32405,6 +32824,7 @@ export namespace Prisma {
     holdReason?: string | null
     holdAt?: Date | string | null
     holdBy?: string | null
+    unmatchedItems?: number
     totalAmount: Decimal | DecimalJsLike | number | string
     warehouseId?: string | null
     trackingNumber?: string | null
@@ -32422,29 +32842,33 @@ export namespace Prisma {
 
   export type OrderItemCreateWithoutTaskItemsInput = {
     id?: string
-    productVariantId: string
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     order: OrderCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     allocations?: AllocationCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutTaskItemsInput = {
     id?: string
     orderId: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderItemInput
@@ -32471,6 +32895,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
   }
@@ -32491,6 +32916,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
   }
@@ -32711,6 +33137,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32737,6 +33164,7 @@ export namespace Prisma {
     holdReason?: NullableStringFieldUpdateOperationsInput | string | null
     holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
     trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32760,29 +33188,33 @@ export namespace Prisma {
 
   export type OrderItemUpdateWithoutTaskItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutTaskItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
@@ -32815,6 +33247,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
   }
@@ -32835,6 +33268,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
@@ -33760,6 +34194,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
@@ -33780,6 +34215,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -33800,6 +34236,21 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderItemCreateManyProductVariantInput = {
+    id?: string
+    orderId: string
+    sku: string
+    quantity: number
+    quantityAllocated?: number
+    quantityPicked?: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
+    shopifyLineItemId?: string | null
+    shopifyFulfillmentOrderLineItemId?: string | null
   }
 
   export type InventoryUnitCreateManyProductVariantInput = {
@@ -33849,6 +34300,55 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type OrderItemUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
+  }
+
+  export type OrderItemUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderItemNestedInput
+  }
+
+  export type OrderItemUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    quantityAllocated?: IntFieldUpdateOperationsInput | number
+    quantityPicked?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InventoryUnitUpdateWithoutProductVariantInput = {
@@ -34264,13 +34764,15 @@ export namespace Prisma {
 
   export type OrderItemCreateManyOrderInput = {
     id?: string
-    productVariantId: string
+    productVariantId?: string | null
     sku: string
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
+    matched?: boolean
+    matchError?: string | null
     shopifyLineItemId?: string | null
     shopifyFulfillmentOrderLineItemId?: string | null
   }
@@ -34312,28 +34814,32 @@ export namespace Prisma {
 
   export type OrderItemUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderItemNestedInput
     allocations?: AllocationUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderItemNestedInput
@@ -34342,13 +34848,15 @@ export namespace Prisma {
 
   export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productVariantId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    matched?: BoolFieldUpdateOperationsInput | boolean
+    matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }

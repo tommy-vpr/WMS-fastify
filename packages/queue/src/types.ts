@@ -10,6 +10,7 @@
 export const QUEUES = {
   WORK_TASKS: "work-tasks",
   SHOPIFY: "shopify",
+  ORDERS: "orders",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -101,7 +102,7 @@ export interface CancelTaskResult {
 }
 
 // ============================================================================
-// Shopify Sync Jobs
+// Shopify Jobs
 // ============================================================================
 
 export const SHOPIFY_JOBS = {
@@ -115,7 +116,7 @@ export type ShopifyJobName = (typeof SHOPIFY_JOBS)[keyof typeof SHOPIFY_JOBS];
 
 export interface ShopifyOrderCreateJobData {
   shopifyOrderId: string;
-  payload: Record<string, unknown>; // Raw Shopify webhook payload
+  payload: Record<string, unknown>;
   receivedAt: string;
   idempotencyKey: string;
 }
@@ -132,24 +133,42 @@ export interface ShopifyOrderCancelJobData {
   receivedAt: string;
 }
 
-// export interface WorkTaskJobData {
-//   taskId: string;
-//   type: string;
-//   action: "process" | "assign" | "complete" | "cancel";
-//   userId?: string;
-//   metadata?: Record<string, unknown>;
-// }
+export type ShopifyJobData =
+  | ShopifyOrderCreateJobData
+  | ShopifyOrderUpdateJobData
+  | ShopifyOrderCancelJobData;
 
-// export interface ShopifySyncJobData {
-//   syncType: "orders" | "products" | "inventory" | "fulfillment";
-//   orderId?: string;
-//   productId?: string;
-//   action: "sync" | "webhook";
-//   payload?: Record<string, unknown>;
-// }
+// ============================================================================
+// Order Allocation Jobs
+// ============================================================================
 
-// export interface JobResult {
-//   success: boolean;
-//   message?: string;
-//   data?: Record<string, unknown>;
-// }
+export const ORDER_JOBS = {
+  ALLOCATE_ORDER: "allocate-order",
+  ALLOCATE_ORDERS: "allocate-orders",
+  RELEASE_ALLOCATIONS: "release-allocations",
+  CHECK_BACKORDERS: "check-backorders",
+} as const;
+
+export type OrderJobName = (typeof ORDER_JOBS)[keyof typeof ORDER_JOBS];
+
+export interface AllocateOrderJobData {
+  orderId: string;
+  allowPartial?: boolean;
+  idempotencyKey?: string;
+}
+
+export interface AllocateOrdersJobData {
+  orderIds: string[];
+  allowPartial?: boolean;
+  idempotencyKey?: string;
+}
+
+export interface ReleaseAllocationsJobData {
+  orderId: string;
+  reason?: string;
+}
+
+export interface CheckBackordersJobData {
+  productVariantId: string;
+  triggerSource?: string; // e.g., "receiving", "adjustment"
+}

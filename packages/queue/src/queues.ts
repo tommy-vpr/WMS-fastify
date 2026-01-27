@@ -9,11 +9,16 @@ import {
   QUEUES,
   WORK_TASK_JOBS,
   SHOPIFY_JOBS,
+  ORDER_JOBS,
   type CreatePickingTaskJobData,
   type AssignTaskJobData,
   type StartTaskJobData,
   type CancelTaskJobData,
   type ShopifyOrderCreateJobData,
+  type AllocateOrderJobData,
+  type AllocateOrdersJobData,
+  type ReleaseAllocationsJobData,
+  type CheckBackordersJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -22,35 +27,7 @@ import {
 
 let workTaskQueue: Queue | null = null;
 let shopifyQueue: Queue | null = null;
-
-export function getShopifyQueue(): Queue {
-  if (!shopifyQueue) {
-    shopifyQueue = new Queue(QUEUES.SHOPIFY, {
-      connection: getConnection(),
-      defaultJobOptions: {
-        attempts: 5, // More retries for external webhooks
-        backoff: {
-          type: "exponential",
-          delay: 2000,
-        },
-        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
-        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
-      },
-    });
-  }
-  return shopifyQueue;
-}
-
-export async function enqueueShopifyOrderCreate(
-  data: ShopifyOrderCreateJobData,
-  options?: JobsOptions,
-) {
-  const queue = getShopifyQueue();
-  return queue.add(SHOPIFY_JOBS.ORDER_CREATE, data, {
-    ...options,
-    jobId: data.idempotencyKey, // Prevent duplicates
-  });
-}
+let ordersQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -74,6 +51,42 @@ export function getWorkTaskQueue(): Queue {
     });
   }
   return workTaskQueue;
+}
+
+export function getShopifyQueue(): Queue {
+  if (!shopifyQueue) {
+    shopifyQueue = new Queue(QUEUES.SHOPIFY, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 5, // More retries for external webhooks
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return shopifyQueue;
+}
+
+export function getOrdersQueue(): Queue {
+  if (!ordersQueue) {
+    ordersQueue = new Queue(QUEUES.ORDERS, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 1000,
+        },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return ordersQueue;
 }
 
 // ============================================================================
@@ -140,6 +153,78 @@ export async function enqueueCancelTask(
   });
 }
 
+/**
+ * Enqueue a Shopify order creation job
+ */
+export async function enqueueShopifyOrderCreate(
+  data: ShopifyOrderCreateJobData,
+  options?: JobsOptions,
+) {
+  const queue = getShopifyQueue();
+  return queue.add(SHOPIFY_JOBS.ORDER_CREATE, data, {
+    ...options,
+    jobId: data.idempotencyKey, // Prevent duplicates
+  });
+}
+
+/**
+ * Enqueue a job to allocate a single order
+ */
+export async function enqueueAllocateOrder(
+  data: AllocateOrderJobData,
+  options?: JobsOptions,
+) {
+  const queue = getOrdersQueue();
+  return queue.add(ORDER_JOBS.ALLOCATE_ORDER, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `allocate-${data.orderId}-${Date.now()}`,
+  });
+}
+
+/**
+ * Enqueue a job to allocate multiple orders
+ */
+export async function enqueueAllocateOrders(
+  data: AllocateOrdersJobData,
+  options?: JobsOptions,
+) {
+  const queue = getOrdersQueue();
+  return queue.add(ORDER_JOBS.ALLOCATE_ORDERS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `allocate-batch-${Date.now()}`,
+  });
+}
+
+/**
+ * Enqueue a job to release allocations for an order
+ */
+export async function enqueueReleaseAllocations(
+  data: ReleaseAllocationsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getOrdersQueue();
+  return queue.add(ORDER_JOBS.RELEASE_ALLOCATIONS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
+}
+
+/**
+ * Enqueue a job to check backordered orders when inventory is received
+ */
+export async function enqueueCheckBackorders(
+  data: CheckBackordersJobData,
+  options?: JobsOptions,
+) {
+  const queue = getOrdersQueue();
+  return queue.add(ORDER_JOBS.CHECK_BACKORDERS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
+}
+
 // ============================================================================
 // Queue Management
 // ============================================================================
@@ -168,65 +253,12 @@ export async function closeQueues() {
     await workTaskQueue.close();
     workTaskQueue = null;
   }
+  if (shopifyQueue) {
+    await shopifyQueue.close();
+    shopifyQueue = null;
+  }
+  if (ordersQueue) {
+    await ordersQueue.close();
+    ordersQueue = null;
+  }
 }
-
-// import { Queue } from "bullmq";
-// import { getConnection } from "./connection.js";
-// import type { WorkTaskJobData, ShopifySyncJobData } from "./types.js";
-
-// export const QUEUE_NAMES = {
-//   WORK_TASK: "work-task",
-//   SHOPIFY_SYNC: "shopify-sync",
-// } as const;
-
-// let _workTaskQueue: Queue<WorkTaskJobData> | null = null;
-// let _shopifySyncQueue: Queue<ShopifySyncJobData> | null = null;
-
-// export function getWorkTaskQueue(): Queue<WorkTaskJobData> {
-//   if (!_workTaskQueue) {
-//     _workTaskQueue = new Queue<WorkTaskJobData>(QUEUE_NAMES.WORK_TASK, {
-//       connection: getConnection(),
-//       defaultJobOptions: {
-//         attempts: 3,
-//         backoff: { type: "exponential", delay: 1000 },
-//         removeOnComplete: { age: 24 * 3600, count: 1000 },
-//         removeOnFail: { age: 7 * 24 * 3600 },
-//       },
-//     });
-//   }
-//   return _workTaskQueue;
-// }
-
-// export function getShopifySyncQueue(): Queue<ShopifySyncJobData> {
-//   if (!_shopifySyncQueue) {
-//     _shopifySyncQueue = new Queue<ShopifySyncJobData>(
-//       QUEUE_NAMES.SHOPIFY_SYNC,
-//       {
-//         connection: getConnection(),
-//         defaultJobOptions: {
-//           attempts: 5,
-//           backoff: { type: "exponential", delay: 2000 },
-//         },
-//       }
-//     );
-//   }
-//   return _shopifySyncQueue;
-// }
-
-// export async function enqueueWorkTask(
-//   jobName: string,
-//   data: WorkTaskJobData,
-//   options?: { priority?: number; delay?: number }
-// ) {
-//   return getWorkTaskQueue().add(jobName, data, {
-//     priority: options?.priority,
-//     delay: options?.delay,
-//   });
-// }
-
-// export async function enqueueShopifySync(
-//   jobName: string,
-//   data: ShopifySyncJobData
-// ) {
-//   return getShopifySyncQueue().add(jobName, data);
-// }

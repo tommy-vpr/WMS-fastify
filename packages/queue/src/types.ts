@@ -11,6 +11,7 @@ export const QUEUES = {
   WORK_TASKS: "work-tasks",
   SHOPIFY: "shopify",
   ORDERS: "orders",
+  PRODUCTS: "products",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -171,4 +172,60 @@ export interface ReleaseAllocationsJobData {
 export interface CheckBackordersJobData {
   productVariantId: string;
   triggerSource?: string; // e.g., "receiving", "adjustment"
+}
+
+// ============================================================================
+// Product Jobs
+// ============================================================================
+
+export const PRODUCT_JOBS = {
+  IMPORT_PRODUCTS: "import-products",
+  IMPORT_SINGLE: "import-single",
+  SYNC_SHOPIFY_PRODUCTS: "sync-shopify-products",
+} as const;
+
+export type ProductJobName = (typeof PRODUCT_JOBS)[keyof typeof PRODUCT_JOBS];
+
+export interface ProductImportItem {
+  product: {
+    sku: string;
+    name: string;
+    description?: string;
+    brand?: string;
+    category?: string;
+  };
+  variants: Array<{
+    sku: string;
+    upc?: string;
+    barcode?: string;
+    name: string;
+    weight?: number;
+    costPrice?: number;
+    sellingPrice?: number;
+    shopifyVariantId?: string;
+  }>;
+}
+
+export interface ImportProductsJobData {
+  products: ProductImportItem[];
+  userId?: string;
+  idempotencyKey: string;
+}
+
+export interface ImportSingleProductJobData {
+  product: ProductImportItem["product"];
+  variants: ProductImportItem["variants"];
+  userId?: string;
+}
+
+export interface SyncShopifyProductsJobData {
+  cursor?: string;
+  limit?: number;
+  idempotencyKey: string;
+}
+
+export interface ImportProductsResult {
+  success: number;
+  failed: number;
+  errors: Array<{ sku: string; error: string }>;
 }

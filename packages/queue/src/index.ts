@@ -1,3 +1,4 @@
+// /package/queue
 // Connection
 export { getConnection } from "./connection.js";
 
@@ -9,6 +10,7 @@ export {
   getWorkTaskQueue,
   getShopifyQueue,
   getOrdersQueue,
+  getProductsQueue,
   enqueueCreatePickingTask,
   enqueueAssignTask,
   enqueueStartTask,
@@ -18,6 +20,9 @@ export {
   enqueueAllocateOrders,
   enqueueReleaseAllocations,
   enqueueCheckBackorders,
+  enqueueImportProducts,
+  enqueueImportSingleProduct,
+  enqueueSyncShopifyProducts,
   getWorkTaskQueueStats,
   closeQueues,
 } from "./queues.js";

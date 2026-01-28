@@ -10,35 +10,15 @@ import {
   QUEUES,
   WORK_TASK_JOBS,
   SHOPIFY_JOBS,
+  ORDER_JOBS,
+  PRODUCT_JOBS,
 } from "@wms/queue";
-import { processWorkTaskJob } from "./processors/index.js";
-import { processShopifyJob } from "./processors/shopify.processor.js";
-
-// Add Shopify worker
-function createShopifyWorker() {
-  const connection = getConnection();
-
-  const worker = new Worker(
-    QUEUES.SHOPIFY,
-    async (job: Job) => processShopifyJob(job),
-    {
-      connection,
-      concurrency: 3, // Lower concurrency for external API calls
-      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
-      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
-    },
-  );
-
-  worker.on("ready", () => console.log("[Worker] shopify worker ready"));
-  worker.on("completed", (job, result) => {
-    console.log(`[Shopify] Job completed: ${job.name}`, result);
-  });
-  worker.on("failed", (job, err) => {
-    console.error(`[Shopify] Job failed: ${job?.name}`, err.message);
-  });
-
-  return worker;
-}
+import {
+  processWorkTaskJob,
+  processShopifyJob,
+  processOrderJob,
+  processProductJob,
+} from "./processors/index.js";
 
 // ============================================================================
 // Configuration
@@ -94,6 +74,90 @@ function createWorkTaskWorker() {
   return worker;
 }
 
+function createShopifyWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.SHOPIFY,
+    async (job: Job) => processShopifyJob(job),
+    {
+      connection,
+      concurrency: 3, // Lower concurrency for external API calls
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.SHOPIFY} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Shopify] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Shopify] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
+
+function createOrdersWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.ORDERS,
+    async (job: Job) => processOrderJob(job),
+    {
+      connection,
+      concurrency: WORKER_CONCURRENCY,
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.ORDERS} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Orders] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Orders] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
+
+function createProductsWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.PRODUCTS,
+    async (job: Job) => processProductJob(job),
+    {
+      connection,
+      concurrency: 3, // Lower concurrency for bulk imports
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.PRODUCTS} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Products] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Products] Job failed: ${job?.name}`, err.message);
+  });
+  worker.on("progress", (job, progress) => {
+    console.log(`[Products] Job progress: ${job.name} - ${progress}%`);
+  });
+
+  return worker;
+}
+
 // ============================================================================
 // Graceful Shutdown
 // ============================================================================
@@ -127,9 +191,19 @@ async function main() {
 
   // Work Tasks Worker
   const workTaskWorker = createWorkTaskWorker();
-  const shopifyWorker = createShopifyWorker();
+  workers.push(workTaskWorker);
 
-  workers.push(workTaskWorker, shopifyWorker);
+  // Shopify Worker
+  const shopifyWorker = createShopifyWorker();
+  workers.push(shopifyWorker);
+
+  // Orders Worker
+  const ordersWorker = createOrdersWorker();
+  workers.push(ordersWorker);
+
+  // Products Worker
+  const productsWorker = createProductsWorker();
+  workers.push(productsWorker);
 
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
@@ -144,6 +218,12 @@ async function main() {
   Object.values(SHOPIFY_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.SHOPIFY}:${job}`);
   });
+  Object.values(ORDER_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.ORDERS}:${job}`);
+  });
+  Object.values(PRODUCT_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.PRODUCTS}:${job}`);
+  });
   console.log("");
 }
 
@@ -151,46 +231,3 @@ main().catch((err) => {
   console.error("[Worker] Fatal error:", err);
   process.exit(1);
 });
-
-// import { config } from "dotenv";
-// import { resolve } from "path";
-// import { fileURLToPath } from "url";
-
-// // Load .env from monorepo root FIRST
-// const __dirname = fileURLToPath(new URL(".", import.meta.url));
-// config({ path: resolve(__dirname, "../../../.env") });
-
-// import { Worker } from "bullmq";
-// import { QUEUE_NAMES, getConnection } from "@wms/queue";
-// import { processWorkTask } from "./processors/workTask.processor.js";
-
-// console.log("🔧 Starting worker...");
-// console.log("REDIS_URL:", process.env.REDIS_URL ? "✓" : "✗");
-
-// const workTaskWorker = new Worker(
-//   QUEUE_NAMES.WORK_TASK,
-//   processWorkTask,
-//   {
-//     connection: getConnection(),
-//     concurrency: 5,
-//   }
-// );
-
-// workTaskWorker.on("completed", (job) => {
-//   console.log(`✅ Job ${job.id} completed`);
-// });
-
-// workTaskWorker.on("failed", (job, err) => {
-//   console.error(`❌ Job ${job?.id} failed:`, err.message);
-// });
-
-// async function shutdown() {
-//   console.log("🛑 Shutting down...");
-//   await workTaskWorker.close();
-//   process.exit(0);
-// }
-
-// process.on("SIGTERM", shutdown);
-// process.on("SIGINT", shutdown);
-
-// console.log("✅ Worker running");

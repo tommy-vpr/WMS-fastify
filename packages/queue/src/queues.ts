@@ -10,6 +10,7 @@ import {
   WORK_TASK_JOBS,
   SHOPIFY_JOBS,
   ORDER_JOBS,
+  PRODUCT_JOBS,
   type CreatePickingTaskJobData,
   type AssignTaskJobData,
   type StartTaskJobData,
@@ -19,6 +20,9 @@ import {
   type AllocateOrdersJobData,
   type ReleaseAllocationsJobData,
   type CheckBackordersJobData,
+  type ImportProductsJobData,
+  type ImportSingleProductJobData,
+  type SyncShopifyProductsJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -28,6 +32,7 @@ import {
 let workTaskQueue: Queue | null = null;
 let shopifyQueue: Queue | null = null;
 let ordersQueue: Queue | null = null;
+let productsQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -87,6 +92,24 @@ export function getOrdersQueue(): Queue {
     });
   }
   return ordersQueue;
+}
+
+export function getProductsQueue(): Queue {
+  if (!productsQueue) {
+    productsQueue = new Queue(QUEUES.PRODUCTS, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 1000,
+        },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return productsQueue;
 }
 
 // ============================================================================
@@ -225,6 +248,50 @@ export async function enqueueCheckBackorders(
   });
 }
 
+/**
+ * Enqueue a bulk product import job
+ */
+export async function enqueueImportProducts(
+  data: ImportProductsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getProductsQueue();
+  return queue.add(PRODUCT_JOBS.IMPORT_PRODUCTS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey,
+  });
+}
+
+/**
+ * Enqueue a single product import job
+ */
+export async function enqueueImportSingleProduct(
+  data: ImportSingleProductJobData,
+  options?: JobsOptions,
+) {
+  const queue = getProductsQueue();
+  return queue.add(PRODUCT_JOBS.IMPORT_SINGLE, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
+}
+
+/**
+ * Enqueue a Shopify product sync job
+ */
+export async function enqueueSyncShopifyProducts(
+  data: SyncShopifyProductsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getProductsQueue();
+  return queue.add(PRODUCT_JOBS.SYNC_SHOPIFY_PRODUCTS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey,
+  });
+}
+
 // ============================================================================
 // Queue Management
 // ============================================================================
@@ -260,5 +327,9 @@ export async function closeQueues() {
   if (ordersQueue) {
     await ordersQueue.close();
     ordersQueue = null;
+  }
+  if (productsQueue) {
+    await productsQueue.close();
+    productsQueue = null;
   }
 }

@@ -5,7 +5,9 @@ import { Signup } from "./pages/auth/Signup";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { NotFound } from "./pages/NotFound";
 import { useAuth } from "./hooks/useAuth";
-
+import AdminProductsPage from "./pages/products/admin-products.page";
+import ProductDetailPage from "./pages/products/[id]/product-detail.page";
+import ProductImportPage from "./pages/products/import/product-import.page";
 function AuthRedirect({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated() ? <Navigate to="/" replace /> : <>{children}</>;
@@ -32,6 +34,10 @@ export default function App() {
             </AuthRedirect>
           }
         />
+
+        <Route path="/products" element={<AdminProductsPage />} />
+        <Route path="/products/import" element={<ProductImportPage />} />
+        <Route path="/products/:id" element={<ProductDetailPage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>

@@ -4,6 +4,8 @@ import rateLimit from "@fastify/rate-limit";
 import { healthRoutes } from "./routes/health.routes.js";
 import { authRoutes } from "./routes/auth.routes.js";
 import { shopifyWebhookRoutes } from "./routes/webhooks/shopify/orders/create.js";
+import { productImportRoutes } from "./routes/product.routes.js";
+
 import { errorHandler } from "./middleware/error.js";
 import Redis from "ioredis";
 
@@ -43,6 +45,7 @@ export async function buildApp() {
   await app.register(healthRoutes, { prefix: "/health" });
   await app.register(authRoutes, { prefix: "/auth" });
   await app.register(shopifyWebhookRoutes, { prefix: "/webhooks/shopify" });
+  await app.register(productImportRoutes, { prefix: "/products" });
 
   return app;
 }

@@ -1,12 +1,14 @@
 /**
- * Unified App Layout
+ * App Layout with Auth Integration
  *
- * - Role-based navigation (shows/hides items based on user permissions)
- * - Compact mode toggle for floor work (larger buttons, bottom nav)
- * - Full mode for desk work (sidebar, all features)
+ * - Uses auth context for user/logout
+ * - Role-based navigation
+ * - Compact mode toggle
+ *
+ * Save to: apps/web/src/layouts/AppLayout.tsx
  */
 
-import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, NavLink, useLocation, Navigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
@@ -29,35 +31,22 @@ import {
   Minimize2,
   Maximize2,
   type LucideIcon,
+  ScanBarcode,
+  Import,
 } from "lucide-react";
 import { useState, createContext, useContext, useEffect } from "react";
+import { useAuth, type UserRole, type User as AuthUser } from "../lib/auth";
 
 // ============================================================================
 // Types
 // ============================================================================
 
-export type UserRole =
-  | "ADMIN"
-  | "MANAGER"
-  | "PICKER"
-  | "PACKER"
-  | "RECEIVER"
-  | "VIEWER";
-
 interface NavItem {
   to: string;
   label: string;
   icon: LucideIcon;
-  roles?: UserRole[]; // If undefined, all roles can see it
-  compactOnly?: boolean; // Only show in compact mode
-  fullOnly?: boolean; // Only show in full mode
-}
-
-interface UserContext {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
+  roles?: UserRole[];
+  fullOnly?: boolean;
 }
 
 interface LayoutContextType {
@@ -65,11 +54,10 @@ interface LayoutContextType {
   setCompactMode: (value: boolean) => void;
   sidebarOpen: boolean;
   setSidebarOpen: (value: boolean) => void;
-  user: UserContext | null;
 }
 
 // ============================================================================
-// Context
+// Layout Context (for compact mode, sidebar state)
 // ============================================================================
 
 const LayoutContext = createContext<LayoutContextType | null>(null);
@@ -82,22 +70,24 @@ export function useLayout() {
   return context;
 }
 
+// Combined hook for layout + auth
+export function useAppContext() {
+  const layout = useLayout();
+  const auth = useAuth();
+  return { ...layout, ...auth };
+}
+
 // ============================================================================
 // Navigation Configuration
 // ============================================================================
 
 const allNavItems: NavItem[] = [
-  // Everyone
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/tasks", label: "My Tasks", icon: ClipboardList },
-
-  // Work actions (everyone, but prominent in compact mode)
   { to: "/pick", label: "Pick", icon: PackageCheck },
   { to: "/pack", label: "Pack", icon: Package },
   { to: "/receive", label: "Receive", icon: PackagePlus },
-  { to: "/scan", label: "Scan", icon: ScanLine },
-
-  // Admin/Manager only
+  { to: "/scan", label: "Scan", icon: ScanBarcode },
   {
     to: "/orders",
     label: "Orders",
@@ -129,8 +119,6 @@ const allNavItems: NavItem[] = [
     roles: ["ADMIN", "MANAGER"],
     fullOnly: true,
   },
-
-  // Admin only
   {
     to: "/users",
     label: "Users",
@@ -147,35 +135,18 @@ const allNavItems: NavItem[] = [
   },
 ];
 
-// Items for compact mode bottom nav (prioritize work tasks)
 const compactNavItems: NavItem[] = [
   { to: "/dashboard", label: "Home", icon: LayoutDashboard },
   { to: "/tasks", label: "Tasks", icon: ClipboardList },
   { to: "/pick", label: "Pick", icon: PackageCheck },
   { to: "/pack", label: "Pack", icon: Package },
-  { to: "/scan", label: "Scan", icon: ScanLine },
+  { to: "/scan", label: "Scan", icon: ScanBarcode },
 ];
 
 function getNavItemsForRole(role: UserRole, compactMode: boolean): NavItem[] {
   return allNavItems.filter((item) => {
-    // Check role permission
-    if (item.roles && !item.roles.includes(role)) {
-      return false;
-    }
-
-    // Check mode
+    if (item.roles && !item.roles.includes(role)) return false;
     if (compactMode && item.fullOnly) return false;
-    if (!compactMode && item.compactOnly) return false;
-
-    return true;
-  });
-}
-
-function getCompactNavForRole(role: UserRole): NavItem[] {
-  return compactNavItems.filter((item) => {
-    if (item.roles && !item.roles.includes(role)) {
-      return false;
-    }
     return true;
   });
 }
@@ -184,59 +155,52 @@ function getCompactNavForRole(role: UserRole): NavItem[] {
 // AppLayout Component
 // ============================================================================
 
-interface AppLayoutProps {
-  user?: UserContext | null;
-}
-
-export function AppLayout({ user: propUser }: AppLayoutProps) {
-  // In real app, get user from auth context
-  const [user] = useState<UserContext | null>(
-    propUser || {
-      id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      role: "ADMIN" as UserRole,
-    },
-  );
+export function AppLayout() {
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const location = useLocation();
 
   const [compactMode, setCompactMode] = useState(() => {
-    const saved = localStorage.getItem("compactMode");
-    return saved === "true";
+    return localStorage.getItem("compactMode") === "true";
   });
-
   const [sidebarOpen, setSidebarOpen] = useState(!compactMode);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // Persist compact mode preference
+  // Persist compact mode
   useEffect(() => {
     localStorage.setItem("compactMode", String(compactMode));
-    if (compactMode) {
-      setSidebarOpen(false);
-    }
+    if (compactMode) setSidebarOpen(false);
   }, [compactMode]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("compactMode");
-    navigate("/login");
-  };
+  // Close user menu on route change
+  useEffect(() => {
+    setUserMenuOpen(false);
+  }, [location.pathname]);
 
-  const navItems = user ? getNavItemsForRole(user.role, compactMode) : [];
-  const bottomNavItems = user ? getCompactNavForRole(user.role) : [];
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  const navItems = getNavItemsForRole(user.role, compactMode);
 
   const contextValue: LayoutContextType = {
     compactMode,
     setCompactMode,
     sidebarOpen,
     setSidebarOpen,
-    user,
   };
 
   // ============================================================================
-  // Compact Mode Layout (Mobile/Floor Work)
+  // Compact Mode
   // ============================================================================
 
   if (compactMode) {
@@ -251,23 +215,21 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Mode Toggle */}
               <button
                 onClick={() => setCompactMode(false)}
                 className="p-2 hover:bg-blue-700 rounded-lg"
-                title="Switch to Full Mode"
+                title="Full Mode"
               >
                 <Maximize2 className="w-5 h-5" />
               </button>
 
-              {/* User Menu */}
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="p-2 hover:bg-blue-700 rounded-lg flex items-center gap-2"
+                  className="p-2 hover:bg-blue-700 rounded-lg"
                 >
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-medium">
-                    {user?.name.charAt(0)}
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center font-medium">
+                    {user.name.charAt(0)}
                   </div>
                 </button>
 
@@ -277,24 +239,20 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                       className="fixed inset-0 z-40"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg py-2 z-50">
+                    <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 border rounded-lg shadow-lg py-2 z-50">
                       <div className="px-4 py-2 border-b">
-                        <div className="font-medium text-gray-900">
-                          {user?.name}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {user?.role}
-                        </div>
+                        <div className="font-medium">{user.name}</div>
+                        <div className="text-sm text-gray-500">{user.role}</div>
                       </div>
                       <NavLink
                         to="/profile"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 hover:bg-gray-100"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         Profile
                       </NavLink>
                       <button
-                        onClick={handleLogout}
+                        onClick={logout}
                         className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                       >
                         Logout
@@ -307,24 +265,23 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
           </header>
 
           {/* Status Bar */}
-          <div className="bg-blue-500 text-white px-4 py-2 text-sm flex items-center justify-between">
+          <div className="bg-blue-500 text-white px-4 py-2 text-sm flex justify-between">
             <span>
-              {user?.name} • {user?.role}
+              {user.name} • {user.role}
             </span>
             <span className="flex items-center gap-1">
-              <ClipboardList className="w-4 h-4" />
-              Active Tasks: 3
+              <ClipboardList className="w-4 h-4" /> Active Tasks: 3
             </span>
           </div>
 
-          {/* Main Content - Extra padding for touch */}
-          <main className="flex-1 overflow-auto p-4">
+          {/* Content */}
+          <main className="flex-1 overflow-auto">
             <Outlet />
           </main>
 
-          {/* Bottom Navigation - Large Touch Targets */}
-          <nav className="bg-white border-t grid grid-cols-5 safe-area-bottom">
-            {bottomNavItems.map((item) => {
+          {/* Bottom Nav */}
+          <nav className="bg-white border-t grid grid-cols-5">
+            {compactNavItems.map((item) => {
               const isActive =
                 location.pathname === item.to ||
                 location.pathname.startsWith(item.to + "/");
@@ -332,14 +289,12 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  className={`flex flex-col items-center py-3 px-2 ${
-                    isActive
-                      ? "text-blue-600 bg-blue-50"
-                      : "text-gray-500 active:bg-gray-100"
+                  className={`flex flex-col items-center py-3 ${
+                    isActive ? "text-blue-600 bg-blue-50" : "text-gray-500"
                   }`}
                 >
                   <item.icon className="w-6 h-6" />
-                  <span className="text-xs mt-1 font-medium">{item.label}</span>
+                  <span className="text-xs mt-1">{item.label}</span>
                 </NavLink>
               );
             })}
@@ -350,7 +305,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
   }
 
   // ============================================================================
-  // Full Mode Layout (Desktop/Admin Work)
+  // Full Mode
   // ============================================================================
 
   return (
@@ -360,7 +315,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
         <aside
           className={`${
             sidebarOpen ? "w-64" : "w-16"
-          } bg-white border-r flex flex-col transition-all duration-200 fixed h-full z-20`}
+          } bg-white border-r flex flex-col fixed h-full z-20 transition-all`}
         >
           {/* Logo */}
           <div className="h-16 flex items-center justify-between px-4 border-b">
@@ -379,16 +334,15 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
             </button>
           </div>
 
-          {/* Navigation */}
+          {/* Nav */}
           <nav className="flex-1 py-4 overflow-y-auto">
-            {/* Group: Work */}
             {sidebarOpen && (
               <div className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase">
                 Work
               </div>
             )}
             {navItems
-              .filter((item) =>
+              .filter((i) =>
                 [
                   "/dashboard",
                   "/tasks",
@@ -396,14 +350,14 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                   "/pack",
                   "/receive",
                   "/scan",
-                ].includes(item.to),
+                ].includes(i.to),
               )
               .map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg transition-colors ${
+                    `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
                       isActive
                         ? "bg-blue-50 text-blue-600 font-medium"
                         : "text-gray-600 hover:bg-gray-100"
@@ -416,15 +370,14 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                 </NavLink>
               ))}
 
-            {/* Group: Management (Admin/Manager only) */}
-            {navItems.some((item) =>
+            {navItems.some((i) =>
               [
                 "/orders",
                 "/products",
                 "/inventory",
                 "/shipping",
                 "/reports",
-              ].includes(item.to),
+              ].includes(i.to),
             ) && (
               <>
                 {sidebarOpen && (
@@ -433,21 +386,21 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                   </div>
                 )}
                 {navItems
-                  .filter((item) =>
+                  .filter((i) =>
                     [
                       "/orders",
                       "/products",
                       "/inventory",
                       "/shipping",
                       "/reports",
-                    ].includes(item.to),
+                    ].includes(i.to),
                   )
                   .map((item) => (
                     <NavLink
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg transition-colors ${
+                        `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
                           isActive
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-gray-600 hover:bg-gray-100"
@@ -462,10 +415,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
               </>
             )}
 
-            {/* Group: Admin (Admin only) */}
-            {navItems.some((item) =>
-              ["/users", "/settings"].includes(item.to),
-            ) && (
+            {navItems.some((i) => ["/users", "/settings"].includes(i.to)) && (
               <>
                 {sidebarOpen && (
                   <div className="px-4 py-2 mt-4 text-xs font-semibold text-gray-400 uppercase">
@@ -473,13 +423,13 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                   </div>
                 )}
                 {navItems
-                  .filter((item) => ["/users", "/settings"].includes(item.to))
+                  .filter((i) => ["/users", "/settings"].includes(i.to))
                   .map((item) => (
                     <NavLink
                       key={item.to}
                       to={item.to}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg transition-colors ${
+                        `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
                           isActive
                             ? "bg-blue-50 text-blue-600 font-medium"
                             : "text-gray-600 hover:bg-gray-100"
@@ -495,7 +445,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
             )}
           </nav>
 
-          {/* Compact Mode Toggle */}
+          {/* Bottom */}
           <div className="p-4 border-t">
             <button
               onClick={() => setCompactMode(true)}
@@ -506,7 +456,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
               {sidebarOpen && <span>Compact Mode</span>}
             </button>
             <button
-              onClick={handleLogout}
+              onClick={logout}
               className="flex items-center gap-3 px-4 py-2 w-full text-gray-600 hover:bg-gray-100 rounded-lg mt-1"
               title={!sidebarOpen ? "Logout" : undefined}
             >
@@ -516,26 +466,19 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
           </div>
         </aside>
 
-        {/* Main Content */}
+        {/* Main */}
         <div
-          className={`flex-1 flex flex-col ${
-            sidebarOpen ? "ml-64" : "ml-16"
-          } transition-all duration-200`}
+          className={`flex-1 flex flex-col ${sidebarOpen ? "ml-64" : "ml-16"} transition-all`}
         >
           {/* Top Bar */}
           <header className="h-16 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-10">
+            <div />
             <div className="flex items-center gap-4">
-              {/* Breadcrumb or page title could go here */}
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* Notifications */}
               <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
 
-              {/* User Menu */}
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -545,10 +488,8 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                     <User className="w-4 h-4 text-blue-600" />
                   </div>
                   <div className="text-left hidden sm:block">
-                    <div className="text-sm font-medium text-gray-700">
-                      {user?.name}
-                    </div>
-                    <div className="text-xs text-gray-500">{user?.role}</div>
+                    <div className="text-sm font-medium">{user.name}</div>
+                    <div className="text-xs text-gray-500">{user.role}</div>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-500" />
                 </button>
@@ -561,23 +502,21 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                     />
                     <div className="absolute right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg py-2 z-50">
                       <div className="px-4 py-2 border-b">
-                        <div className="font-medium text-gray-900">
-                          {user?.name}
-                        </div>
+                        <div className="font-medium">{user.name}</div>
                         <div className="text-sm text-gray-500">
-                          {user?.email}
+                          {user.email}
                         </div>
                       </div>
                       <NavLink
                         to="/profile"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 hover:bg-gray-100"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         Profile
                       </NavLink>
                       <NavLink
                         to="/settings"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 hover:bg-gray-100"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         Settings
@@ -588,14 +527,13 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
                           setCompactMode(true);
                           setUserMenuOpen(false);
                         }}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
                       >
-                        <Minimize2 className="w-4 h-4" />
-                        Switch to Compact Mode
+                        <Minimize2 className="w-4 h-4" /> Compact Mode
                       </button>
                       <hr className="my-2" />
                       <button
-                        onClick={handleLogout}
+                        onClick={logout}
                         className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                       >
                         Logout
@@ -607,7 +545,7 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
             </div>
           </header>
 
-          {/* Page Content */}
+          {/* Content */}
           <main className="flex-1 overflow-auto">
             <Outlet />
           </main>
@@ -618,14 +556,22 @@ export function AppLayout({ user: propUser }: AppLayoutProps) {
 }
 
 // ============================================================================
-// Auth Layout (Login, Register - No navigation)
+// Auth Layout
 // ============================================================================
 
 export function AuthLayout() {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  // Redirect to dashboard if already logged in
+  if (isAuthenticated) {
+    const from = (location.state as any)?.from?.pathname || "/dashboard";
+    return <Navigate to={from} replace />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-xl mb-4">
             <Warehouse className="w-8 h-8" />
@@ -633,89 +579,11 @@ export function AuthLayout() {
           <h1 className="text-3xl font-bold text-gray-900">WMS</h1>
           <p className="text-gray-500 mt-1">Warehouse Management System</p>
         </div>
-
-        {/* Card */}
         <div className="bg-white rounded-xl shadow-lg p-8">
           <Outlet />
         </div>
-
-        {/* Footer */}
-        <p className="text-center text-gray-400 text-sm mt-8">
-          © 2025 WMS. All rights reserved.
-        </p>
+        <p className="text-center text-gray-400 text-sm mt-8">© 2026 WMS</p>
       </div>
     </div>
   );
 }
-
-// ============================================================================
-// Router Example
-// ============================================================================
-
-/*
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AppLayout, AuthLayout } from "./layouts/AppLayout";
-
-// Pages
-import LoginPage from "./pages/auth/login";
-import DashboardPage from "./pages/dashboard";
-import TasksPage from "./pages/tasks";
-import PickPage from "./pages/pick";
-import PackPage from "./pages/pack";
-import ReceivePage from "./pages/receive";
-import ScanPage from "./pages/scan";
-import OrdersPage from "./pages/orders";
-import ProductsPage from "./pages/products";
-import ProductDetailPage from "./pages/products/[id]";
-import ProductImportPage from "./pages/products/import";
-import InventoryPage from "./pages/inventory";
-import UsersPage from "./pages/users";
-import SettingsPage from "./pages/settings";
-
-export const router = createBrowserRouter([
-  // Redirect root
-  { path: "/", element: <Navigate to="/dashboard" replace /> },
-
-  // Auth (no layout)
-  {
-    element: <AuthLayout />,
-    children: [
-      { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegisterPage /> },
-      { path: "/forgot-password", element: <ForgotPasswordPage /> },
-    ],
-  },
-
-  // App (role-based, mode-aware)
-  {
-    element: <AppLayout />,
-    children: [
-      // Everyone
-      { path: "/dashboard", element: <DashboardPage /> },
-      { path: "/tasks", element: <TasksPage /> },
-      { path: "/tasks/:id", element: <TaskDetailPage /> },
-      { path: "/pick", element: <PickPage /> },
-      { path: "/pick/:taskId", element: <PickTaskPage /> },
-      { path: "/pack", element: <PackPage /> },
-      { path: "/pack/:taskId", element: <PackTaskPage /> },
-      { path: "/receive", element: <ReceivePage /> },
-      { path: "/scan", element: <ScanPage /> },
-      { path: "/profile", element: <ProfilePage /> },
-
-      // Admin/Manager only (protected in component or route guard)
-      { path: "/orders", element: <OrdersPage /> },
-      { path: "/orders/:id", element: <OrderDetailPage /> },
-      { path: "/products", element: <ProductsPage /> },
-      { path: "/products/import", element: <ProductImportPage /> },
-      { path: "/products/:id", element: <ProductDetailPage /> },
-      { path: "/inventory", element: <InventoryPage /> },
-      { path: "/shipping", element: <ShippingPage /> },
-      { path: "/reports", element: <ReportsPage /> },
-
-      // Admin only
-      { path: "/users", element: <UsersPage /> },
-      { path: "/settings", element: <SettingsPage /> },
-    ],
-  },
-]);
-*/

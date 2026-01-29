@@ -7,7 +7,10 @@ declare module "fastify" {
   }
 }
 
-export async function authenticate(request: FastifyRequest, reply: FastifyReply) {
+export async function authenticate(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
   const authHeader = request.headers.authorization;
 
   if (!authHeader?.startsWith("Bearer ")) {
@@ -26,4 +29,22 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
       error: { code: "UNAUTHORIZED", message: "Invalid or expired token" },
     });
   }
+}
+
+// middleware/auth.ts
+
+export function requireRole(allowedRoles: string[]) {
+  return async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!request.user) {
+      return reply.status(401).send({
+        error: { code: "UNAUTHORIZED", message: "Not authenticated" },
+      });
+    }
+
+    if (!allowedRoles.includes(request.user.role)) {
+      return reply.status(403).send({
+        error: { code: "FORBIDDEN", message: "Insufficient permissions" },
+      });
+    }
+  };
 }

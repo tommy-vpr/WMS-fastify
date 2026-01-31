@@ -23,6 +23,8 @@ import {
   type ImportProductsJobData,
   type ImportSingleProductJobData,
   type SyncShopifyProductsJobData,
+  SyncInventoryPlannerJobData,
+  INVENTORY_PLANNER_JOBS,
 } from "./types.js";
 
 // ============================================================================
@@ -33,6 +35,7 @@ let workTaskQueue: Queue | null = null;
 let shopifyQueue: Queue | null = null;
 let ordersQueue: Queue | null = null;
 let productsQueue: Queue | null = null;
+let inventoryPlannerQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -110,6 +113,21 @@ export function getProductsQueue(): Queue {
     });
   }
   return productsQueue;
+}
+
+export function getInventoryPlannerQueue(): Queue {
+  if (!inventoryPlannerQueue) {
+    inventoryPlannerQueue = new Queue(QUEUES.INVENTORY_PLANNER, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: { type: "exponential", delay: 5000 },
+        removeOnComplete: { count: 100, age: 24 * 60 * 60 },
+        removeOnFail: { count: 500, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return inventoryPlannerQueue;
 }
 
 // ============================================================================
@@ -292,6 +310,15 @@ export async function enqueueSyncShopifyProducts(
   });
 }
 
+export async function enqueueSyncInventoryPlanner(
+  data: SyncInventoryPlannerJobData,
+) {
+  const queue = getInventoryPlannerQueue();
+  return queue.add(INVENTORY_PLANNER_JOBS.SYNC_INVENTORY, data, {
+    jobId: data.idempotencyKey,
+  });
+}
+
 // ============================================================================
 // Queue Management
 // ============================================================================
@@ -313,6 +340,20 @@ export async function getWorkTaskQueueStats() {
 }
 
 /**
+ * Inventory planner queue stats
+ */
+export async function getInventoryPlannerQueueStats() {
+  const queue = getInventoryPlannerQueue();
+  const [waiting, active, completed, failed] = await Promise.all([
+    queue.getWaitingCount(),
+    queue.getActiveCount(),
+    queue.getCompletedCount(),
+    queue.getFailedCount(),
+  ]);
+  return { waiting, active, completed, failed };
+}
+
+/**
  * Close all queues
  */
 export async function closeQueues() {
@@ -331,5 +372,10 @@ export async function closeQueues() {
   if (productsQueue) {
     await productsQueue.close();
     productsQueue = null;
+  }
+
+  if (inventoryPlannerQueue) {
+    await inventoryPlannerQueue.close();
+    inventoryPlannerQueue = null;
   }
 }

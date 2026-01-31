@@ -1,6 +1,8 @@
 /**
- * WMS Worker
+ * WMS Worker - UPDATED with Inventory Planner
  * BullMQ worker that processes background jobs
+ *
+ * Save to: apps/worker/src/index.ts
  */
 
 import "dotenv/config";
@@ -12,12 +14,14 @@ import {
   SHOPIFY_JOBS,
   ORDER_JOBS,
   PRODUCT_JOBS,
+  INVENTORY_PLANNER_JOBS,
 } from "@wms/queue";
 import {
   processWorkTaskJob,
   processShopifyJob,
   processOrderJob,
   processProductJob,
+  processInventoryPlannerJob,
 } from "./processors/index.js";
 
 // ============================================================================
@@ -42,12 +46,12 @@ function createWorkTaskWorker() {
       connection,
       concurrency: WORKER_CONCURRENCY,
       removeOnComplete: {
-        count: 1000, // Keep last 1000 completed jobs
-        age: 24 * 60 * 60, // Remove jobs older than 24 hours
+        count: 1000,
+        age: 24 * 60 * 60,
       },
       removeOnFail: {
-        count: 5000, // Keep last 5000 failed jobs
-        age: 7 * 24 * 60 * 60, // Remove failed jobs older than 7 days
+        count: 5000,
+        age: 7 * 24 * 60 * 60,
       },
     },
   );
@@ -82,7 +86,7 @@ function createShopifyWorker() {
     async (job: Job) => processShopifyJob(job),
     {
       connection,
-      concurrency: 3, // Lower concurrency for external API calls
+      concurrency: 3,
       removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
       removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
     },
@@ -136,7 +140,7 @@ function createProductsWorker() {
     async (job: Job) => processProductJob(job),
     {
       connection,
-      concurrency: 3, // Lower concurrency for bulk imports
+      concurrency: 3,
       removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
       removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
     },
@@ -158,6 +162,36 @@ function createProductsWorker() {
   return worker;
 }
 
+function createInventoryPlannerWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.INVENTORY_PLANNER,
+    async (job: Job) => processInventoryPlannerJob(job),
+    {
+      connection,
+      concurrency: 1, // Only one sync at a time
+      removeOnComplete: { count: 100, age: 24 * 60 * 60 },
+      removeOnFail: { count: 500, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.INVENTORY_PLANNER} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[IP Sync] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[IP Sync] Job failed: ${job?.name}`, err.message);
+  });
+  worker.on("progress", (job, progress) => {
+    console.log(`[IP Sync] Job progress: ${job.name} - ${progress}%`);
+  });
+
+  return worker;
+}
+
 // ============================================================================
 // Graceful Shutdown
 // ============================================================================
@@ -165,7 +199,6 @@ function createProductsWorker() {
 async function shutdown(workers: Worker[]) {
   console.log("\n[Worker] Shutting down...");
 
-  // Close all workers
   await Promise.all(workers.map((w) => w.close()));
   console.log("[Worker] All workers closed");
 
@@ -205,6 +238,10 @@ async function main() {
   const productsWorker = createProductsWorker();
   workers.push(productsWorker);
 
+  // Inventory Planner Worker
+  const inventoryPlannerWorker = createInventoryPlannerWorker();
+  workers.push(inventoryPlannerWorker);
+
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
   process.on("SIGINT", () => shutdown(workers));
@@ -223,6 +260,9 @@ async function main() {
   });
   Object.values(PRODUCT_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.PRODUCTS}:${job}`);
+  });
+  Object.values(INVENTORY_PLANNER_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.INVENTORY_PLANNER}:${job}`);
   });
   console.log("");
 }

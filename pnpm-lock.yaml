@@ -32,6 +32,9 @@ importers:
       '@wms/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@wms/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@wms/queue':
         specifier: workspace:*
         version: link:../../packages/queue
@@ -66,6 +69,9 @@ importers:
       '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
+      '@wms/types':
+        specifier: workspace:^
+        version: link:../../packages/types
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.3)

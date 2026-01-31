@@ -15,7 +15,7 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
-import { Loading } from "../../../components/ui/loading";
+import { Loading, PageLoading } from "../../../components/ui/loading";
 
 interface ProductVariant {
   id: string;
@@ -174,7 +174,7 @@ export default function ProductDetailPage() {
   // ============================================================================
 
   if (loading) {
-    return <Loading />;
+    return <PageLoading />;
   }
 
   if (error && !product) {

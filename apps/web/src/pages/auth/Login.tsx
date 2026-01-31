@@ -54,7 +54,6 @@ export function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
-            autoFocus
             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="you@example.com"
           />
@@ -78,12 +77,13 @@ export function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+          className="cursor-pointer w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
-            <LogIn className="w-4 h-4" />
+            // <LogIn className="w-4 h-4" />
+            ""
           )}
           {loading ? "Signing in..." : "Sign In"}
         </button>
@@ -92,6 +92,13 @@ export function LoginPage() {
       <div className="mt-6 text-center text-sm">
         <Link to="/forgot-password" className="text-blue-600 hover:underline">
           Forgot password?
+        </Link>
+      </div>
+
+      <div className="mt-6 text-center text-sm text-gray-500">
+        Don't have an account?{" "}
+        <Link to="/signup" className="text-blue-600 hover:underline">
+          Sign up
         </Link>
       </div>
 

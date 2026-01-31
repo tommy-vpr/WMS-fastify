@@ -101,7 +101,7 @@ export default function AdminProductsPage() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const data = await apiClient.get<ProductStats>("/products/import/stats");
+      const data = await apiClient.get<ProductStats>("/products/stats");
       setStats(data);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
@@ -200,26 +200,22 @@ export default function AdminProductsPage() {
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white border rounded-lg p-4">
-            <div className="text-2xl font-bold text-blue-600">
-              {stats.totalProducts}
-            </div>
+          <div className="bg-white border border-border rounded-lg p-4">
+            <div className="text-2xl font-bold">{stats.totalProducts}</div>
             <div className="text-sm text-gray-500">Total Products</div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
-            <div className="text-2xl font-bold text-green-600">
-              {stats.totalVariants}
-            </div>
+          <div className="bg-white border border-border rounded-lg p-4">
+            <div className="text-2xl font-bold">{stats.totalVariants}</div>
             <div className="text-sm text-gray-500">Total Variants</div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
-            <div className="text-2xl font-bold text-purple-600">
+          <div className="bg-white border border-border rounded-lg p-4">
+            <div className="text-2xl font-bold">
               {Object.keys(stats.byBrand).length}
             </div>
             <div className="text-sm text-gray-500">Brands</div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
-            <div className="text-2xl font-bold text-orange-600">
+          <div className="bg-white border border-border rounded-lg p-4">
+            <div className="text-2xl font-bold">
               {Object.keys(stats.byCategory).length}
             </div>
             <div className="text-sm text-gray-500">Categories</div>
@@ -237,7 +233,7 @@ export default function AdminProductsPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -256,7 +252,7 @@ export default function AdminProductsPage() {
                 params.set("page", "1");
                 setSearchParams(params);
               }}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Brands</option>
               {Object.keys(stats.byBrand).map((brand) => (
@@ -279,7 +275,7 @@ export default function AdminProductsPage() {
                 params.set("page", "1");
                 setSearchParams(params);
               }}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Categories</option>
               {Object.keys(stats.byCategory).map((cat) => (
@@ -307,9 +303,9 @@ export default function AdminProductsPage() {
       )}
 
       {/* Products Table */}
-      <div className="bg-white border rounded-lg overflow-hidden">
+      <div className="bg-white border border-border rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-gray-50 border-b border-border">
             <tr>
               <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">
                 Product
@@ -347,7 +343,7 @@ export default function AdminProductsPage() {
               </tr>
             ) : (
               products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
+                <tr key={product.id} className="hover:bg-gray-50 border-border">
                   <td className="px-4 py-3">
                     <div className="font-medium">{product.name}</div>
                     {product.description && (
@@ -419,7 +415,7 @@ export default function AdminProductsPage() {
             <button
               onClick={() => goToPage(page - 1)}
               disabled={page === 1}
-              className="p-2 border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 border border-border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -429,7 +425,7 @@ export default function AdminProductsPage() {
             <button
               onClick={() => goToPage(page + 1)}
               disabled={page === totalPages}
-              className="p-2 border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 border border-border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -447,7 +443,7 @@ export default function AdminProductsPage() {
             className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b flex items-center justify-between">
+            <div className="p-4 border-b border-border  flex items-center justify-between">
               <h2 className="text-lg font-bold">{selectedProduct.name}</h2>
               <button
                 onClick={() => setSelectedProduct(null)}
@@ -487,9 +483,9 @@ export default function AdminProductsPage() {
                 <div className="text-sm text-gray-500 mb-2">
                   Variants ({selectedProduct.variants.length})
                 </div>
-                <div className="border rounded divide-y">
+                <div className="border border-border rounded divide-y">
                   {selectedProduct.variants.map((variant) => (
-                    <div key={variant.id} className="p-3">
+                    <div key={variant.id} className="p-3 border-border">
                       <div className="flex items-center justify-between">
                         <div>
                           <div className="font-medium">{variant.name}</div>
@@ -509,7 +505,7 @@ export default function AdminProductsPage() {
                 </div>
               </div>
             </div>
-            <div className="p-4 border-t flex justify-end gap-2">
+            <div className="p-4 border-t border-border flex justify-end gap-2">
               <button
                 onClick={() => setSelectedProduct(null)}
                 className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"

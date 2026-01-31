@@ -33,9 +33,15 @@ import {
   type LucideIcon,
   ScanBarcode,
   Import,
+  Shield,
+  ShieldCheck,
+  MapPin,
 } from "lucide-react";
 import { useState, createContext, useContext, useEffect } from "react";
-import { useAuth, type UserRole, type User as AuthUser } from "../lib/auth";
+import { useAuth, type User as AuthUser } from "../lib/auth";
+import type { UserRole } from "@wms/types";
+
+import logo from "@/assets/headquarter-logo.png";
 
 // ============================================================================
 // Types
@@ -104,6 +110,12 @@ const allNavItems: NavItem[] = [
     to: "/inventory",
     label: "Inventory",
     icon: Warehouse,
+    roles: ["ADMIN", "MANAGER"],
+  },
+  {
+    to: "/locations",
+    label: "Locations",
+    icon: MapPin,
     roles: ["ADMIN", "MANAGER"],
   },
   {
@@ -210,8 +222,9 @@ export function AppLayout() {
           {/* Header */}
           <header className="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Warehouse className="w-6 h-6" />
-              <span className="font-bold text-lg">WMS</span>
+              {/* <Warehouse className="w-6 h-6" /> */}
+              {/* <span className="font-bold text-lg">WMS</span> */}
+              <img src={logo} alt="HQ wms" />
             </div>
 
             <div className="flex items-center gap-2">
@@ -239,7 +252,7 @@ export function AppLayout() {
                       className="fixed inset-0 z-40"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 border rounded-lg shadow-lg py-2 z-50">
+                    <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 border border-border rounded-lg shadow-lg py-2 z-50">
                       <div className="px-4 py-2 border-b">
                         <div className="font-medium">{user.name}</div>
                         <div className="text-sm text-gray-500">{user.role}</div>
@@ -253,7 +266,7 @@ export function AppLayout() {
                       </NavLink>
                       <button
                         onClick={logout}
-                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                        className="cursor-pointer block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                       >
                         Logout
                       </button>
@@ -280,7 +293,7 @@ export function AppLayout() {
           </main>
 
           {/* Bottom Nav */}
-          <nav className="bg-white border-t grid grid-cols-5">
+          <nav className="bg-white border-t border-border grid grid-cols-5">
             {compactNavItems.map((item) => {
               const isActive =
                 location.pathname === item.to ||
@@ -315,12 +328,12 @@ export function AppLayout() {
         <aside
           className={`${
             sidebarOpen ? "w-64" : "w-16"
-          } bg-white border-r flex flex-col fixed h-full z-20 transition-all`}
+          } bg-white border-r border-border flex flex-col fixed h-full z-20 transition-all`}
         >
           {/* Logo */}
-          <div className="h-16 flex items-center justify-between px-4 border-b">
+          <div className="h-16 flex items-center justify-between px-4 border-b border-border">
             {sidebarOpen && (
-              <span className="font-bold text-xl text-blue-600">WMS</span>
+              <img src={logo} alt="HQ wms" className="w-12 h-auto" />
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -375,6 +388,7 @@ export function AppLayout() {
                 "/orders",
                 "/products",
                 "/inventory",
+                "/locations",
                 "/shipping",
                 "/reports",
               ].includes(i.to),
@@ -391,6 +405,7 @@ export function AppLayout() {
                       "/orders",
                       "/products",
                       "/inventory",
+                      "/locations",
                       "/shipping",
                       "/reports",
                     ].includes(i.to),
@@ -446,10 +461,10 @@ export function AppLayout() {
           </nav>
 
           {/* Bottom */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t border-border">
             <button
               onClick={() => setCompactMode(true)}
-              className="flex items-center gap-3 px-4 py-2 w-full text-gray-600 hover:bg-gray-100 rounded-lg"
+              className="cursor-pointer flex items-center gap-3 px-4 py-2 w-full text-gray-600 hover:bg-gray-100 rounded-lg"
               title={!sidebarOpen ? "Compact Mode" : undefined}
             >
               <Minimize2 className="w-5 h-5" />
@@ -457,7 +472,7 @@ export function AppLayout() {
             </button>
             <button
               onClick={logout}
-              className="flex items-center gap-3 px-4 py-2 w-full text-gray-600 hover:bg-gray-100 rounded-lg mt-1"
+              className="cursor-pointer flex items-center gap-3 px-4 py-2 w-full text-gray-600 hover:bg-gray-100 rounded-lg mt-1"
               title={!sidebarOpen ? "Logout" : undefined}
             >
               <LogOut className="w-5 h-5" />
@@ -471,10 +486,10 @@ export function AppLayout() {
           className={`flex-1 flex flex-col ${sidebarOpen ? "ml-64" : "ml-16"} transition-all`}
         >
           {/* Top Bar */}
-          <header className="h-16 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-10">
+          <header className="h-16 bg-white border-b border-border flex items-center justify-between px-6 sticky top-0 z-10">
             <div />
             <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg relative">
+              <button className="cursor-pointer p-2 text-gray-500 hover:bg-gray-100 rounded-lg relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -482,14 +497,16 @@ export function AppLayout() {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg"
+                  className="cursor-pointer flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg"
                 >
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                     <User className="w-4 h-4 text-blue-600" />
                   </div>
                   <div className="text-left hidden sm:block">
-                    <div className="text-sm font-medium">{user.name}</div>
-                    <div className="text-xs text-gray-500">{user.role}</div>
+                    <div className="text-sm font-medium capitalize">
+                      {user.name}
+                    </div>
+                    {/* <div className="text-xs text-gray-500">{user.role}</div> */}
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-500" />
                 </button>
@@ -500,13 +517,24 @@ export function AppLayout() {
                       className="fixed inset-0 z-40"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg py-2 z-50">
-                      <div className="px-4 py-2 border-b">
+                    <div className="absolute right-0 mt-2 w-56 bg-white border border-border rounded-lg shadow-lg py-2 z-50">
+                      {/* <div className="px-4 py-2 border-b border-border">
                         <div className="font-medium">{user.name}</div>
                         <div className="text-sm text-gray-500">
                           {user.email}
                         </div>
+                      </div> */}
+                      <div className="px-4 py-2">
+                        <span className="flex items-center w-fit gap-1 text-[10px] text-blue-600 bg-blue-100 rounded-2xl px-2 py-1">
+                          {user.role === "STAFF" ? (
+                            <Shield className="h-3 w-3" />
+                          ) : (
+                            <ShieldCheck className="h-3 w-3" />
+                          )}{" "}
+                          {user.role}
+                        </span>
                       </div>
+                      <hr className="my-2 border-border" />
                       <NavLink
                         to="/profile"
                         className="block px-4 py-2 hover:bg-gray-100"
@@ -521,20 +549,20 @@ export function AppLayout() {
                       >
                         Settings
                       </NavLink>
-                      <hr className="my-2" />
+                      <hr className="my-2 border-border" />
                       <button
                         onClick={() => {
                           setCompactMode(true);
                           setUserMenuOpen(false);
                         }}
-                        className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
+                        className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
                       >
                         <Minimize2 className="w-4 h-4" /> Compact Mode
                       </button>
-                      <hr className="my-2" />
+                      <hr className="my-2 border-border" />
                       <button
                         onClick={logout}
-                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                        className="cursor-pointer block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                       >
                         Logout
                       </button>
@@ -572,17 +600,13 @@ export function AuthLayout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-xl mb-4">
-            <Warehouse className="w-8 h-8" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900">WMS</h1>
-          <p className="text-gray-500 mt-1">Warehouse Management System</p>
+        <div className="flex justify-center mb-8">
+          <img src={logo} alt="HQ wms" className="w-18 h-auto" />
         </div>
         <div className="bg-white rounded-xl shadow-lg p-8">
           <Outlet />
         </div>
-        <p className="text-center text-gray-400 text-sm mt-8">© 2026 WMS</p>
+        <p className="text-center text-gray-400 text-sm mt-8">© 2026 HQ WMS</p>
       </div>
     </div>
   );

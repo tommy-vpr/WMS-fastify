@@ -3,11 +3,17 @@ import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import { healthRoutes } from "./routes/health.routes.js";
 import { authRoutes } from "./routes/auth.routes.js";
+import { orderRoutes } from "./routes/order.route.js";
+
 import { shopifyWebhookRoutes } from "./routes/webhooks/shopify/orders/create.js";
-import { productImportRoutes } from "./routes/product.routes.js";
 import { authenticate } from "./middleware/auth.js";
 import { errorHandler } from "./middleware/error.js";
 import Redis from "ioredis";
+import { inventoryRoutes } from "./routes/inventory.routes.js";
+import { productRoutes } from "./routes/product.routes.js";
+import { inventoryPlannerRoutes } from "./routes/inventory-planner.routes.js";
+import { locationImportRoutes } from "./routes/location-import.routes.js";
+import { locationRoutes } from "./routes/location.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -51,14 +57,25 @@ export async function buildApp() {
   // ============================================================================
   await app.register(async (protectedRoutes) => {
     // Add auth hook to all routes in this scope
-    protectedRoutes.addHook("onRequest", authenticate);
+    // protectedRoutes.addHook("onRequest", authenticate); ******* FALLBACK ******
+    protectedRoutes.addHook("preHandler", authenticate);
 
     // Register protected routes
-    await protectedRoutes.register(productImportRoutes, {
-      prefix: "/products",
+    await protectedRoutes.register(productRoutes, { prefix: "/products" });
+
+    await protectedRoutes.register(locationRoutes, { prefix: "/locations" });
+
+    // Import location
+    await protectedRoutes.register(locationImportRoutes, {
+      prefix: "/locations",
     });
-    // await protectedRoutes.register(orderRoutes, { prefix: "/orders" });
-    // await protectedRoutes.register(inventoryRoutes, { prefix: "/inventory" });
+
+    await protectedRoutes.register(orderRoutes, { prefix: "/orders" });
+    await protectedRoutes.register(inventoryRoutes, { prefix: "/inventory" });
+    await protectedRoutes.register(inventoryPlannerRoutes, {
+      prefix: "/inventory-planner",
+    });
+
     // await protectedRoutes.register(taskRoutes, { prefix: "/tasks" });
     // await protectedRoutes.register(userRoutes, { prefix: "/users" });
   });

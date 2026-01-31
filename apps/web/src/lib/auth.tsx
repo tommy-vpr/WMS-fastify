@@ -14,18 +14,11 @@ import {
   type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import type { UserRole } from "@wms/types";
 
 // ============================================================================
 // Types
 // ============================================================================
-
-export type UserRole =
-  | "ADMIN"
-  | "MANAGER"
-  | "PICKER"
-  | "PACKER"
-  | "RECEIVER"
-  | "VIEWER";
 
 export interface User {
   id: string;

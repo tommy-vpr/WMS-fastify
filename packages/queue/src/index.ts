@@ -24,5 +24,8 @@ export {
   enqueueImportSingleProduct,
   enqueueSyncShopifyProducts,
   getWorkTaskQueueStats,
+  getInventoryPlannerQueue,
+  enqueueSyncInventoryPlanner,
+  getInventoryPlannerQueueStats,
   closeQueues,
 } from "./queues.js";

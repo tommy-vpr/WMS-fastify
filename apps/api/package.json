@@ -14,6 +14,7 @@
     "@fastify/rate-limit": "^10.3.0",
     "@wms/auth": "workspace:*",
     "@wms/db": "workspace:*",
+    "@wms/domain": "workspace:*",
     "@wms/queue": "workspace:*",
     "@wms/types": "workspace:*",
     "dotenv": "^17.2.3",

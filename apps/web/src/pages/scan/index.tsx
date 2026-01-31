@@ -21,7 +21,6 @@ export function ScanPage() {
           type="text"
           placeholder="Enter SKU or UPC..."
           className="w-full max-w-sm px-4 py-3 border rounded-lg text-center text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          autoFocus
         />
       </div>
     </div>

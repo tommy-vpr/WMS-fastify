@@ -231,7 +231,7 @@ export default function ProductDetailPage() {
       )}
 
       {/* Product Info */}
-      <div className="bg-white border rounded-lg p-6 mb-6">
+      <div className="bg-white border border-border rounded-lg p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Product Information</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -245,7 +245,7 @@ export default function ProductDetailPage() {
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -259,7 +259,7 @@ export default function ProductDetailPage() {
               onChange={(e) =>
                 setFormData({ ...formData, brand: e.target.value })
               }
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -273,7 +273,7 @@ export default function ProductDetailPage() {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
                   active: e.target.value === "active",
                 })
               }
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -306,13 +306,13 @@ export default function ProductDetailPage() {
                 setFormData({ ...formData, description: e.target.value })
               }
               rows={3}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
 
         {/* Read-only fields */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
           <div>
             <div className="text-sm text-gray-500">SKU</div>
             <div className="font-mono">{product.sku}</div>
@@ -341,7 +341,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Variants */}
-      <div className="bg-white border rounded-lg p-6">
+      <div className="bg-white border border-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">
             Variants ({product.variants.length})
@@ -381,7 +381,7 @@ export default function ProductDetailPage() {
             </thead>
             <tbody className="divide-y">
               {product.variants.map((variant) => (
-                <tr key={variant.id} className="hover:bg-gray-50">
+                <tr key={variant.id} className="hover:bg-gray-50 border-border">
                   <td className="px-4 py-3 font-medium">{variant.name}</td>
                   <td className="px-4 py-3">
                     <code className="text-sm bg-gray-100 px-2 py-0.5 rounded">

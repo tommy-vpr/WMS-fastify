@@ -12,6 +12,7 @@ export const QUEUES = {
   SHOPIFY: "shopify",
   ORDERS: "orders",
   PRODUCTS: "products",
+  INVENTORY_PLANNER: "inventory-planner",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -228,4 +229,27 @@ export interface ImportProductsResult {
   success: number;
   failed: number;
   errors: Array<{ sku: string; error: string }>;
+}
+
+// ============================================================================
+// Inventory Planner
+// ============================================================================
+
+export const INVENTORY_PLANNER_JOBS = {
+  SYNC_INVENTORY: "sync-inventory-planner",
+} as const;
+
+export interface SyncInventoryPlannerJobData {
+  userId?: string;
+  idempotencyKey: string;
+}
+
+export interface SyncInventoryPlannerResult {
+  created: number;
+  updated: number;
+  unchanged: number;
+  skipped: number;
+  errors: string[];
+  totalIPVariants: number;
+  totalWMSVariants: number;
 }

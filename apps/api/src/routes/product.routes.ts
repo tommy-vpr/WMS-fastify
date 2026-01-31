@@ -1,60 +1,373 @@
 /**
- * Product Import Routes
- * POST /products/import - Queue bulk product import
- * POST /products/import/sync-shopify - Sync products from Shopify
- * GET /products/import/stats - Get import stats
- * GET /products/import/job/:jobId - Get job status
+ * Product Routes
+ * Uses ProductService for business logic
+ *
+ * Save to: apps/api/src/routes/product.routes.ts
  */
 
 import { FastifyPluginAsync } from "fastify";
+import { prisma, productRepository } from "@wms/db";
+import {
+  ProductService,
+  ProductNotFoundError,
+  ProductImportError,
+  ProductSearchError,
+  ProductHasAllocatedInventoryError,
+} from "@wms/domain";
 import {
   enqueueImportProducts,
   enqueueSyncShopifyProducts,
   getProductsQueue,
   type ProductImportItem,
 } from "@wms/queue";
-import { productRepository } from "@wms/db";
 
-interface ImportRequestBody {
-  products: ProductImportItem[];
-}
+// ============================================================================
+// Inventory Query Repository Adapter
+// ============================================================================
 
-interface ImportSingleBody {
-  product: ProductImportItem["product"];
-  variants: ProductImportItem["variants"];
-}
+const inventoryQueryRepo = {
+  async getTotalByProductVariant(productVariantId: string): Promise<number> {
+    const result = await prisma.inventoryUnit.aggregate({
+      where: { productVariantId },
+      _sum: { quantity: true },
+    });
+    return result._sum.quantity ?? 0;
+  },
 
-export const productImportRoutes: FastifyPluginAsync = async (app) => {
+  async getAvailableByProductVariant(
+    productVariantId: string,
+  ): Promise<number> {
+    const result = await prisma.inventoryUnit.aggregate({
+      where: {
+        productVariantId,
+        status: "AVAILABLE",
+      },
+      _sum: { quantity: true },
+    });
+    return result._sum.quantity ?? 0;
+  },
+
+  async getByProductVariantGroupedByLocation(
+    productVariantId: string,
+  ): Promise<
+    Array<{ locationId: string; locationName: string; quantity: number }>
+  > {
+    const inventory = await prisma.inventoryUnit.findMany({
+      where: {
+        productVariantId,
+        quantity: { gt: 0 },
+      },
+      include: {
+        location: {
+          select: { id: true, name: true },
+        },
+      },
+    });
+
+    // Group by location
+    const locationMap = new Map<
+      string,
+      { locationName: string; quantity: number }
+    >();
+
+    for (const inv of inventory) {
+      const existing = locationMap.get(inv.locationId);
+      if (existing) {
+        existing.quantity += inv.quantity;
+      } else {
+        locationMap.set(inv.locationId, {
+          locationName: inv.location.name,
+          quantity: inv.quantity,
+        });
+      }
+    }
+
+    return Array.from(locationMap.entries()).map(([locationId, data]) => ({
+      locationId,
+      locationName: data.locationName,
+      quantity: data.quantity,
+    }));
+  },
+
+  async hasAllocatedInventory(productVariantId: string): Promise<boolean> {
+    const count = await prisma.allocation.count({
+      where: {
+        productVariantId,
+        status: { in: ["PENDING", "ALLOCATED", "PARTIALLY_PICKED"] },
+      },
+    });
+    return count > 0;
+  },
+};
+
+// ============================================================================
+// Product Repository Adapter
+// ============================================================================
+
+const productRepoAdapter = {
+  ...productRepository,
+
+  // Add missing method for barcode lookup
+  async findVariantByBarcode(barcode: string) {
+    return prisma.productVariant.findFirst({
+      where: { barcode },
+    });
+  },
+};
+
+// ============================================================================
+// Initialize Service
+// ============================================================================
+
+const productService = new ProductService({
+  productRepo: productRepoAdapter,
+  inventoryRepo: inventoryQueryRepo,
+});
+
+// ============================================================================
+// Routes
+// ============================================================================
+
+export const productRoutes: FastifyPluginAsync = async (app) => {
+  /**
+   * GET /products
+   * List products with pagination and filters
+   */
+  app.get<{
+    Querystring: {
+      skip?: string;
+      take?: string;
+      brand?: string;
+      category?: string;
+      active?: string;
+    };
+  }>("/", async (request, reply) => {
+    const { skip = "0", take = "50", brand, category, active } = request.query;
+
+    const result = await productService.list({
+      skip: Number(skip),
+      take: Number(take),
+      brand,
+      category,
+      active: active !== undefined ? active === "true" : undefined,
+    });
+
+    return reply.send(result);
+  });
+
+  /**
+   * GET /products/search
+   * Search products by query
+   */
+  app.get<{ Querystring: { q: string; limit?: string } }>(
+    "/search",
+    async (request, reply) => {
+      const { q, limit = "20" } = request.query;
+
+      try {
+        const products = await productService.search(q, Number(limit));
+        return reply.send({ products, count: products.length });
+      } catch (error) {
+        if (error instanceof ProductSearchError) {
+          return reply.status(400).send({ error: error.message });
+        }
+        throw error;
+      }
+    },
+  );
+
+  /**
+   * GET /products/stats
+   * Get product statistics
+   */
+  app.get("/stats", async (request, reply) => {
+    const stats = await productService.getStats();
+    return reply.send(stats);
+  });
+
+  /**
+   * GET /products/lookup/:identifier
+   * Find variant by SKU, UPC, or barcode
+   */
+  app.get<{ Params: { identifier: string } }>(
+    "/lookup/:identifier",
+    async (request, reply) => {
+      const { identifier } = request.params;
+
+      const variant = await productService.findVariant(identifier);
+
+      if (!variant) {
+        return reply.status(404).send({ error: "Variant not found" });
+      }
+
+      // Get full product with this variant
+      const product = await productService.getProduct(variant.productId);
+
+      return reply.send({
+        variant,
+        product,
+      });
+    },
+  );
+
+  /**
+   * GET /products/:id
+   * Get product by ID with variants
+   */
+  app.get<{ Params: { id: string } }>("/:id", async (request, reply) => {
+    const { id } = request.params;
+
+    const product = await productService.getProduct(id);
+
+    if (!product) {
+      return reply.status(404).send({ error: "Product not found" });
+    }
+
+    return reply.send(product);
+  });
+
+  /**
+   * GET /products/:id/inventory
+   * Get product with inventory levels
+   */
+  app.get<{ Params: { id: string } }>(
+    "/:id/inventory",
+    async (request, reply) => {
+      const { id } = request.params;
+
+      const product = await productService.getProductWithInventory(id);
+
+      if (!product) {
+        return reply.status(404).send({ error: "Product not found" });
+      }
+
+      return reply.send(product);
+    },
+  );
+
+  /**
+   * PATCH /products/:id
+   * Update product
+   */
+  app.patch<{
+    Params: { id: string };
+    Body: {
+      name?: string;
+      description?: string;
+      brand?: string;
+      category?: string;
+    };
+  }>("/:id", async (request, reply) => {
+    const { id } = request.params;
+    const data = request.body;
+
+    try {
+      const product = await productService.updateProduct(id, data);
+      return reply.send({ success: true, product });
+    } catch (error) {
+      if (error instanceof ProductNotFoundError) {
+        return reply.status(404).send({ error: error.message });
+      }
+      throw error;
+    }
+  });
+
+  /**
+   * PATCH /products/variants/:id
+   * Update variant
+   */
+  app.patch<{
+    Params: { id: string };
+    Body: {
+      name?: string;
+      upc?: string;
+      barcode?: string;
+      costPrice?: number;
+      sellingPrice?: number;
+      weight?: number;
+      trackLots?: boolean;
+      trackExpiry?: boolean;
+    };
+  }>("/variants/:id", async (request, reply) => {
+    const { id } = request.params;
+    const data = request.body;
+
+    try {
+      const variant = await productService.updateVariant(id, data);
+      return reply.send({ success: true, variant });
+    } catch (error) {
+      if (error instanceof ProductNotFoundError) {
+        return reply.status(404).send({ error: error.message });
+      }
+      throw error;
+    }
+  });
+
+  /**
+   * POST /products/:id/deactivate
+   * Deactivate product (soft delete)
+   */
+  app.post<{ Params: { id: string } }>(
+    "/:id/deactivate",
+    async (request, reply) => {
+      const { id } = request.params;
+
+      try {
+        const product = await productService.deactivateProduct(id);
+        return reply.send({ success: true, product });
+      } catch (error) {
+        if (error instanceof ProductNotFoundError) {
+          return reply.status(404).send({ error: error.message });
+        }
+        if (error instanceof ProductHasAllocatedInventoryError) {
+          return reply.status(409).send({ error: error.message });
+        }
+        throw error;
+      }
+    },
+  );
+
+  // ==========================================================================
+  // Import Routes
+  // ==========================================================================
+
   /**
    * POST /products/import
    * Queue a bulk product import job
    */
-  app.post<{ Body: ImportRequestBody }>("/import", async (request, reply) => {
+  app.post<{
+    Body: {
+      products: ProductImportItem[];
+    };
+  }>("/import", async (request, reply) => {
     const { products } = request.body;
 
     if (!products || products.length === 0) {
       return reply.status(400).send({ error: "No products provided" });
     }
 
-    // Validate products
-    for (const item of products) {
-      if (!item.product?.sku || !item.product?.name) {
-        return reply.status(400).send({
-          error: "Each product must have sku and name",
-        });
+    // Validate all products using service
+    const validationErrors: string[] = [];
+
+    for (let i = 0; i < products.length; i++) {
+      const item = products[i];
+      const validation = productService.validateImport(
+        item.product,
+        item.variants,
+      );
+
+      if (!validation.valid) {
+        validationErrors.push(
+          `Product ${i + 1} (${item.product?.sku || "unknown"}): ${validation.errors.join(", ")}`,
+        );
       }
-      if (!item.variants || item.variants.length === 0) {
-        return reply.status(400).send({
-          error: `Product ${item.product.sku} must have at least one variant`,
-        });
-      }
-      for (const variant of item.variants) {
-        if (!variant.sku || !variant.name) {
-          return reply.status(400).send({
-            error: `All variants for ${item.product.sku} must have sku and name`,
-          });
-        }
-      }
+    }
+
+    if (validationErrors.length > 0) {
+      return reply.status(400).send({
+        error: "Validation failed",
+        details: validationErrors,
+      });
     }
 
     const idempotencyKey = `import-${Date.now()}-${products.length}`;
@@ -79,65 +392,57 @@ export const productImportRoutes: FastifyPluginAsync = async (app) => {
 
   /**
    * POST /products/import/single
-   * Import a single product immediately (for smaller imports)
+   * Import a single product immediately
    */
-  app.post<{ Body: ImportSingleBody }>(
-    "/import/single",
-    async (request, reply) => {
-      const { product, variants } = request.body;
+  app.post<{
+    Body: {
+      product: {
+        sku: string;
+        name: string;
+        description?: string;
+        brand?: string;
+        category?: string;
+      };
+      variants: Array<{
+        sku: string;
+        name: string;
+        upc?: string;
+        barcode?: string;
+        costPrice?: number;
+        sellingPrice?: number;
+        weight?: number;
+      }>;
+    };
+  }>("/import/single", async (request, reply) => {
+    const { product, variants } = request.body;
 
-      if (!product?.sku || !product?.name) {
-        return reply
-          .status(400)
-          .send({ error: "Product must have sku and name" });
+    try {
+      const result = await productService.importProduct(product, variants);
+
+      return reply.send({
+        success: true,
+        created: result.created,
+        product: result.product,
+        variantsCreated: result.variantsCreated,
+        variantsUpdated: result.variantsUpdated,
+      });
+    } catch (error) {
+      if (error instanceof ProductImportError) {
+        return reply.status(400).send({ error: error.message });
       }
 
-      if (!variants || variants.length === 0) {
-        return reply
-          .status(400)
-          .send({ error: "At least one variant required" });
+      app.log.error(error, "Product import failed");
+
+      // Handle Prisma unique constraint violations
+      if ((error as any).code === "P2002") {
+        return reply.status(409).send({ error: "Duplicate SKU or UPC" });
       }
 
-      try {
-        const result = await productRepository.upsertWithVariants(
-          {
-            sku: product.sku,
-            name: product.name,
-            description: product.description,
-            brand: product.brand,
-            category: product.category,
-          },
-          variants.map((v) => ({
-            sku: v.sku,
-            upc: v.upc,
-            barcode: v.barcode,
-            name: v.name,
-            weight: v.weight,
-            costPrice: v.costPrice,
-            sellingPrice: v.sellingPrice,
-            shopifyVariantId: v.shopifyVariantId,
-          })),
-        );
-
-        return reply.send({
-          success: true,
-          product: result.product,
-          variantsCreated: result.variantsCreated,
-          variantsUpdated: result.variantsUpdated,
-        });
-      } catch (error: any) {
-        app.log.error(error, "Product import failed");
-
-        if (error.code === "P2002") {
-          return reply.status(409).send({ error: "Duplicate SKU or UPC" });
-        }
-
-        return reply.status(500).send({
-          error: error.message || "Import failed",
-        });
-      }
-    },
-  );
+      return reply.status(500).send({
+        error: error instanceof Error ? error.message : "Import failed",
+      });
+    }
+  });
 
   /**
    * POST /products/import/sync-shopify
@@ -196,75 +501,4 @@ export const productImportRoutes: FastifyPluginAsync = async (app) => {
       });
     },
   );
-
-  /**
-   * GET /products/import/stats
-   * Get product import statistics
-   */
-  app.get("/import/stats", async (request, reply) => {
-    const stats = await productRepository.getStats();
-
-    return reply.send(stats);
-  });
-
-  /**
-   * GET /products/search
-   * Search products by query
-   */
-  app.get<{ Querystring: { q: string; limit?: number } }>(
-    "/search",
-    async (request, reply) => {
-      const { q, limit = 20 } = request.query;
-
-      if (!q || q.length < 2) {
-        return reply
-          .status(400)
-          .send({ error: "Query must be at least 2 characters" });
-      }
-
-      const products = await productRepository.search(q, limit);
-
-      return reply.send({ products, count: products.length });
-    },
-  );
-
-  /**
-   * GET /products
-   * List products with pagination
-   */
-  app.get<{
-    Querystring: {
-      skip?: number;
-      take?: number;
-      brand?: string;
-      category?: string;
-    };
-  }>("/", async (request, reply) => {
-    const { skip = 0, take = 50, brand, category } = request.query;
-
-    const result = await productRepository.list({
-      skip: Number(skip),
-      take: Number(take),
-      brand,
-      category,
-    });
-
-    return reply.send(result);
-  });
-
-  /**
-   * GET /products/:id
-   * Get product by ID with variants
-   */
-  app.get<{ Params: { id: string } }>("/:id", async (request, reply) => {
-    const { id } = request.params;
-
-    const product = await productRepository.findByIdWithVariants(id);
-
-    if (!product) {
-      return reply.status(404).send({ error: "Product not found" });
-    }
-
-    return reply.send(product);
-  });
 };

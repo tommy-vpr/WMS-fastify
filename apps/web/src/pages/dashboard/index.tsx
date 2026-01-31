@@ -11,7 +11,7 @@ export function DashboardPage() {
 
   return (
     <div className={compactMode ? "p-4" : "p-6"}>
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-2xl font-bold mb-6 text-gray-500">
         Welcome back, {user?.name || "User"}
       </h1>
 
@@ -45,21 +45,17 @@ function StatCard({
   value: string;
   color: string;
 }) {
-  const colors: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600",
-    green: "bg-green-50 text-green-600",
-    orange: "bg-orange-50 text-orange-600",
-    purple: "bg-purple-50 text-purple-600",
-  };
+  //   const colors: Record<string, string> = {
+  //     blue: "bg-blue-50 text-blue-600",
+  //     green: "bg-green-50 text-green-600",
+  //     orange: "bg-orange-50 text-orange-600",
+  //     purple: "bg-purple-50 text-purple-600",
+  //   };
 
   return (
-    <div className="bg-white border rounded-lg p-4">
+    <div className="bg-white border border-border rounded-lg p-4">
       <div className="text-sm text-gray-500">{title}</div>
-      <div
-        className={`text-3xl font-bold mt-1 ${colors[color]?.split(" ")[1]}`}
-      >
-        {value}
-      </div>
+      <div className={`text-3xl mt-1`}>{value}</div>
     </div>
   );
 }
@@ -76,7 +72,7 @@ function QuickAction({
   return (
     <Link
       to={to}
-      className="flex flex-col items-center justify-center bg-white border rounded-lg p-6 hover:bg-gray-50 active:bg-gray-100"
+      className="flex flex-col items-center justify-center bg-white border border-border rounded-lg p-6 hover:bg-gray-50 active:bg-gray-100"
     >
       <Icon className="w-8 h-8 text-blue-600 mb-2" />
       <span className="font-medium">{label}</span>

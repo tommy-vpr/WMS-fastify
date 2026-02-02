@@ -6,7 +6,13 @@
 export interface Order {
   id: string;
   status: string;
-  paymentStatus: "PENDING" | "PAID" | "FAILED" | "REFUNDED";
+  paymentStatus:
+    | "PENDING"
+    | "AUTHORIZED"
+    | "PAID"
+    | "PARTIALLY_REFUNDED"
+    | "REFUNDED"
+    | "FAILED";
   warehouseId?: string;
   customerId: string;
   holdReason?: string;

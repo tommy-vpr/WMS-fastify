@@ -32,6 +32,9 @@ importers:
       '@wms/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@wms/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@wms/queue':
         specifier: workspace:*
         version: link:../../packages/queue
@@ -66,6 +69,12 @@ importers:
       '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
+      '@wms/types':
+        specifier: workspace:^
+        version: link:../../packages/types
+      lucide-react:
+        specifier: ^0.563.0
+        version: 0.563.0(react@19.2.3)
       react:
         specifier: ^19.1.0
         version: 19.2.3
@@ -1567,6 +1576,11 @@ packages:
   lru.min@1.1.3:
     resolution: {integrity: sha512-Lkk/vx6ak3rYkRR0Nhu4lFUT2VDnQSxBe8Hbl7f36358p6ow8Bnvr8lrLt98H8J1aGxfhbX4Fs5tYg2+FTwr5Q==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
+
+  lucide-react@0.563.0:
+    resolution: {integrity: sha512-8dXPB2GI4dI8jV4MgUDGBeLdGk8ekfqVZ0BdLcrRzocGgG75ltNEmWS+gE7uokKF/0oSUuczNDT+g9hFJ23FkA==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   luxon@3.7.2:
     resolution: {integrity: sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==}
@@ -3278,6 +3292,10 @@ snapshots:
       yallist: 3.1.1
 
   lru.min@1.1.3: {}
+
+  lucide-react@0.563.0(react@19.2.3):
+    dependencies:
+      react: 19.2.3
 
   luxon@3.7.2: {}
 

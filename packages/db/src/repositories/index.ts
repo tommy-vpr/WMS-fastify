@@ -10,3 +10,5 @@ export {
 export { allocationRepository } from "./allocation.repo.js";
 export { inventoryRepository } from "./inventory.repo.js";
 export { orderRepository } from "./order.repo.js";
+
+export * from "./product.repo.js";

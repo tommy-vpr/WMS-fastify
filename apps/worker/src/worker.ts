@@ -1,12 +1,28 @@
 /**
- * WMS Worker
+ * WMS Worker - UPDATED with Inventory Planner
  * BullMQ worker that processes background jobs
+ *
+ * Save to: apps/worker/src/index.ts
  */
 
 import "dotenv/config";
 import { Worker, type Job } from "bullmq";
-import { getConnection, QUEUES, WORK_TASK_JOBS } from "@wms/queue";
-import { processWorkTaskJob } from "./processors/index.js";
+import {
+  getConnection,
+  QUEUES,
+  WORK_TASK_JOBS,
+  SHOPIFY_JOBS,
+  ORDER_JOBS,
+  PRODUCT_JOBS,
+  INVENTORY_PLANNER_JOBS,
+} from "@wms/queue";
+import {
+  processWorkTaskJob,
+  processShopifyJob,
+  processOrderJob,
+  processProductJob,
+  processInventoryPlannerJob,
+} from "./processors/index.js";
 
 // ============================================================================
 // Configuration
@@ -30,12 +46,12 @@ function createWorkTaskWorker() {
       connection,
       concurrency: WORKER_CONCURRENCY,
       removeOnComplete: {
-        count: 1000, // Keep last 1000 completed jobs
-        age: 24 * 60 * 60, // Remove jobs older than 24 hours
+        count: 1000,
+        age: 24 * 60 * 60,
       },
       removeOnFail: {
-        count: 5000, // Keep last 5000 failed jobs
-        age: 7 * 24 * 60 * 60, // Remove failed jobs older than 7 days
+        count: 5000,
+        age: 7 * 24 * 60 * 60,
       },
     },
   );
@@ -62,6 +78,120 @@ function createWorkTaskWorker() {
   return worker;
 }
 
+function createShopifyWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.SHOPIFY,
+    async (job: Job) => processShopifyJob(job),
+    {
+      connection,
+      concurrency: 3,
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.SHOPIFY} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Shopify] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Shopify] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
+
+function createOrdersWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.ORDERS,
+    async (job: Job) => processOrderJob(job),
+    {
+      connection,
+      concurrency: WORKER_CONCURRENCY,
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.ORDERS} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Orders] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Orders] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
+
+function createProductsWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.PRODUCTS,
+    async (job: Job) => processProductJob(job),
+    {
+      connection,
+      concurrency: 3,
+      removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+      removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.PRODUCTS} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[Products] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[Products] Job failed: ${job?.name}`, err.message);
+  });
+  worker.on("progress", (job, progress) => {
+    console.log(`[Products] Job progress: ${job.name} - ${progress}%`);
+  });
+
+  return worker;
+}
+
+function createInventoryPlannerWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.INVENTORY_PLANNER,
+    async (job: Job) => processInventoryPlannerJob(job),
+    {
+      connection,
+      concurrency: 1, // Only one sync at a time
+      removeOnComplete: { count: 100, age: 24 * 60 * 60 },
+      removeOnFail: { count: 500, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.INVENTORY_PLANNER} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[IP Sync] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[IP Sync] Job failed: ${job?.name}`, err.message);
+  });
+  worker.on("progress", (job, progress) => {
+    console.log(`[IP Sync] Job progress: ${job.name} - ${progress}%`);
+  });
+
+  return worker;
+}
+
 // ============================================================================
 // Graceful Shutdown
 // ============================================================================
@@ -69,7 +199,6 @@ function createWorkTaskWorker() {
 async function shutdown(workers: Worker[]) {
   console.log("\n[Worker] Shutting down...");
 
-  // Close all workers
   await Promise.all(workers.map((w) => w.close()));
   console.log("[Worker] All workers closed");
 
@@ -97,6 +226,22 @@ async function main() {
   const workTaskWorker = createWorkTaskWorker();
   workers.push(workTaskWorker);
 
+  // Shopify Worker
+  const shopifyWorker = createShopifyWorker();
+  workers.push(shopifyWorker);
+
+  // Orders Worker
+  const ordersWorker = createOrdersWorker();
+  workers.push(ordersWorker);
+
+  // Products Worker
+  const productsWorker = createProductsWorker();
+  workers.push(productsWorker);
+
+  // Inventory Planner Worker
+  const inventoryPlannerWorker = createInventoryPlannerWorker();
+  workers.push(inventoryPlannerWorker);
+
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
   process.on("SIGINT", () => shutdown(workers));
@@ -107,6 +252,18 @@ async function main() {
   Object.values(WORK_TASK_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.WORK_TASKS}:${job}`);
   });
+  Object.values(SHOPIFY_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.SHOPIFY}:${job}`);
+  });
+  Object.values(ORDER_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.ORDERS}:${job}`);
+  });
+  Object.values(PRODUCT_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.PRODUCTS}:${job}`);
+  });
+  Object.values(INVENTORY_PLANNER_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.INVENTORY_PLANNER}:${job}`);
+  });
   console.log("");
 }
 
@@ -114,46 +271,3 @@ main().catch((err) => {
   console.error("[Worker] Fatal error:", err);
   process.exit(1);
 });
-
-// import { config } from "dotenv";
-// import { resolve } from "path";
-// import { fileURLToPath } from "url";
-
-// // Load .env from monorepo root FIRST
-// const __dirname = fileURLToPath(new URL(".", import.meta.url));
-// config({ path: resolve(__dirname, "../../../.env") });
-
-// import { Worker } from "bullmq";
-// import { QUEUE_NAMES, getConnection } from "@wms/queue";
-// import { processWorkTask } from "./processors/workTask.processor.js";
-
-// console.log("🔧 Starting worker...");
-// console.log("REDIS_URL:", process.env.REDIS_URL ? "✓" : "✗");
-
-// const workTaskWorker = new Worker(
-//   QUEUE_NAMES.WORK_TASK,
-//   processWorkTask,
-//   {
-//     connection: getConnection(),
-//     concurrency: 5,
-//   }
-// );
-
-// workTaskWorker.on("completed", (job) => {
-//   console.log(`✅ Job ${job.id} completed`);
-// });
-
-// workTaskWorker.on("failed", (job, err) => {
-//   console.error(`❌ Job ${job?.id} failed:`, err.message);
-// });
-
-// async function shutdown() {
-//   console.log("🛑 Shutting down...");
-//   await workTaskWorker.close();
-//   process.exit(0);
-// }
-
-// process.on("SIGTERM", shutdown);
-// process.on("SIGINT", shutdown);
-
-// console.log("✅ Worker running");

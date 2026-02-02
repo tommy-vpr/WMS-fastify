@@ -67,47 +67,52 @@ model PasswordResetToken {
 // =============================================================================
 
 model Product {
-  id          String   @id @default(cuid())
-  sku         String   @unique
-  name        String
-  description String?
-  brand       String?
-  category    String?
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(cuid())
+  sku              String   @unique
+  name             String
+  description      String?
+  brand            String?
+  category         String?
+  shopifyProductId String?  @unique
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   variants ProductVariant[]
 
   @@index([brand])
   @@index([category])
+  @@index([shopifyProductId])
   @@map("products")
 }
 
 model ProductVariant {
-  id           String   @id @default(cuid())
-  productId    String
-  sku          String   @unique
-  upc          String?  @unique
-  barcode      String?
-  name         String
-  imageUrl     String?
-  costPrice    Decimal? @db.Decimal(10, 2)
-  sellingPrice Decimal? @db.Decimal(10, 2)
-  weight       Decimal? @db.Decimal(8, 2)
+  id               String   @id @default(cuid())
+  productId        String
+  sku              String   @unique
+  upc              String?  @unique
+  barcode          String?
+  name             String
+  imageUrl         String?
+  shopifyVariantId String?  @unique
+  costPrice        Decimal? @db.Decimal(10, 2)
+  sellingPrice     Decimal? @db.Decimal(10, 2)
+  weight           Decimal? @db.Decimal(8, 2)
   // Track if this variant requires lot/expiry tracking
-  trackLots    Boolean  @default(false)
-  trackExpiry  Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  trackLots        Boolean  @default(false)
+  trackExpiry      Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   product        Product         @relation(fields: [productId], references: [id])
+  orderItems     OrderItem[]
   inventoryUnits InventoryUnit[]
   taskItems      TaskItem[]
   allocations    Allocation[]
 
   @@index([upc])
   @@index([barcode])
+  @@index([shopifyVariantId])
   @@map("product_variants")
 }
 
@@ -209,31 +214,36 @@ model Allocation {
 // =============================================================================
 
 model Order {
-  id              String        @id @default(cuid())
-  orderNumber     String        @unique
-  shopifyOrderId  String?       @unique
+  id               String        @id @default(cuid())
+  orderNumber      String        @unique
+  shopifyOrderId   String?       @unique
   // Customer info
-  customerId      String?
-  customerName    String
-  customerEmail   String?
-  shippingAddress Json
+  customerId       String?
+  customerName     String
+  customerEmail    String?
+  shippingAddress  Json
+  billingAddress   Json?
+  // Shopify raw data
+  shopifyLineItems Json?
   // Status tracking
-  status          OrderStatus   @default(PENDING)
-  paymentStatus   PaymentStatus @default(PENDING)
-  priority        Priority      @default(STANDARD)
+  status           OrderStatus   @default(PENDING)
+  paymentStatus    PaymentStatus @default(PENDING)
+  priority         Priority      @default(STANDARD)
   // Hold management
-  holdReason      String?
-  holdAt          DateTime?
-  holdBy          String?
+  holdReason       String?
+  holdAt           DateTime?
+  holdBy           String?
+  // Item matching
+  unmatchedItems   Int           @default(0) // Count of items with matched=false
   // Financials
-  totalAmount     Decimal       @db.Decimal(10, 2)
+  totalAmount      Decimal       @db.Decimal(10, 2)
   // Shipping
-  warehouseId     String?
-  trackingNumber  String?
-  shippedAt       DateTime?
+  warehouseId      String?
+  trackingNumber   String?
+  shippedAt        DateTime?
   // Timestamps
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 
   items       OrderItem[]
   taskItems   TaskItem[]
@@ -247,20 +257,30 @@ model Order {
 }
 
 model OrderItem {
-  id                String  @id @default(cuid())
-  orderId           String
-  productVariantId  String
-  sku               String
-  quantity          Int
-  quantityAllocated Int     @default(0)
-  quantityPicked    Int     @default(0)
-  unitPrice         Decimal @db.Decimal(10, 2)
+  id                                String   @id @default(cuid())
+  orderId                           String
+  productVariantId                  String? // Nullable - may not match a variant
+  sku                               String
+  quantity                          Int
+  quantityAllocated                 Int      @default(0)
+  quantityPicked                    Int      @default(0)
+  unitPrice                         Decimal  @db.Decimal(10, 2)
+  totalPrice                        Decimal? @db.Decimal(10, 2)
+  // Matching status
+  matched                           Boolean  @default(true) // false if SKU not found
+  matchError                        String? // "SKU not found: XYZ"
+  // Shopify references
+  shopifyLineItemId                 String?
+  shopifyFulfillmentOrderLineItemId String?
 
-  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  taskItems   TaskItem[]
-  allocations Allocation[]
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id])
+  taskItems      TaskItem[]
+  allocations    Allocation[]
 
   @@index([orderId])
+  @@index([matched])
+  @@index([shopifyLineItemId])
   @@map("order_items")
 }
 
@@ -456,6 +476,8 @@ enum OrderStatus {
   CONFIRMED
   READY_TO_PICK
   ALLOCATED
+  PARTIALLY_ALLOCATED // Some items allocated, some backordered
+  BACKORDERED // No inventory available
   PICKING
   PICKED
   PACKING

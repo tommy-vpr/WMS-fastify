@@ -21,12 +21,15 @@ export interface Order {
   customerName: string;
   customerEmail: string | null;
   shippingAddress: Prisma.JsonValue;
+  billingAddress: Prisma.JsonValue | null;
+  shopifyLineItems: Prisma.JsonValue | null;
   status: OrderStatus;
   paymentStatus: PaymentStatus;
   priority: Priority;
   holdReason: string | null;
   holdAt: Date | null;
   holdBy: string | null;
+  unmatchedItems: number;
   totalAmount: Prisma.Decimal;
   warehouseId: string | null;
   trackingNumber: string | null;
@@ -38,12 +41,17 @@ export interface Order {
 export interface OrderItem {
   id: string;
   orderId: string;
-  productVariantId: string;
+  productVariantId: string | null;
   sku: string;
   quantity: number;
   quantityAllocated: number;
   quantityPicked: number;
   unitPrice: Prisma.Decimal;
+  totalPrice: Prisma.Decimal | null;
+  matched: boolean;
+  matchError: string | null;
+  shopifyLineItemId: string | null;
+  shopifyFulfillmentOrderLineItemId: string | null;
 }
 
 export interface OrderWithItems extends Order {
@@ -116,6 +124,33 @@ export const orderRepository = {
       },
       include: { items: true },
       orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
+    });
+  },
+
+  async findBackorderedByProductVariant(
+    productVariantId: string,
+  ): Promise<OrderWithItems[]> {
+    return prisma.order.findMany({
+      where: {
+        status: { in: ["BACKORDERED", "PARTIALLY_ALLOCATED"] },
+        items: {
+          some: {
+            productVariantId,
+            matched: true,
+          },
+        },
+      },
+      include: { items: true },
+    });
+  },
+
+  async findWithUnmatchedItems(): Promise<OrderWithItems[]> {
+    return prisma.order.findMany({
+      where: {
+        unmatchedItems: { gt: 0 },
+      },
+      include: { items: true },
+      orderBy: { createdAt: "asc" },
     });
   },
 
@@ -195,6 +230,27 @@ export const orderRepository = {
     });
   },
 
+  async updateUnmatchedCount(id: string, count: number): Promise<void> {
+    await prisma.order.update({
+      where: { id },
+      data: { unmatchedItems: count },
+    });
+  },
+
+  async matchOrderItem(
+    orderItemId: string,
+    productVariantId: string,
+  ): Promise<void> {
+    await prisma.orderItem.update({
+      where: { id: orderItemId },
+      data: {
+        productVariantId,
+        matched: true,
+        matchError: null,
+      },
+    });
+  },
+
   async create(data: {
     orderNumber: string;
     shopifyOrderId?: string;
@@ -202,13 +258,20 @@ export const orderRepository = {
     customerName: string;
     customerEmail?: string;
     shippingAddress: Prisma.InputJsonValue;
+    billingAddress?: Prisma.InputJsonValue;
+    shopifyLineItems?: Prisma.InputJsonValue;
     totalAmount: number;
     priority?: Priority;
     items: Array<{
-      productVariantId: string;
+      productVariantId?: string | null;
       sku: string;
       quantity: number;
       unitPrice: number;
+      totalPrice?: number;
+      matched?: boolean;
+      matchError?: string;
+      shopifyLineItemId?: string;
+      shopifyFulfillmentOrderLineItemId?: string;
     }>;
   }): Promise<OrderWithItems> {
     return prisma.order.create({
@@ -219,6 +282,8 @@ export const orderRepository = {
         customerName: data.customerName,
         customerEmail: data.customerEmail,
         shippingAddress: data.shippingAddress,
+        billingAddress: data.billingAddress,
+        shopifyLineItems: data.shopifyLineItems,
         totalAmount: data.totalAmount,
         priority: data.priority ?? "STANDARD",
         status: "PENDING",

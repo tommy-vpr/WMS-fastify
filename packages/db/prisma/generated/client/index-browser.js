@@ -157,6 +157,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   description: 'description',
   brand: 'brand',
   category: 'category',
+  shopifyProductId: 'shopifyProductId',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -170,6 +171,7 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
   barcode: 'barcode',
   name: 'name',
   imageUrl: 'imageUrl',
+  shopifyVariantId: 'shopifyVariantId',
   costPrice: 'costPrice',
   sellingPrice: 'sellingPrice',
   weight: 'weight',
@@ -235,12 +237,15 @@ exports.Prisma.OrderScalarFieldEnum = {
   customerName: 'customerName',
   customerEmail: 'customerEmail',
   shippingAddress: 'shippingAddress',
+  billingAddress: 'billingAddress',
+  shopifyLineItems: 'shopifyLineItems',
   status: 'status',
   paymentStatus: 'paymentStatus',
   priority: 'priority',
   holdReason: 'holdReason',
   holdAt: 'holdAt',
   holdBy: 'holdBy',
+  unmatchedItems: 'unmatchedItems',
   totalAmount: 'totalAmount',
   warehouseId: 'warehouseId',
   trackingNumber: 'trackingNumber',
@@ -257,7 +262,12 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   quantity: 'quantity',
   quantityAllocated: 'quantityAllocated',
   quantityPicked: 'quantityPicked',
-  unitPrice: 'unitPrice'
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
+  matched: 'matched',
+  matchError: 'matchError',
+  shopifyLineItemId: 'shopifyLineItemId',
+  shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
 };
 
 exports.Prisma.WorkTaskScalarFieldEnum = {
@@ -422,6 +432,8 @@ exports.OrderStatus = exports.$Enums.OrderStatus = {
   CONFIRMED: 'CONFIRMED',
   READY_TO_PICK: 'READY_TO_PICK',
   ALLOCATED: 'ALLOCATED',
+  PARTIALLY_ALLOCATED: 'PARTIALLY_ALLOCATED',
+  BACKORDERED: 'BACKORDERED',
   PICKING: 'PICKING',
   PICKED: 'PICKED',
   PACKING: 'PACKING',

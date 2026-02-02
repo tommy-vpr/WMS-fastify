@@ -50,6 +50,12 @@ function createWorkTaskService(): WorkTaskService {
 
       for (const order of orders) {
         for (const item of order.items) {
+          // Skip unmatched items (no productVariantId)
+          if (!item.productVariantId) {
+            console.log(`[Worker] Skipping unmatched item: ${item.sku}`);
+            continue;
+          }
+
           // Find available inventory for this product variant
           const available =
             await inventoryRepository.findAvailableByProductVariant(
@@ -135,18 +141,20 @@ function createWorkTaskService(): WorkTaskService {
   };
 
   // Create a simple order service adapter
+
   const orderService = {
     async getOrders(orderIds: string[]) {
       const orders = await orderRepository.findByIds(orderIds);
       return orders.map((o) => ({
         id: o.id,
         orderNumber: o.orderNumber,
-        status: o.status,
+        status: o.status as string,
         items: o.items.map((i) => ({
           id: i.id,
           productVariantId: i.productVariantId,
           sku: i.sku,
           quantity: i.quantity,
+          matched: i.matched,
         })),
       }));
     },

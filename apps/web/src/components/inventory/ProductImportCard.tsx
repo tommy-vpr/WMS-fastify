@@ -130,12 +130,22 @@ export function ProductImportCard() {
             };
           }
 
+          const parseWeight = (
+            value: string | undefined,
+          ): number | undefined => {
+            if (!value) return undefined;
+            const num = parseFloat(value.replace(/[^0-9.]/g, ""));
+            return isNaN(num) ? undefined : num;
+          };
+
           grouped[productKey].variants.push({
             sku: row.SKU,
             upc: row.UPC || "",
-            name: row.NAME || row.PRODUCT || row.SKU,
+            name: row.PRODUCT || row.NAME || row.SKU,
             barcode: row.UPC || row.BARCODE,
-            weight: row.WEIGHT ? parseFloat(row.WEIGHT) : undefined,
+            weight: parseWeight(
+              row["SINGLE WEIGHT"] || row.SINGLE_WEIGHT || row.WEIGHT,
+            ),
           });
         });
 

@@ -27,6 +27,7 @@ import {
   Clock,
   Wifi,
   WifiOff,
+  FileText,
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { useBarcodeScanner } from "@/hooks/useBarcodeScanner";
@@ -195,7 +196,7 @@ const STEPS = [
   { key: "awaiting_pack", label: "Picked", icon: CheckCircle2 },
   { key: "packing", label: "Packing", icon: BoxIcon },
   { key: "awaiting_ship", label: "Packed", icon: Package },
-  { key: "shipped", label: "Shipped", icon: Truck },
+  { key: "shipped", label: "Label Created", icon: FileText },
 ] as const;
 
 type ScanPhase = "scan_location" | "scan_item";
@@ -1010,7 +1011,7 @@ export default function FulfillmentDetailPage() {
             <StepCard
               title="Ready to Ship"
               description="Select carrier, service, and create shipping label."
-              icon={<Truck className="w-5 h-5 text-indigo-500" />}
+              icon={<Truck className="w-5 h-5" />}
             >
               <ShippingLabelForm
                 order={{
@@ -1059,26 +1060,26 @@ export default function FulfillmentDetailPage() {
           {(currentStep === "shipped" || currentStep === "delivered") &&
             shipping && (
               <StepCard
-                title="Shipped"
-                description={`Shipped on ${new Date(shipping.createdAt).toLocaleDateString()}`}
-                icon={<Truck className="w-5 h-5 text-cyan-500" />}
+                title="Label Created"
+                description={`Label created on ${new Date(shipping.createdAt).toLocaleDateString()}`}
+                icon={<FileText className="w-5 h-5" />}
               >
                 <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-5">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-lg font-bold uppercase">
                       {shipping.carrier}
                     </span>
-                    <span className="text-xs font-semibold px-2 py-1 rounded bg-cyan-100 text-cyan-700">
+                    <span className="text-xs font-semibold px-2 py-1 rounded bg-amber-100 text-amber-700">
                       {shipping.service}
                     </span>
                   </div>
-                  <div className="text-lg font-mono font-semibold text-cyan-600 mb-3">
+                  <div className="text-lg font-mono font-semibold mb-3">
                     {shipping.trackingNumber}
                   </div>
                   <div className="flex justify-between text-sm text-gray-500">
                     <span>
                       Rate:{" "}
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-gray-400">
                         $
                         {typeof shipping.rate === "number"
                           ? shipping.rate.toFixed(2)
@@ -1335,16 +1336,21 @@ function eventDescription(event: { type: string; payload: any }): string {
     case "picklist:completed":
       return p.message || "All items picked";
     case "packing:started":
-      return `Packing started — ${p.itemCount || "?"} items`;
+      return `Packing started — ${p.totalItems ?? p.itemCount ?? "?"} items`;
     case "packing:item_verified":
       return `${p.sku}: verified (${p.progress || ""})`;
     case "packing:completed":
       return `${p.weight || "?"}${p.weightUnit || "oz"} — ${p.dimensions ? `${p.dimensions.length}×${p.dimensions.width}×${p.dimensions.height}` : ""}`;
     case "shipping:label_created":
-      return `${(p.carrier || "").toUpperCase()} ${p.service || ""} — ${p.trackingNumber || ""}`;
+      const tracking =
+        p.trackingNumber ||
+        (Array.isArray(p.trackingNumbers) ? p.trackingNumbers.join(", ") : "");
+      return `${(p.carrier || "").toUpperCase()} ${p.service || ""} — ${tracking}`;
     case "order:processing":
     case "order:picked":
+      return `Order ${p.orderNumber || ""} picked`;
     case "order:packed":
+      return `Order ${p.orderNumber || ""} packed`;
     case "order:shipped":
       return p.message || p.orderNumber || "";
     case "inventory:updated":

@@ -360,7 +360,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantityShipped: 0,
         unitPrice: Number(item.unitPrice),
         productVariantId: item.productVariantId,
-        allocationStatus: getAllocationStatus(item),
+        allocationStatus: getAllocationStatus(item, order.status), // ← Pass order.status
         matched: item.matched,
         matchError: item.matchError,
       })),
@@ -767,13 +767,19 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
 };
 
 // Helper function
-function getAllocationStatus(item: {
-  quantity: number;
-  quantityAllocated: number;
-  matched: boolean;
-}): "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED" | "UNMATCHED" {
+function getAllocationStatus(
+  item: {
+    quantity: number;
+    quantityAllocated: number;
+    matched: boolean;
+  },
+  orderStatus: string,
+): "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED" | "UNMATCHED" {
   if (!item.matched) return "UNMATCHED";
   if (item.quantityAllocated >= item.quantity) return "ALLOCATED";
   if (item.quantityAllocated > 0) return "PARTIAL";
-  return "BACKORDERED";
+
+  // Only show BACKORDERED if order actually tried allocation
+  if (orderStatus === "BACKORDERED") return "BACKORDERED";
+  return "UNALLOCATED";
 }

@@ -82,7 +82,7 @@ export const shippingRoutes: FastifyPluginAsync = async (app) => {
       }>,
       reply: FastifyReply,
     ) => {
-      const userId = (request as any).user?.id;
+      const userId = request.user?.sub;
 
       if (!userId) {
         return reply.status(401).send({ error: "Unauthorized" });

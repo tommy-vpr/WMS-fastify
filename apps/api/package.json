@@ -15,7 +15,6 @@
     "@wms/auth": "workspace:*",
     "@wms/db": "workspace:*",
     "@wms/domain": "workspace:*",
-    "@wms/services": "workspace:*",
     "@wms/queue": "workspace:*",
     "@wms/types": "workspace:*",
     "@wms/pubsub": "workspace:*",

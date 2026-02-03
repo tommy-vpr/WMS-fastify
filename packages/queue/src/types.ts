@@ -35,7 +35,65 @@ export const SHIPPING_JOBS = {
   CREATE_LABEL: "create-label",
   SYNC_SHOPIFY_FULFILLMENT: "sync-shopify-fulfillment",
   VOID_LABEL: "void-label",
+  UPDATE_TRACKING: "update-tracking",
+  BATCH_CREATE_LABELS: "batch-create-labels",
 } as const;
+
+export interface CreateLabelJobData {
+  orderId: string;
+  carrierCode: string;
+  serviceCode: string;
+  packages: Array<{
+    packageCode: string;
+    weight: number;
+    length?: number;
+    width?: number;
+    height?: number;
+    items?: Array<{
+      sku: string;
+      quantity: number;
+      productName?: string;
+      unitPrice?: number;
+    }>;
+  }>;
+  shippingAddress?: {
+    name: string;
+    company?: string;
+    address1: string;
+    address2?: string;
+    city: string;
+    state: string;
+    zip: string;
+    country?: string;
+    phone?: string;
+  };
+  items?: Array<{
+    sku: string;
+    quantity: number;
+    productName?: string;
+    unitPrice?: number;
+  }>;
+  notes?: string;
+  userId: string;
+}
+
+export interface SyncShopifyFulfillmentJobData {
+  orderId: string;
+  shopifyOrderId: string;
+  trackingNumbers: string[];
+  carrier: string;
+  items?: Array<{
+    sku: string;
+    quantity: number;
+  }>;
+}
+
+export interface VoidLabelJobData {
+  labelId: string;
+  packageId?: string;
+  orderId?: string;
+  userId?: string;
+}
 
 export type WorkTaskJobName =
   (typeof WORK_TASK_JOBS)[keyof typeof WORK_TASK_JOBS];

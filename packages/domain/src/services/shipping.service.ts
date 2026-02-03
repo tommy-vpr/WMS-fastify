@@ -808,20 +808,26 @@ export class ShippingService {
 
         let remainingToRelease = item.quantity;
 
+        // Release inventory allocations for shipped items
         for (const allocation of allocations) {
           if (remainingToRelease <= 0) break;
 
           const releaseQty = Math.min(allocation.quantity, remainingToRelease);
 
-          // Decrement inventory unit quantity
-          await tx.inventoryUnit.update({
+          // DON'T decrement quantity - it was already decremented at allocation
+          // Just reset status to AVAILABLE if there's remaining quantity
+          const unit = await tx.inventoryUnit.findUnique({
             where: { id: allocation.inventoryUnitId },
-            data: {
-              quantity: { decrement: releaseQty },
-            },
           });
 
-          // Mark allocation as released
+          if (unit && unit.quantity > 0) {
+            await tx.inventoryUnit.update({
+              where: { id: allocation.inventoryUnitId },
+              data: { status: "AVAILABLE" },
+            });
+          }
+
+          // Mark allocation as released (keep this part)
           if (releaseQty >= allocation.quantity) {
             await tx.allocation.update({
               where: { id: allocation.id },

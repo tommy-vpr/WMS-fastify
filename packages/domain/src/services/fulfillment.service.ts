@@ -541,12 +541,18 @@ export class FulfillmentService {
         });
       }
 
-      // Update inventory unit status
+      // Update inventory unit status - only if fully consumed
       if (taskItem.allocation?.inventoryUnitId) {
-        await tx.inventoryUnit.update({
+        const unit = await tx.inventoryUnit.findUnique({
           where: { id: taskItem.allocation.inventoryUnitId },
-          data: { status: "PICKED" },
         });
+        // Only set to PICKED if no quantity remains
+        if (unit && unit.quantity <= 0) {
+          await tx.inventoryUnit.update({
+            where: { id: taskItem.allocation.inventoryUnitId },
+            data: { status: "PICKED" },
+          });
+        }
       }
 
       // Update task progress
@@ -968,6 +974,14 @@ export class FulfillmentService {
     const orderId = task.orderIds[0];
     const correlationId = randomUUID();
 
+    // Fetch order for orderNumber
+    const order = orderId
+      ? await this.prisma.order.findUnique({
+          where: { id: orderId },
+          select: { orderNumber: true },
+        })
+      : null;
+
     await this.prisma.$transaction(async (tx) => {
       // Update task with packing data
       await tx.workTask.update({
@@ -1017,6 +1031,7 @@ export class FulfillmentService {
         {
           taskId,
           taskNumber: task.taskNumber,
+          orderNumber: order?.orderNumber,
           weight: data.weight,
           weightUnit: data.weightUnit ?? "ounce",
           dimensions: data.dimensions,
@@ -1030,7 +1045,7 @@ export class FulfillmentService {
       createEventPayload(
         EVENT_TYPES.ORDER_PACKED,
         orderId,
-        { taskId },
+        { taskId, orderNumber: order?.orderNumber },
         { correlationId, userId: data.userId },
       ),
     );
@@ -1287,7 +1302,7 @@ export class FulfillmentService {
         },
         orderBy: { createdAt: "desc" },
       }),
-      this.prisma.shippingLabel.findMany({
+      this.prisma.shippingPackage.findMany({
         where: { orderId },
         orderBy: { createdAt: "desc" },
       }),
@@ -1469,7 +1484,20 @@ export class FulfillmentService {
       currentStep,
       picking: activePickTask ?? null,
       packing: activePackTask ?? null,
-      shipping: labels[0] ?? null,
+      shipping: labels[0]
+        ? {
+            id: labels[0].id,
+            orderId: labels[0].orderId,
+            carrier: labels[0].carrierCode,
+            service: labels[0].serviceCode,
+            trackingNumber: labels[0].trackingNumber || "",
+            trackingUrl: null, // Build if needed: `https://track.carrier.com/${labels[0].trackingNumber}`
+            rate: labels[0].cost,
+            labelUrl: labels[0].labelUrl,
+            status: labels[0].voidedAt ? "VOIDED" : "PURCHASED",
+            createdAt: labels[0].createdAt,
+          }
+        : null,
       events,
       // ── Scan verification data ──────────────────────────────
       scanLookup: {

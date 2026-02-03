@@ -7,7 +7,7 @@
 
 import { Job } from "bullmq";
 import { FULFILLMENT_JOBS } from "@wms/queue";
-import { FulfillmentService } from "@wms/domain/services/fulfillment.service.js"; // Adjust path
+import { FulfillmentService } from "@wms/domain"; // Adjust path
 import { prisma } from "@wms/db"; // Adjust to your prisma singleton
 
 // =============================================================================

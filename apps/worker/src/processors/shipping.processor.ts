@@ -7,10 +7,7 @@
 
 import { Job } from "bullmq";
 import { SHIPPING_JOBS } from "@wms/queue";
-import {
-  ShippingService,
-  getShopifyCarrierName,
-} from "@wms/domain/services/shipping.service.js";
+import { ShippingService, getShopifyCarrierName } from "@wms/domain";
 import { prisma } from "@wms/db";
 
 // =============================================================================
@@ -80,16 +77,16 @@ async function handleCreateLabel(job: Job): Promise<unknown> {
     // Queue Shopify fulfillment sync if order has Shopify ID
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      select: { externalId: true, source: true },
+      select: { shopifyOrderId: true },
     });
 
-    if (order?.externalId && order.source === "SHOPIFY") {
+    if (order?.shopifyOrderId) {
       const { getShippingQueue } = await import("@wms/queue");
       const queue = getShippingQueue();
 
       await queue.add(SHIPPING_JOBS.SYNC_SHOPIFY_FULFILLMENT, {
         orderId,
-        shopifyOrderId: order.externalId,
+        shopifyOrderId: order.shopifyOrderId,
         trackingNumbers: result.labels.map((l) => l.trackingNumber),
         carrier: getShopifyCarrierName(carrierCode),
         items,

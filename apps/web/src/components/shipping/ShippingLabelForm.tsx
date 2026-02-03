@@ -330,15 +330,24 @@ export default function ShippingLabelForm({
 
   const getCarrierOptions = (carrierId: string) => {
     const carrier = carriers.find((c) => c.carrier_id === carrierId);
-    return {
-      services: carrier?.services || [],
-      packages: carrier?.packages || [],
-    };
-  };
 
-  const isUPSCarrier = (carrierId: string): boolean => {
-    const carrier = carriers.find((c) => c.carrier_id === carrierId);
-    return carrier?.carrier_code === "ups";
+    // Dedupe services by service_code
+    const uniqueServices = (carrier?.services || []).filter(
+      (service, index, self) =>
+        index ===
+        self.findIndex((s) => s.service_code === service.service_code),
+    );
+
+    // Dedupe packages by package_code
+    const uniquePackages = (carrier?.packages || []).filter(
+      (pkg, index, self) =>
+        index === self.findIndex((p) => p.package_code === pkg.package_code),
+    );
+
+    return {
+      services: uniqueServices,
+      packages: uniquePackages,
+    };
   };
 
   // ============================================================================
@@ -566,9 +575,8 @@ export default function ShippingLabelForm({
         {shipments.length === 1 &&
           !shipments[0].carrierId &&
           quickAccessPresets.length > 0 && (
-            <div className="border rounded-lg p-4 bg-gradient-to-r from-blue-50 to-purple-50">
+            <div className="border border-blue-100 rounded-lg p-4 bg-gray-100 border-border">
               <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-yellow-500" />
                 Quick Start Presets
               </h3>
               <div className="grid grid-cols-2 gap-2">
@@ -576,7 +584,7 @@ export default function ShippingLabelForm({
                   <button
                     key={preset.id}
                     onClick={() => applyPreset(shipments[0].id, preset)}
-                    className="text-left p-3 border rounded-lg bg-white hover:border-blue-500 hover:shadow-md transition-all"
+                    className="text-left p-3 border border-border rounded-lg bg-white hover:border-blue-500 hover:shadow-md transition-all"
                   >
                     <div className="font-medium text-sm">{preset.label}</div>
                     <div className="text-xs text-gray-600 mt-1">
@@ -619,7 +627,7 @@ export default function ShippingLabelForm({
                     updateShippingConfig(shipment.id, "serviceCode", "");
                   }}
                   disabled={carriersLoading}
-                  className="w-full px-3 py-2 border rounded text-sm"
+                  className="w-full px-3 py-2 border border-border rounded text-sm"
                 >
                   <option value="">
                     {carriersLoading ? "Loading..." : "Select Carrier"}
@@ -646,7 +654,7 @@ export default function ShippingLabelForm({
                         e.target.value,
                       )
                     }
-                    className="w-full px-3 py-2 border rounded text-sm"
+                    className="w-full px-3 py-2 border border-border rounded text-sm"
                   >
                     <option value="">Select Service</option>
                     {getCarrierOptions(shipment.carrierId).services.map((s) => (
@@ -662,7 +670,7 @@ export default function ShippingLabelForm({
             {/* Presets for Carrier */}
             {shipment.carrierId &&
               getPresetsForCarrier(shipment.carrierId).length > 0 && (
-                <div className="border rounded-lg p-3 bg-blue-50">
+                <div className="border border-border rounded-lg p-3 bg-blue-50">
                   <h4 className="text-sm font-medium mb-2">
                     Available Presets
                   </h4>
@@ -698,7 +706,7 @@ export default function ShippingLabelForm({
                       value={numberOfPackages}
                       onChange={(e) => setNumberOfPackages(e.target.value)}
                       placeholder="# pkgs"
-                      className="w-20 px-2 py-1 text-sm border rounded"
+                      className="w-20 px-2 py-1 text-sm border border-border rounded"
                     />
                     <button
                       onClick={() => {
@@ -734,7 +742,7 @@ export default function ShippingLabelForm({
                   {shipment.packages.map((pkg, idx) => (
                     <div
                       key={pkg.id}
-                      className="border p-4 rounded bg-gray-50 space-y-3"
+                      className="border border-border p-4 rounded bg-gray-50 space-y-3"
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-emerald-600">
@@ -767,7 +775,7 @@ export default function ShippingLabelForm({
                                 e.target.value,
                               )
                             }
-                            className="w-full px-3 py-2 border rounded text-sm"
+                            className="w-full px-3 py-2 border border-border rounded text-sm"
                           >
                             <option value="">Select Type</option>
                             {getCarrierOptions(shipment.carrierId).packages.map(
@@ -800,7 +808,7 @@ export default function ShippingLabelForm({
                                 e.target.value,
                               )
                             }
-                            className="w-full px-3 py-2 border rounded text-sm"
+                            className="w-full px-3 py-2 border border-border rounded text-sm"
                           />
                         </div>
                       </div>
@@ -822,7 +830,7 @@ export default function ShippingLabelForm({
                                 e.target.value,
                               )
                             }
-                            className="px-3 py-2 border rounded text-sm"
+                            className="px-3 py-2 border border-border rounded text-sm"
                           />
                           <input
                             type="number"
@@ -836,7 +844,7 @@ export default function ShippingLabelForm({
                                 e.target.value,
                               )
                             }
-                            className="px-3 py-2 border rounded text-sm"
+                            className="px-3 py-2 border border-border rounded text-sm"
                           />
                           <input
                             type="number"
@@ -850,7 +858,7 @@ export default function ShippingLabelForm({
                                 e.target.value,
                               )
                             }
-                            className="px-3 py-2 border rounded text-sm"
+                            className="px-3 py-2 border border-border rounded text-sm"
                           />
                         </div>
                       </div>
@@ -862,7 +870,7 @@ export default function ShippingLabelForm({
 
             {/* Items Summary */}
             {shipment.items.length > 0 && (
-              <div className="border rounded-lg p-3 bg-gray-50">
+              <div className="border border-border rounded-lg p-3 bg-gray-50">
                 <h4 className="text-sm font-medium mb-2">Items to Ship</h4>
                 <div className="space-y-1">
                   {shipment.items.map((item) => (
@@ -881,7 +889,7 @@ export default function ShippingLabelForm({
         ))}
 
         {/* Action Buttons */}
-        <div className="flex gap-3 justify-end pt-4 border-t">
+        <div className="flex gap-3 justify-end pt-4 border-t border-border">
           {onCancel && (
             <button
               onClick={onCancel}

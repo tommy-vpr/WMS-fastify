@@ -11,6 +11,10 @@ import {
   SHOPIFY_JOBS,
   ORDER_JOBS,
   PRODUCT_JOBS,
+  SHIPPING_JOBS,
+  type CreateLabelJobData,
+  type SyncShopifyFulfillmentJobData,
+  type VoidLabelJobData,
   type CreatePickingTaskJobData,
   type AssignTaskJobData,
   type StartTaskJobData,
@@ -40,6 +44,7 @@ let ordersQueue: Queue | null = null;
 let productsQueue: Queue | null = null;
 let inventoryPlannerQueue: Queue | null = null;
 let fulfillmentQueue: Queue | null = null;
+let shippingQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -423,4 +428,65 @@ export async function closeQueues() {
     await inventoryPlannerQueue.close();
     inventoryPlannerQueue = null;
   }
+
+  if (shippingQueue) {
+    await shippingQueue.close();
+    shippingQueue = null;
+  }
+}
+
+// ==============================================================
+// SHIPPING
+// ==============================================================
+// Add getter
+export function getShippingQueue(): Queue {
+  if (!shippingQueue) {
+    shippingQueue = new Queue(QUEUES.SHIPPING, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 3000,
+        },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return shippingQueue;
+}
+
+// Add enqueue helpers
+export async function enqueueCreateLabel(
+  data: CreateLabelJobData,
+  options?: JobsOptions,
+) {
+  const queue = getShippingQueue();
+  return queue.add(SHIPPING_JOBS.CREATE_LABEL, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
+}
+
+export async function enqueueSyncShopifyFulfillment(
+  data: SyncShopifyFulfillmentJobData,
+  options?: JobsOptions,
+) {
+  const queue = getShippingQueue();
+  return queue.add(SHIPPING_JOBS.SYNC_SHOPIFY_FULFILLMENT, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
+}
+
+export async function enqueueVoidLabel(
+  data: VoidLabelJobData,
+  options?: JobsOptions,
+) {
+  const queue = getShippingQueue();
+  return queue.add(SHIPPING_JOBS.VOID_LABEL, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+  });
 }

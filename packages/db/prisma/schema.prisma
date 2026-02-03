@@ -99,6 +99,7 @@ model ProductVariant {
   sellingPrice     Decimal? @db.Decimal(10, 2)
   weight           Decimal? @db.Decimal(8, 2)
   // Track if this variant requires lot/expiry tracking
+  shippingPackageItems  ShippingPackageItem[]
   trackLots        Boolean  @default(false)
   trackExpiry      Boolean  @default(false)
   createdAt        DateTime @default(now())
@@ -241,6 +242,7 @@ model Order {
   warehouseId     String?
   trackingNumber  String?
   shippedAt       DateTime?
+  shippingPackages  ShippingPackage[]
   // Timestamps
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -248,6 +250,7 @@ model Order {
   items       OrderItem[]
   taskItems   TaskItem[]
   allocations Allocation[]
+  shippingLabels ShippingLabel[]   // ← NEW: fulfillment pipeline
 
   @@index([status])
   @@index([paymentStatus])
@@ -285,6 +288,118 @@ model OrderItem {
 }
 
 // =============================================================================
+// NEW: SHIPPING LABELS (fulfillment pipeline)
+// =============================================================================
+
+model ShippingLabel {
+  id                String              @id @default(cuid())
+  orderId           String
+  shipEngineId      String?             @unique
+  shipmentId        String?
+  carrier           String
+  service           String
+  trackingNumber    String              @unique
+  trackingUrl       String?
+  rate              Decimal             @db.Decimal(10, 2)
+  currency          String              @default("USD")
+  estimatedDays     Int?
+  estimatedDelivery DateTime?
+  labelUrl          String?
+  labelFormat       String?
+  weight            Decimal?            @db.Decimal(8, 2)
+  weightUnit        String              @default("ounce")
+  dimensions        Json?
+  status            ShippingLabelStatus @default(CREATED)
+  voidedAt          DateTime?
+  rawResponse       Json?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@index([trackingNumber])
+  @@index([shipEngineId])
+  @@map("shipping_labels")
+}
+
+// NEW: Shipping label status enum
+enum ShippingLabelStatus {
+  CREATED
+  PURCHASED
+  VOIDED
+  ERROR
+}
+
+model ShippingPackage {
+  id             String   @id @default(cuid())
+  orderId        String
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  carrierCode    String
+  serviceCode    String
+  packageCode    String
+
+  trackingNumber String?
+  labelUrl       String?  @db.Text
+  shipEngineId   String?
+
+  cost           Decimal  @default(0) @db.Decimal(10, 2)
+  currency       String   @default("USD")
+
+  weight         Decimal? @db.Decimal(10, 2)
+  dimensions     Json?
+
+  voidedAt       DateTime?
+  shippedAt      DateTime?
+
+  items          ShippingPackageItem[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([trackingNumber])
+}
+
+model ShippingPackageItem {
+  id              String          @id @default(cuid())
+  packageId       String
+  shippingPackage ShippingPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  productName     String
+  sku             String
+  quantity        Int
+  unitPrice       Decimal         @db.Decimal(10, 2)
+
+  productVariantId String?
+  productVariant   ProductVariant? @relation(fields: [productVariantId], references: [id])
+
+  @@index([packageId])
+}
+
+// =============================================================================
+// NEW: FULFILLMENT EVENTS (fulfillment pipeline - SSE replay + audit)
+// =============================================================================
+
+model FulfillmentEvent {
+  id            String   @id @default(cuid())
+  orderId       String?
+  type          String
+  payload       Json
+  correlationId String?
+  userId        String?
+  processed     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@index([type])
+  @@index([orderId])
+  @@index([createdAt])
+  @@index([correlationId])
+  @@map("fulfillment_events")
+}
+
+// =============================================================================
 // WORK TASKS
 // =============================================================================
 
@@ -308,6 +423,12 @@ model WorkTask {
   orderIds       String[]
   totalOrders    Int
   completedOrders Int            @default(0)
+  // Packing fields (for PACKING tasks)
+  packedWeight     Decimal?  @db.Decimal(8, 2)
+  packedWeightUnit String?   @default("ounce")
+  packedDimensions Json?
+  verifiedAt       DateTime?
+  verifiedBy       String?
   // Items tracking
   totalItems     Int
   completedItems Int             @default(0)

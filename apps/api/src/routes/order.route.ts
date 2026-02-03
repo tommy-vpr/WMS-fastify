@@ -6,7 +6,7 @@
  */
 
 import { FastifyPluginAsync } from "fastify";
-import { prisma, orderRepository } from "@wms/db";
+import { prisma, orderRepository, Prisma } from "@wms/db";
 import { OrderService, orderAllocationService } from "@wms/domain";
 
 // Adapter to match OrderService's OrderRepository interface
@@ -83,10 +83,18 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
   }>("/", async (request, reply) => {
     const { skip = "0", take = "20", status, q } = request.query;
 
-    const where: any = {};
+    const where: Prisma.OrderWhereInput = {};
 
     if (status) {
-      where.status = status;
+      const statuses = status
+        .split(",")
+        .map((s: string) => s.trim())
+        .filter(Boolean);
+      if (statuses.length === 1) {
+        where.status = statuses[0] as any;
+      } else if (statuses.length > 1) {
+        where.status = { in: statuses as any };
+      }
     }
 
     if (q) {
@@ -211,6 +219,44 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
   });
 
   /**
+   * GET /orders/counts
+   * Get count of orders per status (for fulfillment filter tabs)
+   */
+  app.get("/counts", async (request, reply) => {
+    const statuses = [
+      "PENDING",
+      "CONFIRMED",
+      "ALLOCATED",
+      "PARTIALLY_ALLOCATED",
+      "READY_TO_PICK",
+      "PICKING",
+      "PICKED",
+      "PACKING",
+      "PACKED",
+      "SHIPPED",
+      "DELIVERED",
+      "CANCELLED",
+      "ON_HOLD",
+    ];
+
+    const results = await Promise.all(
+      statuses.map(async (status) => {
+        const count = await prisma.order.count({
+          where: { status: status as any },
+        });
+        return [status, count] as const;
+      }),
+    );
+
+    const counts: Record<string, number> = {};
+    for (const [status, count] of results) {
+      counts[status] = count;
+    }
+
+    return reply.send({ counts });
+  });
+
+  /**
    * GET /orders/:id
    * Get order by ID with items and tasks
    */
@@ -314,7 +360,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantityShipped: 0,
         unitPrice: Number(item.unitPrice),
         productVariantId: item.productVariantId,
-        allocationStatus: getAllocationStatus(item),
+        allocationStatus: getAllocationStatus(item, order.status), // ← Pass order.status
         matched: item.matched,
         matchError: item.matchError,
       })),
@@ -721,13 +767,19 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
 };
 
 // Helper function
-function getAllocationStatus(item: {
-  quantity: number;
-  quantityAllocated: number;
-  matched: boolean;
-}): "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED" | "UNMATCHED" {
+function getAllocationStatus(
+  item: {
+    quantity: number;
+    quantityAllocated: number;
+    matched: boolean;
+  },
+  orderStatus: string,
+): "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED" | "UNMATCHED" {
   if (!item.matched) return "UNMATCHED";
   if (item.quantityAllocated >= item.quantity) return "ALLOCATED";
   if (item.quantityAllocated > 0) return "PARTIAL";
-  return "BACKORDERED";
+
+  // Only show BACKORDERED if order actually tried allocation
+  if (orderStatus === "BACKORDERED") return "BACKORDERED";
+  return "UNALLOCATED";
 }

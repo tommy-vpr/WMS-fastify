@@ -1,4 +1,3 @@
-// /package/queue
 // Connection
 export { getConnection } from "./connection.js";
 
@@ -7,25 +6,40 @@ export * from "./types.js";
 
 // Queues & Helpers
 export {
+  // Work Tasks
   getWorkTaskQueue,
-  getShopifyQueue,
-  getOrdersQueue,
-  getProductsQueue,
   enqueueCreatePickingTask,
   enqueueAssignTask,
   enqueueStartTask,
   enqueueCancelTask,
+  getWorkTaskQueueStats,
+  // Shopify
+  getShopifyQueue,
   enqueueShopifyOrderCreate,
+  // Orders
+  getOrdersQueue,
   enqueueAllocateOrder,
   enqueueAllocateOrders,
   enqueueReleaseAllocations,
   enqueueCheckBackorders,
+  // Products
+  getProductsQueue,
   enqueueImportProducts,
   enqueueImportSingleProduct,
   enqueueSyncShopifyProducts,
-  getWorkTaskQueueStats,
+  // Inventory Planner
   getInventoryPlannerQueue,
   enqueueSyncInventoryPlanner,
   getInventoryPlannerQueueStats,
+  // Fulfillment
+  getFulfillmentQueue,
+  enqueueCreateShippingLabel,
+  enqueueShopifyFulfill,
+  // Shipping
+  getShippingQueue,
+  enqueueCreateLabel,
+  enqueueSyncShopifyFulfillment,
+  enqueueVoidLabel,
+  // Management
   closeQueues,
 } from "./queues.js";

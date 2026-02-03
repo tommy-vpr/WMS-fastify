@@ -235,7 +235,7 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Warehouse className="w-8 h-8 text-green-500" />
+          <Warehouse className="w-8 h-8 text-blue-500" />
           <div>
             <h1 className="text-2xl font-bold">Inventory</h1>
             <p className="text-gray-500 text-sm">
@@ -248,14 +248,16 @@ export default function InventoryPage() {
         <div className="flex items-center gap-2">
           <Link
             to="/inventory/receive"
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex 
+            items-center gap-2 transition"
           >
             <Package className="w-4 h-4" />
             Receive
           </Link>
           <Link
             to="/inventory/locations"
-            className="px-4 py-2 border border-border rounded-lg hover:bg-gray-50 flex items-center gap-2"
+            className="px-4 py-2 border border-border rounded-lg hover:bg-gray-50 flex 
+            items-center gap-2 transition"
           >
             <MapPin className="w-4 h-4" />
             Locations

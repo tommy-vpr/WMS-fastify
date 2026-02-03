@@ -17,6 +17,7 @@
     "@wms/domain": "workspace:*",
     "@wms/queue": "workspace:*",
     "@wms/types": "workspace:*",
+    "@wms/pubsub": "workspace:*",
     "dotenv": "^17.2.3",
     "fastify": "^5.4.0",
     "ioredis": "^5.9.1",

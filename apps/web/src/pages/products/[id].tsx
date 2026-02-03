@@ -384,7 +384,7 @@ export default function ProductDetailPage() {
                 <tr key={variant.id} className="hover:bg-gray-50 border-border">
                   <td className="px-4 py-3 font-medium">{variant.name}</td>
                   <td className="px-4 py-3">
-                    <code className="text-sm bg-gray-100 px-2 py-0.5 rounded">
+                    <code className="text-sm bg-gray-100 px-2 py-0.5 rounded whitespace-nowrap">
                       {variant.sku}
                     </code>
                   </td>

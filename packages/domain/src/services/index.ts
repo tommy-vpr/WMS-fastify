@@ -24,6 +24,12 @@ export {
   type UnassignedVariant,
 } from "./location.service.js";
 
+// Fulfillment management
+export * from "./fulfillment.service.js";
+
+// Shipping management
+export * from "./shipping.service.js";
+
 // Product management
 export * from "./product.service.js";
 

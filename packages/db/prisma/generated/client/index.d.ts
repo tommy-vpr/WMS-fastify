@@ -64,6 +64,26 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  */
 export type OrderItem = $Result.DefaultSelection<Prisma.$OrderItemPayload>
 /**
+ * Model ShippingLabel
+ * 
+ */
+export type ShippingLabel = $Result.DefaultSelection<Prisma.$ShippingLabelPayload>
+/**
+ * Model ShippingPackage
+ * 
+ */
+export type ShippingPackage = $Result.DefaultSelection<Prisma.$ShippingPackagePayload>
+/**
+ * Model ShippingPackageItem
+ * 
+ */
+export type ShippingPackageItem = $Result.DefaultSelection<Prisma.$ShippingPackageItemPayload>
+/**
+ * Model FulfillmentEvent
+ * 
+ */
+export type FulfillmentEvent = $Result.DefaultSelection<Prisma.$FulfillmentEventPayload>
+/**
  * Model WorkTask
  * 
  */
@@ -98,7 +118,17 @@ export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
  * Enums
  */
 export namespace $Enums {
-  export const UserRole: {
+  export const ShippingLabelStatus: {
+  CREATED: 'CREATED',
+  PURCHASED: 'PURCHASED',
+  VOIDED: 'VOIDED',
+  ERROR: 'ERROR'
+};
+
+export type ShippingLabelStatus = (typeof ShippingLabelStatus)[keyof typeof ShippingLabelStatus]
+
+
+export const UserRole: {
   ADMIN: 'ADMIN',
   MANAGER: 'MANAGER',
   STAFF: 'STAFF',
@@ -258,6 +288,10 @@ export const WorkTaskEventType: {
 export type WorkTaskEventType = (typeof WorkTaskEventType)[keyof typeof WorkTaskEventType]
 
 }
+
+export type ShippingLabelStatus = $Enums.ShippingLabelStatus
+
+export const ShippingLabelStatus: typeof $Enums.ShippingLabelStatus
 
 export type UserRole = $Enums.UserRole
 
@@ -523,6 +557,46 @@ export class PrismaClient<
     * ```
     */
   get orderItem(): Prisma.OrderItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.shippingLabel`: Exposes CRUD operations for the **ShippingLabel** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ShippingLabels
+    * const shippingLabels = await prisma.shippingLabel.findMany()
+    * ```
+    */
+  get shippingLabel(): Prisma.ShippingLabelDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.shippingPackage`: Exposes CRUD operations for the **ShippingPackage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ShippingPackages
+    * const shippingPackages = await prisma.shippingPackage.findMany()
+    * ```
+    */
+  get shippingPackage(): Prisma.ShippingPackageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.shippingPackageItem`: Exposes CRUD operations for the **ShippingPackageItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ShippingPackageItems
+    * const shippingPackageItems = await prisma.shippingPackageItem.findMany()
+    * ```
+    */
+  get shippingPackageItem(): Prisma.ShippingPackageItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fulfillmentEvent`: Exposes CRUD operations for the **FulfillmentEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FulfillmentEvents
+    * const fulfillmentEvents = await prisma.fulfillmentEvent.findMany()
+    * ```
+    */
+  get fulfillmentEvent(): Prisma.FulfillmentEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.workTask`: Exposes CRUD operations for the **WorkTask** model.
@@ -1027,6 +1101,10 @@ export namespace Prisma {
     Allocation: 'Allocation',
     Order: 'Order',
     OrderItem: 'OrderItem',
+    ShippingLabel: 'ShippingLabel',
+    ShippingPackage: 'ShippingPackage',
+    ShippingPackageItem: 'ShippingPackageItem',
+    FulfillmentEvent: 'FulfillmentEvent',
     WorkTask: 'WorkTask',
     TaskItem: 'TaskItem',
     TaskEvent: 'TaskEvent',
@@ -1048,7 +1126,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1792,6 +1870,302 @@ export namespace Prisma {
           }
         }
       }
+      ShippingLabel: {
+        payload: Prisma.$ShippingLabelPayload<ExtArgs>
+        fields: Prisma.ShippingLabelFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShippingLabelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShippingLabelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          findFirst: {
+            args: Prisma.ShippingLabelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShippingLabelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          findMany: {
+            args: Prisma.ShippingLabelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>[]
+          }
+          create: {
+            args: Prisma.ShippingLabelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          createMany: {
+            args: Prisma.ShippingLabelCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShippingLabelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>[]
+          }
+          delete: {
+            args: Prisma.ShippingLabelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          update: {
+            args: Prisma.ShippingLabelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          deleteMany: {
+            args: Prisma.ShippingLabelDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShippingLabelUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ShippingLabelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>[]
+          }
+          upsert: {
+            args: Prisma.ShippingLabelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingLabelPayload>
+          }
+          aggregate: {
+            args: Prisma.ShippingLabelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShippingLabel>
+          }
+          groupBy: {
+            args: Prisma.ShippingLabelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShippingLabelGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShippingLabelCountArgs<ExtArgs>
+            result: $Utils.Optional<ShippingLabelCountAggregateOutputType> | number
+          }
+        }
+      }
+      ShippingPackage: {
+        payload: Prisma.$ShippingPackagePayload<ExtArgs>
+        fields: Prisma.ShippingPackageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShippingPackageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShippingPackageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          findFirst: {
+            args: Prisma.ShippingPackageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShippingPackageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          findMany: {
+            args: Prisma.ShippingPackageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>[]
+          }
+          create: {
+            args: Prisma.ShippingPackageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          createMany: {
+            args: Prisma.ShippingPackageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShippingPackageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>[]
+          }
+          delete: {
+            args: Prisma.ShippingPackageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          update: {
+            args: Prisma.ShippingPackageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          deleteMany: {
+            args: Prisma.ShippingPackageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShippingPackageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ShippingPackageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>[]
+          }
+          upsert: {
+            args: Prisma.ShippingPackageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackagePayload>
+          }
+          aggregate: {
+            args: Prisma.ShippingPackageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShippingPackage>
+          }
+          groupBy: {
+            args: Prisma.ShippingPackageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShippingPackageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShippingPackageCountArgs<ExtArgs>
+            result: $Utils.Optional<ShippingPackageCountAggregateOutputType> | number
+          }
+        }
+      }
+      ShippingPackageItem: {
+        payload: Prisma.$ShippingPackageItemPayload<ExtArgs>
+        fields: Prisma.ShippingPackageItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShippingPackageItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShippingPackageItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          findFirst: {
+            args: Prisma.ShippingPackageItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShippingPackageItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          findMany: {
+            args: Prisma.ShippingPackageItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>[]
+          }
+          create: {
+            args: Prisma.ShippingPackageItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          createMany: {
+            args: Prisma.ShippingPackageItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShippingPackageItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>[]
+          }
+          delete: {
+            args: Prisma.ShippingPackageItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          update: {
+            args: Prisma.ShippingPackageItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.ShippingPackageItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShippingPackageItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ShippingPackageItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.ShippingPackageItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShippingPackageItemPayload>
+          }
+          aggregate: {
+            args: Prisma.ShippingPackageItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShippingPackageItem>
+          }
+          groupBy: {
+            args: Prisma.ShippingPackageItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShippingPackageItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShippingPackageItemCountArgs<ExtArgs>
+            result: $Utils.Optional<ShippingPackageItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      FulfillmentEvent: {
+        payload: Prisma.$FulfillmentEventPayload<ExtArgs>
+        fields: Prisma.FulfillmentEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FulfillmentEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FulfillmentEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          findFirst: {
+            args: Prisma.FulfillmentEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FulfillmentEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          findMany: {
+            args: Prisma.FulfillmentEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>[]
+          }
+          create: {
+            args: Prisma.FulfillmentEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          createMany: {
+            args: Prisma.FulfillmentEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FulfillmentEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>[]
+          }
+          delete: {
+            args: Prisma.FulfillmentEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          update: {
+            args: Prisma.FulfillmentEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.FulfillmentEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FulfillmentEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FulfillmentEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.FulfillmentEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FulfillmentEventPayload>
+          }
+          aggregate: {
+            args: Prisma.FulfillmentEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFulfillmentEvent>
+          }
+          groupBy: {
+            args: Prisma.FulfillmentEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FulfillmentEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FulfillmentEventCountArgs<ExtArgs>
+            result: $Utils.Optional<FulfillmentEventCountAggregateOutputType> | number
+          }
+        }
+      }
       WorkTask: {
         payload: Prisma.$WorkTaskPayload<ExtArgs>
         fields: Prisma.WorkTaskFieldRefs
@@ -2354,6 +2728,10 @@ export namespace Prisma {
     allocation?: AllocationOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
+    shippingLabel?: ShippingLabelOmit
+    shippingPackage?: ShippingPackageOmit
+    shippingPackageItem?: ShippingPackageItemOmit
+    fulfillmentEvent?: FulfillmentEventOmit
     workTask?: WorkTaskOmit
     taskItem?: TaskItemOmit
     taskEvent?: TaskEventOmit
@@ -2556,6 +2934,7 @@ export namespace Prisma {
    */
 
   export type ProductVariantCountOutputType = {
+    shippingPackageItems: number
     orderItems: number
     inventoryUnits: number
     taskItems: number
@@ -2563,6 +2942,7 @@ export namespace Prisma {
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackageItems?: boolean | ProductVariantCountOutputTypeCountShippingPackageItemsArgs
     orderItems?: boolean | ProductVariantCountOutputTypeCountOrderItemsArgs
     inventoryUnits?: boolean | ProductVariantCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | ProductVariantCountOutputTypeCountTaskItemsArgs
@@ -2578,6 +2958,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the ProductVariantCountOutputType
      */
     select?: ProductVariantCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountShippingPackageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingPackageItemWhereInput
   }
 
   /**
@@ -2694,15 +3081,19 @@ export namespace Prisma {
    */
 
   export type OrderCountOutputType = {
+    shippingPackages: number
     items: number
     taskItems: number
     allocations: number
+    shippingLabels: number
   }
 
   export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackages?: boolean | OrderCountOutputTypeCountShippingPackagesArgs
     items?: boolean | OrderCountOutputTypeCountItemsArgs
     taskItems?: boolean | OrderCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | OrderCountOutputTypeCountAllocationsArgs
+    shippingLabels?: boolean | OrderCountOutputTypeCountShippingLabelsArgs
   }
 
   // Custom InputTypes
@@ -2714,6 +3105,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the OrderCountOutputType
      */
     select?: OrderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountShippingPackagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingPackageWhereInput
   }
 
   /**
@@ -2735,6 +3133,13 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AllocationWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountShippingLabelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingLabelWhereInput
   }
 
 
@@ -2775,6 +3180,37 @@ export namespace Prisma {
    */
   export type OrderItemCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AllocationWhereInput
+  }
+
+
+  /**
+   * Count Type ShippingPackageCountOutputType
+   */
+
+  export type ShippingPackageCountOutputType = {
+    items: number
+  }
+
+  export type ShippingPackageCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | ShippingPackageCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ShippingPackageCountOutputType without action
+   */
+  export type ShippingPackageCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageCountOutputType
+     */
+    select?: ShippingPackageCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ShippingPackageCountOutputType without action
+   */
+  export type ShippingPackageCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingPackageItemWhereInput
   }
 
 
@@ -7675,6 +8111,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    shippingPackageItems?: boolean | ProductVariant$shippingPackageItemsArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     orderItems?: boolean | ProductVariant$orderItemsArgs<ExtArgs>
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
@@ -7741,6 +8178,7 @@ export namespace Prisma {
 
   export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "shopifyVariantId" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
   export type ProductVariantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackageItems?: boolean | ProductVariant$shippingPackageItemsArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     orderItems?: boolean | ProductVariant$orderItemsArgs<ExtArgs>
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
@@ -7758,6 +8196,7 @@ export namespace Prisma {
   export type $ProductVariantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProductVariant"
     objects: {
+      shippingPackageItems: Prisma.$ShippingPackageItemPayload<ExtArgs>[]
       product: Prisma.$ProductPayload<ExtArgs>
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
       inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
@@ -8174,6 +8613,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProductVariantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    shippingPackageItems<T extends ProductVariant$shippingPackageItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$shippingPackageItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     orderItems<T extends ProductVariant$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryUnits<T extends ProductVariant$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8616,6 +9056,30 @@ export namespace Prisma {
      * Limit how many ProductVariants to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ProductVariant.shippingPackageItems
+   */
+  export type ProductVariant$shippingPackageItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    where?: ShippingPackageItemWhereInput
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    cursor?: ShippingPackageItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShippingPackageItemScalarFieldEnum | ShippingPackageItemScalarFieldEnum[]
   }
 
   /**
@@ -12835,9 +13299,11 @@ export namespace Prisma {
     shippedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    shippingPackages?: boolean | Order$shippingPackagesArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
     allocations?: boolean | Order$allocationsArgs<ExtArgs>
+    shippingLabels?: boolean | Order$shippingLabelsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -12918,9 +13384,11 @@ export namespace Prisma {
 
   export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "billingAddress" | "shopifyLineItems" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "unmatchedItems" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackages?: boolean | Order$shippingPackagesArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
     allocations?: boolean | Order$allocationsArgs<ExtArgs>
+    shippingLabels?: boolean | Order$shippingLabelsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -12929,9 +13397,11 @@ export namespace Prisma {
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
     objects: {
+      shippingPackages: Prisma.$ShippingPackagePayload<ExtArgs>[]
       items: Prisma.$OrderItemPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
+      shippingLabels: Prisma.$ShippingLabelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13350,9 +13820,11 @@ export namespace Prisma {
    */
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    shippingPackages<T extends Order$shippingPackagesArgs<ExtArgs> = {}>(args?: Subset<T, Order$shippingPackagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     items<T extends Order$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends Order$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends Order$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Order$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    shippingLabels<T extends Order$shippingLabelsArgs<ExtArgs> = {}>(args?: Subset<T, Order$shippingLabelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13792,6 +14264,30 @@ export namespace Prisma {
   }
 
   /**
+   * Order.shippingPackages
+   */
+  export type Order$shippingPackagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    where?: ShippingPackageWhereInput
+    orderBy?: ShippingPackageOrderByWithRelationInput | ShippingPackageOrderByWithRelationInput[]
+    cursor?: ShippingPackageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShippingPackageScalarFieldEnum | ShippingPackageScalarFieldEnum[]
+  }
+
+  /**
    * Order.items
    */
   export type Order$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13861,6 +14357,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Order.shippingLabels
+   */
+  export type Order$shippingLabelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    where?: ShippingLabelWhereInput
+    orderBy?: ShippingLabelOrderByWithRelationInput | ShippingLabelOrderByWithRelationInput[]
+    cursor?: ShippingLabelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShippingLabelScalarFieldEnum | ShippingLabelScalarFieldEnum[]
   }
 
   /**
@@ -15180,6 +15700,4763 @@ export namespace Prisma {
 
 
   /**
+   * Model ShippingLabel
+   */
+
+  export type AggregateShippingLabel = {
+    _count: ShippingLabelCountAggregateOutputType | null
+    _avg: ShippingLabelAvgAggregateOutputType | null
+    _sum: ShippingLabelSumAggregateOutputType | null
+    _min: ShippingLabelMinAggregateOutputType | null
+    _max: ShippingLabelMaxAggregateOutputType | null
+  }
+
+  export type ShippingLabelAvgAggregateOutputType = {
+    rate: Decimal | null
+    estimatedDays: number | null
+    weight: Decimal | null
+  }
+
+  export type ShippingLabelSumAggregateOutputType = {
+    rate: Decimal | null
+    estimatedDays: number | null
+    weight: Decimal | null
+  }
+
+  export type ShippingLabelMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    shipEngineId: string | null
+    shipmentId: string | null
+    carrier: string | null
+    service: string | null
+    trackingNumber: string | null
+    trackingUrl: string | null
+    rate: Decimal | null
+    currency: string | null
+    estimatedDays: number | null
+    estimatedDelivery: Date | null
+    labelUrl: string | null
+    labelFormat: string | null
+    weight: Decimal | null
+    weightUnit: string | null
+    status: $Enums.ShippingLabelStatus | null
+    voidedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShippingLabelMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    shipEngineId: string | null
+    shipmentId: string | null
+    carrier: string | null
+    service: string | null
+    trackingNumber: string | null
+    trackingUrl: string | null
+    rate: Decimal | null
+    currency: string | null
+    estimatedDays: number | null
+    estimatedDelivery: Date | null
+    labelUrl: string | null
+    labelFormat: string | null
+    weight: Decimal | null
+    weightUnit: string | null
+    status: $Enums.ShippingLabelStatus | null
+    voidedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShippingLabelCountAggregateOutputType = {
+    id: number
+    orderId: number
+    shipEngineId: number
+    shipmentId: number
+    carrier: number
+    service: number
+    trackingNumber: number
+    trackingUrl: number
+    rate: number
+    currency: number
+    estimatedDays: number
+    estimatedDelivery: number
+    labelUrl: number
+    labelFormat: number
+    weight: number
+    weightUnit: number
+    dimensions: number
+    status: number
+    voidedAt: number
+    rawResponse: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ShippingLabelAvgAggregateInputType = {
+    rate?: true
+    estimatedDays?: true
+    weight?: true
+  }
+
+  export type ShippingLabelSumAggregateInputType = {
+    rate?: true
+    estimatedDays?: true
+    weight?: true
+  }
+
+  export type ShippingLabelMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    shipEngineId?: true
+    shipmentId?: true
+    carrier?: true
+    service?: true
+    trackingNumber?: true
+    trackingUrl?: true
+    rate?: true
+    currency?: true
+    estimatedDays?: true
+    estimatedDelivery?: true
+    labelUrl?: true
+    labelFormat?: true
+    weight?: true
+    weightUnit?: true
+    status?: true
+    voidedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShippingLabelMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    shipEngineId?: true
+    shipmentId?: true
+    carrier?: true
+    service?: true
+    trackingNumber?: true
+    trackingUrl?: true
+    rate?: true
+    currency?: true
+    estimatedDays?: true
+    estimatedDelivery?: true
+    labelUrl?: true
+    labelFormat?: true
+    weight?: true
+    weightUnit?: true
+    status?: true
+    voidedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShippingLabelCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    shipEngineId?: true
+    shipmentId?: true
+    carrier?: true
+    service?: true
+    trackingNumber?: true
+    trackingUrl?: true
+    rate?: true
+    currency?: true
+    estimatedDays?: true
+    estimatedDelivery?: true
+    labelUrl?: true
+    labelFormat?: true
+    weight?: true
+    weightUnit?: true
+    dimensions?: true
+    status?: true
+    voidedAt?: true
+    rawResponse?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ShippingLabelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingLabel to aggregate.
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingLabels to fetch.
+     */
+    orderBy?: ShippingLabelOrderByWithRelationInput | ShippingLabelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShippingLabelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingLabels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingLabels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ShippingLabels
+    **/
+    _count?: true | ShippingLabelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ShippingLabelAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ShippingLabelSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShippingLabelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShippingLabelMaxAggregateInputType
+  }
+
+  export type GetShippingLabelAggregateType<T extends ShippingLabelAggregateArgs> = {
+        [P in keyof T & keyof AggregateShippingLabel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShippingLabel[P]>
+      : GetScalarType<T[P], AggregateShippingLabel[P]>
+  }
+
+
+
+
+  export type ShippingLabelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingLabelWhereInput
+    orderBy?: ShippingLabelOrderByWithAggregationInput | ShippingLabelOrderByWithAggregationInput[]
+    by: ShippingLabelScalarFieldEnum[] | ShippingLabelScalarFieldEnum
+    having?: ShippingLabelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShippingLabelCountAggregateInputType | true
+    _avg?: ShippingLabelAvgAggregateInputType
+    _sum?: ShippingLabelSumAggregateInputType
+    _min?: ShippingLabelMinAggregateInputType
+    _max?: ShippingLabelMaxAggregateInputType
+  }
+
+  export type ShippingLabelGroupByOutputType = {
+    id: string
+    orderId: string
+    shipEngineId: string | null
+    shipmentId: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl: string | null
+    rate: Decimal
+    currency: string
+    estimatedDays: number | null
+    estimatedDelivery: Date | null
+    labelUrl: string | null
+    labelFormat: string | null
+    weight: Decimal | null
+    weightUnit: string
+    dimensions: JsonValue | null
+    status: $Enums.ShippingLabelStatus
+    voidedAt: Date | null
+    rawResponse: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ShippingLabelCountAggregateOutputType | null
+    _avg: ShippingLabelAvgAggregateOutputType | null
+    _sum: ShippingLabelSumAggregateOutputType | null
+    _min: ShippingLabelMinAggregateOutputType | null
+    _max: ShippingLabelMaxAggregateOutputType | null
+  }
+
+  type GetShippingLabelGroupByPayload<T extends ShippingLabelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShippingLabelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShippingLabelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShippingLabelGroupByOutputType[P]>
+            : GetScalarType<T[P], ShippingLabelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShippingLabelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    shipEngineId?: boolean
+    shipmentId?: boolean
+    carrier?: boolean
+    service?: boolean
+    trackingNumber?: boolean
+    trackingUrl?: boolean
+    rate?: boolean
+    currency?: boolean
+    estimatedDays?: boolean
+    estimatedDelivery?: boolean
+    labelUrl?: boolean
+    labelFormat?: boolean
+    weight?: boolean
+    weightUnit?: boolean
+    dimensions?: boolean
+    status?: boolean
+    voidedAt?: boolean
+    rawResponse?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingLabel"]>
+
+  export type ShippingLabelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    shipEngineId?: boolean
+    shipmentId?: boolean
+    carrier?: boolean
+    service?: boolean
+    trackingNumber?: boolean
+    trackingUrl?: boolean
+    rate?: boolean
+    currency?: boolean
+    estimatedDays?: boolean
+    estimatedDelivery?: boolean
+    labelUrl?: boolean
+    labelFormat?: boolean
+    weight?: boolean
+    weightUnit?: boolean
+    dimensions?: boolean
+    status?: boolean
+    voidedAt?: boolean
+    rawResponse?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingLabel"]>
+
+  export type ShippingLabelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    shipEngineId?: boolean
+    shipmentId?: boolean
+    carrier?: boolean
+    service?: boolean
+    trackingNumber?: boolean
+    trackingUrl?: boolean
+    rate?: boolean
+    currency?: boolean
+    estimatedDays?: boolean
+    estimatedDelivery?: boolean
+    labelUrl?: boolean
+    labelFormat?: boolean
+    weight?: boolean
+    weightUnit?: boolean
+    dimensions?: boolean
+    status?: boolean
+    voidedAt?: boolean
+    rawResponse?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingLabel"]>
+
+  export type ShippingLabelSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    shipEngineId?: boolean
+    shipmentId?: boolean
+    carrier?: boolean
+    service?: boolean
+    trackingNumber?: boolean
+    trackingUrl?: boolean
+    rate?: boolean
+    currency?: boolean
+    estimatedDays?: boolean
+    estimatedDelivery?: boolean
+    labelUrl?: boolean
+    labelFormat?: boolean
+    weight?: boolean
+    weightUnit?: boolean
+    dimensions?: boolean
+    status?: boolean
+    voidedAt?: boolean
+    rawResponse?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ShippingLabelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "shipEngineId" | "shipmentId" | "carrier" | "service" | "trackingNumber" | "trackingUrl" | "rate" | "currency" | "estimatedDays" | "estimatedDelivery" | "labelUrl" | "labelFormat" | "weight" | "weightUnit" | "dimensions" | "status" | "voidedAt" | "rawResponse" | "createdAt" | "updatedAt", ExtArgs["result"]["shippingLabel"]>
+  export type ShippingLabelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type ShippingLabelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type ShippingLabelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+
+  export type $ShippingLabelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ShippingLabel"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      shipEngineId: string | null
+      shipmentId: string | null
+      carrier: string
+      service: string
+      trackingNumber: string
+      trackingUrl: string | null
+      rate: Prisma.Decimal
+      currency: string
+      estimatedDays: number | null
+      estimatedDelivery: Date | null
+      labelUrl: string | null
+      labelFormat: string | null
+      weight: Prisma.Decimal | null
+      weightUnit: string
+      dimensions: Prisma.JsonValue | null
+      status: $Enums.ShippingLabelStatus
+      voidedAt: Date | null
+      rawResponse: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["shippingLabel"]>
+    composites: {}
+  }
+
+  type ShippingLabelGetPayload<S extends boolean | null | undefined | ShippingLabelDefaultArgs> = $Result.GetResult<Prisma.$ShippingLabelPayload, S>
+
+  type ShippingLabelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ShippingLabelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ShippingLabelCountAggregateInputType | true
+    }
+
+  export interface ShippingLabelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ShippingLabel'], meta: { name: 'ShippingLabel' } }
+    /**
+     * Find zero or one ShippingLabel that matches the filter.
+     * @param {ShippingLabelFindUniqueArgs} args - Arguments to find a ShippingLabel
+     * @example
+     * // Get one ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShippingLabelFindUniqueArgs>(args: SelectSubset<T, ShippingLabelFindUniqueArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ShippingLabel that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShippingLabelFindUniqueOrThrowArgs} args - Arguments to find a ShippingLabel
+     * @example
+     * // Get one ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShippingLabelFindUniqueOrThrowArgs>(args: SelectSubset<T, ShippingLabelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingLabel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelFindFirstArgs} args - Arguments to find a ShippingLabel
+     * @example
+     * // Get one ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShippingLabelFindFirstArgs>(args?: SelectSubset<T, ShippingLabelFindFirstArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingLabel that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelFindFirstOrThrowArgs} args - Arguments to find a ShippingLabel
+     * @example
+     * // Get one ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShippingLabelFindFirstOrThrowArgs>(args?: SelectSubset<T, ShippingLabelFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ShippingLabels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ShippingLabels
+     * const shippingLabels = await prisma.shippingLabel.findMany()
+     * 
+     * // Get first 10 ShippingLabels
+     * const shippingLabels = await prisma.shippingLabel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shippingLabelWithIdOnly = await prisma.shippingLabel.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShippingLabelFindManyArgs>(args?: SelectSubset<T, ShippingLabelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ShippingLabel.
+     * @param {ShippingLabelCreateArgs} args - Arguments to create a ShippingLabel.
+     * @example
+     * // Create one ShippingLabel
+     * const ShippingLabel = await prisma.shippingLabel.create({
+     *   data: {
+     *     // ... data to create a ShippingLabel
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShippingLabelCreateArgs>(args: SelectSubset<T, ShippingLabelCreateArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ShippingLabels.
+     * @param {ShippingLabelCreateManyArgs} args - Arguments to create many ShippingLabels.
+     * @example
+     * // Create many ShippingLabels
+     * const shippingLabel = await prisma.shippingLabel.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShippingLabelCreateManyArgs>(args?: SelectSubset<T, ShippingLabelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ShippingLabels and returns the data saved in the database.
+     * @param {ShippingLabelCreateManyAndReturnArgs} args - Arguments to create many ShippingLabels.
+     * @example
+     * // Create many ShippingLabels
+     * const shippingLabel = await prisma.shippingLabel.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ShippingLabels and only return the `id`
+     * const shippingLabelWithIdOnly = await prisma.shippingLabel.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShippingLabelCreateManyAndReturnArgs>(args?: SelectSubset<T, ShippingLabelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ShippingLabel.
+     * @param {ShippingLabelDeleteArgs} args - Arguments to delete one ShippingLabel.
+     * @example
+     * // Delete one ShippingLabel
+     * const ShippingLabel = await prisma.shippingLabel.delete({
+     *   where: {
+     *     // ... filter to delete one ShippingLabel
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShippingLabelDeleteArgs>(args: SelectSubset<T, ShippingLabelDeleteArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ShippingLabel.
+     * @param {ShippingLabelUpdateArgs} args - Arguments to update one ShippingLabel.
+     * @example
+     * // Update one ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShippingLabelUpdateArgs>(args: SelectSubset<T, ShippingLabelUpdateArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ShippingLabels.
+     * @param {ShippingLabelDeleteManyArgs} args - Arguments to filter ShippingLabels to delete.
+     * @example
+     * // Delete a few ShippingLabels
+     * const { count } = await prisma.shippingLabel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShippingLabelDeleteManyArgs>(args?: SelectSubset<T, ShippingLabelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingLabels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ShippingLabels
+     * const shippingLabel = await prisma.shippingLabel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShippingLabelUpdateManyArgs>(args: SelectSubset<T, ShippingLabelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingLabels and returns the data updated in the database.
+     * @param {ShippingLabelUpdateManyAndReturnArgs} args - Arguments to update many ShippingLabels.
+     * @example
+     * // Update many ShippingLabels
+     * const shippingLabel = await prisma.shippingLabel.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ShippingLabels and only return the `id`
+     * const shippingLabelWithIdOnly = await prisma.shippingLabel.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ShippingLabelUpdateManyAndReturnArgs>(args: SelectSubset<T, ShippingLabelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ShippingLabel.
+     * @param {ShippingLabelUpsertArgs} args - Arguments to update or create a ShippingLabel.
+     * @example
+     * // Update or create a ShippingLabel
+     * const shippingLabel = await prisma.shippingLabel.upsert({
+     *   create: {
+     *     // ... data to create a ShippingLabel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ShippingLabel we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShippingLabelUpsertArgs>(args: SelectSubset<T, ShippingLabelUpsertArgs<ExtArgs>>): Prisma__ShippingLabelClient<$Result.GetResult<Prisma.$ShippingLabelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ShippingLabels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelCountArgs} args - Arguments to filter ShippingLabels to count.
+     * @example
+     * // Count the number of ShippingLabels
+     * const count = await prisma.shippingLabel.count({
+     *   where: {
+     *     // ... the filter for the ShippingLabels we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShippingLabelCountArgs>(
+      args?: Subset<T, ShippingLabelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShippingLabelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ShippingLabel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShippingLabelAggregateArgs>(args: Subset<T, ShippingLabelAggregateArgs>): Prisma.PrismaPromise<GetShippingLabelAggregateType<T>>
+
+    /**
+     * Group by ShippingLabel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingLabelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShippingLabelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShippingLabelGroupByArgs['orderBy'] }
+        : { orderBy?: ShippingLabelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShippingLabelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingLabelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ShippingLabel model
+   */
+  readonly fields: ShippingLabelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ShippingLabel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShippingLabelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ShippingLabel model
+   */
+  interface ShippingLabelFieldRefs {
+    readonly id: FieldRef<"ShippingLabel", 'String'>
+    readonly orderId: FieldRef<"ShippingLabel", 'String'>
+    readonly shipEngineId: FieldRef<"ShippingLabel", 'String'>
+    readonly shipmentId: FieldRef<"ShippingLabel", 'String'>
+    readonly carrier: FieldRef<"ShippingLabel", 'String'>
+    readonly service: FieldRef<"ShippingLabel", 'String'>
+    readonly trackingNumber: FieldRef<"ShippingLabel", 'String'>
+    readonly trackingUrl: FieldRef<"ShippingLabel", 'String'>
+    readonly rate: FieldRef<"ShippingLabel", 'Decimal'>
+    readonly currency: FieldRef<"ShippingLabel", 'String'>
+    readonly estimatedDays: FieldRef<"ShippingLabel", 'Int'>
+    readonly estimatedDelivery: FieldRef<"ShippingLabel", 'DateTime'>
+    readonly labelUrl: FieldRef<"ShippingLabel", 'String'>
+    readonly labelFormat: FieldRef<"ShippingLabel", 'String'>
+    readonly weight: FieldRef<"ShippingLabel", 'Decimal'>
+    readonly weightUnit: FieldRef<"ShippingLabel", 'String'>
+    readonly dimensions: FieldRef<"ShippingLabel", 'Json'>
+    readonly status: FieldRef<"ShippingLabel", 'ShippingLabelStatus'>
+    readonly voidedAt: FieldRef<"ShippingLabel", 'DateTime'>
+    readonly rawResponse: FieldRef<"ShippingLabel", 'Json'>
+    readonly createdAt: FieldRef<"ShippingLabel", 'DateTime'>
+    readonly updatedAt: FieldRef<"ShippingLabel", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ShippingLabel findUnique
+   */
+  export type ShippingLabelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingLabel to fetch.
+     */
+    where: ShippingLabelWhereUniqueInput
+  }
+
+  /**
+   * ShippingLabel findUniqueOrThrow
+   */
+  export type ShippingLabelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingLabel to fetch.
+     */
+    where: ShippingLabelWhereUniqueInput
+  }
+
+  /**
+   * ShippingLabel findFirst
+   */
+  export type ShippingLabelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingLabel to fetch.
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingLabels to fetch.
+     */
+    orderBy?: ShippingLabelOrderByWithRelationInput | ShippingLabelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingLabels.
+     */
+    cursor?: ShippingLabelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingLabels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingLabels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingLabels.
+     */
+    distinct?: ShippingLabelScalarFieldEnum | ShippingLabelScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingLabel findFirstOrThrow
+   */
+  export type ShippingLabelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingLabel to fetch.
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingLabels to fetch.
+     */
+    orderBy?: ShippingLabelOrderByWithRelationInput | ShippingLabelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingLabels.
+     */
+    cursor?: ShippingLabelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingLabels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingLabels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingLabels.
+     */
+    distinct?: ShippingLabelScalarFieldEnum | ShippingLabelScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingLabel findMany
+   */
+  export type ShippingLabelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingLabels to fetch.
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingLabels to fetch.
+     */
+    orderBy?: ShippingLabelOrderByWithRelationInput | ShippingLabelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ShippingLabels.
+     */
+    cursor?: ShippingLabelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingLabels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingLabels.
+     */
+    skip?: number
+    distinct?: ShippingLabelScalarFieldEnum | ShippingLabelScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingLabel create
+   */
+  export type ShippingLabelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ShippingLabel.
+     */
+    data: XOR<ShippingLabelCreateInput, ShippingLabelUncheckedCreateInput>
+  }
+
+  /**
+   * ShippingLabel createMany
+   */
+  export type ShippingLabelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ShippingLabels.
+     */
+    data: ShippingLabelCreateManyInput | ShippingLabelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ShippingLabel createManyAndReturn
+   */
+  export type ShippingLabelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * The data used to create many ShippingLabels.
+     */
+    data: ShippingLabelCreateManyInput | ShippingLabelCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingLabel update
+   */
+  export type ShippingLabelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ShippingLabel.
+     */
+    data: XOR<ShippingLabelUpdateInput, ShippingLabelUncheckedUpdateInput>
+    /**
+     * Choose, which ShippingLabel to update.
+     */
+    where: ShippingLabelWhereUniqueInput
+  }
+
+  /**
+   * ShippingLabel updateMany
+   */
+  export type ShippingLabelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ShippingLabels.
+     */
+    data: XOR<ShippingLabelUpdateManyMutationInput, ShippingLabelUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingLabels to update
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * Limit how many ShippingLabels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingLabel updateManyAndReturn
+   */
+  export type ShippingLabelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * The data used to update ShippingLabels.
+     */
+    data: XOR<ShippingLabelUpdateManyMutationInput, ShippingLabelUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingLabels to update
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * Limit how many ShippingLabels to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingLabel upsert
+   */
+  export type ShippingLabelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ShippingLabel to update in case it exists.
+     */
+    where: ShippingLabelWhereUniqueInput
+    /**
+     * In case the ShippingLabel found by the `where` argument doesn't exist, create a new ShippingLabel with this data.
+     */
+    create: XOR<ShippingLabelCreateInput, ShippingLabelUncheckedCreateInput>
+    /**
+     * In case the ShippingLabel was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShippingLabelUpdateInput, ShippingLabelUncheckedUpdateInput>
+  }
+
+  /**
+   * ShippingLabel delete
+   */
+  export type ShippingLabelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+    /**
+     * Filter which ShippingLabel to delete.
+     */
+    where: ShippingLabelWhereUniqueInput
+  }
+
+  /**
+   * ShippingLabel deleteMany
+   */
+  export type ShippingLabelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingLabels to delete
+     */
+    where?: ShippingLabelWhereInput
+    /**
+     * Limit how many ShippingLabels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingLabel without action
+   */
+  export type ShippingLabelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingLabel
+     */
+    select?: ShippingLabelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingLabel
+     */
+    omit?: ShippingLabelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingLabelInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ShippingPackage
+   */
+
+  export type AggregateShippingPackage = {
+    _count: ShippingPackageCountAggregateOutputType | null
+    _avg: ShippingPackageAvgAggregateOutputType | null
+    _sum: ShippingPackageSumAggregateOutputType | null
+    _min: ShippingPackageMinAggregateOutputType | null
+    _max: ShippingPackageMaxAggregateOutputType | null
+  }
+
+  export type ShippingPackageAvgAggregateOutputType = {
+    cost: Decimal | null
+    weight: Decimal | null
+  }
+
+  export type ShippingPackageSumAggregateOutputType = {
+    cost: Decimal | null
+    weight: Decimal | null
+  }
+
+  export type ShippingPackageMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    carrierCode: string | null
+    serviceCode: string | null
+    packageCode: string | null
+    trackingNumber: string | null
+    labelUrl: string | null
+    shipEngineId: string | null
+    cost: Decimal | null
+    currency: string | null
+    weight: Decimal | null
+    voidedAt: Date | null
+    shippedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShippingPackageMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    carrierCode: string | null
+    serviceCode: string | null
+    packageCode: string | null
+    trackingNumber: string | null
+    labelUrl: string | null
+    shipEngineId: string | null
+    cost: Decimal | null
+    currency: string | null
+    weight: Decimal | null
+    voidedAt: Date | null
+    shippedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShippingPackageCountAggregateOutputType = {
+    id: number
+    orderId: number
+    carrierCode: number
+    serviceCode: number
+    packageCode: number
+    trackingNumber: number
+    labelUrl: number
+    shipEngineId: number
+    cost: number
+    currency: number
+    weight: number
+    dimensions: number
+    voidedAt: number
+    shippedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ShippingPackageAvgAggregateInputType = {
+    cost?: true
+    weight?: true
+  }
+
+  export type ShippingPackageSumAggregateInputType = {
+    cost?: true
+    weight?: true
+  }
+
+  export type ShippingPackageMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    carrierCode?: true
+    serviceCode?: true
+    packageCode?: true
+    trackingNumber?: true
+    labelUrl?: true
+    shipEngineId?: true
+    cost?: true
+    currency?: true
+    weight?: true
+    voidedAt?: true
+    shippedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShippingPackageMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    carrierCode?: true
+    serviceCode?: true
+    packageCode?: true
+    trackingNumber?: true
+    labelUrl?: true
+    shipEngineId?: true
+    cost?: true
+    currency?: true
+    weight?: true
+    voidedAt?: true
+    shippedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShippingPackageCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    carrierCode?: true
+    serviceCode?: true
+    packageCode?: true
+    trackingNumber?: true
+    labelUrl?: true
+    shipEngineId?: true
+    cost?: true
+    currency?: true
+    weight?: true
+    dimensions?: true
+    voidedAt?: true
+    shippedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ShippingPackageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingPackage to aggregate.
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackages to fetch.
+     */
+    orderBy?: ShippingPackageOrderByWithRelationInput | ShippingPackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShippingPackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ShippingPackages
+    **/
+    _count?: true | ShippingPackageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ShippingPackageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ShippingPackageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShippingPackageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShippingPackageMaxAggregateInputType
+  }
+
+  export type GetShippingPackageAggregateType<T extends ShippingPackageAggregateArgs> = {
+        [P in keyof T & keyof AggregateShippingPackage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShippingPackage[P]>
+      : GetScalarType<T[P], AggregateShippingPackage[P]>
+  }
+
+
+
+
+  export type ShippingPackageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingPackageWhereInput
+    orderBy?: ShippingPackageOrderByWithAggregationInput | ShippingPackageOrderByWithAggregationInput[]
+    by: ShippingPackageScalarFieldEnum[] | ShippingPackageScalarFieldEnum
+    having?: ShippingPackageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShippingPackageCountAggregateInputType | true
+    _avg?: ShippingPackageAvgAggregateInputType
+    _sum?: ShippingPackageSumAggregateInputType
+    _min?: ShippingPackageMinAggregateInputType
+    _max?: ShippingPackageMaxAggregateInputType
+  }
+
+  export type ShippingPackageGroupByOutputType = {
+    id: string
+    orderId: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber: string | null
+    labelUrl: string | null
+    shipEngineId: string | null
+    cost: Decimal
+    currency: string
+    weight: Decimal | null
+    dimensions: JsonValue | null
+    voidedAt: Date | null
+    shippedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ShippingPackageCountAggregateOutputType | null
+    _avg: ShippingPackageAvgAggregateOutputType | null
+    _sum: ShippingPackageSumAggregateOutputType | null
+    _min: ShippingPackageMinAggregateOutputType | null
+    _max: ShippingPackageMaxAggregateOutputType | null
+  }
+
+  type GetShippingPackageGroupByPayload<T extends ShippingPackageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShippingPackageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShippingPackageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShippingPackageGroupByOutputType[P]>
+            : GetScalarType<T[P], ShippingPackageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShippingPackageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    carrierCode?: boolean
+    serviceCode?: boolean
+    packageCode?: boolean
+    trackingNumber?: boolean
+    labelUrl?: boolean
+    shipEngineId?: boolean
+    cost?: boolean
+    currency?: boolean
+    weight?: boolean
+    dimensions?: boolean
+    voidedAt?: boolean
+    shippedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    items?: boolean | ShippingPackage$itemsArgs<ExtArgs>
+    _count?: boolean | ShippingPackageCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackage"]>
+
+  export type ShippingPackageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    carrierCode?: boolean
+    serviceCode?: boolean
+    packageCode?: boolean
+    trackingNumber?: boolean
+    labelUrl?: boolean
+    shipEngineId?: boolean
+    cost?: boolean
+    currency?: boolean
+    weight?: boolean
+    dimensions?: boolean
+    voidedAt?: boolean
+    shippedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackage"]>
+
+  export type ShippingPackageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    carrierCode?: boolean
+    serviceCode?: boolean
+    packageCode?: boolean
+    trackingNumber?: boolean
+    labelUrl?: boolean
+    shipEngineId?: boolean
+    cost?: boolean
+    currency?: boolean
+    weight?: boolean
+    dimensions?: boolean
+    voidedAt?: boolean
+    shippedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackage"]>
+
+  export type ShippingPackageSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    carrierCode?: boolean
+    serviceCode?: boolean
+    packageCode?: boolean
+    trackingNumber?: boolean
+    labelUrl?: boolean
+    shipEngineId?: boolean
+    cost?: boolean
+    currency?: boolean
+    weight?: boolean
+    dimensions?: boolean
+    voidedAt?: boolean
+    shippedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ShippingPackageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "carrierCode" | "serviceCode" | "packageCode" | "trackingNumber" | "labelUrl" | "shipEngineId" | "cost" | "currency" | "weight" | "dimensions" | "voidedAt" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["shippingPackage"]>
+  export type ShippingPackageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    items?: boolean | ShippingPackage$itemsArgs<ExtArgs>
+    _count?: boolean | ShippingPackageCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ShippingPackageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type ShippingPackageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+
+  export type $ShippingPackagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ShippingPackage"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+      items: Prisma.$ShippingPackageItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      carrierCode: string
+      serviceCode: string
+      packageCode: string
+      trackingNumber: string | null
+      labelUrl: string | null
+      shipEngineId: string | null
+      cost: Prisma.Decimal
+      currency: string
+      weight: Prisma.Decimal | null
+      dimensions: Prisma.JsonValue | null
+      voidedAt: Date | null
+      shippedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["shippingPackage"]>
+    composites: {}
+  }
+
+  type ShippingPackageGetPayload<S extends boolean | null | undefined | ShippingPackageDefaultArgs> = $Result.GetResult<Prisma.$ShippingPackagePayload, S>
+
+  type ShippingPackageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ShippingPackageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ShippingPackageCountAggregateInputType | true
+    }
+
+  export interface ShippingPackageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ShippingPackage'], meta: { name: 'ShippingPackage' } }
+    /**
+     * Find zero or one ShippingPackage that matches the filter.
+     * @param {ShippingPackageFindUniqueArgs} args - Arguments to find a ShippingPackage
+     * @example
+     * // Get one ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShippingPackageFindUniqueArgs>(args: SelectSubset<T, ShippingPackageFindUniqueArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ShippingPackage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShippingPackageFindUniqueOrThrowArgs} args - Arguments to find a ShippingPackage
+     * @example
+     * // Get one ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShippingPackageFindUniqueOrThrowArgs>(args: SelectSubset<T, ShippingPackageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingPackage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageFindFirstArgs} args - Arguments to find a ShippingPackage
+     * @example
+     * // Get one ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShippingPackageFindFirstArgs>(args?: SelectSubset<T, ShippingPackageFindFirstArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingPackage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageFindFirstOrThrowArgs} args - Arguments to find a ShippingPackage
+     * @example
+     * // Get one ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShippingPackageFindFirstOrThrowArgs>(args?: SelectSubset<T, ShippingPackageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ShippingPackages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ShippingPackages
+     * const shippingPackages = await prisma.shippingPackage.findMany()
+     * 
+     * // Get first 10 ShippingPackages
+     * const shippingPackages = await prisma.shippingPackage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shippingPackageWithIdOnly = await prisma.shippingPackage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShippingPackageFindManyArgs>(args?: SelectSubset<T, ShippingPackageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ShippingPackage.
+     * @param {ShippingPackageCreateArgs} args - Arguments to create a ShippingPackage.
+     * @example
+     * // Create one ShippingPackage
+     * const ShippingPackage = await prisma.shippingPackage.create({
+     *   data: {
+     *     // ... data to create a ShippingPackage
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShippingPackageCreateArgs>(args: SelectSubset<T, ShippingPackageCreateArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ShippingPackages.
+     * @param {ShippingPackageCreateManyArgs} args - Arguments to create many ShippingPackages.
+     * @example
+     * // Create many ShippingPackages
+     * const shippingPackage = await prisma.shippingPackage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShippingPackageCreateManyArgs>(args?: SelectSubset<T, ShippingPackageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ShippingPackages and returns the data saved in the database.
+     * @param {ShippingPackageCreateManyAndReturnArgs} args - Arguments to create many ShippingPackages.
+     * @example
+     * // Create many ShippingPackages
+     * const shippingPackage = await prisma.shippingPackage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ShippingPackages and only return the `id`
+     * const shippingPackageWithIdOnly = await prisma.shippingPackage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShippingPackageCreateManyAndReturnArgs>(args?: SelectSubset<T, ShippingPackageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ShippingPackage.
+     * @param {ShippingPackageDeleteArgs} args - Arguments to delete one ShippingPackage.
+     * @example
+     * // Delete one ShippingPackage
+     * const ShippingPackage = await prisma.shippingPackage.delete({
+     *   where: {
+     *     // ... filter to delete one ShippingPackage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShippingPackageDeleteArgs>(args: SelectSubset<T, ShippingPackageDeleteArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ShippingPackage.
+     * @param {ShippingPackageUpdateArgs} args - Arguments to update one ShippingPackage.
+     * @example
+     * // Update one ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShippingPackageUpdateArgs>(args: SelectSubset<T, ShippingPackageUpdateArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ShippingPackages.
+     * @param {ShippingPackageDeleteManyArgs} args - Arguments to filter ShippingPackages to delete.
+     * @example
+     * // Delete a few ShippingPackages
+     * const { count } = await prisma.shippingPackage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShippingPackageDeleteManyArgs>(args?: SelectSubset<T, ShippingPackageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingPackages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ShippingPackages
+     * const shippingPackage = await prisma.shippingPackage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShippingPackageUpdateManyArgs>(args: SelectSubset<T, ShippingPackageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingPackages and returns the data updated in the database.
+     * @param {ShippingPackageUpdateManyAndReturnArgs} args - Arguments to update many ShippingPackages.
+     * @example
+     * // Update many ShippingPackages
+     * const shippingPackage = await prisma.shippingPackage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ShippingPackages and only return the `id`
+     * const shippingPackageWithIdOnly = await prisma.shippingPackage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ShippingPackageUpdateManyAndReturnArgs>(args: SelectSubset<T, ShippingPackageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ShippingPackage.
+     * @param {ShippingPackageUpsertArgs} args - Arguments to update or create a ShippingPackage.
+     * @example
+     * // Update or create a ShippingPackage
+     * const shippingPackage = await prisma.shippingPackage.upsert({
+     *   create: {
+     *     // ... data to create a ShippingPackage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ShippingPackage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShippingPackageUpsertArgs>(args: SelectSubset<T, ShippingPackageUpsertArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ShippingPackages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageCountArgs} args - Arguments to filter ShippingPackages to count.
+     * @example
+     * // Count the number of ShippingPackages
+     * const count = await prisma.shippingPackage.count({
+     *   where: {
+     *     // ... the filter for the ShippingPackages we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShippingPackageCountArgs>(
+      args?: Subset<T, ShippingPackageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShippingPackageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ShippingPackage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShippingPackageAggregateArgs>(args: Subset<T, ShippingPackageAggregateArgs>): Prisma.PrismaPromise<GetShippingPackageAggregateType<T>>
+
+    /**
+     * Group by ShippingPackage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShippingPackageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShippingPackageGroupByArgs['orderBy'] }
+        : { orderBy?: ShippingPackageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShippingPackageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingPackageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ShippingPackage model
+   */
+  readonly fields: ShippingPackageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ShippingPackage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShippingPackageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends ShippingPackage$itemsArgs<ExtArgs> = {}>(args?: Subset<T, ShippingPackage$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ShippingPackage model
+   */
+  interface ShippingPackageFieldRefs {
+    readonly id: FieldRef<"ShippingPackage", 'String'>
+    readonly orderId: FieldRef<"ShippingPackage", 'String'>
+    readonly carrierCode: FieldRef<"ShippingPackage", 'String'>
+    readonly serviceCode: FieldRef<"ShippingPackage", 'String'>
+    readonly packageCode: FieldRef<"ShippingPackage", 'String'>
+    readonly trackingNumber: FieldRef<"ShippingPackage", 'String'>
+    readonly labelUrl: FieldRef<"ShippingPackage", 'String'>
+    readonly shipEngineId: FieldRef<"ShippingPackage", 'String'>
+    readonly cost: FieldRef<"ShippingPackage", 'Decimal'>
+    readonly currency: FieldRef<"ShippingPackage", 'String'>
+    readonly weight: FieldRef<"ShippingPackage", 'Decimal'>
+    readonly dimensions: FieldRef<"ShippingPackage", 'Json'>
+    readonly voidedAt: FieldRef<"ShippingPackage", 'DateTime'>
+    readonly shippedAt: FieldRef<"ShippingPackage", 'DateTime'>
+    readonly createdAt: FieldRef<"ShippingPackage", 'DateTime'>
+    readonly updatedAt: FieldRef<"ShippingPackage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ShippingPackage findUnique
+   */
+  export type ShippingPackageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackage to fetch.
+     */
+    where: ShippingPackageWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackage findUniqueOrThrow
+   */
+  export type ShippingPackageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackage to fetch.
+     */
+    where: ShippingPackageWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackage findFirst
+   */
+  export type ShippingPackageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackage to fetch.
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackages to fetch.
+     */
+    orderBy?: ShippingPackageOrderByWithRelationInput | ShippingPackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingPackages.
+     */
+    cursor?: ShippingPackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingPackages.
+     */
+    distinct?: ShippingPackageScalarFieldEnum | ShippingPackageScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackage findFirstOrThrow
+   */
+  export type ShippingPackageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackage to fetch.
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackages to fetch.
+     */
+    orderBy?: ShippingPackageOrderByWithRelationInput | ShippingPackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingPackages.
+     */
+    cursor?: ShippingPackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingPackages.
+     */
+    distinct?: ShippingPackageScalarFieldEnum | ShippingPackageScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackage findMany
+   */
+  export type ShippingPackageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackages to fetch.
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackages to fetch.
+     */
+    orderBy?: ShippingPackageOrderByWithRelationInput | ShippingPackageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ShippingPackages.
+     */
+    cursor?: ShippingPackageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackages.
+     */
+    skip?: number
+    distinct?: ShippingPackageScalarFieldEnum | ShippingPackageScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackage create
+   */
+  export type ShippingPackageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ShippingPackage.
+     */
+    data: XOR<ShippingPackageCreateInput, ShippingPackageUncheckedCreateInput>
+  }
+
+  /**
+   * ShippingPackage createMany
+   */
+  export type ShippingPackageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ShippingPackages.
+     */
+    data: ShippingPackageCreateManyInput | ShippingPackageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ShippingPackage createManyAndReturn
+   */
+  export type ShippingPackageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * The data used to create many ShippingPackages.
+     */
+    data: ShippingPackageCreateManyInput | ShippingPackageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingPackage update
+   */
+  export type ShippingPackageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ShippingPackage.
+     */
+    data: XOR<ShippingPackageUpdateInput, ShippingPackageUncheckedUpdateInput>
+    /**
+     * Choose, which ShippingPackage to update.
+     */
+    where: ShippingPackageWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackage updateMany
+   */
+  export type ShippingPackageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ShippingPackages.
+     */
+    data: XOR<ShippingPackageUpdateManyMutationInput, ShippingPackageUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingPackages to update
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * Limit how many ShippingPackages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingPackage updateManyAndReturn
+   */
+  export type ShippingPackageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * The data used to update ShippingPackages.
+     */
+    data: XOR<ShippingPackageUpdateManyMutationInput, ShippingPackageUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingPackages to update
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * Limit how many ShippingPackages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingPackage upsert
+   */
+  export type ShippingPackageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ShippingPackage to update in case it exists.
+     */
+    where: ShippingPackageWhereUniqueInput
+    /**
+     * In case the ShippingPackage found by the `where` argument doesn't exist, create a new ShippingPackage with this data.
+     */
+    create: XOR<ShippingPackageCreateInput, ShippingPackageUncheckedCreateInput>
+    /**
+     * In case the ShippingPackage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShippingPackageUpdateInput, ShippingPackageUncheckedUpdateInput>
+  }
+
+  /**
+   * ShippingPackage delete
+   */
+  export type ShippingPackageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+    /**
+     * Filter which ShippingPackage to delete.
+     */
+    where: ShippingPackageWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackage deleteMany
+   */
+  export type ShippingPackageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingPackages to delete
+     */
+    where?: ShippingPackageWhereInput
+    /**
+     * Limit how many ShippingPackages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingPackage.items
+   */
+  export type ShippingPackage$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    where?: ShippingPackageItemWhereInput
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    cursor?: ShippingPackageItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShippingPackageItemScalarFieldEnum | ShippingPackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackage without action
+   */
+  export type ShippingPackageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackage
+     */
+    select?: ShippingPackageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackage
+     */
+    omit?: ShippingPackageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ShippingPackageItem
+   */
+
+  export type AggregateShippingPackageItem = {
+    _count: ShippingPackageItemCountAggregateOutputType | null
+    _avg: ShippingPackageItemAvgAggregateOutputType | null
+    _sum: ShippingPackageItemSumAggregateOutputType | null
+    _min: ShippingPackageItemMinAggregateOutputType | null
+    _max: ShippingPackageItemMaxAggregateOutputType | null
+  }
+
+  export type ShippingPackageItemAvgAggregateOutputType = {
+    quantity: number | null
+    unitPrice: Decimal | null
+  }
+
+  export type ShippingPackageItemSumAggregateOutputType = {
+    quantity: number | null
+    unitPrice: Decimal | null
+  }
+
+  export type ShippingPackageItemMinAggregateOutputType = {
+    id: string | null
+    packageId: string | null
+    productName: string | null
+    sku: string | null
+    quantity: number | null
+    unitPrice: Decimal | null
+    productVariantId: string | null
+  }
+
+  export type ShippingPackageItemMaxAggregateOutputType = {
+    id: string | null
+    packageId: string | null
+    productName: string | null
+    sku: string | null
+    quantity: number | null
+    unitPrice: Decimal | null
+    productVariantId: string | null
+  }
+
+  export type ShippingPackageItemCountAggregateOutputType = {
+    id: number
+    packageId: number
+    productName: number
+    sku: number
+    quantity: number
+    unitPrice: number
+    productVariantId: number
+    _all: number
+  }
+
+
+  export type ShippingPackageItemAvgAggregateInputType = {
+    quantity?: true
+    unitPrice?: true
+  }
+
+  export type ShippingPackageItemSumAggregateInputType = {
+    quantity?: true
+    unitPrice?: true
+  }
+
+  export type ShippingPackageItemMinAggregateInputType = {
+    id?: true
+    packageId?: true
+    productName?: true
+    sku?: true
+    quantity?: true
+    unitPrice?: true
+    productVariantId?: true
+  }
+
+  export type ShippingPackageItemMaxAggregateInputType = {
+    id?: true
+    packageId?: true
+    productName?: true
+    sku?: true
+    quantity?: true
+    unitPrice?: true
+    productVariantId?: true
+  }
+
+  export type ShippingPackageItemCountAggregateInputType = {
+    id?: true
+    packageId?: true
+    productName?: true
+    sku?: true
+    quantity?: true
+    unitPrice?: true
+    productVariantId?: true
+    _all?: true
+  }
+
+  export type ShippingPackageItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingPackageItem to aggregate.
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackageItems to fetch.
+     */
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShippingPackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ShippingPackageItems
+    **/
+    _count?: true | ShippingPackageItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ShippingPackageItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ShippingPackageItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShippingPackageItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShippingPackageItemMaxAggregateInputType
+  }
+
+  export type GetShippingPackageItemAggregateType<T extends ShippingPackageItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateShippingPackageItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShippingPackageItem[P]>
+      : GetScalarType<T[P], AggregateShippingPackageItem[P]>
+  }
+
+
+
+
+  export type ShippingPackageItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShippingPackageItemWhereInput
+    orderBy?: ShippingPackageItemOrderByWithAggregationInput | ShippingPackageItemOrderByWithAggregationInput[]
+    by: ShippingPackageItemScalarFieldEnum[] | ShippingPackageItemScalarFieldEnum
+    having?: ShippingPackageItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShippingPackageItemCountAggregateInputType | true
+    _avg?: ShippingPackageItemAvgAggregateInputType
+    _sum?: ShippingPackageItemSumAggregateInputType
+    _min?: ShippingPackageItemMinAggregateInputType
+    _max?: ShippingPackageItemMaxAggregateInputType
+  }
+
+  export type ShippingPackageItemGroupByOutputType = {
+    id: string
+    packageId: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal
+    productVariantId: string | null
+    _count: ShippingPackageItemCountAggregateOutputType | null
+    _avg: ShippingPackageItemAvgAggregateOutputType | null
+    _sum: ShippingPackageItemSumAggregateOutputType | null
+    _min: ShippingPackageItemMinAggregateOutputType | null
+    _max: ShippingPackageItemMaxAggregateOutputType | null
+  }
+
+  type GetShippingPackageItemGroupByPayload<T extends ShippingPackageItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShippingPackageItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShippingPackageItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShippingPackageItemGroupByOutputType[P]>
+            : GetScalarType<T[P], ShippingPackageItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShippingPackageItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    productName?: boolean
+    sku?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    productVariantId?: boolean
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackageItem"]>
+
+  export type ShippingPackageItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    productName?: boolean
+    sku?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    productVariantId?: boolean
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackageItem"]>
+
+  export type ShippingPackageItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    packageId?: boolean
+    productName?: boolean
+    sku?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    productVariantId?: boolean
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["shippingPackageItem"]>
+
+  export type ShippingPackageItemSelectScalar = {
+    id?: boolean
+    packageId?: boolean
+    productName?: boolean
+    sku?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    productVariantId?: boolean
+  }
+
+  export type ShippingPackageItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "packageId" | "productName" | "sku" | "quantity" | "unitPrice" | "productVariantId", ExtArgs["result"]["shippingPackageItem"]>
+  export type ShippingPackageItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }
+  export type ShippingPackageItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }
+  export type ShippingPackageItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shippingPackage?: boolean | ShippingPackageDefaultArgs<ExtArgs>
+    productVariant?: boolean | ShippingPackageItem$productVariantArgs<ExtArgs>
+  }
+
+  export type $ShippingPackageItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ShippingPackageItem"
+    objects: {
+      shippingPackage: Prisma.$ShippingPackagePayload<ExtArgs>
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      packageId: string
+      productName: string
+      sku: string
+      quantity: number
+      unitPrice: Prisma.Decimal
+      productVariantId: string | null
+    }, ExtArgs["result"]["shippingPackageItem"]>
+    composites: {}
+  }
+
+  type ShippingPackageItemGetPayload<S extends boolean | null | undefined | ShippingPackageItemDefaultArgs> = $Result.GetResult<Prisma.$ShippingPackageItemPayload, S>
+
+  type ShippingPackageItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ShippingPackageItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ShippingPackageItemCountAggregateInputType | true
+    }
+
+  export interface ShippingPackageItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ShippingPackageItem'], meta: { name: 'ShippingPackageItem' } }
+    /**
+     * Find zero or one ShippingPackageItem that matches the filter.
+     * @param {ShippingPackageItemFindUniqueArgs} args - Arguments to find a ShippingPackageItem
+     * @example
+     * // Get one ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShippingPackageItemFindUniqueArgs>(args: SelectSubset<T, ShippingPackageItemFindUniqueArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ShippingPackageItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShippingPackageItemFindUniqueOrThrowArgs} args - Arguments to find a ShippingPackageItem
+     * @example
+     * // Get one ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShippingPackageItemFindUniqueOrThrowArgs>(args: SelectSubset<T, ShippingPackageItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingPackageItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemFindFirstArgs} args - Arguments to find a ShippingPackageItem
+     * @example
+     * // Get one ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShippingPackageItemFindFirstArgs>(args?: SelectSubset<T, ShippingPackageItemFindFirstArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ShippingPackageItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemFindFirstOrThrowArgs} args - Arguments to find a ShippingPackageItem
+     * @example
+     * // Get one ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShippingPackageItemFindFirstOrThrowArgs>(args?: SelectSubset<T, ShippingPackageItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ShippingPackageItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ShippingPackageItems
+     * const shippingPackageItems = await prisma.shippingPackageItem.findMany()
+     * 
+     * // Get first 10 ShippingPackageItems
+     * const shippingPackageItems = await prisma.shippingPackageItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shippingPackageItemWithIdOnly = await prisma.shippingPackageItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShippingPackageItemFindManyArgs>(args?: SelectSubset<T, ShippingPackageItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ShippingPackageItem.
+     * @param {ShippingPackageItemCreateArgs} args - Arguments to create a ShippingPackageItem.
+     * @example
+     * // Create one ShippingPackageItem
+     * const ShippingPackageItem = await prisma.shippingPackageItem.create({
+     *   data: {
+     *     // ... data to create a ShippingPackageItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShippingPackageItemCreateArgs>(args: SelectSubset<T, ShippingPackageItemCreateArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ShippingPackageItems.
+     * @param {ShippingPackageItemCreateManyArgs} args - Arguments to create many ShippingPackageItems.
+     * @example
+     * // Create many ShippingPackageItems
+     * const shippingPackageItem = await prisma.shippingPackageItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShippingPackageItemCreateManyArgs>(args?: SelectSubset<T, ShippingPackageItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ShippingPackageItems and returns the data saved in the database.
+     * @param {ShippingPackageItemCreateManyAndReturnArgs} args - Arguments to create many ShippingPackageItems.
+     * @example
+     * // Create many ShippingPackageItems
+     * const shippingPackageItem = await prisma.shippingPackageItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ShippingPackageItems and only return the `id`
+     * const shippingPackageItemWithIdOnly = await prisma.shippingPackageItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShippingPackageItemCreateManyAndReturnArgs>(args?: SelectSubset<T, ShippingPackageItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ShippingPackageItem.
+     * @param {ShippingPackageItemDeleteArgs} args - Arguments to delete one ShippingPackageItem.
+     * @example
+     * // Delete one ShippingPackageItem
+     * const ShippingPackageItem = await prisma.shippingPackageItem.delete({
+     *   where: {
+     *     // ... filter to delete one ShippingPackageItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShippingPackageItemDeleteArgs>(args: SelectSubset<T, ShippingPackageItemDeleteArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ShippingPackageItem.
+     * @param {ShippingPackageItemUpdateArgs} args - Arguments to update one ShippingPackageItem.
+     * @example
+     * // Update one ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShippingPackageItemUpdateArgs>(args: SelectSubset<T, ShippingPackageItemUpdateArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ShippingPackageItems.
+     * @param {ShippingPackageItemDeleteManyArgs} args - Arguments to filter ShippingPackageItems to delete.
+     * @example
+     * // Delete a few ShippingPackageItems
+     * const { count } = await prisma.shippingPackageItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShippingPackageItemDeleteManyArgs>(args?: SelectSubset<T, ShippingPackageItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingPackageItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ShippingPackageItems
+     * const shippingPackageItem = await prisma.shippingPackageItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShippingPackageItemUpdateManyArgs>(args: SelectSubset<T, ShippingPackageItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShippingPackageItems and returns the data updated in the database.
+     * @param {ShippingPackageItemUpdateManyAndReturnArgs} args - Arguments to update many ShippingPackageItems.
+     * @example
+     * // Update many ShippingPackageItems
+     * const shippingPackageItem = await prisma.shippingPackageItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ShippingPackageItems and only return the `id`
+     * const shippingPackageItemWithIdOnly = await prisma.shippingPackageItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ShippingPackageItemUpdateManyAndReturnArgs>(args: SelectSubset<T, ShippingPackageItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ShippingPackageItem.
+     * @param {ShippingPackageItemUpsertArgs} args - Arguments to update or create a ShippingPackageItem.
+     * @example
+     * // Update or create a ShippingPackageItem
+     * const shippingPackageItem = await prisma.shippingPackageItem.upsert({
+     *   create: {
+     *     // ... data to create a ShippingPackageItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ShippingPackageItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShippingPackageItemUpsertArgs>(args: SelectSubset<T, ShippingPackageItemUpsertArgs<ExtArgs>>): Prisma__ShippingPackageItemClient<$Result.GetResult<Prisma.$ShippingPackageItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ShippingPackageItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemCountArgs} args - Arguments to filter ShippingPackageItems to count.
+     * @example
+     * // Count the number of ShippingPackageItems
+     * const count = await prisma.shippingPackageItem.count({
+     *   where: {
+     *     // ... the filter for the ShippingPackageItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShippingPackageItemCountArgs>(
+      args?: Subset<T, ShippingPackageItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShippingPackageItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ShippingPackageItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShippingPackageItemAggregateArgs>(args: Subset<T, ShippingPackageItemAggregateArgs>): Prisma.PrismaPromise<GetShippingPackageItemAggregateType<T>>
+
+    /**
+     * Group by ShippingPackageItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingPackageItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShippingPackageItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShippingPackageItemGroupByArgs['orderBy'] }
+        : { orderBy?: ShippingPackageItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShippingPackageItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingPackageItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ShippingPackageItem model
+   */
+  readonly fields: ShippingPackageItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ShippingPackageItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShippingPackageItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    shippingPackage<T extends ShippingPackageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ShippingPackageDefaultArgs<ExtArgs>>): Prisma__ShippingPackageClient<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends ShippingPackageItem$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, ShippingPackageItem$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ShippingPackageItem model
+   */
+  interface ShippingPackageItemFieldRefs {
+    readonly id: FieldRef<"ShippingPackageItem", 'String'>
+    readonly packageId: FieldRef<"ShippingPackageItem", 'String'>
+    readonly productName: FieldRef<"ShippingPackageItem", 'String'>
+    readonly sku: FieldRef<"ShippingPackageItem", 'String'>
+    readonly quantity: FieldRef<"ShippingPackageItem", 'Int'>
+    readonly unitPrice: FieldRef<"ShippingPackageItem", 'Decimal'>
+    readonly productVariantId: FieldRef<"ShippingPackageItem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ShippingPackageItem findUnique
+   */
+  export type ShippingPackageItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackageItem to fetch.
+     */
+    where: ShippingPackageItemWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackageItem findUniqueOrThrow
+   */
+  export type ShippingPackageItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackageItem to fetch.
+     */
+    where: ShippingPackageItemWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackageItem findFirst
+   */
+  export type ShippingPackageItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackageItem to fetch.
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackageItems to fetch.
+     */
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingPackageItems.
+     */
+    cursor?: ShippingPackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingPackageItems.
+     */
+    distinct?: ShippingPackageItemScalarFieldEnum | ShippingPackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackageItem findFirstOrThrow
+   */
+  export type ShippingPackageItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackageItem to fetch.
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackageItems to fetch.
+     */
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShippingPackageItems.
+     */
+    cursor?: ShippingPackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackageItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShippingPackageItems.
+     */
+    distinct?: ShippingPackageItemScalarFieldEnum | ShippingPackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackageItem findMany
+   */
+  export type ShippingPackageItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ShippingPackageItems to fetch.
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShippingPackageItems to fetch.
+     */
+    orderBy?: ShippingPackageItemOrderByWithRelationInput | ShippingPackageItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ShippingPackageItems.
+     */
+    cursor?: ShippingPackageItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShippingPackageItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShippingPackageItems.
+     */
+    skip?: number
+    distinct?: ShippingPackageItemScalarFieldEnum | ShippingPackageItemScalarFieldEnum[]
+  }
+
+  /**
+   * ShippingPackageItem create
+   */
+  export type ShippingPackageItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ShippingPackageItem.
+     */
+    data: XOR<ShippingPackageItemCreateInput, ShippingPackageItemUncheckedCreateInput>
+  }
+
+  /**
+   * ShippingPackageItem createMany
+   */
+  export type ShippingPackageItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ShippingPackageItems.
+     */
+    data: ShippingPackageItemCreateManyInput | ShippingPackageItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ShippingPackageItem createManyAndReturn
+   */
+  export type ShippingPackageItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many ShippingPackageItems.
+     */
+    data: ShippingPackageItemCreateManyInput | ShippingPackageItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingPackageItem update
+   */
+  export type ShippingPackageItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ShippingPackageItem.
+     */
+    data: XOR<ShippingPackageItemUpdateInput, ShippingPackageItemUncheckedUpdateInput>
+    /**
+     * Choose, which ShippingPackageItem to update.
+     */
+    where: ShippingPackageItemWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackageItem updateMany
+   */
+  export type ShippingPackageItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ShippingPackageItems.
+     */
+    data: XOR<ShippingPackageItemUpdateManyMutationInput, ShippingPackageItemUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingPackageItems to update
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * Limit how many ShippingPackageItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingPackageItem updateManyAndReturn
+   */
+  export type ShippingPackageItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * The data used to update ShippingPackageItems.
+     */
+    data: XOR<ShippingPackageItemUpdateManyMutationInput, ShippingPackageItemUncheckedUpdateManyInput>
+    /**
+     * Filter which ShippingPackageItems to update
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * Limit how many ShippingPackageItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ShippingPackageItem upsert
+   */
+  export type ShippingPackageItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ShippingPackageItem to update in case it exists.
+     */
+    where: ShippingPackageItemWhereUniqueInput
+    /**
+     * In case the ShippingPackageItem found by the `where` argument doesn't exist, create a new ShippingPackageItem with this data.
+     */
+    create: XOR<ShippingPackageItemCreateInput, ShippingPackageItemUncheckedCreateInput>
+    /**
+     * In case the ShippingPackageItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShippingPackageItemUpdateInput, ShippingPackageItemUncheckedUpdateInput>
+  }
+
+  /**
+   * ShippingPackageItem delete
+   */
+  export type ShippingPackageItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+    /**
+     * Filter which ShippingPackageItem to delete.
+     */
+    where: ShippingPackageItemWhereUniqueInput
+  }
+
+  /**
+   * ShippingPackageItem deleteMany
+   */
+  export type ShippingPackageItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingPackageItems to delete
+     */
+    where?: ShippingPackageItemWhereInput
+    /**
+     * Limit how many ShippingPackageItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ShippingPackageItem.productVariant
+   */
+  export type ShippingPackageItem$productVariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductVariant
+     */
+    select?: ProductVariantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductVariant
+     */
+    omit?: ProductVariantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductVariantInclude<ExtArgs> | null
+    where?: ProductVariantWhereInput
+  }
+
+  /**
+   * ShippingPackageItem without action
+   */
+  export type ShippingPackageItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingPackageItem
+     */
+    select?: ShippingPackageItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShippingPackageItem
+     */
+    omit?: ShippingPackageItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShippingPackageItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FulfillmentEvent
+   */
+
+  export type AggregateFulfillmentEvent = {
+    _count: FulfillmentEventCountAggregateOutputType | null
+    _min: FulfillmentEventMinAggregateOutputType | null
+    _max: FulfillmentEventMaxAggregateOutputType | null
+  }
+
+  export type FulfillmentEventMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    type: string | null
+    correlationId: string | null
+    userId: string | null
+    processed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type FulfillmentEventMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    type: string | null
+    correlationId: string | null
+    userId: string | null
+    processed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type FulfillmentEventCountAggregateOutputType = {
+    id: number
+    orderId: number
+    type: number
+    payload: number
+    correlationId: number
+    userId: number
+    processed: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FulfillmentEventMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    type?: true
+    correlationId?: true
+    userId?: true
+    processed?: true
+    createdAt?: true
+  }
+
+  export type FulfillmentEventMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    type?: true
+    correlationId?: true
+    userId?: true
+    processed?: true
+    createdAt?: true
+  }
+
+  export type FulfillmentEventCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    type?: true
+    payload?: true
+    correlationId?: true
+    userId?: true
+    processed?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FulfillmentEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FulfillmentEvent to aggregate.
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FulfillmentEvents to fetch.
+     */
+    orderBy?: FulfillmentEventOrderByWithRelationInput | FulfillmentEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FulfillmentEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FulfillmentEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FulfillmentEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FulfillmentEvents
+    **/
+    _count?: true | FulfillmentEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FulfillmentEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FulfillmentEventMaxAggregateInputType
+  }
+
+  export type GetFulfillmentEventAggregateType<T extends FulfillmentEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateFulfillmentEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFulfillmentEvent[P]>
+      : GetScalarType<T[P], AggregateFulfillmentEvent[P]>
+  }
+
+
+
+
+  export type FulfillmentEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FulfillmentEventWhereInput
+    orderBy?: FulfillmentEventOrderByWithAggregationInput | FulfillmentEventOrderByWithAggregationInput[]
+    by: FulfillmentEventScalarFieldEnum[] | FulfillmentEventScalarFieldEnum
+    having?: FulfillmentEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FulfillmentEventCountAggregateInputType | true
+    _min?: FulfillmentEventMinAggregateInputType
+    _max?: FulfillmentEventMaxAggregateInputType
+  }
+
+  export type FulfillmentEventGroupByOutputType = {
+    id: string
+    orderId: string | null
+    type: string
+    payload: JsonValue
+    correlationId: string | null
+    userId: string | null
+    processed: boolean
+    createdAt: Date
+    _count: FulfillmentEventCountAggregateOutputType | null
+    _min: FulfillmentEventMinAggregateOutputType | null
+    _max: FulfillmentEventMaxAggregateOutputType | null
+  }
+
+  type GetFulfillmentEventGroupByPayload<T extends FulfillmentEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FulfillmentEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FulfillmentEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FulfillmentEventGroupByOutputType[P]>
+            : GetScalarType<T[P], FulfillmentEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FulfillmentEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    type?: boolean
+    payload?: boolean
+    correlationId?: boolean
+    userId?: boolean
+    processed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["fulfillmentEvent"]>
+
+  export type FulfillmentEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    type?: boolean
+    payload?: boolean
+    correlationId?: boolean
+    userId?: boolean
+    processed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["fulfillmentEvent"]>
+
+  export type FulfillmentEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    type?: boolean
+    payload?: boolean
+    correlationId?: boolean
+    userId?: boolean
+    processed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["fulfillmentEvent"]>
+
+  export type FulfillmentEventSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    type?: boolean
+    payload?: boolean
+    correlationId?: boolean
+    userId?: boolean
+    processed?: boolean
+    createdAt?: boolean
+  }
+
+  export type FulfillmentEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "type" | "payload" | "correlationId" | "userId" | "processed" | "createdAt", ExtArgs["result"]["fulfillmentEvent"]>
+
+  export type $FulfillmentEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FulfillmentEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string | null
+      type: string
+      payload: Prisma.JsonValue
+      correlationId: string | null
+      userId: string | null
+      processed: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["fulfillmentEvent"]>
+    composites: {}
+  }
+
+  type FulfillmentEventGetPayload<S extends boolean | null | undefined | FulfillmentEventDefaultArgs> = $Result.GetResult<Prisma.$FulfillmentEventPayload, S>
+
+  type FulfillmentEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FulfillmentEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FulfillmentEventCountAggregateInputType | true
+    }
+
+  export interface FulfillmentEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FulfillmentEvent'], meta: { name: 'FulfillmentEvent' } }
+    /**
+     * Find zero or one FulfillmentEvent that matches the filter.
+     * @param {FulfillmentEventFindUniqueArgs} args - Arguments to find a FulfillmentEvent
+     * @example
+     * // Get one FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FulfillmentEventFindUniqueArgs>(args: SelectSubset<T, FulfillmentEventFindUniqueArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FulfillmentEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FulfillmentEventFindUniqueOrThrowArgs} args - Arguments to find a FulfillmentEvent
+     * @example
+     * // Get one FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FulfillmentEventFindUniqueOrThrowArgs>(args: SelectSubset<T, FulfillmentEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FulfillmentEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventFindFirstArgs} args - Arguments to find a FulfillmentEvent
+     * @example
+     * // Get one FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FulfillmentEventFindFirstArgs>(args?: SelectSubset<T, FulfillmentEventFindFirstArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FulfillmentEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventFindFirstOrThrowArgs} args - Arguments to find a FulfillmentEvent
+     * @example
+     * // Get one FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FulfillmentEventFindFirstOrThrowArgs>(args?: SelectSubset<T, FulfillmentEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FulfillmentEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FulfillmentEvents
+     * const fulfillmentEvents = await prisma.fulfillmentEvent.findMany()
+     * 
+     * // Get first 10 FulfillmentEvents
+     * const fulfillmentEvents = await prisma.fulfillmentEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fulfillmentEventWithIdOnly = await prisma.fulfillmentEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FulfillmentEventFindManyArgs>(args?: SelectSubset<T, FulfillmentEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FulfillmentEvent.
+     * @param {FulfillmentEventCreateArgs} args - Arguments to create a FulfillmentEvent.
+     * @example
+     * // Create one FulfillmentEvent
+     * const FulfillmentEvent = await prisma.fulfillmentEvent.create({
+     *   data: {
+     *     // ... data to create a FulfillmentEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends FulfillmentEventCreateArgs>(args: SelectSubset<T, FulfillmentEventCreateArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FulfillmentEvents.
+     * @param {FulfillmentEventCreateManyArgs} args - Arguments to create many FulfillmentEvents.
+     * @example
+     * // Create many FulfillmentEvents
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FulfillmentEventCreateManyArgs>(args?: SelectSubset<T, FulfillmentEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FulfillmentEvents and returns the data saved in the database.
+     * @param {FulfillmentEventCreateManyAndReturnArgs} args - Arguments to create many FulfillmentEvents.
+     * @example
+     * // Create many FulfillmentEvents
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FulfillmentEvents and only return the `id`
+     * const fulfillmentEventWithIdOnly = await prisma.fulfillmentEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FulfillmentEventCreateManyAndReturnArgs>(args?: SelectSubset<T, FulfillmentEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FulfillmentEvent.
+     * @param {FulfillmentEventDeleteArgs} args - Arguments to delete one FulfillmentEvent.
+     * @example
+     * // Delete one FulfillmentEvent
+     * const FulfillmentEvent = await prisma.fulfillmentEvent.delete({
+     *   where: {
+     *     // ... filter to delete one FulfillmentEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FulfillmentEventDeleteArgs>(args: SelectSubset<T, FulfillmentEventDeleteArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FulfillmentEvent.
+     * @param {FulfillmentEventUpdateArgs} args - Arguments to update one FulfillmentEvent.
+     * @example
+     * // Update one FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FulfillmentEventUpdateArgs>(args: SelectSubset<T, FulfillmentEventUpdateArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FulfillmentEvents.
+     * @param {FulfillmentEventDeleteManyArgs} args - Arguments to filter FulfillmentEvents to delete.
+     * @example
+     * // Delete a few FulfillmentEvents
+     * const { count } = await prisma.fulfillmentEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FulfillmentEventDeleteManyArgs>(args?: SelectSubset<T, FulfillmentEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FulfillmentEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FulfillmentEvents
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FulfillmentEventUpdateManyArgs>(args: SelectSubset<T, FulfillmentEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FulfillmentEvents and returns the data updated in the database.
+     * @param {FulfillmentEventUpdateManyAndReturnArgs} args - Arguments to update many FulfillmentEvents.
+     * @example
+     * // Update many FulfillmentEvents
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FulfillmentEvents and only return the `id`
+     * const fulfillmentEventWithIdOnly = await prisma.fulfillmentEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FulfillmentEventUpdateManyAndReturnArgs>(args: SelectSubset<T, FulfillmentEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FulfillmentEvent.
+     * @param {FulfillmentEventUpsertArgs} args - Arguments to update or create a FulfillmentEvent.
+     * @example
+     * // Update or create a FulfillmentEvent
+     * const fulfillmentEvent = await prisma.fulfillmentEvent.upsert({
+     *   create: {
+     *     // ... data to create a FulfillmentEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FulfillmentEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FulfillmentEventUpsertArgs>(args: SelectSubset<T, FulfillmentEventUpsertArgs<ExtArgs>>): Prisma__FulfillmentEventClient<$Result.GetResult<Prisma.$FulfillmentEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FulfillmentEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventCountArgs} args - Arguments to filter FulfillmentEvents to count.
+     * @example
+     * // Count the number of FulfillmentEvents
+     * const count = await prisma.fulfillmentEvent.count({
+     *   where: {
+     *     // ... the filter for the FulfillmentEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends FulfillmentEventCountArgs>(
+      args?: Subset<T, FulfillmentEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FulfillmentEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FulfillmentEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FulfillmentEventAggregateArgs>(args: Subset<T, FulfillmentEventAggregateArgs>): Prisma.PrismaPromise<GetFulfillmentEventAggregateType<T>>
+
+    /**
+     * Group by FulfillmentEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FulfillmentEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FulfillmentEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FulfillmentEventGroupByArgs['orderBy'] }
+        : { orderBy?: FulfillmentEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FulfillmentEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFulfillmentEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FulfillmentEvent model
+   */
+  readonly fields: FulfillmentEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FulfillmentEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FulfillmentEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FulfillmentEvent model
+   */
+  interface FulfillmentEventFieldRefs {
+    readonly id: FieldRef<"FulfillmentEvent", 'String'>
+    readonly orderId: FieldRef<"FulfillmentEvent", 'String'>
+    readonly type: FieldRef<"FulfillmentEvent", 'String'>
+    readonly payload: FieldRef<"FulfillmentEvent", 'Json'>
+    readonly correlationId: FieldRef<"FulfillmentEvent", 'String'>
+    readonly userId: FieldRef<"FulfillmentEvent", 'String'>
+    readonly processed: FieldRef<"FulfillmentEvent", 'Boolean'>
+    readonly createdAt: FieldRef<"FulfillmentEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FulfillmentEvent findUnique
+   */
+  export type FulfillmentEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FulfillmentEvent to fetch.
+     */
+    where: FulfillmentEventWhereUniqueInput
+  }
+
+  /**
+   * FulfillmentEvent findUniqueOrThrow
+   */
+  export type FulfillmentEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FulfillmentEvent to fetch.
+     */
+    where: FulfillmentEventWhereUniqueInput
+  }
+
+  /**
+   * FulfillmentEvent findFirst
+   */
+  export type FulfillmentEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FulfillmentEvent to fetch.
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FulfillmentEvents to fetch.
+     */
+    orderBy?: FulfillmentEventOrderByWithRelationInput | FulfillmentEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FulfillmentEvents.
+     */
+    cursor?: FulfillmentEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FulfillmentEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FulfillmentEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FulfillmentEvents.
+     */
+    distinct?: FulfillmentEventScalarFieldEnum | FulfillmentEventScalarFieldEnum[]
+  }
+
+  /**
+   * FulfillmentEvent findFirstOrThrow
+   */
+  export type FulfillmentEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FulfillmentEvent to fetch.
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FulfillmentEvents to fetch.
+     */
+    orderBy?: FulfillmentEventOrderByWithRelationInput | FulfillmentEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FulfillmentEvents.
+     */
+    cursor?: FulfillmentEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FulfillmentEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FulfillmentEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FulfillmentEvents.
+     */
+    distinct?: FulfillmentEventScalarFieldEnum | FulfillmentEventScalarFieldEnum[]
+  }
+
+  /**
+   * FulfillmentEvent findMany
+   */
+  export type FulfillmentEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter, which FulfillmentEvents to fetch.
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FulfillmentEvents to fetch.
+     */
+    orderBy?: FulfillmentEventOrderByWithRelationInput | FulfillmentEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FulfillmentEvents.
+     */
+    cursor?: FulfillmentEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FulfillmentEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FulfillmentEvents.
+     */
+    skip?: number
+    distinct?: FulfillmentEventScalarFieldEnum | FulfillmentEventScalarFieldEnum[]
+  }
+
+  /**
+   * FulfillmentEvent create
+   */
+  export type FulfillmentEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FulfillmentEvent.
+     */
+    data: XOR<FulfillmentEventCreateInput, FulfillmentEventUncheckedCreateInput>
+  }
+
+  /**
+   * FulfillmentEvent createMany
+   */
+  export type FulfillmentEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FulfillmentEvents.
+     */
+    data: FulfillmentEventCreateManyInput | FulfillmentEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FulfillmentEvent createManyAndReturn
+   */
+  export type FulfillmentEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many FulfillmentEvents.
+     */
+    data: FulfillmentEventCreateManyInput | FulfillmentEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FulfillmentEvent update
+   */
+  export type FulfillmentEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FulfillmentEvent.
+     */
+    data: XOR<FulfillmentEventUpdateInput, FulfillmentEventUncheckedUpdateInput>
+    /**
+     * Choose, which FulfillmentEvent to update.
+     */
+    where: FulfillmentEventWhereUniqueInput
+  }
+
+  /**
+   * FulfillmentEvent updateMany
+   */
+  export type FulfillmentEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FulfillmentEvents.
+     */
+    data: XOR<FulfillmentEventUpdateManyMutationInput, FulfillmentEventUncheckedUpdateManyInput>
+    /**
+     * Filter which FulfillmentEvents to update
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * Limit how many FulfillmentEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FulfillmentEvent updateManyAndReturn
+   */
+  export type FulfillmentEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * The data used to update FulfillmentEvents.
+     */
+    data: XOR<FulfillmentEventUpdateManyMutationInput, FulfillmentEventUncheckedUpdateManyInput>
+    /**
+     * Filter which FulfillmentEvents to update
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * Limit how many FulfillmentEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FulfillmentEvent upsert
+   */
+  export type FulfillmentEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FulfillmentEvent to update in case it exists.
+     */
+    where: FulfillmentEventWhereUniqueInput
+    /**
+     * In case the FulfillmentEvent found by the `where` argument doesn't exist, create a new FulfillmentEvent with this data.
+     */
+    create: XOR<FulfillmentEventCreateInput, FulfillmentEventUncheckedCreateInput>
+    /**
+     * In case the FulfillmentEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FulfillmentEventUpdateInput, FulfillmentEventUncheckedUpdateInput>
+  }
+
+  /**
+   * FulfillmentEvent delete
+   */
+  export type FulfillmentEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+    /**
+     * Filter which FulfillmentEvent to delete.
+     */
+    where: FulfillmentEventWhereUniqueInput
+  }
+
+  /**
+   * FulfillmentEvent deleteMany
+   */
+  export type FulfillmentEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FulfillmentEvents to delete
+     */
+    where?: FulfillmentEventWhereInput
+    /**
+     * Limit how many FulfillmentEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FulfillmentEvent without action
+   */
+  export type FulfillmentEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FulfillmentEvent
+     */
+    select?: FulfillmentEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FulfillmentEvent
+     */
+    omit?: FulfillmentEventOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model WorkTask
    */
 
@@ -15195,6 +20472,7 @@ export namespace Prisma {
     priority: number | null
     totalOrders: number | null
     completedOrders: number | null
+    packedWeight: Decimal | null
     totalItems: number | null
     completedItems: number | null
     shortItems: number | null
@@ -15205,6 +20483,7 @@ export namespace Prisma {
     priority: number | null
     totalOrders: number | null
     completedOrders: number | null
+    packedWeight: Decimal | null
     totalItems: number | null
     completedItems: number | null
     shortItems: number | null
@@ -15226,6 +20505,10 @@ export namespace Prisma {
     blockedAt: Date | null
     totalOrders: number | null
     completedOrders: number | null
+    packedWeight: Decimal | null
+    packedWeightUnit: string | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
     totalItems: number | null
     completedItems: number | null
     shortItems: number | null
@@ -15250,6 +20533,10 @@ export namespace Prisma {
     blockedAt: Date | null
     totalOrders: number | null
     completedOrders: number | null
+    packedWeight: Decimal | null
+    packedWeightUnit: string | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
     totalItems: number | null
     completedItems: number | null
     shortItems: number | null
@@ -15275,6 +20562,11 @@ export namespace Prisma {
     orderIds: number
     totalOrders: number
     completedOrders: number
+    packedWeight: number
+    packedWeightUnit: number
+    packedDimensions: number
+    verifiedAt: number
+    verifiedBy: number
     totalItems: number
     completedItems: number
     shortItems: number
@@ -15290,6 +20582,7 @@ export namespace Prisma {
     priority?: true
     totalOrders?: true
     completedOrders?: true
+    packedWeight?: true
     totalItems?: true
     completedItems?: true
     shortItems?: true
@@ -15300,6 +20593,7 @@ export namespace Prisma {
     priority?: true
     totalOrders?: true
     completedOrders?: true
+    packedWeight?: true
     totalItems?: true
     completedItems?: true
     shortItems?: true
@@ -15321,6 +20615,10 @@ export namespace Prisma {
     blockedAt?: true
     totalOrders?: true
     completedOrders?: true
+    packedWeight?: true
+    packedWeightUnit?: true
+    verifiedAt?: true
+    verifiedBy?: true
     totalItems?: true
     completedItems?: true
     shortItems?: true
@@ -15345,6 +20643,10 @@ export namespace Prisma {
     blockedAt?: true
     totalOrders?: true
     completedOrders?: true
+    packedWeight?: true
+    packedWeightUnit?: true
+    verifiedAt?: true
+    verifiedBy?: true
     totalItems?: true
     completedItems?: true
     shortItems?: true
@@ -15370,6 +20672,11 @@ export namespace Prisma {
     orderIds?: true
     totalOrders?: true
     completedOrders?: true
+    packedWeight?: true
+    packedWeightUnit?: true
+    packedDimensions?: true
+    verifiedAt?: true
+    verifiedBy?: true
     totalItems?: true
     completedItems?: true
     shortItems?: true
@@ -15482,6 +20789,11 @@ export namespace Prisma {
     orderIds: string[]
     totalOrders: number
     completedOrders: number
+    packedWeight: Decimal | null
+    packedWeightUnit: string | null
+    packedDimensions: JsonValue | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
     totalItems: number
     completedItems: number
     shortItems: number
@@ -15526,6 +20838,11 @@ export namespace Prisma {
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
+    packedWeight?: boolean
+    packedWeightUnit?: boolean
+    packedDimensions?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
     totalItems?: boolean
     completedItems?: boolean
     shortItems?: boolean
@@ -15555,6 +20872,11 @@ export namespace Prisma {
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
+    packedWeight?: boolean
+    packedWeightUnit?: boolean
+    packedDimensions?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
     totalItems?: boolean
     completedItems?: boolean
     shortItems?: boolean
@@ -15581,6 +20903,11 @@ export namespace Prisma {
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
+    packedWeight?: boolean
+    packedWeightUnit?: boolean
+    packedDimensions?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
     totalItems?: boolean
     completedItems?: boolean
     shortItems?: boolean
@@ -15607,6 +20934,11 @@ export namespace Prisma {
     orderIds?: boolean
     totalOrders?: boolean
     completedOrders?: boolean
+    packedWeight?: boolean
+    packedWeightUnit?: boolean
+    packedDimensions?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
     totalItems?: boolean
     completedItems?: boolean
     shortItems?: boolean
@@ -15616,7 +20948,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type WorkTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "type" | "status" | "priority" | "idempotencyKey" | "assignedTo" | "assignedAt" | "startedAt" | "completedAt" | "blockReason" | "blockedAt" | "orderIds" | "totalOrders" | "completedOrders" | "totalItems" | "completedItems" | "shortItems" | "skippedItems" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workTask"]>
+  export type WorkTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "type" | "status" | "priority" | "idempotencyKey" | "assignedTo" | "assignedAt" | "startedAt" | "completedAt" | "blockReason" | "blockedAt" | "orderIds" | "totalOrders" | "completedOrders" | "packedWeight" | "packedWeightUnit" | "packedDimensions" | "verifiedAt" | "verifiedBy" | "totalItems" | "completedItems" | "shortItems" | "skippedItems" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workTask"]>
   export type WorkTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
@@ -15653,6 +20985,11 @@ export namespace Prisma {
       orderIds: string[]
       totalOrders: number
       completedOrders: number
+      packedWeight: Prisma.Decimal | null
+      packedWeightUnit: string | null
+      packedDimensions: Prisma.JsonValue | null
+      verifiedAt: Date | null
+      verifiedBy: string | null
       totalItems: number
       completedItems: number
       shortItems: number
@@ -16101,6 +21438,11 @@ export namespace Prisma {
     readonly orderIds: FieldRef<"WorkTask", 'String[]'>
     readonly totalOrders: FieldRef<"WorkTask", 'Int'>
     readonly completedOrders: FieldRef<"WorkTask", 'Int'>
+    readonly packedWeight: FieldRef<"WorkTask", 'Decimal'>
+    readonly packedWeightUnit: FieldRef<"WorkTask", 'String'>
+    readonly packedDimensions: FieldRef<"WorkTask", 'Json'>
+    readonly verifiedAt: FieldRef<"WorkTask", 'DateTime'>
+    readonly verifiedBy: FieldRef<"WorkTask", 'String'>
     readonly totalItems: FieldRef<"WorkTask", 'Int'>
     readonly completedItems: FieldRef<"WorkTask", 'Int'>
     readonly shortItems: FieldRef<"WorkTask", 'Int'>
@@ -22606,6 +27948,83 @@ export namespace Prisma {
   export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
+  export const ShippingLabelScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    shipEngineId: 'shipEngineId',
+    shipmentId: 'shipmentId',
+    carrier: 'carrier',
+    service: 'service',
+    trackingNumber: 'trackingNumber',
+    trackingUrl: 'trackingUrl',
+    rate: 'rate',
+    currency: 'currency',
+    estimatedDays: 'estimatedDays',
+    estimatedDelivery: 'estimatedDelivery',
+    labelUrl: 'labelUrl',
+    labelFormat: 'labelFormat',
+    weight: 'weight',
+    weightUnit: 'weightUnit',
+    dimensions: 'dimensions',
+    status: 'status',
+    voidedAt: 'voidedAt',
+    rawResponse: 'rawResponse',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ShippingLabelScalarFieldEnum = (typeof ShippingLabelScalarFieldEnum)[keyof typeof ShippingLabelScalarFieldEnum]
+
+
+  export const ShippingPackageScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    carrierCode: 'carrierCode',
+    serviceCode: 'serviceCode',
+    packageCode: 'packageCode',
+    trackingNumber: 'trackingNumber',
+    labelUrl: 'labelUrl',
+    shipEngineId: 'shipEngineId',
+    cost: 'cost',
+    currency: 'currency',
+    weight: 'weight',
+    dimensions: 'dimensions',
+    voidedAt: 'voidedAt',
+    shippedAt: 'shippedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ShippingPackageScalarFieldEnum = (typeof ShippingPackageScalarFieldEnum)[keyof typeof ShippingPackageScalarFieldEnum]
+
+
+  export const ShippingPackageItemScalarFieldEnum: {
+    id: 'id',
+    packageId: 'packageId',
+    productName: 'productName',
+    sku: 'sku',
+    quantity: 'quantity',
+    unitPrice: 'unitPrice',
+    productVariantId: 'productVariantId'
+  };
+
+  export type ShippingPackageItemScalarFieldEnum = (typeof ShippingPackageItemScalarFieldEnum)[keyof typeof ShippingPackageItemScalarFieldEnum]
+
+
+  export const FulfillmentEventScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    type: 'type',
+    payload: 'payload',
+    correlationId: 'correlationId',
+    userId: 'userId',
+    processed: 'processed',
+    createdAt: 'createdAt'
+  };
+
+  export type FulfillmentEventScalarFieldEnum = (typeof FulfillmentEventScalarFieldEnum)[keyof typeof FulfillmentEventScalarFieldEnum]
+
+
   export const WorkTaskScalarFieldEnum: {
     id: 'id',
     taskNumber: 'taskNumber',
@@ -22622,6 +28041,11 @@ export namespace Prisma {
     orderIds: 'orderIds',
     totalOrders: 'totalOrders',
     completedOrders: 'completedOrders',
+    packedWeight: 'packedWeight',
+    packedWeightUnit: 'packedWeightUnit',
+    packedDimensions: 'packedDimensions',
+    verifiedAt: 'verifiedAt',
+    verifiedBy: 'verifiedBy',
     totalItems: 'totalItems',
     completedItems: 'completedItems',
     shortItems: 'shortItems',
@@ -22941,6 +28365,20 @@ export namespace Prisma {
    * Reference to a field of type 'Priority[]'
    */
   export type ListEnumPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Priority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShippingLabelStatus'
+   */
+  export type EnumShippingLabelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingLabelStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShippingLabelStatus[]'
+   */
+  export type ListEnumShippingLabelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShippingLabelStatus[]'>
     
 
 
@@ -23343,6 +28781,7 @@ export namespace Prisma {
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
+    shippingPackageItems?: ShippingPackageItemListRelationFilter
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     orderItems?: OrderItemListRelationFilter
     inventoryUnits?: InventoryUnitListRelationFilter
@@ -23366,6 +28805,7 @@ export namespace Prisma {
     trackExpiry?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    shippingPackageItems?: ShippingPackageItemOrderByRelationAggregateInput
     product?: ProductOrderByWithRelationInput
     orderItems?: OrderItemOrderByRelationAggregateInput
     inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
@@ -23392,6 +28832,7 @@ export namespace Prisma {
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
+    shippingPackageItems?: ShippingPackageItemListRelationFilter
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     orderItems?: OrderItemListRelationFilter
     inventoryUnits?: InventoryUnitListRelationFilter
@@ -23787,9 +29228,11 @@ export namespace Prisma {
     shippedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    shippingPackages?: ShippingPackageListRelationFilter
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    shippingLabels?: ShippingLabelListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -23815,9 +29258,11 @@ export namespace Prisma {
     shippedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    shippingPackages?: ShippingPackageOrderByRelationAggregateInput
     items?: OrderItemOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
+    shippingLabels?: ShippingLabelOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -23846,9 +29291,11 @@ export namespace Prisma {
     shippedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    shippingPackages?: ShippingPackageListRelationFilter
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    shippingLabels?: ShippingLabelListRelationFilter
   }, "id" | "orderNumber" | "shopifyOrderId">
 
   export type OrderOrderByWithAggregationInput = {
@@ -24015,6 +29462,400 @@ export namespace Prisma {
     shopifyFulfillmentOrderLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   }
 
+  export type ShippingLabelWhereInput = {
+    AND?: ShippingLabelWhereInput | ShippingLabelWhereInput[]
+    OR?: ShippingLabelWhereInput[]
+    NOT?: ShippingLabelWhereInput | ShippingLabelWhereInput[]
+    id?: StringFilter<"ShippingLabel"> | string
+    orderId?: StringFilter<"ShippingLabel"> | string
+    shipEngineId?: StringNullableFilter<"ShippingLabel"> | string | null
+    shipmentId?: StringNullableFilter<"ShippingLabel"> | string | null
+    carrier?: StringFilter<"ShippingLabel"> | string
+    service?: StringFilter<"ShippingLabel"> | string
+    trackingNumber?: StringFilter<"ShippingLabel"> | string
+    trackingUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    rate?: DecimalFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingLabel"> | string
+    estimatedDays?: IntNullableFilter<"ShippingLabel"> | number | null
+    estimatedDelivery?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    labelUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    labelFormat?: StringNullableFilter<"ShippingLabel"> | string | null
+    weight?: DecimalNullableFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFilter<"ShippingLabel"> | string
+    dimensions?: JsonNullableFilter<"ShippingLabel">
+    status?: EnumShippingLabelStatusFilter<"ShippingLabel"> | $Enums.ShippingLabelStatus
+    voidedAt?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    rawResponse?: JsonNullableFilter<"ShippingLabel">
+    createdAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }
+
+  export type ShippingLabelOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    shipEngineId?: SortOrderInput | SortOrder
+    shipmentId?: SortOrderInput | SortOrder
+    carrier?: SortOrder
+    service?: SortOrder
+    trackingNumber?: SortOrder
+    trackingUrl?: SortOrderInput | SortOrder
+    rate?: SortOrder
+    currency?: SortOrder
+    estimatedDays?: SortOrderInput | SortOrder
+    estimatedDelivery?: SortOrderInput | SortOrder
+    labelUrl?: SortOrderInput | SortOrder
+    labelFormat?: SortOrderInput | SortOrder
+    weight?: SortOrderInput | SortOrder
+    weightUnit?: SortOrder
+    dimensions?: SortOrderInput | SortOrder
+    status?: SortOrder
+    voidedAt?: SortOrderInput | SortOrder
+    rawResponse?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+  }
+
+  export type ShippingLabelWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    shipEngineId?: string
+    trackingNumber?: string
+    AND?: ShippingLabelWhereInput | ShippingLabelWhereInput[]
+    OR?: ShippingLabelWhereInput[]
+    NOT?: ShippingLabelWhereInput | ShippingLabelWhereInput[]
+    orderId?: StringFilter<"ShippingLabel"> | string
+    shipmentId?: StringNullableFilter<"ShippingLabel"> | string | null
+    carrier?: StringFilter<"ShippingLabel"> | string
+    service?: StringFilter<"ShippingLabel"> | string
+    trackingUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    rate?: DecimalFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingLabel"> | string
+    estimatedDays?: IntNullableFilter<"ShippingLabel"> | number | null
+    estimatedDelivery?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    labelUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    labelFormat?: StringNullableFilter<"ShippingLabel"> | string | null
+    weight?: DecimalNullableFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFilter<"ShippingLabel"> | string
+    dimensions?: JsonNullableFilter<"ShippingLabel">
+    status?: EnumShippingLabelStatusFilter<"ShippingLabel"> | $Enums.ShippingLabelStatus
+    voidedAt?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    rawResponse?: JsonNullableFilter<"ShippingLabel">
+    createdAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }, "id" | "shipEngineId" | "trackingNumber">
+
+  export type ShippingLabelOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    shipEngineId?: SortOrderInput | SortOrder
+    shipmentId?: SortOrderInput | SortOrder
+    carrier?: SortOrder
+    service?: SortOrder
+    trackingNumber?: SortOrder
+    trackingUrl?: SortOrderInput | SortOrder
+    rate?: SortOrder
+    currency?: SortOrder
+    estimatedDays?: SortOrderInput | SortOrder
+    estimatedDelivery?: SortOrderInput | SortOrder
+    labelUrl?: SortOrderInput | SortOrder
+    labelFormat?: SortOrderInput | SortOrder
+    weight?: SortOrderInput | SortOrder
+    weightUnit?: SortOrder
+    dimensions?: SortOrderInput | SortOrder
+    status?: SortOrder
+    voidedAt?: SortOrderInput | SortOrder
+    rawResponse?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ShippingLabelCountOrderByAggregateInput
+    _avg?: ShippingLabelAvgOrderByAggregateInput
+    _max?: ShippingLabelMaxOrderByAggregateInput
+    _min?: ShippingLabelMinOrderByAggregateInput
+    _sum?: ShippingLabelSumOrderByAggregateInput
+  }
+
+  export type ShippingLabelScalarWhereWithAggregatesInput = {
+    AND?: ShippingLabelScalarWhereWithAggregatesInput | ShippingLabelScalarWhereWithAggregatesInput[]
+    OR?: ShippingLabelScalarWhereWithAggregatesInput[]
+    NOT?: ShippingLabelScalarWhereWithAggregatesInput | ShippingLabelScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    orderId?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    shipEngineId?: StringNullableWithAggregatesFilter<"ShippingLabel"> | string | null
+    shipmentId?: StringNullableWithAggregatesFilter<"ShippingLabel"> | string | null
+    carrier?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    service?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    trackingNumber?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    trackingUrl?: StringNullableWithAggregatesFilter<"ShippingLabel"> | string | null
+    rate?: DecimalWithAggregatesFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string
+    currency?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    estimatedDays?: IntNullableWithAggregatesFilter<"ShippingLabel"> | number | null
+    estimatedDelivery?: DateTimeNullableWithAggregatesFilter<"ShippingLabel"> | Date | string | null
+    labelUrl?: StringNullableWithAggregatesFilter<"ShippingLabel"> | string | null
+    labelFormat?: StringNullableWithAggregatesFilter<"ShippingLabel"> | string | null
+    weight?: DecimalNullableWithAggregatesFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringWithAggregatesFilter<"ShippingLabel"> | string
+    dimensions?: JsonNullableWithAggregatesFilter<"ShippingLabel">
+    status?: EnumShippingLabelStatusWithAggregatesFilter<"ShippingLabel"> | $Enums.ShippingLabelStatus
+    voidedAt?: DateTimeNullableWithAggregatesFilter<"ShippingLabel"> | Date | string | null
+    rawResponse?: JsonNullableWithAggregatesFilter<"ShippingLabel">
+    createdAt?: DateTimeWithAggregatesFilter<"ShippingLabel"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ShippingLabel"> | Date | string
+  }
+
+  export type ShippingPackageWhereInput = {
+    AND?: ShippingPackageWhereInput | ShippingPackageWhereInput[]
+    OR?: ShippingPackageWhereInput[]
+    NOT?: ShippingPackageWhereInput | ShippingPackageWhereInput[]
+    id?: StringFilter<"ShippingPackage"> | string
+    orderId?: StringFilter<"ShippingPackage"> | string
+    carrierCode?: StringFilter<"ShippingPackage"> | string
+    serviceCode?: StringFilter<"ShippingPackage"> | string
+    packageCode?: StringFilter<"ShippingPackage"> | string
+    trackingNumber?: StringNullableFilter<"ShippingPackage"> | string | null
+    labelUrl?: StringNullableFilter<"ShippingPackage"> | string | null
+    shipEngineId?: StringNullableFilter<"ShippingPackage"> | string | null
+    cost?: DecimalFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingPackage"> | string
+    weight?: DecimalNullableFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string | null
+    dimensions?: JsonNullableFilter<"ShippingPackage">
+    voidedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    shippedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    createdAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    items?: ShippingPackageItemListRelationFilter
+  }
+
+  export type ShippingPackageOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    carrierCode?: SortOrder
+    serviceCode?: SortOrder
+    packageCode?: SortOrder
+    trackingNumber?: SortOrderInput | SortOrder
+    labelUrl?: SortOrderInput | SortOrder
+    shipEngineId?: SortOrderInput | SortOrder
+    cost?: SortOrder
+    currency?: SortOrder
+    weight?: SortOrderInput | SortOrder
+    dimensions?: SortOrderInput | SortOrder
+    voidedAt?: SortOrderInput | SortOrder
+    shippedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+    items?: ShippingPackageItemOrderByRelationAggregateInput
+  }
+
+  export type ShippingPackageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ShippingPackageWhereInput | ShippingPackageWhereInput[]
+    OR?: ShippingPackageWhereInput[]
+    NOT?: ShippingPackageWhereInput | ShippingPackageWhereInput[]
+    orderId?: StringFilter<"ShippingPackage"> | string
+    carrierCode?: StringFilter<"ShippingPackage"> | string
+    serviceCode?: StringFilter<"ShippingPackage"> | string
+    packageCode?: StringFilter<"ShippingPackage"> | string
+    trackingNumber?: StringNullableFilter<"ShippingPackage"> | string | null
+    labelUrl?: StringNullableFilter<"ShippingPackage"> | string | null
+    shipEngineId?: StringNullableFilter<"ShippingPackage"> | string | null
+    cost?: DecimalFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingPackage"> | string
+    weight?: DecimalNullableFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string | null
+    dimensions?: JsonNullableFilter<"ShippingPackage">
+    voidedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    shippedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    createdAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    items?: ShippingPackageItemListRelationFilter
+  }, "id">
+
+  export type ShippingPackageOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    carrierCode?: SortOrder
+    serviceCode?: SortOrder
+    packageCode?: SortOrder
+    trackingNumber?: SortOrderInput | SortOrder
+    labelUrl?: SortOrderInput | SortOrder
+    shipEngineId?: SortOrderInput | SortOrder
+    cost?: SortOrder
+    currency?: SortOrder
+    weight?: SortOrderInput | SortOrder
+    dimensions?: SortOrderInput | SortOrder
+    voidedAt?: SortOrderInput | SortOrder
+    shippedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ShippingPackageCountOrderByAggregateInput
+    _avg?: ShippingPackageAvgOrderByAggregateInput
+    _max?: ShippingPackageMaxOrderByAggregateInput
+    _min?: ShippingPackageMinOrderByAggregateInput
+    _sum?: ShippingPackageSumOrderByAggregateInput
+  }
+
+  export type ShippingPackageScalarWhereWithAggregatesInput = {
+    AND?: ShippingPackageScalarWhereWithAggregatesInput | ShippingPackageScalarWhereWithAggregatesInput[]
+    OR?: ShippingPackageScalarWhereWithAggregatesInput[]
+    NOT?: ShippingPackageScalarWhereWithAggregatesInput | ShippingPackageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    orderId?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    carrierCode?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    serviceCode?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    packageCode?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    trackingNumber?: StringNullableWithAggregatesFilter<"ShippingPackage"> | string | null
+    labelUrl?: StringNullableWithAggregatesFilter<"ShippingPackage"> | string | null
+    shipEngineId?: StringNullableWithAggregatesFilter<"ShippingPackage"> | string | null
+    cost?: DecimalWithAggregatesFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string
+    currency?: StringWithAggregatesFilter<"ShippingPackage"> | string
+    weight?: DecimalNullableWithAggregatesFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string | null
+    dimensions?: JsonNullableWithAggregatesFilter<"ShippingPackage">
+    voidedAt?: DateTimeNullableWithAggregatesFilter<"ShippingPackage"> | Date | string | null
+    shippedAt?: DateTimeNullableWithAggregatesFilter<"ShippingPackage"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ShippingPackage"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ShippingPackage"> | Date | string
+  }
+
+  export type ShippingPackageItemWhereInput = {
+    AND?: ShippingPackageItemWhereInput | ShippingPackageItemWhereInput[]
+    OR?: ShippingPackageItemWhereInput[]
+    NOT?: ShippingPackageItemWhereInput | ShippingPackageItemWhereInput[]
+    id?: StringFilter<"ShippingPackageItem"> | string
+    packageId?: StringFilter<"ShippingPackageItem"> | string
+    productName?: StringFilter<"ShippingPackageItem"> | string
+    sku?: StringFilter<"ShippingPackageItem"> | string
+    quantity?: IntFilter<"ShippingPackageItem"> | number
+    unitPrice?: DecimalFilter<"ShippingPackageItem"> | Decimal | DecimalJsLike | number | string
+    productVariantId?: StringNullableFilter<"ShippingPackageItem"> | string | null
+    shippingPackage?: XOR<ShippingPackageScalarRelationFilter, ShippingPackageWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+  }
+
+  export type ShippingPackageItemOrderByWithRelationInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    productName?: SortOrder
+    sku?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    shippingPackage?: ShippingPackageOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+  }
+
+  export type ShippingPackageItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ShippingPackageItemWhereInput | ShippingPackageItemWhereInput[]
+    OR?: ShippingPackageItemWhereInput[]
+    NOT?: ShippingPackageItemWhereInput | ShippingPackageItemWhereInput[]
+    packageId?: StringFilter<"ShippingPackageItem"> | string
+    productName?: StringFilter<"ShippingPackageItem"> | string
+    sku?: StringFilter<"ShippingPackageItem"> | string
+    quantity?: IntFilter<"ShippingPackageItem"> | number
+    unitPrice?: DecimalFilter<"ShippingPackageItem"> | Decimal | DecimalJsLike | number | string
+    productVariantId?: StringNullableFilter<"ShippingPackageItem"> | string | null
+    shippingPackage?: XOR<ShippingPackageScalarRelationFilter, ShippingPackageWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+  }, "id">
+
+  export type ShippingPackageItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    productName?: SortOrder
+    sku?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    _count?: ShippingPackageItemCountOrderByAggregateInput
+    _avg?: ShippingPackageItemAvgOrderByAggregateInput
+    _max?: ShippingPackageItemMaxOrderByAggregateInput
+    _min?: ShippingPackageItemMinOrderByAggregateInput
+    _sum?: ShippingPackageItemSumOrderByAggregateInput
+  }
+
+  export type ShippingPackageItemScalarWhereWithAggregatesInput = {
+    AND?: ShippingPackageItemScalarWhereWithAggregatesInput | ShippingPackageItemScalarWhereWithAggregatesInput[]
+    OR?: ShippingPackageItemScalarWhereWithAggregatesInput[]
+    NOT?: ShippingPackageItemScalarWhereWithAggregatesInput | ShippingPackageItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ShippingPackageItem"> | string
+    packageId?: StringWithAggregatesFilter<"ShippingPackageItem"> | string
+    productName?: StringWithAggregatesFilter<"ShippingPackageItem"> | string
+    sku?: StringWithAggregatesFilter<"ShippingPackageItem"> | string
+    quantity?: IntWithAggregatesFilter<"ShippingPackageItem"> | number
+    unitPrice?: DecimalWithAggregatesFilter<"ShippingPackageItem"> | Decimal | DecimalJsLike | number | string
+    productVariantId?: StringNullableWithAggregatesFilter<"ShippingPackageItem"> | string | null
+  }
+
+  export type FulfillmentEventWhereInput = {
+    AND?: FulfillmentEventWhereInput | FulfillmentEventWhereInput[]
+    OR?: FulfillmentEventWhereInput[]
+    NOT?: FulfillmentEventWhereInput | FulfillmentEventWhereInput[]
+    id?: StringFilter<"FulfillmentEvent"> | string
+    orderId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    type?: StringFilter<"FulfillmentEvent"> | string
+    payload?: JsonFilter<"FulfillmentEvent">
+    correlationId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    userId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    processed?: BoolFilter<"FulfillmentEvent"> | boolean
+    createdAt?: DateTimeFilter<"FulfillmentEvent"> | Date | string
+  }
+
+  export type FulfillmentEventOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrderInput | SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
+    processed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FulfillmentEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FulfillmentEventWhereInput | FulfillmentEventWhereInput[]
+    OR?: FulfillmentEventWhereInput[]
+    NOT?: FulfillmentEventWhereInput | FulfillmentEventWhereInput[]
+    orderId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    type?: StringFilter<"FulfillmentEvent"> | string
+    payload?: JsonFilter<"FulfillmentEvent">
+    correlationId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    userId?: StringNullableFilter<"FulfillmentEvent"> | string | null
+    processed?: BoolFilter<"FulfillmentEvent"> | boolean
+    createdAt?: DateTimeFilter<"FulfillmentEvent"> | Date | string
+  }, "id">
+
+  export type FulfillmentEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrderInput | SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    correlationId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
+    processed?: SortOrder
+    createdAt?: SortOrder
+    _count?: FulfillmentEventCountOrderByAggregateInput
+    _max?: FulfillmentEventMaxOrderByAggregateInput
+    _min?: FulfillmentEventMinOrderByAggregateInput
+  }
+
+  export type FulfillmentEventScalarWhereWithAggregatesInput = {
+    AND?: FulfillmentEventScalarWhereWithAggregatesInput | FulfillmentEventScalarWhereWithAggregatesInput[]
+    OR?: FulfillmentEventScalarWhereWithAggregatesInput[]
+    NOT?: FulfillmentEventScalarWhereWithAggregatesInput | FulfillmentEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FulfillmentEvent"> | string
+    orderId?: StringNullableWithAggregatesFilter<"FulfillmentEvent"> | string | null
+    type?: StringWithAggregatesFilter<"FulfillmentEvent"> | string
+    payload?: JsonWithAggregatesFilter<"FulfillmentEvent">
+    correlationId?: StringNullableWithAggregatesFilter<"FulfillmentEvent"> | string | null
+    userId?: StringNullableWithAggregatesFilter<"FulfillmentEvent"> | string | null
+    processed?: BoolWithAggregatesFilter<"FulfillmentEvent"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FulfillmentEvent"> | Date | string
+  }
+
   export type WorkTaskWhereInput = {
     AND?: WorkTaskWhereInput | WorkTaskWhereInput[]
     OR?: WorkTaskWhereInput[]
@@ -24034,6 +29875,11 @@ export namespace Prisma {
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
+    packedWeight?: DecimalNullableFilter<"WorkTask"> | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: StringNullableFilter<"WorkTask"> | string | null
+    packedDimensions?: JsonNullableFilter<"WorkTask">
+    verifiedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"WorkTask"> | string | null
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
     shortItems?: IntFilter<"WorkTask"> | number
@@ -24062,6 +29908,11 @@ export namespace Prisma {
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrderInput | SortOrder
+    packedWeightUnit?: SortOrderInput | SortOrder
+    packedDimensions?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -24093,6 +29944,11 @@ export namespace Prisma {
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
+    packedWeight?: DecimalNullableFilter<"WorkTask"> | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: StringNullableFilter<"WorkTask"> | string | null
+    packedDimensions?: JsonNullableFilter<"WorkTask">
+    verifiedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"WorkTask"> | string | null
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
     shortItems?: IntFilter<"WorkTask"> | number
@@ -24121,6 +29977,11 @@ export namespace Prisma {
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrderInput | SortOrder
+    packedWeightUnit?: SortOrderInput | SortOrder
+    packedDimensions?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -24154,6 +30015,11 @@ export namespace Prisma {
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntWithAggregatesFilter<"WorkTask"> | number
     completedOrders?: IntWithAggregatesFilter<"WorkTask"> | number
+    packedWeight?: DecimalNullableWithAggregatesFilter<"WorkTask"> | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: StringNullableWithAggregatesFilter<"WorkTask"> | string | null
+    packedDimensions?: JsonNullableWithAggregatesFilter<"WorkTask">
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"WorkTask"> | Date | string | null
+    verifiedBy?: StringNullableWithAggregatesFilter<"WorkTask"> | string | null
     totalItems?: IntWithAggregatesFilter<"WorkTask"> | number
     completedItems?: IntWithAggregatesFilter<"WorkTask"> | number
     shortItems?: IntWithAggregatesFilter<"WorkTask"> | number
@@ -24941,6 +30807,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     product: ProductCreateNestedOneWithoutVariantsInput
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
@@ -24964,6 +30831,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
@@ -24985,6 +30853,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
@@ -25008,6 +30877,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -25434,9 +31304,11 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -25462,9 +31334,11 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -25490,9 +31364,11 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -25518,9 +31394,11 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -25716,6 +31594,461 @@ export namespace Prisma {
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ShippingLabelCreateInput = {
+    id?: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutShippingLabelsInput
+  }
+
+  export type ShippingLabelUncheckedCreateInput = {
+    id?: string
+    orderId: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingLabelUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutShippingLabelsNestedInput
+  }
+
+  export type ShippingLabelUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingLabelCreateManyInput = {
+    id?: string
+    orderId: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingLabelUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingLabelUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingPackageCreateInput = {
+    id?: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutShippingPackagesInput
+    items?: ShippingPackageItemCreateNestedManyWithoutShippingPackageInput
+  }
+
+  export type ShippingPackageUncheckedCreateInput = {
+    id?: string
+    orderId: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: ShippingPackageItemUncheckedCreateNestedManyWithoutShippingPackageInput
+  }
+
+  export type ShippingPackageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutShippingPackagesNestedInput
+    items?: ShippingPackageItemUpdateManyWithoutShippingPackageNestedInput
+  }
+
+  export type ShippingPackageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: ShippingPackageItemUncheckedUpdateManyWithoutShippingPackageNestedInput
+  }
+
+  export type ShippingPackageCreateManyInput = {
+    id?: string
+    orderId: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingPackageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingPackageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingPackageItemCreateInput = {
+    id?: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    shippingPackage: ShippingPackageCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutShippingPackageItemsInput
+  }
+
+  export type ShippingPackageItemUncheckedCreateInput = {
+    id?: string
+    packageId: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    productVariantId?: string | null
+  }
+
+  export type ShippingPackageItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    shippingPackage?: ShippingPackageUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutShippingPackageItemsNestedInput
+  }
+
+  export type ShippingPackageItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ShippingPackageItemCreateManyInput = {
+    id?: string
+    packageId: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    productVariantId?: string | null
+  }
+
+  export type ShippingPackageItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type ShippingPackageItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FulfillmentEventCreateInput = {
+    id?: string
+    orderId?: string | null
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    correlationId?: string | null
+    userId?: string | null
+    processed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type FulfillmentEventUncheckedCreateInput = {
+    id?: string
+    orderId?: string | null
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    correlationId?: string | null
+    userId?: string | null
+    processed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type FulfillmentEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    processed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FulfillmentEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    processed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FulfillmentEventCreateManyInput = {
+    id?: string
+    orderId?: string | null
+    type: string
+    payload: JsonNullValueInput | InputJsonValue
+    correlationId?: string | null
+    userId?: string | null
+    processed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type FulfillmentEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    processed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FulfillmentEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    payload?: JsonNullValueInput | InputJsonValue
+    correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    processed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type WorkTaskCreateInput = {
     id?: string
     taskNumber: string
@@ -25731,6 +32064,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -25759,6 +32097,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -25785,6 +32128,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -25813,6 +32161,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -25840,6 +32193,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -25864,6 +32222,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -25889,6 +32252,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -26737,6 +33105,12 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type ShippingPackageItemListRelationFilter = {
+    every?: ShippingPackageItemWhereInput
+    some?: ShippingPackageItemWhereInput
+    none?: ShippingPackageItemWhereInput
+  }
+
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
@@ -26758,6 +33132,10 @@ export namespace Prisma {
     every?: AllocationWhereInput
     some?: AllocationWhereInput
     none?: AllocationWhereInput
+  }
+
+  export type ShippingPackageItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type OrderItemOrderByRelationAggregateInput = {
@@ -27237,6 +33615,26 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type ShippingPackageListRelationFilter = {
+    every?: ShippingPackageWhereInput
+    some?: ShippingPackageWhereInput
+    none?: ShippingPackageWhereInput
+  }
+
+  export type ShippingLabelListRelationFilter = {
+    every?: ShippingLabelWhereInput
+    some?: ShippingLabelWhereInput
+    none?: ShippingLabelWhereInput
+  }
+
+  export type ShippingPackageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ShippingLabelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -27483,6 +33881,247 @@ export namespace Prisma {
     totalPrice?: SortOrder
   }
 
+  export type EnumShippingLabelStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingLabelStatus | EnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingLabelStatusFilter<$PrismaModel> | $Enums.ShippingLabelStatus
+  }
+
+  export type ShippingLabelCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    shipEngineId?: SortOrder
+    shipmentId?: SortOrder
+    carrier?: SortOrder
+    service?: SortOrder
+    trackingNumber?: SortOrder
+    trackingUrl?: SortOrder
+    rate?: SortOrder
+    currency?: SortOrder
+    estimatedDays?: SortOrder
+    estimatedDelivery?: SortOrder
+    labelUrl?: SortOrder
+    labelFormat?: SortOrder
+    weight?: SortOrder
+    weightUnit?: SortOrder
+    dimensions?: SortOrder
+    status?: SortOrder
+    voidedAt?: SortOrder
+    rawResponse?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingLabelAvgOrderByAggregateInput = {
+    rate?: SortOrder
+    estimatedDays?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type ShippingLabelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    shipEngineId?: SortOrder
+    shipmentId?: SortOrder
+    carrier?: SortOrder
+    service?: SortOrder
+    trackingNumber?: SortOrder
+    trackingUrl?: SortOrder
+    rate?: SortOrder
+    currency?: SortOrder
+    estimatedDays?: SortOrder
+    estimatedDelivery?: SortOrder
+    labelUrl?: SortOrder
+    labelFormat?: SortOrder
+    weight?: SortOrder
+    weightUnit?: SortOrder
+    status?: SortOrder
+    voidedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingLabelMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    shipEngineId?: SortOrder
+    shipmentId?: SortOrder
+    carrier?: SortOrder
+    service?: SortOrder
+    trackingNumber?: SortOrder
+    trackingUrl?: SortOrder
+    rate?: SortOrder
+    currency?: SortOrder
+    estimatedDays?: SortOrder
+    estimatedDelivery?: SortOrder
+    labelUrl?: SortOrder
+    labelFormat?: SortOrder
+    weight?: SortOrder
+    weightUnit?: SortOrder
+    status?: SortOrder
+    voidedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingLabelSumOrderByAggregateInput = {
+    rate?: SortOrder
+    estimatedDays?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type EnumShippingLabelStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingLabelStatus | EnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingLabelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ShippingLabelStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShippingLabelStatusFilter<$PrismaModel>
+    _max?: NestedEnumShippingLabelStatusFilter<$PrismaModel>
+  }
+
+  export type ShippingPackageCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    carrierCode?: SortOrder
+    serviceCode?: SortOrder
+    packageCode?: SortOrder
+    trackingNumber?: SortOrder
+    labelUrl?: SortOrder
+    shipEngineId?: SortOrder
+    cost?: SortOrder
+    currency?: SortOrder
+    weight?: SortOrder
+    dimensions?: SortOrder
+    voidedAt?: SortOrder
+    shippedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingPackageAvgOrderByAggregateInput = {
+    cost?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type ShippingPackageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    carrierCode?: SortOrder
+    serviceCode?: SortOrder
+    packageCode?: SortOrder
+    trackingNumber?: SortOrder
+    labelUrl?: SortOrder
+    shipEngineId?: SortOrder
+    cost?: SortOrder
+    currency?: SortOrder
+    weight?: SortOrder
+    voidedAt?: SortOrder
+    shippedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingPackageMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    carrierCode?: SortOrder
+    serviceCode?: SortOrder
+    packageCode?: SortOrder
+    trackingNumber?: SortOrder
+    labelUrl?: SortOrder
+    shipEngineId?: SortOrder
+    cost?: SortOrder
+    currency?: SortOrder
+    weight?: SortOrder
+    voidedAt?: SortOrder
+    shippedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShippingPackageSumOrderByAggregateInput = {
+    cost?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type ShippingPackageScalarRelationFilter = {
+    is?: ShippingPackageWhereInput
+    isNot?: ShippingPackageWhereInput
+  }
+
+  export type ShippingPackageItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    productName?: SortOrder
+    sku?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    productVariantId?: SortOrder
+  }
+
+  export type ShippingPackageItemAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+  }
+
+  export type ShippingPackageItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    productName?: SortOrder
+    sku?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    productVariantId?: SortOrder
+  }
+
+  export type ShippingPackageItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    packageId?: SortOrder
+    productName?: SortOrder
+    sku?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    productVariantId?: SortOrder
+  }
+
+  export type ShippingPackageItemSumOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+  }
+
+  export type FulfillmentEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    type?: SortOrder
+    payload?: SortOrder
+    correlationId?: SortOrder
+    userId?: SortOrder
+    processed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FulfillmentEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    type?: SortOrder
+    correlationId?: SortOrder
+    userId?: SortOrder
+    processed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FulfillmentEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    type?: SortOrder
+    correlationId?: SortOrder
+    userId?: SortOrder
+    processed?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type EnumWorkTaskTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.WorkTaskType | EnumWorkTaskTypeFieldRefInput<$PrismaModel>
     in?: $Enums.WorkTaskType[] | ListEnumWorkTaskTypeFieldRefInput<$PrismaModel>
@@ -27533,6 +34172,11 @@ export namespace Prisma {
     orderIds?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrder
+    packedWeightUnit?: SortOrder
+    packedDimensions?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -27546,6 +34190,7 @@ export namespace Prisma {
     priority?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -27567,6 +34212,10 @@ export namespace Prisma {
     blockedAt?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrder
+    packedWeightUnit?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -27591,6 +34240,10 @@ export namespace Prisma {
     blockedAt?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrder
+    packedWeightUnit?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -27604,6 +34257,7 @@ export namespace Prisma {
     priority?: SortOrder
     totalOrders?: SortOrder
     completedOrders?: SortOrder
+    packedWeight?: SortOrder
     totalItems?: SortOrder
     completedItems?: SortOrder
     shortItems?: SortOrder
@@ -28290,6 +34944,13 @@ export namespace Prisma {
     deleteMany?: ProductVariantScalarWhereInput | ProductVariantScalarWhereInput[]
   }
 
+  export type ShippingPackageItemCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: ShippingPackageItemCreateManyProductVariantInputEnvelope
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+  }
+
   export type ProductCreateNestedOneWithoutVariantsInput = {
     create?: XOR<ProductCreateWithoutVariantsInput, ProductUncheckedCreateWithoutVariantsInput>
     connectOrCreate?: ProductCreateOrConnectWithoutVariantsInput
@@ -28322,6 +34983,13 @@ export namespace Prisma {
     connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
     createMany?: AllocationCreateManyProductVariantInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: ShippingPackageItemCreateManyProductVariantInputEnvelope
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
   }
 
   export type OrderItemUncheckedCreateNestedManyWithoutProductVariantInput = {
@@ -28358,6 +35026,20 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ShippingPackageItemUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput | ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: ShippingPackageItemCreateManyProductVariantInputEnvelope
+    set?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    disconnect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    delete?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    update?: ShippingPackageItemUpdateWithWhereUniqueWithoutProductVariantInput | ShippingPackageItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: ShippingPackageItemUpdateManyWithWhereWithoutProductVariantInput | ShippingPackageItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
   }
 
   export type ProductUpdateOneRequiredWithoutVariantsNestedInput = {
@@ -28422,6 +35104,20 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutProductVariantInput | AllocationUpdateWithWhereUniqueWithoutProductVariantInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutProductVariantInput | AllocationUpdateManyWithWhereWithoutProductVariantInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput | ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: ShippingPackageItemCreateManyProductVariantInputEnvelope
+    set?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    disconnect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    delete?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    update?: ShippingPackageItemUpdateWithWhereUniqueWithoutProductVariantInput | ShippingPackageItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: ShippingPackageItemUpdateManyWithWhereWithoutProductVariantInput | ShippingPackageItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
   }
 
   export type OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
@@ -28792,6 +35488,13 @@ export namespace Prisma {
     update?: XOR<XOR<TaskItemUpdateToOneWithWhereWithoutAllocationInput, TaskItemUpdateWithoutAllocationInput>, TaskItemUncheckedUpdateWithoutAllocationInput>
   }
 
+  export type ShippingPackageCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput> | ShippingPackageCreateWithoutOrderInput[] | ShippingPackageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutOrderInput | ShippingPackageCreateOrConnectWithoutOrderInput[]
+    createMany?: ShippingPackageCreateManyOrderInputEnvelope
+    connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+  }
+
   export type OrderItemCreateNestedManyWithoutOrderInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -28811,6 +35514,20 @@ export namespace Prisma {
     connectOrCreate?: AllocationCreateOrConnectWithoutOrderInput | AllocationCreateOrConnectWithoutOrderInput[]
     createMany?: AllocationCreateManyOrderInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type ShippingLabelCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput> | ShippingLabelCreateWithoutOrderInput[] | ShippingLabelUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingLabelCreateOrConnectWithoutOrderInput | ShippingLabelCreateOrConnectWithoutOrderInput[]
+    createMany?: ShippingLabelCreateManyOrderInputEnvelope
+    connect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+  }
+
+  export type ShippingPackageUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput> | ShippingPackageCreateWithoutOrderInput[] | ShippingPackageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutOrderInput | ShippingPackageCreateOrConnectWithoutOrderInput[]
+    createMany?: ShippingPackageCreateManyOrderInputEnvelope
+    connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
   }
 
   export type OrderItemUncheckedCreateNestedManyWithoutOrderInput = {
@@ -28834,6 +35551,13 @@ export namespace Prisma {
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
+  export type ShippingLabelUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput> | ShippingLabelCreateWithoutOrderInput[] | ShippingLabelUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingLabelCreateOrConnectWithoutOrderInput | ShippingLabelCreateOrConnectWithoutOrderInput[]
+    createMany?: ShippingLabelCreateManyOrderInputEnvelope
+    connect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+  }
+
   export type EnumOrderStatusFieldUpdateOperationsInput = {
     set?: $Enums.OrderStatus
   }
@@ -28852,6 +35576,20 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ShippingPackageUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput> | ShippingPackageCreateWithoutOrderInput[] | ShippingPackageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutOrderInput | ShippingPackageCreateOrConnectWithoutOrderInput[]
+    upsert?: ShippingPackageUpsertWithWhereUniqueWithoutOrderInput | ShippingPackageUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ShippingPackageCreateManyOrderInputEnvelope
+    set?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    disconnect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    delete?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    update?: ShippingPackageUpdateWithWhereUniqueWithoutOrderInput | ShippingPackageUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ShippingPackageUpdateManyWithWhereWithoutOrderInput | ShippingPackageUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
   }
 
   export type OrderItemUpdateManyWithoutOrderNestedInput = {
@@ -28896,6 +35634,34 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type ShippingLabelUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput> | ShippingLabelCreateWithoutOrderInput[] | ShippingLabelUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingLabelCreateOrConnectWithoutOrderInput | ShippingLabelCreateOrConnectWithoutOrderInput[]
+    upsert?: ShippingLabelUpsertWithWhereUniqueWithoutOrderInput | ShippingLabelUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ShippingLabelCreateManyOrderInputEnvelope
+    set?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    disconnect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    delete?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    connect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    update?: ShippingLabelUpdateWithWhereUniqueWithoutOrderInput | ShippingLabelUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ShippingLabelUpdateManyWithWhereWithoutOrderInput | ShippingLabelUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ShippingLabelScalarWhereInput | ShippingLabelScalarWhereInput[]
+  }
+
+  export type ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput> | ShippingPackageCreateWithoutOrderInput[] | ShippingPackageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutOrderInput | ShippingPackageCreateOrConnectWithoutOrderInput[]
+    upsert?: ShippingPackageUpsertWithWhereUniqueWithoutOrderInput | ShippingPackageUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ShippingPackageCreateManyOrderInputEnvelope
+    set?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    disconnect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    delete?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+    update?: ShippingPackageUpdateWithWhereUniqueWithoutOrderInput | ShippingPackageUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ShippingPackageUpdateManyWithWhereWithoutOrderInput | ShippingPackageUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -28936,6 +35702,20 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutOrderInput | AllocationUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutOrderInput | AllocationUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput> | ShippingLabelCreateWithoutOrderInput[] | ShippingLabelUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ShippingLabelCreateOrConnectWithoutOrderInput | ShippingLabelCreateOrConnectWithoutOrderInput[]
+    upsert?: ShippingLabelUpsertWithWhereUniqueWithoutOrderInput | ShippingLabelUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ShippingLabelCreateManyOrderInputEnvelope
+    set?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    disconnect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    delete?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    connect?: ShippingLabelWhereUniqueInput | ShippingLabelWhereUniqueInput[]
+    update?: ShippingLabelUpdateWithWhereUniqueWithoutOrderInput | ShippingLabelUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ShippingLabelUpdateManyWithWhereWithoutOrderInput | ShippingLabelUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ShippingLabelScalarWhereInput | ShippingLabelScalarWhereInput[]
   }
 
   export type OrderCreateNestedOneWithoutItemsInput = {
@@ -29050,6 +35830,110 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutOrderItemInput | AllocationUpdateWithWhereUniqueWithoutOrderItemInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutOrderItemInput | AllocationUpdateManyWithWhereWithoutOrderItemInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type OrderCreateNestedOneWithoutShippingLabelsInput = {
+    create?: XOR<OrderCreateWithoutShippingLabelsInput, OrderUncheckedCreateWithoutShippingLabelsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutShippingLabelsInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type EnumShippingLabelStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ShippingLabelStatus
+  }
+
+  export type OrderUpdateOneRequiredWithoutShippingLabelsNestedInput = {
+    create?: XOR<OrderCreateWithoutShippingLabelsInput, OrderUncheckedCreateWithoutShippingLabelsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutShippingLabelsInput
+    upsert?: OrderUpsertWithoutShippingLabelsInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutShippingLabelsInput, OrderUpdateWithoutShippingLabelsInput>, OrderUncheckedUpdateWithoutShippingLabelsInput>
+  }
+
+  export type OrderCreateNestedOneWithoutShippingPackagesInput = {
+    create?: XOR<OrderCreateWithoutShippingPackagesInput, OrderUncheckedCreateWithoutShippingPackagesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutShippingPackagesInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type ShippingPackageItemCreateNestedManyWithoutShippingPackageInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput> | ShippingPackageItemCreateWithoutShippingPackageInput[] | ShippingPackageItemUncheckedCreateWithoutShippingPackageInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutShippingPackageInput | ShippingPackageItemCreateOrConnectWithoutShippingPackageInput[]
+    createMany?: ShippingPackageItemCreateManyShippingPackageInputEnvelope
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+  }
+
+  export type ShippingPackageItemUncheckedCreateNestedManyWithoutShippingPackageInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput> | ShippingPackageItemCreateWithoutShippingPackageInput[] | ShippingPackageItemUncheckedCreateWithoutShippingPackageInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutShippingPackageInput | ShippingPackageItemCreateOrConnectWithoutShippingPackageInput[]
+    createMany?: ShippingPackageItemCreateManyShippingPackageInputEnvelope
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+  }
+
+  export type OrderUpdateOneRequiredWithoutShippingPackagesNestedInput = {
+    create?: XOR<OrderCreateWithoutShippingPackagesInput, OrderUncheckedCreateWithoutShippingPackagesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutShippingPackagesInput
+    upsert?: OrderUpsertWithoutShippingPackagesInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutShippingPackagesInput, OrderUpdateWithoutShippingPackagesInput>, OrderUncheckedUpdateWithoutShippingPackagesInput>
+  }
+
+  export type ShippingPackageItemUpdateManyWithoutShippingPackageNestedInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput> | ShippingPackageItemCreateWithoutShippingPackageInput[] | ShippingPackageItemUncheckedCreateWithoutShippingPackageInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutShippingPackageInput | ShippingPackageItemCreateOrConnectWithoutShippingPackageInput[]
+    upsert?: ShippingPackageItemUpsertWithWhereUniqueWithoutShippingPackageInput | ShippingPackageItemUpsertWithWhereUniqueWithoutShippingPackageInput[]
+    createMany?: ShippingPackageItemCreateManyShippingPackageInputEnvelope
+    set?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    disconnect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    delete?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    update?: ShippingPackageItemUpdateWithWhereUniqueWithoutShippingPackageInput | ShippingPackageItemUpdateWithWhereUniqueWithoutShippingPackageInput[]
+    updateMany?: ShippingPackageItemUpdateManyWithWhereWithoutShippingPackageInput | ShippingPackageItemUpdateManyWithWhereWithoutShippingPackageInput[]
+    deleteMany?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
+  }
+
+  export type ShippingPackageItemUncheckedUpdateManyWithoutShippingPackageNestedInput = {
+    create?: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput> | ShippingPackageItemCreateWithoutShippingPackageInput[] | ShippingPackageItemUncheckedCreateWithoutShippingPackageInput[]
+    connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutShippingPackageInput | ShippingPackageItemCreateOrConnectWithoutShippingPackageInput[]
+    upsert?: ShippingPackageItemUpsertWithWhereUniqueWithoutShippingPackageInput | ShippingPackageItemUpsertWithWhereUniqueWithoutShippingPackageInput[]
+    createMany?: ShippingPackageItemCreateManyShippingPackageInputEnvelope
+    set?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    disconnect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    delete?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    connect?: ShippingPackageItemWhereUniqueInput | ShippingPackageItemWhereUniqueInput[]
+    update?: ShippingPackageItemUpdateWithWhereUniqueWithoutShippingPackageInput | ShippingPackageItemUpdateWithWhereUniqueWithoutShippingPackageInput[]
+    updateMany?: ShippingPackageItemUpdateManyWithWhereWithoutShippingPackageInput | ShippingPackageItemUpdateManyWithWhereWithoutShippingPackageInput[]
+    deleteMany?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
+  }
+
+  export type ShippingPackageCreateNestedOneWithoutItemsInput = {
+    create?: XOR<ShippingPackageCreateWithoutItemsInput, ShippingPackageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutItemsInput
+    connect?: ShippingPackageWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutShippingPackageItemsInput = {
+    create?: XOR<ProductVariantCreateWithoutShippingPackageItemsInput, ProductVariantUncheckedCreateWithoutShippingPackageItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutShippingPackageItemsInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type ShippingPackageUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<ShippingPackageCreateWithoutItemsInput, ShippingPackageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: ShippingPackageCreateOrConnectWithoutItemsInput
+    upsert?: ShippingPackageUpsertWithoutItemsInput
+    connect?: ShippingPackageWhereUniqueInput
+    update?: XOR<XOR<ShippingPackageUpdateToOneWithWhereWithoutItemsInput, ShippingPackageUpdateWithoutItemsInput>, ShippingPackageUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ProductVariantUpdateOneWithoutShippingPackageItemsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutShippingPackageItemsInput, ProductVariantUncheckedCreateWithoutShippingPackageItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutShippingPackageItemsInput
+    upsert?: ProductVariantUpsertWithoutShippingPackageItemsInput
+    disconnect?: ProductVariantWhereInput | boolean
+    delete?: ProductVariantWhereInput | boolean
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutShippingPackageItemsInput, ProductVariantUpdateWithoutShippingPackageItemsInput>, ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput>
   }
 
   export type WorkTaskCreateorderIdsInput = {
@@ -29785,6 +36669,23 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedEnumShippingLabelStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingLabelStatus | EnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingLabelStatusFilter<$PrismaModel> | $Enums.ShippingLabelStatus
+  }
+
+  export type NestedEnumShippingLabelStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShippingLabelStatus | EnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumShippingLabelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ShippingLabelStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShippingLabelStatusFilter<$PrismaModel>
+    _max?: NestedEnumShippingLabelStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumWorkTaskTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.WorkTaskType | EnumWorkTaskTypeFieldRefInput<$PrismaModel>
     in?: $Enums.WorkTaskType[] | ListEnumWorkTaskTypeFieldRefInput<$PrismaModel>
@@ -29935,6 +36836,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -29961,6 +36867,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -30210,6 +37121,11 @@ export namespace Prisma {
     orderIds?: StringNullableListFilter<"WorkTask">
     totalOrders?: IntFilter<"WorkTask"> | number
     completedOrders?: IntFilter<"WorkTask"> | number
+    packedWeight?: DecimalNullableFilter<"WorkTask"> | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: StringNullableFilter<"WorkTask"> | string | null
+    packedDimensions?: JsonNullableFilter<"WorkTask">
+    verifiedAt?: DateTimeNullableFilter<"WorkTask"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"WorkTask"> | string | null
     totalItems?: IntFilter<"WorkTask"> | number
     completedItems?: IntFilter<"WorkTask"> | number
     shortItems?: IntFilter<"WorkTask"> | number
@@ -30546,6 +37462,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
@@ -30567,6 +37484,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
@@ -30618,6 +37536,34 @@ export namespace Prisma {
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeFilter<"ProductVariant"> | Date | string
+  }
+
+  export type ShippingPackageItemCreateWithoutProductVariantInput = {
+    id?: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    shippingPackage: ShippingPackageCreateNestedOneWithoutItemsInput
+  }
+
+  export type ShippingPackageItemUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    packageId: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ShippingPackageItemCreateOrConnectWithoutProductVariantInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    create: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type ShippingPackageItemCreateManyProductVariantInputEnvelope = {
+    data: ShippingPackageItemCreateManyProductVariantInput | ShippingPackageItemCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProductCreateWithoutVariantsInput = {
@@ -30825,6 +37771,35 @@ export namespace Prisma {
   export type AllocationCreateManyProductVariantInputEnvelope = {
     data: AllocationCreateManyProductVariantInput | AllocationCreateManyProductVariantInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    update: XOR<ShippingPackageItemUpdateWithoutProductVariantInput, ShippingPackageItemUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type ShippingPackageItemUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    data: XOR<ShippingPackageItemUpdateWithoutProductVariantInput, ShippingPackageItemUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type ShippingPackageItemUpdateManyWithWhereWithoutProductVariantInput = {
+    where: ShippingPackageItemScalarWhereInput
+    data: XOR<ShippingPackageItemUpdateManyMutationInput, ShippingPackageItemUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type ShippingPackageItemScalarWhereInput = {
+    AND?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
+    OR?: ShippingPackageItemScalarWhereInput[]
+    NOT?: ShippingPackageItemScalarWhereInput | ShippingPackageItemScalarWhereInput[]
+    id?: StringFilter<"ShippingPackageItem"> | string
+    packageId?: StringFilter<"ShippingPackageItem"> | string
+    productName?: StringFilter<"ShippingPackageItem"> | string
+    sku?: StringFilter<"ShippingPackageItem"> | string
+    quantity?: IntFilter<"ShippingPackageItem"> | number
+    unitPrice?: DecimalFilter<"ShippingPackageItem"> | Decimal | DecimalJsLike | number | string
+    productVariantId?: StringNullableFilter<"ShippingPackageItem"> | string | null
   }
 
   export type ProductUpsertWithoutVariantsInput = {
@@ -31179,6 +38154,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     product: ProductCreateNestedOneWithoutVariantsInput
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
@@ -31201,6 +38177,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
@@ -31320,6 +38297,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
@@ -31342,6 +38320,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -31470,8 +38449,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutAllocationsInput = {
@@ -31497,8 +38478,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutAllocationsInput = {
@@ -31560,6 +38543,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     product: ProductCreateNestedOneWithoutVariantsInput
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
@@ -31582,6 +38566,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
@@ -31757,8 +38742,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutAllocationsInput = {
@@ -31784,8 +38771,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderItemUpsertWithoutAllocationsInput = {
@@ -31859,6 +38848,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
@@ -31881,6 +38871,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -31986,6 +38977,54 @@ export namespace Prisma {
     itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingPackageCreateWithoutOrderInput = {
+    id?: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: ShippingPackageItemCreateNestedManyWithoutShippingPackageInput
+  }
+
+  export type ShippingPackageUncheckedCreateWithoutOrderInput = {
+    id?: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: ShippingPackageItemUncheckedCreateNestedManyWithoutShippingPackageInput
+  }
+
+  export type ShippingPackageCreateOrConnectWithoutOrderInput = {
+    where: ShippingPackageWhereUniqueInput
+    create: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ShippingPackageCreateManyOrderInputEnvelope = {
+    data: ShippingPackageCreateManyOrderInput | ShippingPackageCreateManyOrderInput[]
+    skipDuplicates?: boolean
   }
 
   export type OrderItemCreateWithoutOrderInput = {
@@ -32124,6 +39163,102 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ShippingLabelCreateWithoutOrderInput = {
+    id?: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingLabelUncheckedCreateWithoutOrderInput = {
+    id?: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingLabelCreateOrConnectWithoutOrderInput = {
+    where: ShippingLabelWhereUniqueInput
+    create: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ShippingLabelCreateManyOrderInputEnvelope = {
+    data: ShippingLabelCreateManyOrderInput | ShippingLabelCreateManyOrderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ShippingPackageUpsertWithWhereUniqueWithoutOrderInput = {
+    where: ShippingPackageWhereUniqueInput
+    update: XOR<ShippingPackageUpdateWithoutOrderInput, ShippingPackageUncheckedUpdateWithoutOrderInput>
+    create: XOR<ShippingPackageCreateWithoutOrderInput, ShippingPackageUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ShippingPackageUpdateWithWhereUniqueWithoutOrderInput = {
+    where: ShippingPackageWhereUniqueInput
+    data: XOR<ShippingPackageUpdateWithoutOrderInput, ShippingPackageUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type ShippingPackageUpdateManyWithWhereWithoutOrderInput = {
+    where: ShippingPackageScalarWhereInput
+    data: XOR<ShippingPackageUpdateManyMutationInput, ShippingPackageUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type ShippingPackageScalarWhereInput = {
+    AND?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
+    OR?: ShippingPackageScalarWhereInput[]
+    NOT?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
+    id?: StringFilter<"ShippingPackage"> | string
+    orderId?: StringFilter<"ShippingPackage"> | string
+    carrierCode?: StringFilter<"ShippingPackage"> | string
+    serviceCode?: StringFilter<"ShippingPackage"> | string
+    packageCode?: StringFilter<"ShippingPackage"> | string
+    trackingNumber?: StringNullableFilter<"ShippingPackage"> | string | null
+    labelUrl?: StringNullableFilter<"ShippingPackage"> | string | null
+    shipEngineId?: StringNullableFilter<"ShippingPackage"> | string | null
+    cost?: DecimalFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingPackage"> | string
+    weight?: DecimalNullableFilter<"ShippingPackage"> | Decimal | DecimalJsLike | number | string | null
+    dimensions?: JsonNullableFilter<"ShippingPackage">
+    voidedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    shippedAt?: DateTimeNullableFilter<"ShippingPackage"> | Date | string | null
+    createdAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingPackage"> | Date | string
+  }
+
   export type OrderItemUpsertWithWhereUniqueWithoutOrderInput = {
     where: OrderItemWhereUniqueInput
     update: XOR<OrderItemUpdateWithoutOrderInput, OrderItemUncheckedUpdateWithoutOrderInput>
@@ -32172,6 +39307,50 @@ export namespace Prisma {
     data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutOrderInput>
   }
 
+  export type ShippingLabelUpsertWithWhereUniqueWithoutOrderInput = {
+    where: ShippingLabelWhereUniqueInput
+    update: XOR<ShippingLabelUpdateWithoutOrderInput, ShippingLabelUncheckedUpdateWithoutOrderInput>
+    create: XOR<ShippingLabelCreateWithoutOrderInput, ShippingLabelUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ShippingLabelUpdateWithWhereUniqueWithoutOrderInput = {
+    where: ShippingLabelWhereUniqueInput
+    data: XOR<ShippingLabelUpdateWithoutOrderInput, ShippingLabelUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type ShippingLabelUpdateManyWithWhereWithoutOrderInput = {
+    where: ShippingLabelScalarWhereInput
+    data: XOR<ShippingLabelUpdateManyMutationInput, ShippingLabelUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type ShippingLabelScalarWhereInput = {
+    AND?: ShippingLabelScalarWhereInput | ShippingLabelScalarWhereInput[]
+    OR?: ShippingLabelScalarWhereInput[]
+    NOT?: ShippingLabelScalarWhereInput | ShippingLabelScalarWhereInput[]
+    id?: StringFilter<"ShippingLabel"> | string
+    orderId?: StringFilter<"ShippingLabel"> | string
+    shipEngineId?: StringNullableFilter<"ShippingLabel"> | string | null
+    shipmentId?: StringNullableFilter<"ShippingLabel"> | string | null
+    carrier?: StringFilter<"ShippingLabel"> | string
+    service?: StringFilter<"ShippingLabel"> | string
+    trackingNumber?: StringFilter<"ShippingLabel"> | string
+    trackingUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    rate?: DecimalFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"ShippingLabel"> | string
+    estimatedDays?: IntNullableFilter<"ShippingLabel"> | number | null
+    estimatedDelivery?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    labelUrl?: StringNullableFilter<"ShippingLabel"> | string | null
+    labelFormat?: StringNullableFilter<"ShippingLabel"> | string | null
+    weight?: DecimalNullableFilter<"ShippingLabel"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFilter<"ShippingLabel"> | string
+    dimensions?: JsonNullableFilter<"ShippingLabel">
+    status?: EnumShippingLabelStatusFilter<"ShippingLabel"> | $Enums.ShippingLabelStatus
+    voidedAt?: DateTimeNullableFilter<"ShippingLabel"> | Date | string | null
+    rawResponse?: JsonNullableFilter<"ShippingLabel">
+    createdAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+    updatedAt?: DateTimeFilter<"ShippingLabel"> | Date | string
+  }
+
   export type OrderCreateWithoutItemsInput = {
     id?: string
     orderNumber: string
@@ -32195,8 +39374,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutItemsInput = {
@@ -32222,8 +39403,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutItemsInput = {
@@ -32246,6 +39429,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     product: ProductCreateNestedOneWithoutVariantsInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
@@ -32268,6 +39452,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
@@ -32404,8 +39589,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutItemsInput = {
@@ -32431,8 +39618,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type ProductVariantUpsertWithoutOrderItemsInput = {
@@ -32461,6 +39650,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
@@ -32483,6 +39673,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -32518,6 +39709,510 @@ export namespace Prisma {
   export type AllocationUpdateManyWithWhereWithoutOrderItemInput = {
     where: AllocationScalarWhereInput
     data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutOrderItemInput>
+  }
+
+  export type OrderCreateWithoutShippingLabelsInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    items?: OrderItemCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutShippingLabelsInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutShippingLabelsInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutShippingLabelsInput, OrderUncheckedCreateWithoutShippingLabelsInput>
+  }
+
+  export type OrderUpsertWithoutShippingLabelsInput = {
+    update: XOR<OrderUpdateWithoutShippingLabelsInput, OrderUncheckedUpdateWithoutShippingLabelsInput>
+    create: XOR<OrderCreateWithoutShippingLabelsInput, OrderUncheckedCreateWithoutShippingLabelsInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutShippingLabelsInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutShippingLabelsInput, OrderUncheckedUpdateWithoutShippingLabelsInput>
+  }
+
+  export type OrderUpdateWithoutShippingLabelsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    items?: OrderItemUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutShippingLabelsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderCreateWithoutShippingPackagesInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: OrderItemCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutShippingPackagesInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutShippingPackagesInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutShippingPackagesInput, OrderUncheckedCreateWithoutShippingPackagesInput>
+  }
+
+  export type ShippingPackageItemCreateWithoutShippingPackageInput = {
+    id?: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    productVariant?: ProductVariantCreateNestedOneWithoutShippingPackageItemsInput
+  }
+
+  export type ShippingPackageItemUncheckedCreateWithoutShippingPackageInput = {
+    id?: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    productVariantId?: string | null
+  }
+
+  export type ShippingPackageItemCreateOrConnectWithoutShippingPackageInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    create: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput>
+  }
+
+  export type ShippingPackageItemCreateManyShippingPackageInputEnvelope = {
+    data: ShippingPackageItemCreateManyShippingPackageInput | ShippingPackageItemCreateManyShippingPackageInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderUpsertWithoutShippingPackagesInput = {
+    update: XOR<OrderUpdateWithoutShippingPackagesInput, OrderUncheckedUpdateWithoutShippingPackagesInput>
+    create: XOR<OrderCreateWithoutShippingPackagesInput, OrderUncheckedCreateWithoutShippingPackagesInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutShippingPackagesInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutShippingPackagesInput, OrderUncheckedUpdateWithoutShippingPackagesInput>
+  }
+
+  export type OrderUpdateWithoutShippingPackagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: OrderItemUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutShippingPackagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type ShippingPackageItemUpsertWithWhereUniqueWithoutShippingPackageInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    update: XOR<ShippingPackageItemUpdateWithoutShippingPackageInput, ShippingPackageItemUncheckedUpdateWithoutShippingPackageInput>
+    create: XOR<ShippingPackageItemCreateWithoutShippingPackageInput, ShippingPackageItemUncheckedCreateWithoutShippingPackageInput>
+  }
+
+  export type ShippingPackageItemUpdateWithWhereUniqueWithoutShippingPackageInput = {
+    where: ShippingPackageItemWhereUniqueInput
+    data: XOR<ShippingPackageItemUpdateWithoutShippingPackageInput, ShippingPackageItemUncheckedUpdateWithoutShippingPackageInput>
+  }
+
+  export type ShippingPackageItemUpdateManyWithWhereWithoutShippingPackageInput = {
+    where: ShippingPackageItemScalarWhereInput
+    data: XOR<ShippingPackageItemUpdateManyMutationInput, ShippingPackageItemUncheckedUpdateManyWithoutShippingPackageInput>
+  }
+
+  export type ShippingPackageCreateWithoutItemsInput = {
+    id?: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutShippingPackagesInput
+  }
+
+  export type ShippingPackageUncheckedCreateWithoutItemsInput = {
+    id?: string
+    orderId: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingPackageCreateOrConnectWithoutItemsInput = {
+    where: ShippingPackageWhereUniqueInput
+    create: XOR<ShippingPackageCreateWithoutItemsInput, ShippingPackageUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ProductVariantCreateWithoutShippingPackageItemsInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutShippingPackageItemsInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutShippingPackageItemsInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutShippingPackageItemsInput, ProductVariantUncheckedCreateWithoutShippingPackageItemsInput>
+  }
+
+  export type ShippingPackageUpsertWithoutItemsInput = {
+    update: XOR<ShippingPackageUpdateWithoutItemsInput, ShippingPackageUncheckedUpdateWithoutItemsInput>
+    create: XOR<ShippingPackageCreateWithoutItemsInput, ShippingPackageUncheckedCreateWithoutItemsInput>
+    where?: ShippingPackageWhereInput
+  }
+
+  export type ShippingPackageUpdateToOneWithWhereWithoutItemsInput = {
+    where?: ShippingPackageWhereInput
+    data: XOR<ShippingPackageUpdateWithoutItemsInput, ShippingPackageUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ShippingPackageUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutShippingPackagesNestedInput
+  }
+
+  export type ShippingPackageUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductVariantUpsertWithoutShippingPackageItemsInput = {
+    update: XOR<ProductVariantUpdateWithoutShippingPackageItemsInput, ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput>
+    create: XOR<ProductVariantCreateWithoutShippingPackageItemsInput, ProductVariantUncheckedCreateWithoutShippingPackageItemsInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutShippingPackageItemsInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutShippingPackageItemsInput, ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput>
+  }
+
+  export type ProductVariantUpdateWithoutShippingPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type UserCreateWithoutAssignedTasksInput = {
@@ -32739,6 +40434,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -32766,6 +40466,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -32804,8 +40509,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutTaskItemsInput = {
@@ -32831,8 +40538,10 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutTaskItemsInput = {
@@ -32894,6 +40603,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
     product: ProductCreateNestedOneWithoutVariantsInput
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
@@ -32916,6 +40626,7 @@ export namespace Prisma {
     trackExpiry?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
@@ -33073,6 +40784,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -33100,6 +40816,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -33144,8 +40865,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutTaskItemsInput = {
@@ -33171,8 +40894,10 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderItemUpsertWithoutTaskItemsInput = {
@@ -33246,6 +40971,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
@@ -33268,6 +40994,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -33427,6 +41154,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -33454,6 +41186,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -33538,6 +41275,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -33565,6 +41307,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -33838,6 +41585,11 @@ export namespace Prisma {
     orderIds?: WorkTaskCreateorderIdsInput | string[]
     totalOrders: number
     completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
     totalItems: number
     completedItems?: number
     shortItems?: number
@@ -33955,6 +41707,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -33981,6 +41738,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -34007,6 +41769,11 @@ export namespace Prisma {
     orderIds?: WorkTaskUpdateorderIdsInput | string[]
     totalOrders?: IntFieldUpdateOperationsInput | number
     completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
     totalItems?: IntFieldUpdateOperationsInput | number
     completedItems?: IntFieldUpdateOperationsInput | number
     shortItems?: IntFieldUpdateOperationsInput | number
@@ -34194,6 +41961,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
@@ -34215,6 +41983,7 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
@@ -34236,6 +42005,15 @@ export namespace Prisma {
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingPackageItemCreateManyProductVariantInput = {
+    id?: string
+    packageId: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
   }
 
   export type OrderItemCreateManyProductVariantInput = {
@@ -34300,6 +42078,33 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type ShippingPackageItemUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    shippingPackage?: ShippingPackageUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type ShippingPackageItemUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type ShippingPackageItemUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packageId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type OrderItemUpdateWithoutProductVariantInput = {
@@ -34762,6 +42567,24 @@ export namespace Prisma {
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ShippingPackageCreateManyOrderInput = {
+    id?: string
+    carrierCode: string
+    serviceCode: string
+    packageCode: string
+    trackingNumber?: string | null
+    labelUrl?: string | null
+    shipEngineId?: string | null
+    cost?: Decimal | DecimalJsLike | number | string
+    currency?: string
+    weight?: Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: Date | string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type OrderItemCreateManyOrderInput = {
     id?: string
     productVariantId?: string | null
@@ -34810,6 +42633,86 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type ShippingLabelCreateManyOrderInput = {
+    id?: string
+    shipEngineId?: string | null
+    shipmentId?: string | null
+    carrier: string
+    service: string
+    trackingNumber: string
+    trackingUrl?: string | null
+    rate: Decimal | DecimalJsLike | number | string
+    currency?: string
+    estimatedDays?: number | null
+    estimatedDelivery?: Date | string | null
+    labelUrl?: string | null
+    labelFormat?: string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.ShippingLabelStatus
+    voidedAt?: Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShippingPackageUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: ShippingPackageItemUpdateManyWithoutShippingPackageNestedInput
+  }
+
+  export type ShippingPackageUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: ShippingPackageItemUncheckedUpdateManyWithoutShippingPackageNestedInput
+  }
+
+  export type ShippingPackageUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    carrierCode?: StringFieldUpdateOperationsInput | string
+    serviceCode?: StringFieldUpdateOperationsInput | string
+    packageCode?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderItemUpdateWithoutOrderInput = {
@@ -34968,6 +42871,78 @@ export namespace Prisma {
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ShippingLabelUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingLabelUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShippingLabelUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shipEngineId?: NullableStringFieldUpdateOperationsInput | string | null
+    shipmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    carrier?: StringFieldUpdateOperationsInput | string
+    service?: StringFieldUpdateOperationsInput | string
+    trackingNumber?: StringFieldUpdateOperationsInput | string
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    estimatedDays?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedDelivery?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    labelUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    labelFormat?: NullableStringFieldUpdateOperationsInput | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringFieldUpdateOperationsInput | string
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumShippingLabelStatusFieldUpdateOperationsInput | $Enums.ShippingLabelStatus
+    voidedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rawResponse?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TaskItemCreateManyOrderItemInput = {
     id?: string
     taskId: string
@@ -35108,6 +43083,42 @@ export namespace Prisma {
     releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ShippingPackageItemCreateManyShippingPackageInput = {
+    id?: string
+    productName: string
+    sku: string
+    quantity: number
+    unitPrice: Decimal | DecimalJsLike | number | string
+    productVariantId?: string | null
+  }
+
+  export type ShippingPackageItemUpdateWithoutShippingPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productVariant?: ProductVariantUpdateOneWithoutShippingPackageItemsNestedInput
+  }
+
+  export type ShippingPackageItemUncheckedUpdateWithoutShippingPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ShippingPackageItemUncheckedUpdateManyWithoutShippingPackageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskItemCreateManyTaskInput = {

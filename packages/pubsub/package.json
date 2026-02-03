@@ -1,5 +1,5 @@
 {
-  "name": "@wms/domain",
+  "name": "@wms/pubsub",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -17,9 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@wms/db": "workspace:*",
-    "@wms/types": "workspace:*",
-    "@wms/pubsub": "workspace:*"
+    "ioredis": "^5.9.1"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

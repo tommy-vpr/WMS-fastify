@@ -397,7 +397,8 @@ export function OrderDetailPage() {
               <button
                 onClick={handleAllocate}
                 disabled={!!actionLoading}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="cursor-pointer transition inline-flex items-center gap-2 px-4 py-2 
+                bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {actionLoading === "allocate" ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -412,7 +413,7 @@ export function OrderDetailPage() {
               <button
                 onClick={handleCreatePickTask}
                 disabled={!!actionLoading}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+                className="cursor-pointer transition inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
               >
                 {actionLoading === "pick" ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

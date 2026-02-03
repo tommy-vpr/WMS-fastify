@@ -13,6 +13,8 @@ export const QUEUES = {
   ORDERS: "orders",
   PRODUCTS: "products",
   INVENTORY_PLANNER: "inventory-planner",
+  FULFILLMENT: "fulfillment",
+  SHIPPING: "shipping",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -28,6 +30,70 @@ export const WORK_TASK_JOBS = {
   COMPLETE_TASK: "complete-task",
   CANCEL_TASK: "cancel-task",
 } as const;
+
+export const SHIPPING_JOBS = {
+  CREATE_LABEL: "create-label",
+  SYNC_SHOPIFY_FULFILLMENT: "sync-shopify-fulfillment",
+  VOID_LABEL: "void-label",
+  UPDATE_TRACKING: "update-tracking",
+  BATCH_CREATE_LABELS: "batch-create-labels",
+} as const;
+
+export interface CreateLabelJobData {
+  orderId: string;
+  carrierCode: string;
+  serviceCode: string;
+  packages: Array<{
+    packageCode: string;
+    weight: number;
+    length?: number;
+    width?: number;
+    height?: number;
+    items?: Array<{
+      sku: string;
+      quantity: number;
+      productName?: string;
+      unitPrice?: number;
+    }>;
+  }>;
+  shippingAddress?: {
+    name: string;
+    company?: string;
+    address1: string;
+    address2?: string;
+    city: string;
+    state: string;
+    zip: string;
+    country?: string;
+    phone?: string;
+  };
+  items?: Array<{
+    sku: string;
+    quantity: number;
+    productName?: string;
+    unitPrice?: number;
+  }>;
+  notes?: string;
+  userId: string;
+}
+
+export interface SyncShopifyFulfillmentJobData {
+  orderId: string;
+  shopifyOrderId: string;
+  trackingNumbers: string[];
+  carrier: string;
+  items?: Array<{
+    sku: string;
+    quantity: number;
+  }>;
+}
+
+export interface VoidLabelJobData {
+  labelId: string;
+  packageId?: string;
+  orderId?: string;
+  userId?: string;
+}
 
 export type WorkTaskJobName =
   (typeof WORK_TASK_JOBS)[keyof typeof WORK_TASK_JOBS];
@@ -103,9 +169,51 @@ export interface CancelTaskResult {
   cancelled: boolean;
 }
 
+export const FULFILLMENT_JOBS = {
+  CREATE_SHIPPING_LABEL: "create-shipping-label",
+  SHOPIFY_FULFILL: "shopify-fulfill",
+} as const;
+
+export type FulfillmentJobName =
+  (typeof FULFILLMENT_JOBS)[keyof typeof FULFILLMENT_JOBS];
+
+/** Background job: create shipping label via ShipEngine */
+export interface CreateShippingLabelJobData {
+  orderId: string;
+  userId?: string;
+  carrier: string;
+  service: string;
+  weight?: number;
+  weightUnit?: string;
+  dimensions?: { length: number; width: number; height: number; unit: string };
+  idempotencyKey: string;
+}
+
 // ============================================================================
 // Shopify Jobs
 // ============================================================================
+
+/** Background job: mark order fulfilled in Shopify after shipping */
+export interface ShopifyFulfillJobData {
+  orderId: string;
+  trackingNumber: string;
+  carrier: string;
+  idempotencyKey: string;
+}
+
+export interface CreateShippingLabelResult {
+  orderId: string;
+  trackingNumber: string;
+  labelUrl: string;
+  carrier: string;
+  service: string;
+}
+
+export interface ShopifyFulfillResult {
+  orderId: string;
+  shopifyOrderId: string;
+  fulfilled: boolean;
+}
 
 export const SHOPIFY_JOBS = {
   ORDER_CREATE: "shopify-order-create",

@@ -25,6 +25,9 @@ import {
   type SyncShopifyProductsJobData,
   SyncInventoryPlannerJobData,
   INVENTORY_PLANNER_JOBS,
+  FULFILLMENT_JOBS,
+  CreateShippingLabelJobData,
+  ShopifyFulfillJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -36,6 +39,7 @@ let shopifyQueue: Queue | null = null;
 let ordersQueue: Queue | null = null;
 let productsQueue: Queue | null = null;
 let inventoryPlannerQueue: Queue | null = null;
+let fulfillmentQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -59,6 +63,47 @@ export function getWorkTaskQueue(): Queue {
     });
   }
   return workTaskQueue;
+}
+
+export function getFulfillmentQueue(): Queue {
+  if (!fulfillmentQueue) {
+    fulfillmentQueue = new Queue(QUEUES.FULFILLMENT, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: { type: "exponential", delay: 2000 },
+        removeOnComplete: { count: 1000, age: 24 * 60 * 60 },
+        removeOnFail: { count: 5000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return fulfillmentQueue;
+}
+
+export async function enqueueCreateShippingLabel(
+  data: CreateShippingLabelJobData,
+  options?: JobsOptions,
+) {
+  const queue = getFulfillmentQueue();
+  return queue.add(FULFILLMENT_JOBS.CREATE_SHIPPING_LABEL, data, {
+    ...options,
+    jobId: data.idempotencyKey,
+  });
+}
+
+/**
+ * Enqueue Shopify fulfillment after an order is shipped
+ * Sends tracking number to Shopify and marks order as fulfilled
+ */
+export async function enqueueShopifyFulfill(
+  data: ShopifyFulfillJobData,
+  options?: JobsOptions,
+) {
+  const queue = getFulfillmentQueue();
+  return queue.add(FULFILLMENT_JOBS.SHOPIFY_FULFILL, data, {
+    ...options,
+    jobId: data.idempotencyKey,
+  });
 }
 
 export function getShopifyQueue(): Queue {

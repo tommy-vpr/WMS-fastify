@@ -14,6 +14,10 @@ import { productRoutes } from "./routes/product.routes.js";
 import { inventoryPlannerRoutes } from "./routes/inventory-planner.routes.js";
 import { locationImportRoutes } from "./routes/location-import.routes.js";
 import { locationRoutes } from "./routes/location.routes.js";
+import { fulfillmentRoutes } from "./routes/fulfillment.routes.js";
+// Server Sent Event
+import { ssePlugin } from "./plugins/sse.plugin.js";
+import { shippingRoutes } from "./routes/shipping.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -51,6 +55,7 @@ export async function buildApp() {
   await app.register(healthRoutes, { prefix: "/health" });
   await app.register(authRoutes, { prefix: "/auth" });
   await app.register(shopifyWebhookRoutes, { prefix: "/webhooks/shopify" });
+  await app.register(ssePlugin);
 
   // ============================================================================
   // Protected Routes (auth required)
@@ -64,6 +69,16 @@ export async function buildApp() {
     await protectedRoutes.register(productRoutes, { prefix: "/products" });
 
     await protectedRoutes.register(locationRoutes, { prefix: "/locations" });
+
+    // Fulfillment
+    await protectedRoutes.register(fulfillmentRoutes, {
+      prefix: "/fulfillment",
+    });
+
+    // Shipping Label
+    await protectedRoutes.register(shippingRoutes, {
+      prefix: "/shipping",
+    });
 
     // Import location
     await protectedRoutes.register(locationImportRoutes, {

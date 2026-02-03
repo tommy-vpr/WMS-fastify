@@ -11,6 +11,10 @@ import { SignupPage } from "./pages/auth/Signup";
 // Dashboard
 import { DashboardPage } from "./pages/dashboard";
 
+// Fulfillment
+import FulfillmentListPage from "./pages/fulfillment";
+import FulfillmentDetailPage from "./pages/fulfillment/[id]";
+
 // Tasks
 import { TasksPage } from "./pages/tasks";
 // import TaskDetailPage from "./pages/tasks/[id]";
@@ -96,6 +100,9 @@ export const router = createBrowserRouter([
           // Orders
           { path: "/orders", element: <OrdersPage /> },
           { path: "/orders/:id", element: <OrderDetailPage /> },
+          // Fulfilment
+          { path: "/fulfillment", element: <FulfillmentListPage /> },
+          { path: "/fulfillment/:orderId", element: <FulfillmentDetailPage /> },
           // Products
           { path: "/products", element: <ProductsPage /> },
           { path: "/products/import", element: <ProductImportPage /> },

@@ -270,6 +270,71 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
 };
 
+exports.Prisma.ShippingLabelScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  shipEngineId: 'shipEngineId',
+  shipmentId: 'shipmentId',
+  carrier: 'carrier',
+  service: 'service',
+  trackingNumber: 'trackingNumber',
+  trackingUrl: 'trackingUrl',
+  rate: 'rate',
+  currency: 'currency',
+  estimatedDays: 'estimatedDays',
+  estimatedDelivery: 'estimatedDelivery',
+  labelUrl: 'labelUrl',
+  labelFormat: 'labelFormat',
+  weight: 'weight',
+  weightUnit: 'weightUnit',
+  dimensions: 'dimensions',
+  status: 'status',
+  voidedAt: 'voidedAt',
+  rawResponse: 'rawResponse',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ShippingPackageScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  carrierCode: 'carrierCode',
+  serviceCode: 'serviceCode',
+  packageCode: 'packageCode',
+  trackingNumber: 'trackingNumber',
+  labelUrl: 'labelUrl',
+  shipEngineId: 'shipEngineId',
+  cost: 'cost',
+  currency: 'currency',
+  weight: 'weight',
+  dimensions: 'dimensions',
+  voidedAt: 'voidedAt',
+  shippedAt: 'shippedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ShippingPackageItemScalarFieldEnum = {
+  id: 'id',
+  packageId: 'packageId',
+  productName: 'productName',
+  sku: 'sku',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  productVariantId: 'productVariantId'
+};
+
+exports.Prisma.FulfillmentEventScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  type: 'type',
+  payload: 'payload',
+  correlationId: 'correlationId',
+  userId: 'userId',
+  processed: 'processed',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.WorkTaskScalarFieldEnum = {
   id: 'id',
   taskNumber: 'taskNumber',
@@ -286,6 +351,11 @@ exports.Prisma.WorkTaskScalarFieldEnum = {
   orderIds: 'orderIds',
   totalOrders: 'totalOrders',
   completedOrders: 'completedOrders',
+  packedWeight: 'packedWeight',
+  packedWeightUnit: 'packedWeightUnit',
+  packedDimensions: 'packedDimensions',
+  verifiedAt: 'verifiedAt',
+  verifiedBy: 'verifiedBy',
   totalItems: 'totalItems',
   completedItems: 'completedItems',
   shortItems: 'shortItems',
@@ -459,6 +529,13 @@ exports.Priority = exports.$Enums.Priority = {
   EXPRESS: 'EXPRESS'
 };
 
+exports.ShippingLabelStatus = exports.$Enums.ShippingLabelStatus = {
+  CREATED: 'CREATED',
+  PURCHASED: 'PURCHASED',
+  VOIDED: 'VOIDED',
+  ERROR: 'ERROR'
+};
+
 exports.WorkTaskType = exports.$Enums.WorkTaskType = {
   PICKING: 'PICKING',
   PACKING: 'PACKING',
@@ -526,6 +603,10 @@ exports.Prisma.ModelName = {
   Allocation: 'Allocation',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  ShippingLabel: 'ShippingLabel',
+  ShippingPackage: 'ShippingPackage',
+  ShippingPackageItem: 'ShippingPackageItem',
+  FulfillmentEvent: 'FulfillmentEvent',
   WorkTask: 'WorkTask',
   TaskItem: 'TaskItem',
   TaskEvent: 'TaskEvent',

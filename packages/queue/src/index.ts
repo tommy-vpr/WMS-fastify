@@ -28,4 +28,19 @@ export {
   enqueueSyncInventoryPlanner,
   getInventoryPlannerQueueStats,
   closeQueues,
+  getFulfillmentQueue,
+  enqueueCreateShippingLabel, // ← NEW (replaces enqueueAutoFulfill)
+  enqueueShopifyFulfill, // ← NEW
 } from "./queues.js";
+
+// Shipping Queue (NEW)
+export {
+  SHIPPING_QUEUE,
+  SHIPPING_JOBS,
+  getShippingQueue,
+  addShippingJob,
+  // Types
+  type CreateLabelJobData,
+  type SyncShopifyFulfillmentJobData,
+  type VoidLabelJobData,
+} from "./shipping.js";

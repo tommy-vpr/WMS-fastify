@@ -13,6 +13,8 @@ export const QUEUES = {
   ORDERS: "orders",
   PRODUCTS: "products",
   INVENTORY_PLANNER: "inventory-planner",
+  FULFILLMENT: "fulfillment",
+  SHIPPING: "shipping",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -27,6 +29,12 @@ export const WORK_TASK_JOBS = {
   START_TASK: "start-task",
   COMPLETE_TASK: "complete-task",
   CANCEL_TASK: "cancel-task",
+} as const;
+
+export const SHIPPING_JOBS = {
+  CREATE_LABEL: "create-label",
+  SYNC_SHOPIFY_FULFILLMENT: "sync-shopify-fulfillment",
+  VOID_LABEL: "void-label",
 } as const;
 
 export type WorkTaskJobName =
@@ -103,9 +111,51 @@ export interface CancelTaskResult {
   cancelled: boolean;
 }
 
+export const FULFILLMENT_JOBS = {
+  CREATE_SHIPPING_LABEL: "create-shipping-label",
+  SHOPIFY_FULFILL: "shopify-fulfill",
+} as const;
+
+export type FulfillmentJobName =
+  (typeof FULFILLMENT_JOBS)[keyof typeof FULFILLMENT_JOBS];
+
+/** Background job: create shipping label via ShipEngine */
+export interface CreateShippingLabelJobData {
+  orderId: string;
+  userId?: string;
+  carrier: string;
+  service: string;
+  weight?: number;
+  weightUnit?: string;
+  dimensions?: { length: number; width: number; height: number; unit: string };
+  idempotencyKey: string;
+}
+
 // ============================================================================
 // Shopify Jobs
 // ============================================================================
+
+/** Background job: mark order fulfilled in Shopify after shipping */
+export interface ShopifyFulfillJobData {
+  orderId: string;
+  trackingNumber: string;
+  carrier: string;
+  idempotencyKey: string;
+}
+
+export interface CreateShippingLabelResult {
+  orderId: string;
+  trackingNumber: string;
+  labelUrl: string;
+  carrier: string;
+  service: string;
+}
+
+export interface ShopifyFulfillResult {
+  orderId: string;
+  shopifyOrderId: string;
+  fulfilled: boolean;
+}
 
 export const SHOPIFY_JOBS = {
   ORDER_CREATE: "shopify-order-create",

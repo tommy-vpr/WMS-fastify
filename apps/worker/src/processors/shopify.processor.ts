@@ -154,13 +154,14 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
     );
 
     // 7. Auto-confirm if payment is complete
-    if (shopifyOrder.financial_status === "paid") {
-      await tx.order.update({
-        where: { id: order.id },
-        data: { status: "CONFIRMED" },
-      });
-      console.log(`[Shopify] Order ${orderNumber} auto-confirmed (paid)`);
-    }
+    // *********** No Auto Confirm **********
+    // if (shopifyOrder.financial_status === "paid") {
+    //   await tx.order.update({
+    //     where: { id: order.id },
+    //     data: { status: "CONFIRMED" },
+    //   });
+    //   console.log(`[Shopify] Order ${orderNumber} auto-confirmed (paid)`);
+    // }
 
     return {
       orderId: order.id,

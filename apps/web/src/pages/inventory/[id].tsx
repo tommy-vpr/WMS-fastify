@@ -286,17 +286,25 @@ export default function InventoryDetailPage() {
         {/* Quantity & Status */}
         <div className="bg-white border border-border rounded-lg p-6">
           <h2 className="font-semibold mb-4">Inventory Details</h2>
-          <div className="text-center mb-6">
-            <div className="text-5xl font-bold text-green-600">
+          <div
+            className={`text-center mb-6 p-4 rounded-xl transition-colors ${unit.quantity < 0 ? "bg-red-50" : "bg-transparent"}`}
+          >
+            <div
+              className={`text-3xl ${unit.quantity < 0 ? "text-red-600" : "text-green-600"}`}
+            >
               {unit.quantity}
             </div>
-            <div className="text-gray-500">units in stock</div>
+            <div
+              className={`${unit.quantity < 0 ? "text-red-500" : "text-gray-500"}`}
+            >
+              {unit.quantity < 0 ? "units oversold" : "units in stock"}
+            </div>
           </div>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-500">Status</span>
               <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                className={`px-2 py-1 rounded-full text-xs ${
                   statusColors[unit.status] || "bg-gray-100"
                 }`}
               >

@@ -39,6 +39,18 @@ model User {
   exceptionsReported        ReceivingException[] @relation("ExceptionReporter")
   exceptionsResolved        ReceivingException[] @relation("ExceptionResolver")
 
+  // Cycle Count relations
+  cycleCountTasksAssigned    CycleCountTask[]    @relation("CycleCountAssignee")
+  cycleCountTasksCreated     CycleCountTask[]    @relation("CycleCountCreator")
+  cycleCountSessionsLocked   CycleCountSession[] @relation("CycleCountLocker")
+  cycleCountSessionsCounted  CycleCountSession[] @relation("CycleCountCounter")
+  cycleCountSessionsReviewed CycleCountSession[] @relation("CycleCountReviewer")
+  cycleCountAudits           CycleCountAudit[]
+
+  // Adjustment relations
+  adjustmentsCreated  InventoryAdjustment[] @relation("AdjustmentCreator")
+  adjustmentsApproved InventoryAdjustment[] @relation("AdjustmentApprover")
+
   @@map("users")
 }
 
@@ -121,6 +133,10 @@ model ProductVariant {
 
   receivingLines ReceivingLine[]
 
+  // Cycle Count relations
+  cycleCountLines      CycleCountLine[]
+  inventoryAdjustments InventoryAdjustment[]
+
   @@index([upc])
   @@index([barcode])
   @@index([shopifyVariantId])
@@ -149,6 +165,10 @@ model Location {
   allocations    Allocation[]
 
   receivingSessions ReceivingSession[]
+
+  // Cycle Count relations
+  cycleCountSessions   CycleCountSession[]
+  inventoryAdjustments InventoryAdjustment[]
 
   @@index([barcode])
   @@index([type])
@@ -182,6 +202,9 @@ model InventoryUnit {
   productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
   location       Location       @relation(fields: [locationId], references: [id])
   allocations    Allocation[]
+
+  // Cycle Count relations
+  cycleCountLines CycleCountLine[]
 
   @@index([productVariantId, status])
   @@index([locationId])
@@ -834,4 +857,257 @@ enum ReceivingExceptionType {
   OVERAGE
   QUALITY_ISSUE
   OTHER
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cycle Count
+// ─────────────────────────────────────────────────────────────────────────────
+
+model CycleCountTask {
+  id          String  @id @default(cuid())
+  taskNumber  String  @unique // CC-2024-001
+  name        String? // "Zone A Weekly Count"
+  description String?
+
+  // Selection criteria
+  type        CycleCountType @default(LOCATION)
+  locationIds String[] // Specific locations to count
+  zoneId      String? // Or count entire zone
+  skuFilter   String? // SKU pattern filter
+  abcClass    String? // A, B, C classification
+
+  // Options
+  blindCount     Boolean @default(false) // Hide expected qty from counter
+  includeZeroQty Boolean @default(true) // Include items with 0 expected
+  priority       Int     @default(0) // Higher = more urgent
+
+  // Schedule
+  scheduledDate DateTime?
+  dueDate       DateTime?
+
+  // Assignment
+  assignedToId String?
+  assignedTo   User?   @relation("CycleCountAssignee", fields: [assignedToId], references: [id])
+  createdById  String
+  createdBy    User    @relation("CycleCountCreator", fields: [createdById], references: [id])
+
+  // Status
+  status CycleCountTaskStatus @default(PENDING)
+
+  // Relations
+  sessions CycleCountSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([assignedToId])
+  @@index([scheduledDate])
+  @@map("cycle_count_tasks")
+}
+
+model CycleCountSession {
+  id String @id @default(cuid())
+
+  // Parent task (optional - can be ad-hoc count)
+  taskId String?
+  task   CycleCountTask? @relation(fields: [taskId], references: [id])
+
+  // Location being counted
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // Options (copied from task or set for ad-hoc)
+  blindCount Boolean @default(false)
+
+  // Locking (same as receiving)
+  version      Int       @default(1)
+  lockedBy     String?
+  lockedAt     DateTime?
+  lockedByUser User?     @relation("CycleCountLocker", fields: [lockedBy], references: [id])
+
+  // Workflow
+  status      CycleCountSessionStatus @default(IN_PROGRESS)
+  countedById String
+  countedBy   User                    @relation("CycleCountCounter", fields: [countedById], references: [id])
+  startedAt   DateTime                @default(now())
+  submittedAt DateTime?
+
+  // Review
+  reviewedById String?
+  reviewedBy   User?     @relation("CycleCountReviewer", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?
+  reviewNotes  String?
+
+  // Results
+  totalExpected Int @default(0)
+  totalCounted  Int @default(0)
+  varianceCount Int @default(0) // Number of lines with variance
+
+  // Relations
+  lineItems   CycleCountLine[]
+  auditLogs   CycleCountAudit[]
+  adjustments InventoryAdjustment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+  @@index([locationId])
+  @@index([status])
+  @@index([countedById])
+  @@map("cycle_count_sessions")
+}
+
+model CycleCountLine {
+  id        String            @id @default(cuid())
+  sessionId String
+  session   CycleCountSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // Product
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  sku              String
+  productName      String
+
+  // Inventory unit being counted (if exists)
+  inventoryUnitId String?
+  inventoryUnit   InventoryUnit? @relation(fields: [inventoryUnitId], references: [id])
+
+  // Quantities
+  systemQty  Int // Expected from system
+  countedQty Int? // What was counted (null = not counted yet)
+  variance   Int? // countedQty - systemQty
+
+  // Lot/Expiry tracking
+  lotNumber  String?
+  expiryDate DateTime?
+
+  // Status
+  status       CycleCountLineStatus @default(PENDING)
+  isUnexpected Boolean              @default(false) // Item found but not expected
+
+  // Notes
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, productVariantId, lotNumber])
+  @@index([sessionId])
+  @@index([sku])
+  @@map("cycle_count_lines")
+}
+
+model CycleCountAudit {
+  id        String            @id @default(cuid())
+  sessionId String
+  session   CycleCountSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  action String // SESSION_STARTED, ITEM_COUNTED, SUBMITTED, APPROVED, etc.
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  lineId String? // Optional - for line-level actions
+  data   Json? // Additional context
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([userId])
+  @@map("cycle_count_audits")
+}
+
+model InventoryAdjustment {
+  id               String @id @default(cuid())
+  adjustmentNumber String @unique // ADJ-2024-001
+
+  // Source
+  reason            AdjustmentReason
+  sourceType        String // CYCLE_COUNT, MANUAL, RECEIVING, etc.
+  sourceId          String? // CycleCountSession ID, etc.
+  cycleCountSession CycleCountSession? @relation(fields: [sourceId], references: [id])
+
+  // What's being adjusted
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  locationId       String
+  location         Location       @relation(fields: [locationId], references: [id])
+  inventoryUnitId  String?
+
+  // Quantities
+  previousQty Int
+  adjustedQty Int
+  changeQty   Int // adjustedQty - previousQty
+
+  // Lot tracking
+  lotNumber String?
+
+  // Approval
+  status       AdjustmentStatus @default(PENDING)
+  createdById  String
+  createdBy    User             @relation("AdjustmentCreator", fields: [createdById], references: [id])
+  approvedById String?
+  approvedBy   User?            @relation("AdjustmentApprover", fields: [approvedById], references: [id])
+  approvedAt   DateTime?
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productVariantId])
+  @@index([locationId])
+  @@index([status])
+  @@map("inventory_adjustments")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum CycleCountType {
+  LOCATION // Count specific locations
+  ZONE // Count entire zone
+  SKU // Count specific SKUs across locations
+  ABC // Count by ABC classification
+  AD_HOC // One-off count
+}
+
+enum CycleCountTaskStatus {
+  PENDING // Not started
+  IN_PROGRESS // Being counted
+  COMPLETED // All locations counted
+  CANCELLED
+}
+
+enum CycleCountSessionStatus {
+  IN_PROGRESS // Counting
+  SUBMITTED // Awaiting review
+  APPROVED // Reviewed & adjustments created
+  REJECTED // Recount required
+}
+
+enum CycleCountLineStatus {
+  PENDING // Not counted yet
+  COUNTED // Has count
+  VERIFIED // Barcode verified (like receiving)
+  SKIPPED // Intentionally skipped
+}
+
+enum AdjustmentReason {
+  CYCLE_COUNT
+  DAMAGED
+  LOST
+  FOUND
+  CORRECTION
+  RECEIVING_VARIANCE
+  SHIPPING_VARIANCE
+  OTHER
+}
+
+enum AdjustmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

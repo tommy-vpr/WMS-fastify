@@ -38,3 +38,6 @@ export * from "./work-task.service.js";
 
 // Receiving management
 export * from "./receiving.service.js";
+
+// Cycle Count
+export * from "./cycle-count.service.js";

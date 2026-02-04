@@ -222,11 +222,19 @@ export default function LocationDetailPage() {
                 </div>
                 <div className="text-xs text-gray-500">SKUs</div>
               </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">
+              <div
+                className={`text-center p-3 rounded-lg ${totalQuantity < 0 ? "bg-red-50" : "bg-gray-50"}`}
+              >
+                <div
+                  className={`text-2xl font-bold ${totalQuantity < 0 ? "text-red-600" : "text-green-600"}`}
+                >
                   {totalQuantity}
                 </div>
-                <div className="text-xs text-gray-500">Total Qty</div>
+                <div
+                  className={`text-xs ${totalQuantity < 0 ? "text-red-400" : "text-gray-500"}`}
+                >
+                  Total Qty
+                </div>
               </div>
             </div>
           </div>

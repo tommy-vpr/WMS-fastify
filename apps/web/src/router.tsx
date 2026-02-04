@@ -22,7 +22,6 @@ import { TasksPage } from "./pages/tasks";
 import { PickPage } from "./pages/pick";
 import { PackPage } from "./pages/pack";
 import { ReceivePage } from "./pages/receive";
-import { ScanPage } from "./pages/scan";
 
 // Orders
 import { OrdersPage } from "./pages/orders";
@@ -61,6 +60,21 @@ const ReceivingPurchaseOrders = lazy(
 const ReceivingStart = lazy(() => import("./pages/receiving/start"));
 const ReceivingSession = lazy(() => import("./pages/receiving/session"));
 const ReceivingApprove = lazy(() => import("./pages/receiving/approve"));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cycle Count (lazy loaded)
+// ─────────────────────────────────────────────────────────────────────────────
+const CycleCountDashboard = lazy(() => import("./pages/cycle-count/index"));
+const CycleCountStart = lazy(() => import("./pages/cycle-count/start"));
+const CycleCountSession = lazy(() => import("./pages/cycle-count/session"));
+const CycleCountReview = lazy(() => import("./pages/cycle-count/review"));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Scan (lazy loaded)
+// ─────────────────────────────────────────────────────────────────────────────
+const ScanPage = lazy(() => import("./pages/scan/index"));
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const PageLoader = () => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -111,7 +125,6 @@ export const router = createBrowserRouter([
           { path: "/pick", element: <PickPage /> },
           { path: "/pack", element: <PackPage /> },
           { path: "/receive", element: <ReceivePage /> },
-          { path: "/scan", element: <ScanPage /> },
 
           // Orders
           { path: "/orders", element: <OrdersPage /> },
@@ -137,7 +150,7 @@ export const router = createBrowserRouter([
           { path: "/inventory", element: <InventoryPage /> },
           { path: "/inventory/:id", element: <InventoryDetailPage /> },
 
-          // Receiving (new)
+          // Receiving
           { path: "/receiving", element: withSuspense(ReceivingDashboard) },
           {
             path: "/receiving/purchase-orders",
@@ -155,6 +168,27 @@ export const router = createBrowserRouter([
             path: "/receiving/approve/:sessionId",
             element: withSuspense(ReceivingApprove),
           },
+
+          // Cycle Count
+          {
+            path: "/cycle-count",
+            element: withSuspense(CycleCountDashboard),
+          },
+          {
+            path: "/cycle-count/start",
+            element: withSuspense(CycleCountStart),
+          },
+          {
+            path: "/cycle-count/session/:sessionId",
+            element: withSuspense(CycleCountSession),
+          },
+          {
+            path: "/cycle-count/review/:sessionId",
+            element: withSuspense(CycleCountReview),
+          },
+
+          // Scan
+          { path: "/scan", element: withSuspense(ScanPage) },
 
           { path: "/reports", element: <ReportsPage /> },
           { path: "/users", element: <UsersPage /> },

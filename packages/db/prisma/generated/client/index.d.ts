@@ -128,6 +128,31 @@ export type ReceivingLine = $Result.DefaultSelection<Prisma.$ReceivingLinePayloa
  * 
  */
 export type ReceivingException = $Result.DefaultSelection<Prisma.$ReceivingExceptionPayload>
+/**
+ * Model CycleCountTask
+ * 
+ */
+export type CycleCountTask = $Result.DefaultSelection<Prisma.$CycleCountTaskPayload>
+/**
+ * Model CycleCountSession
+ * 
+ */
+export type CycleCountSession = $Result.DefaultSelection<Prisma.$CycleCountSessionPayload>
+/**
+ * Model CycleCountLine
+ * 
+ */
+export type CycleCountLine = $Result.DefaultSelection<Prisma.$CycleCountLinePayload>
+/**
+ * Model CycleCountAudit
+ * 
+ */
+export type CycleCountAudit = $Result.DefaultSelection<Prisma.$CycleCountAuditPayload>
+/**
+ * Model InventoryAdjustment
+ * 
+ */
+export type InventoryAdjustment = $Result.DefaultSelection<Prisma.$InventoryAdjustmentPayload>
 
 /**
  * Enums
@@ -325,6 +350,70 @@ export const ReceivingExceptionType: {
 
 export type ReceivingExceptionType = (typeof ReceivingExceptionType)[keyof typeof ReceivingExceptionType]
 
+
+export const CycleCountType: {
+  LOCATION: 'LOCATION',
+  ZONE: 'ZONE',
+  SKU: 'SKU',
+  ABC: 'ABC',
+  AD_HOC: 'AD_HOC'
+};
+
+export type CycleCountType = (typeof CycleCountType)[keyof typeof CycleCountType]
+
+
+export const CycleCountTaskStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type CycleCountTaskStatus = (typeof CycleCountTaskStatus)[keyof typeof CycleCountTaskStatus]
+
+
+export const CycleCountSessionStatus: {
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type CycleCountSessionStatus = (typeof CycleCountSessionStatus)[keyof typeof CycleCountSessionStatus]
+
+
+export const CycleCountLineStatus: {
+  PENDING: 'PENDING',
+  COUNTED: 'COUNTED',
+  VERIFIED: 'VERIFIED',
+  SKIPPED: 'SKIPPED'
+};
+
+export type CycleCountLineStatus = (typeof CycleCountLineStatus)[keyof typeof CycleCountLineStatus]
+
+
+export const AdjustmentReason: {
+  CYCLE_COUNT: 'CYCLE_COUNT',
+  DAMAGED: 'DAMAGED',
+  LOST: 'LOST',
+  FOUND: 'FOUND',
+  CORRECTION: 'CORRECTION',
+  RECEIVING_VARIANCE: 'RECEIVING_VARIANCE',
+  SHIPPING_VARIANCE: 'SHIPPING_VARIANCE',
+  OTHER: 'OTHER'
+};
+
+export type AdjustmentReason = (typeof AdjustmentReason)[keyof typeof AdjustmentReason]
+
+
+export const AdjustmentStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type AdjustmentStatus = (typeof AdjustmentStatus)[keyof typeof AdjustmentStatus]
+
 }
 
 export type ShippingLabelStatus = $Enums.ShippingLabelStatus
@@ -386,6 +475,30 @@ export const ReceivingStatus: typeof $Enums.ReceivingStatus
 export type ReceivingExceptionType = $Enums.ReceivingExceptionType
 
 export const ReceivingExceptionType: typeof $Enums.ReceivingExceptionType
+
+export type CycleCountType = $Enums.CycleCountType
+
+export const CycleCountType: typeof $Enums.CycleCountType
+
+export type CycleCountTaskStatus = $Enums.CycleCountTaskStatus
+
+export const CycleCountTaskStatus: typeof $Enums.CycleCountTaskStatus
+
+export type CycleCountSessionStatus = $Enums.CycleCountSessionStatus
+
+export const CycleCountSessionStatus: typeof $Enums.CycleCountSessionStatus
+
+export type CycleCountLineStatus = $Enums.CycleCountLineStatus
+
+export const CycleCountLineStatus: typeof $Enums.CycleCountLineStatus
+
+export type AdjustmentReason = $Enums.AdjustmentReason
+
+export const AdjustmentReason: typeof $Enums.AdjustmentReason
+
+export type AdjustmentStatus = $Enums.AdjustmentStatus
+
+export const AdjustmentStatus: typeof $Enums.AdjustmentStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -733,6 +846,56 @@ export class PrismaClient<
     * ```
     */
   get receivingException(): Prisma.ReceivingExceptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cycleCountTask`: Exposes CRUD operations for the **CycleCountTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CycleCountTasks
+    * const cycleCountTasks = await prisma.cycleCountTask.findMany()
+    * ```
+    */
+  get cycleCountTask(): Prisma.CycleCountTaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cycleCountSession`: Exposes CRUD operations for the **CycleCountSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CycleCountSessions
+    * const cycleCountSessions = await prisma.cycleCountSession.findMany()
+    * ```
+    */
+  get cycleCountSession(): Prisma.CycleCountSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cycleCountLine`: Exposes CRUD operations for the **CycleCountLine** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CycleCountLines
+    * const cycleCountLines = await prisma.cycleCountLine.findMany()
+    * ```
+    */
+  get cycleCountLine(): Prisma.CycleCountLineDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cycleCountAudit`: Exposes CRUD operations for the **CycleCountAudit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CycleCountAudits
+    * const cycleCountAudits = await prisma.cycleCountAudit.findMany()
+    * ```
+    */
+  get cycleCountAudit(): Prisma.CycleCountAuditDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.inventoryAdjustment`: Exposes CRUD operations for the **InventoryAdjustment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InventoryAdjustments
+    * const inventoryAdjustments = await prisma.inventoryAdjustment.findMany()
+    * ```
+    */
+  get inventoryAdjustment(): Prisma.InventoryAdjustmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1189,7 +1352,12 @@ export namespace Prisma {
     Notification: 'Notification',
     ReceivingSession: 'ReceivingSession',
     ReceivingLine: 'ReceivingLine',
-    ReceivingException: 'ReceivingException'
+    ReceivingException: 'ReceivingException',
+    CycleCountTask: 'CycleCountTask',
+    CycleCountSession: 'CycleCountSession',
+    CycleCountLine: 'CycleCountLine',
+    CycleCountAudit: 'CycleCountAudit',
+    InventoryAdjustment: 'InventoryAdjustment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1205,7 +1373,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException" | "cycleCountTask" | "cycleCountSession" | "cycleCountLine" | "cycleCountAudit" | "inventoryAdjustment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2911,6 +3079,376 @@ export namespace Prisma {
           }
         }
       }
+      CycleCountTask: {
+        payload: Prisma.$CycleCountTaskPayload<ExtArgs>
+        fields: Prisma.CycleCountTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CycleCountTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CycleCountTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.CycleCountTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CycleCountTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          findMany: {
+            args: Prisma.CycleCountTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>[]
+          }
+          create: {
+            args: Prisma.CycleCountTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          createMany: {
+            args: Prisma.CycleCountTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CycleCountTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.CycleCountTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          update: {
+            args: Prisma.CycleCountTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.CycleCountTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CycleCountTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CycleCountTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.CycleCountTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.CycleCountTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCycleCountTask>
+          }
+          groupBy: {
+            args: Prisma.CycleCountTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CycleCountTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountTaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      CycleCountSession: {
+        payload: Prisma.$CycleCountSessionPayload<ExtArgs>
+        fields: Prisma.CycleCountSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CycleCountSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CycleCountSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.CycleCountSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CycleCountSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          findMany: {
+            args: Prisma.CycleCountSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>[]
+          }
+          create: {
+            args: Prisma.CycleCountSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          createMany: {
+            args: Prisma.CycleCountSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CycleCountSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.CycleCountSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          update: {
+            args: Prisma.CycleCountSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.CycleCountSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CycleCountSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CycleCountSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.CycleCountSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.CycleCountSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCycleCountSession>
+          }
+          groupBy: {
+            args: Prisma.CycleCountSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CycleCountSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      CycleCountLine: {
+        payload: Prisma.$CycleCountLinePayload<ExtArgs>
+        fields: Prisma.CycleCountLineFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CycleCountLineFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CycleCountLineFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          findFirst: {
+            args: Prisma.CycleCountLineFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CycleCountLineFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          findMany: {
+            args: Prisma.CycleCountLineFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>[]
+          }
+          create: {
+            args: Prisma.CycleCountLineCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          createMany: {
+            args: Prisma.CycleCountLineCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CycleCountLineCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>[]
+          }
+          delete: {
+            args: Prisma.CycleCountLineDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          update: {
+            args: Prisma.CycleCountLineUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          deleteMany: {
+            args: Prisma.CycleCountLineDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CycleCountLineUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CycleCountLineUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>[]
+          }
+          upsert: {
+            args: Prisma.CycleCountLineUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountLinePayload>
+          }
+          aggregate: {
+            args: Prisma.CycleCountLineAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCycleCountLine>
+          }
+          groupBy: {
+            args: Prisma.CycleCountLineGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountLineGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CycleCountLineCountArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountLineCountAggregateOutputType> | number
+          }
+        }
+      }
+      CycleCountAudit: {
+        payload: Prisma.$CycleCountAuditPayload<ExtArgs>
+        fields: Prisma.CycleCountAuditFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CycleCountAuditFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CycleCountAuditFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          findFirst: {
+            args: Prisma.CycleCountAuditFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CycleCountAuditFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          findMany: {
+            args: Prisma.CycleCountAuditFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>[]
+          }
+          create: {
+            args: Prisma.CycleCountAuditCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          createMany: {
+            args: Prisma.CycleCountAuditCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CycleCountAuditCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>[]
+          }
+          delete: {
+            args: Prisma.CycleCountAuditDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          update: {
+            args: Prisma.CycleCountAuditUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          deleteMany: {
+            args: Prisma.CycleCountAuditDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CycleCountAuditUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CycleCountAuditUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>[]
+          }
+          upsert: {
+            args: Prisma.CycleCountAuditUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CycleCountAuditPayload>
+          }
+          aggregate: {
+            args: Prisma.CycleCountAuditAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCycleCountAudit>
+          }
+          groupBy: {
+            args: Prisma.CycleCountAuditGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountAuditGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CycleCountAuditCountArgs<ExtArgs>
+            result: $Utils.Optional<CycleCountAuditCountAggregateOutputType> | number
+          }
+        }
+      }
+      InventoryAdjustment: {
+        payload: Prisma.$InventoryAdjustmentPayload<ExtArgs>
+        fields: Prisma.InventoryAdjustmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InventoryAdjustmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InventoryAdjustmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          findFirst: {
+            args: Prisma.InventoryAdjustmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InventoryAdjustmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          findMany: {
+            args: Prisma.InventoryAdjustmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>[]
+          }
+          create: {
+            args: Prisma.InventoryAdjustmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          createMany: {
+            args: Prisma.InventoryAdjustmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InventoryAdjustmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>[]
+          }
+          delete: {
+            args: Prisma.InventoryAdjustmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          update: {
+            args: Prisma.InventoryAdjustmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.InventoryAdjustmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InventoryAdjustmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InventoryAdjustmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.InventoryAdjustmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryAdjustmentPayload>
+          }
+          aggregate: {
+            args: Prisma.InventoryAdjustmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInventoryAdjustment>
+          }
+          groupBy: {
+            args: Prisma.InventoryAdjustmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InventoryAdjustmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InventoryAdjustmentCountArgs<ExtArgs>
+            result: $Utils.Optional<InventoryAdjustmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3042,6 +3580,11 @@ export namespace Prisma {
     receivingSession?: ReceivingSessionOmit
     receivingLine?: ReceivingLineOmit
     receivingException?: ReceivingExceptionOmit
+    cycleCountTask?: CycleCountTaskOmit
+    cycleCountSession?: CycleCountSessionOmit
+    cycleCountLine?: CycleCountLineOmit
+    cycleCountAudit?: CycleCountAuditOmit
+    inventoryAdjustment?: InventoryAdjustmentOmit
   }
 
   /* Types for Logging */
@@ -3135,6 +3678,14 @@ export namespace Prisma {
     receivingSessionsApproved: number
     exceptionsReported: number
     exceptionsResolved: number
+    cycleCountTasksAssigned: number
+    cycleCountTasksCreated: number
+    cycleCountSessionsLocked: number
+    cycleCountSessionsCounted: number
+    cycleCountSessionsReviewed: number
+    cycleCountAudits: number
+    adjustmentsCreated: number
+    adjustmentsApproved: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3151,6 +3702,14 @@ export namespace Prisma {
     receivingSessionsApproved?: boolean | UserCountOutputTypeCountReceivingSessionsApprovedArgs
     exceptionsReported?: boolean | UserCountOutputTypeCountExceptionsReportedArgs
     exceptionsResolved?: boolean | UserCountOutputTypeCountExceptionsResolvedArgs
+    cycleCountTasksAssigned?: boolean | UserCountOutputTypeCountCycleCountTasksAssignedArgs
+    cycleCountTasksCreated?: boolean | UserCountOutputTypeCountCycleCountTasksCreatedArgs
+    cycleCountSessionsLocked?: boolean | UserCountOutputTypeCountCycleCountSessionsLockedArgs
+    cycleCountSessionsCounted?: boolean | UserCountOutputTypeCountCycleCountSessionsCountedArgs
+    cycleCountSessionsReviewed?: boolean | UserCountOutputTypeCountCycleCountSessionsReviewedArgs
+    cycleCountAudits?: boolean | UserCountOutputTypeCountCycleCountAuditsArgs
+    adjustmentsCreated?: boolean | UserCountOutputTypeCountAdjustmentsCreatedArgs
+    adjustmentsApproved?: boolean | UserCountOutputTypeCountAdjustmentsApprovedArgs
   }
 
   // Custom InputTypes
@@ -3255,6 +3814,62 @@ export namespace Prisma {
     where?: ReceivingExceptionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountTasksAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountTaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountTasksCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountTaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountSessionsLockedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountSessionsCountedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountSessionsReviewedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCycleCountAuditsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountAuditWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdjustmentsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdjustmentsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -3298,6 +3913,8 @@ export namespace Prisma {
     taskItems: number
     allocations: number
     receivingLines: number
+    cycleCountLines: number
+    inventoryAdjustments: number
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3307,6 +3924,8 @@ export namespace Prisma {
     taskItems?: boolean | ProductVariantCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | ProductVariantCountOutputTypeCountAllocationsArgs
     receivingLines?: boolean | ProductVariantCountOutputTypeCountReceivingLinesArgs
+    cycleCountLines?: boolean | ProductVariantCountOutputTypeCountCycleCountLinesArgs
+    inventoryAdjustments?: boolean | ProductVariantCountOutputTypeCountInventoryAdjustmentsArgs
   }
 
   // Custom InputTypes
@@ -3362,6 +3981,20 @@ export namespace Prisma {
     where?: ReceivingLineWhereInput
   }
 
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountCycleCountLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountLineWhereInput
+  }
+
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountInventoryAdjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
+  }
+
 
   /**
    * Count Type LocationCountOutputType
@@ -3372,6 +4005,8 @@ export namespace Prisma {
     taskItems: number
     allocations: number
     receivingSessions: number
+    cycleCountSessions: number
+    inventoryAdjustments: number
   }
 
   export type LocationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3379,6 +4014,8 @@ export namespace Prisma {
     taskItems?: boolean | LocationCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | LocationCountOutputTypeCountAllocationsArgs
     receivingSessions?: boolean | LocationCountOutputTypeCountReceivingSessionsArgs
+    cycleCountSessions?: boolean | LocationCountOutputTypeCountCycleCountSessionsArgs
+    inventoryAdjustments?: boolean | LocationCountOutputTypeCountInventoryAdjustmentsArgs
   }
 
   // Custom InputTypes
@@ -3420,6 +4057,20 @@ export namespace Prisma {
     where?: ReceivingSessionWhereInput
   }
 
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeCountCycleCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+  }
+
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeCountInventoryAdjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
+  }
+
 
   /**
    * Count Type InventoryUnitCountOutputType
@@ -3427,10 +4078,12 @@ export namespace Prisma {
 
   export type InventoryUnitCountOutputType = {
     allocations: number
+    cycleCountLines: number
   }
 
   export type InventoryUnitCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     allocations?: boolean | InventoryUnitCountOutputTypeCountAllocationsArgs
+    cycleCountLines?: boolean | InventoryUnitCountOutputTypeCountCycleCountLinesArgs
   }
 
   // Custom InputTypes
@@ -3449,6 +4102,13 @@ export namespace Prisma {
    */
   export type InventoryUnitCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AllocationWhereInput
+  }
+
+  /**
+   * InventoryUnitCountOutputType without action
+   */
+  export type InventoryUnitCountOutputTypeCountCycleCountLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountLineWhereInput
   }
 
 
@@ -3667,6 +4327,86 @@ export namespace Prisma {
    */
   export type ReceivingSessionCountOutputTypeCountExceptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReceivingExceptionWhereInput
+  }
+
+
+  /**
+   * Count Type CycleCountTaskCountOutputType
+   */
+
+  export type CycleCountTaskCountOutputType = {
+    sessions: number
+  }
+
+  export type CycleCountTaskCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sessions?: boolean | CycleCountTaskCountOutputTypeCountSessionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CycleCountTaskCountOutputType without action
+   */
+  export type CycleCountTaskCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTaskCountOutputType
+     */
+    select?: CycleCountTaskCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountTaskCountOutputType without action
+   */
+  export type CycleCountTaskCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+  }
+
+
+  /**
+   * Count Type CycleCountSessionCountOutputType
+   */
+
+  export type CycleCountSessionCountOutputType = {
+    lineItems: number
+    auditLogs: number
+    adjustments: number
+  }
+
+  export type CycleCountSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lineItems?: boolean | CycleCountSessionCountOutputTypeCountLineItemsArgs
+    auditLogs?: boolean | CycleCountSessionCountOutputTypeCountAuditLogsArgs
+    adjustments?: boolean | CycleCountSessionCountOutputTypeCountAdjustmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CycleCountSessionCountOutputType without action
+   */
+  export type CycleCountSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSessionCountOutputType
+     */
+    select?: CycleCountSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountSessionCountOutputType without action
+   */
+  export type CycleCountSessionCountOutputTypeCountLineItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountLineWhereInput
+  }
+
+  /**
+   * CycleCountSessionCountOutputType without action
+   */
+  export type CycleCountSessionCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountAuditWhereInput
+  }
+
+  /**
+   * CycleCountSessionCountOutputType without action
+   */
+  export type CycleCountSessionCountOutputTypeCountAdjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
   }
 
 
@@ -3891,6 +4631,14 @@ export namespace Prisma {
     receivingSessionsApproved?: boolean | User$receivingSessionsApprovedArgs<ExtArgs>
     exceptionsReported?: boolean | User$exceptionsReportedArgs<ExtArgs>
     exceptionsResolved?: boolean | User$exceptionsResolvedArgs<ExtArgs>
+    cycleCountTasksAssigned?: boolean | User$cycleCountTasksAssignedArgs<ExtArgs>
+    cycleCountTasksCreated?: boolean | User$cycleCountTasksCreatedArgs<ExtArgs>
+    cycleCountSessionsLocked?: boolean | User$cycleCountSessionsLockedArgs<ExtArgs>
+    cycleCountSessionsCounted?: boolean | User$cycleCountSessionsCountedArgs<ExtArgs>
+    cycleCountSessionsReviewed?: boolean | User$cycleCountSessionsReviewedArgs<ExtArgs>
+    cycleCountAudits?: boolean | User$cycleCountAuditsArgs<ExtArgs>
+    adjustmentsCreated?: boolean | User$adjustmentsCreatedArgs<ExtArgs>
+    adjustmentsApproved?: boolean | User$adjustmentsApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3948,6 +4696,14 @@ export namespace Prisma {
     receivingSessionsApproved?: boolean | User$receivingSessionsApprovedArgs<ExtArgs>
     exceptionsReported?: boolean | User$exceptionsReportedArgs<ExtArgs>
     exceptionsResolved?: boolean | User$exceptionsResolvedArgs<ExtArgs>
+    cycleCountTasksAssigned?: boolean | User$cycleCountTasksAssignedArgs<ExtArgs>
+    cycleCountTasksCreated?: boolean | User$cycleCountTasksCreatedArgs<ExtArgs>
+    cycleCountSessionsLocked?: boolean | User$cycleCountSessionsLockedArgs<ExtArgs>
+    cycleCountSessionsCounted?: boolean | User$cycleCountSessionsCountedArgs<ExtArgs>
+    cycleCountSessionsReviewed?: boolean | User$cycleCountSessionsReviewedArgs<ExtArgs>
+    cycleCountAudits?: boolean | User$cycleCountAuditsArgs<ExtArgs>
+    adjustmentsCreated?: boolean | User$adjustmentsCreatedArgs<ExtArgs>
+    adjustmentsApproved?: boolean | User$adjustmentsApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3969,6 +4725,14 @@ export namespace Prisma {
       receivingSessionsApproved: Prisma.$ReceivingSessionPayload<ExtArgs>[]
       exceptionsReported: Prisma.$ReceivingExceptionPayload<ExtArgs>[]
       exceptionsResolved: Prisma.$ReceivingExceptionPayload<ExtArgs>[]
+      cycleCountTasksAssigned: Prisma.$CycleCountTaskPayload<ExtArgs>[]
+      cycleCountTasksCreated: Prisma.$CycleCountTaskPayload<ExtArgs>[]
+      cycleCountSessionsLocked: Prisma.$CycleCountSessionPayload<ExtArgs>[]
+      cycleCountSessionsCounted: Prisma.$CycleCountSessionPayload<ExtArgs>[]
+      cycleCountSessionsReviewed: Prisma.$CycleCountSessionPayload<ExtArgs>[]
+      cycleCountAudits: Prisma.$CycleCountAuditPayload<ExtArgs>[]
+      adjustmentsCreated: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
+      adjustmentsApproved: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4388,6 +5152,14 @@ export namespace Prisma {
     receivingSessionsApproved<T extends User$receivingSessionsApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exceptionsReported<T extends User$exceptionsReportedArgs<ExtArgs> = {}>(args?: Subset<T, User$exceptionsReportedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exceptionsResolved<T extends User$exceptionsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$exceptionsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountTasksAssigned<T extends User$cycleCountTasksAssignedArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountTasksAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountTasksCreated<T extends User$cycleCountTasksCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountTasksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountSessionsLocked<T extends User$cycleCountSessionsLockedArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountSessionsLockedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountSessionsCounted<T extends User$cycleCountSessionsCountedArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountSessionsCountedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountSessionsReviewed<T extends User$cycleCountSessionsReviewedArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountSessionsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountAudits<T extends User$cycleCountAuditsArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adjustmentsCreated<T extends User$adjustmentsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$adjustmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adjustmentsApproved<T extends User$adjustmentsApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$adjustmentsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5124,6 +5896,198 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountTasksAssigned
+   */
+  export type User$cycleCountTasksAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    where?: CycleCountTaskWhereInput
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    cursor?: CycleCountTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountTaskScalarFieldEnum | CycleCountTaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountTasksCreated
+   */
+  export type User$cycleCountTasksCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    where?: CycleCountTaskWhereInput
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    cursor?: CycleCountTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountTaskScalarFieldEnum | CycleCountTaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountSessionsLocked
+   */
+  export type User$cycleCountSessionsLockedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    cursor?: CycleCountSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountSessionsCounted
+   */
+  export type User$cycleCountSessionsCountedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    cursor?: CycleCountSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountSessionsReviewed
+   */
+  export type User$cycleCountSessionsReviewedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    cursor?: CycleCountSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.cycleCountAudits
+   */
+  export type User$cycleCountAuditsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    where?: CycleCountAuditWhereInput
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    cursor?: CycleCountAuditWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountAuditScalarFieldEnum | CycleCountAuditScalarFieldEnum[]
+  }
+
+  /**
+   * User.adjustmentsCreated
+   */
+  export type User$adjustmentsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.adjustmentsApproved
+   */
+  export type User$adjustmentsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
   }
 
   /**
@@ -8702,6 +9666,8 @@ export namespace Prisma {
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
     receivingLines?: boolean | ProductVariant$receivingLinesArgs<ExtArgs>
+    cycleCountLines?: boolean | ProductVariant$cycleCountLinesArgs<ExtArgs>
+    inventoryAdjustments?: boolean | ProductVariant$inventoryAdjustmentsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["productVariant"]>
 
@@ -8770,6 +9736,8 @@ export namespace Prisma {
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
     receivingLines?: boolean | ProductVariant$receivingLinesArgs<ExtArgs>
+    cycleCountLines?: boolean | ProductVariant$cycleCountLinesArgs<ExtArgs>
+    inventoryAdjustments?: boolean | ProductVariant$inventoryAdjustmentsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductVariantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8789,6 +9757,8 @@ export namespace Prisma {
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
       receivingLines: Prisma.$ReceivingLinePayload<ExtArgs>[]
+      cycleCountLines: Prisma.$CycleCountLinePayload<ExtArgs>[]
+      inventoryAdjustments: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9207,6 +10177,8 @@ export namespace Prisma {
     taskItems<T extends ProductVariant$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends ProductVariant$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivingLines<T extends ProductVariant$receivingLinesArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$receivingLinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountLines<T extends ProductVariant$cycleCountLinesArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$cycleCountLinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    inventoryAdjustments<T extends ProductVariant$inventoryAdjustmentsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryAdjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9791,6 +10763,54 @@ export namespace Prisma {
   }
 
   /**
+   * ProductVariant.cycleCountLines
+   */
+  export type ProductVariant$cycleCountLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    where?: CycleCountLineWhereInput
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    cursor?: CycleCountLineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
+  }
+
+  /**
+   * ProductVariant.inventoryAdjustments
+   */
+  export type ProductVariant$inventoryAdjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
    * ProductVariant without action
    */
   export type ProductVariantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10083,6 +11103,8 @@ export namespace Prisma {
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
     allocations?: boolean | Location$allocationsArgs<ExtArgs>
     receivingSessions?: boolean | Location$receivingSessionsArgs<ExtArgs>
+    cycleCountSessions?: boolean | Location$cycleCountSessionsArgs<ExtArgs>
+    inventoryAdjustments?: boolean | Location$inventoryAdjustmentsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["location"]>
 
@@ -10143,6 +11165,8 @@ export namespace Prisma {
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
     allocations?: boolean | Location$allocationsArgs<ExtArgs>
     receivingSessions?: boolean | Location$receivingSessionsArgs<ExtArgs>
+    cycleCountSessions?: boolean | Location$cycleCountSessionsArgs<ExtArgs>
+    inventoryAdjustments?: boolean | Location$inventoryAdjustmentsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -10155,6 +11179,8 @@ export namespace Prisma {
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
       receivingSessions: Prisma.$ReceivingSessionPayload<ExtArgs>[]
+      cycleCountSessions: Prisma.$CycleCountSessionPayload<ExtArgs>[]
+      inventoryAdjustments: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10569,6 +11595,8 @@ export namespace Prisma {
     taskItems<T extends Location$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Location$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends Location$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Location$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivingSessions<T extends Location$receivingSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Location$receivingSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountSessions<T extends Location$cycleCountSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Location$cycleCountSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    inventoryAdjustments<T extends Location$inventoryAdjustmentsArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryAdjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11096,6 +12124,54 @@ export namespace Prisma {
   }
 
   /**
+   * Location.cycleCountSessions
+   */
+  export type Location$cycleCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    cursor?: CycleCountSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * Location.inventoryAdjustments
+   */
+  export type Location$inventoryAdjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
    * Location without action
    */
   export type LocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11375,6 +12451,7 @@ export namespace Prisma {
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
     allocations?: boolean | InventoryUnit$allocationsArgs<ExtArgs>
+    cycleCountLines?: boolean | InventoryUnit$cycleCountLinesArgs<ExtArgs>
     _count?: boolean | InventoryUnitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["inventoryUnit"]>
 
@@ -11432,6 +12509,7 @@ export namespace Prisma {
     productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
     location?: boolean | LocationDefaultArgs<ExtArgs>
     allocations?: boolean | InventoryUnit$allocationsArgs<ExtArgs>
+    cycleCountLines?: boolean | InventoryUnit$cycleCountLinesArgs<ExtArgs>
     _count?: boolean | InventoryUnitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InventoryUnitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11449,6 +12527,7 @@ export namespace Prisma {
       productVariant: Prisma.$ProductVariantPayload<ExtArgs>
       location: Prisma.$LocationPayload<ExtArgs>
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
+      cycleCountLines: Prisma.$CycleCountLinePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11860,6 +12939,7 @@ export namespace Prisma {
     productVariant<T extends ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariantDefaultArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     location<T extends LocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocationDefaultArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     allocations<T extends InventoryUnit$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, InventoryUnit$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycleCountLines<T extends InventoryUnit$cycleCountLinesArgs<ExtArgs> = {}>(args?: Subset<T, InventoryUnit$cycleCountLinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12318,6 +13398,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryUnit.cycleCountLines
+   */
+  export type InventoryUnit$cycleCountLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    where?: CycleCountLineWhereInput
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    cursor?: CycleCountLineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
   }
 
   /**
@@ -32400,6 +33504,6512 @@ export namespace Prisma {
 
 
   /**
+   * Model CycleCountTask
+   */
+
+  export type AggregateCycleCountTask = {
+    _count: CycleCountTaskCountAggregateOutputType | null
+    _avg: CycleCountTaskAvgAggregateOutputType | null
+    _sum: CycleCountTaskSumAggregateOutputType | null
+    _min: CycleCountTaskMinAggregateOutputType | null
+    _max: CycleCountTaskMaxAggregateOutputType | null
+  }
+
+  export type CycleCountTaskAvgAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type CycleCountTaskSumAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type CycleCountTaskMinAggregateOutputType = {
+    id: string | null
+    taskNumber: string | null
+    name: string | null
+    description: string | null
+    type: $Enums.CycleCountType | null
+    zoneId: string | null
+    skuFilter: string | null
+    abcClass: string | null
+    blindCount: boolean | null
+    includeZeroQty: boolean | null
+    priority: number | null
+    scheduledDate: Date | null
+    dueDate: Date | null
+    assignedToId: string | null
+    createdById: string | null
+    status: $Enums.CycleCountTaskStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountTaskMaxAggregateOutputType = {
+    id: string | null
+    taskNumber: string | null
+    name: string | null
+    description: string | null
+    type: $Enums.CycleCountType | null
+    zoneId: string | null
+    skuFilter: string | null
+    abcClass: string | null
+    blindCount: boolean | null
+    includeZeroQty: boolean | null
+    priority: number | null
+    scheduledDate: Date | null
+    dueDate: Date | null
+    assignedToId: string | null
+    createdById: string | null
+    status: $Enums.CycleCountTaskStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountTaskCountAggregateOutputType = {
+    id: number
+    taskNumber: number
+    name: number
+    description: number
+    type: number
+    locationIds: number
+    zoneId: number
+    skuFilter: number
+    abcClass: number
+    blindCount: number
+    includeZeroQty: number
+    priority: number
+    scheduledDate: number
+    dueDate: number
+    assignedToId: number
+    createdById: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CycleCountTaskAvgAggregateInputType = {
+    priority?: true
+  }
+
+  export type CycleCountTaskSumAggregateInputType = {
+    priority?: true
+  }
+
+  export type CycleCountTaskMinAggregateInputType = {
+    id?: true
+    taskNumber?: true
+    name?: true
+    description?: true
+    type?: true
+    zoneId?: true
+    skuFilter?: true
+    abcClass?: true
+    blindCount?: true
+    includeZeroQty?: true
+    priority?: true
+    scheduledDate?: true
+    dueDate?: true
+    assignedToId?: true
+    createdById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountTaskMaxAggregateInputType = {
+    id?: true
+    taskNumber?: true
+    name?: true
+    description?: true
+    type?: true
+    zoneId?: true
+    skuFilter?: true
+    abcClass?: true
+    blindCount?: true
+    includeZeroQty?: true
+    priority?: true
+    scheduledDate?: true
+    dueDate?: true
+    assignedToId?: true
+    createdById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountTaskCountAggregateInputType = {
+    id?: true
+    taskNumber?: true
+    name?: true
+    description?: true
+    type?: true
+    locationIds?: true
+    zoneId?: true
+    skuFilter?: true
+    abcClass?: true
+    blindCount?: true
+    includeZeroQty?: true
+    priority?: true
+    scheduledDate?: true
+    dueDate?: true
+    assignedToId?: true
+    createdById?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CycleCountTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountTask to aggregate.
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountTasks to fetch.
+     */
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CycleCountTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CycleCountTasks
+    **/
+    _count?: true | CycleCountTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CycleCountTaskAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CycleCountTaskSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CycleCountTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CycleCountTaskMaxAggregateInputType
+  }
+
+  export type GetCycleCountTaskAggregateType<T extends CycleCountTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateCycleCountTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCycleCountTask[P]>
+      : GetScalarType<T[P], AggregateCycleCountTask[P]>
+  }
+
+
+
+
+  export type CycleCountTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountTaskWhereInput
+    orderBy?: CycleCountTaskOrderByWithAggregationInput | CycleCountTaskOrderByWithAggregationInput[]
+    by: CycleCountTaskScalarFieldEnum[] | CycleCountTaskScalarFieldEnum
+    having?: CycleCountTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CycleCountTaskCountAggregateInputType | true
+    _avg?: CycleCountTaskAvgAggregateInputType
+    _sum?: CycleCountTaskSumAggregateInputType
+    _min?: CycleCountTaskMinAggregateInputType
+    _max?: CycleCountTaskMaxAggregateInputType
+  }
+
+  export type CycleCountTaskGroupByOutputType = {
+    id: string
+    taskNumber: string
+    name: string | null
+    description: string | null
+    type: $Enums.CycleCountType
+    locationIds: string[]
+    zoneId: string | null
+    skuFilter: string | null
+    abcClass: string | null
+    blindCount: boolean
+    includeZeroQty: boolean
+    priority: number
+    scheduledDate: Date | null
+    dueDate: Date | null
+    assignedToId: string | null
+    createdById: string
+    status: $Enums.CycleCountTaskStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: CycleCountTaskCountAggregateOutputType | null
+    _avg: CycleCountTaskAvgAggregateOutputType | null
+    _sum: CycleCountTaskSumAggregateOutputType | null
+    _min: CycleCountTaskMinAggregateOutputType | null
+    _max: CycleCountTaskMaxAggregateOutputType | null
+  }
+
+  type GetCycleCountTaskGroupByPayload<T extends CycleCountTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CycleCountTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CycleCountTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CycleCountTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], CycleCountTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CycleCountTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskNumber?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    locationIds?: boolean
+    zoneId?: boolean
+    skuFilter?: boolean
+    abcClass?: boolean
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: boolean
+    scheduledDate?: boolean
+    dueDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    sessions?: boolean | CycleCountTask$sessionsArgs<ExtArgs>
+    _count?: boolean | CycleCountTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountTask"]>
+
+  export type CycleCountTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskNumber?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    locationIds?: boolean
+    zoneId?: boolean
+    skuFilter?: boolean
+    abcClass?: boolean
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: boolean
+    scheduledDate?: boolean
+    dueDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountTask"]>
+
+  export type CycleCountTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskNumber?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    locationIds?: boolean
+    zoneId?: boolean
+    skuFilter?: boolean
+    abcClass?: boolean
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: boolean
+    scheduledDate?: boolean
+    dueDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountTask"]>
+
+  export type CycleCountTaskSelectScalar = {
+    id?: boolean
+    taskNumber?: boolean
+    name?: boolean
+    description?: boolean
+    type?: boolean
+    locationIds?: boolean
+    zoneId?: boolean
+    skuFilter?: boolean
+    abcClass?: boolean
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: boolean
+    scheduledDate?: boolean
+    dueDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CycleCountTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "name" | "description" | "type" | "locationIds" | "zoneId" | "skuFilter" | "abcClass" | "blindCount" | "includeZeroQty" | "priority" | "scheduledDate" | "dueDate" | "assignedToId" | "createdById" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["cycleCountTask"]>
+  export type CycleCountTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    sessions?: boolean | CycleCountTask$sessionsArgs<ExtArgs>
+    _count?: boolean | CycleCountTaskCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CycleCountTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CycleCountTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignedTo?: boolean | CycleCountTask$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CycleCountTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CycleCountTask"
+    objects: {
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      sessions: Prisma.$CycleCountSessionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      taskNumber: string
+      name: string | null
+      description: string | null
+      type: $Enums.CycleCountType
+      locationIds: string[]
+      zoneId: string | null
+      skuFilter: string | null
+      abcClass: string | null
+      blindCount: boolean
+      includeZeroQty: boolean
+      priority: number
+      scheduledDate: Date | null
+      dueDate: Date | null
+      assignedToId: string | null
+      createdById: string
+      status: $Enums.CycleCountTaskStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cycleCountTask"]>
+    composites: {}
+  }
+
+  type CycleCountTaskGetPayload<S extends boolean | null | undefined | CycleCountTaskDefaultArgs> = $Result.GetResult<Prisma.$CycleCountTaskPayload, S>
+
+  type CycleCountTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CycleCountTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CycleCountTaskCountAggregateInputType | true
+    }
+
+  export interface CycleCountTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CycleCountTask'], meta: { name: 'CycleCountTask' } }
+    /**
+     * Find zero or one CycleCountTask that matches the filter.
+     * @param {CycleCountTaskFindUniqueArgs} args - Arguments to find a CycleCountTask
+     * @example
+     * // Get one CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CycleCountTaskFindUniqueArgs>(args: SelectSubset<T, CycleCountTaskFindUniqueArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CycleCountTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CycleCountTaskFindUniqueOrThrowArgs} args - Arguments to find a CycleCountTask
+     * @example
+     * // Get one CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CycleCountTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, CycleCountTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskFindFirstArgs} args - Arguments to find a CycleCountTask
+     * @example
+     * // Get one CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CycleCountTaskFindFirstArgs>(args?: SelectSubset<T, CycleCountTaskFindFirstArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskFindFirstOrThrowArgs} args - Arguments to find a CycleCountTask
+     * @example
+     * // Get one CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CycleCountTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, CycleCountTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CycleCountTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CycleCountTasks
+     * const cycleCountTasks = await prisma.cycleCountTask.findMany()
+     * 
+     * // Get first 10 CycleCountTasks
+     * const cycleCountTasks = await prisma.cycleCountTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cycleCountTaskWithIdOnly = await prisma.cycleCountTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CycleCountTaskFindManyArgs>(args?: SelectSubset<T, CycleCountTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CycleCountTask.
+     * @param {CycleCountTaskCreateArgs} args - Arguments to create a CycleCountTask.
+     * @example
+     * // Create one CycleCountTask
+     * const CycleCountTask = await prisma.cycleCountTask.create({
+     *   data: {
+     *     // ... data to create a CycleCountTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends CycleCountTaskCreateArgs>(args: SelectSubset<T, CycleCountTaskCreateArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CycleCountTasks.
+     * @param {CycleCountTaskCreateManyArgs} args - Arguments to create many CycleCountTasks.
+     * @example
+     * // Create many CycleCountTasks
+     * const cycleCountTask = await prisma.cycleCountTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CycleCountTaskCreateManyArgs>(args?: SelectSubset<T, CycleCountTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CycleCountTasks and returns the data saved in the database.
+     * @param {CycleCountTaskCreateManyAndReturnArgs} args - Arguments to create many CycleCountTasks.
+     * @example
+     * // Create many CycleCountTasks
+     * const cycleCountTask = await prisma.cycleCountTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CycleCountTasks and only return the `id`
+     * const cycleCountTaskWithIdOnly = await prisma.cycleCountTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CycleCountTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, CycleCountTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CycleCountTask.
+     * @param {CycleCountTaskDeleteArgs} args - Arguments to delete one CycleCountTask.
+     * @example
+     * // Delete one CycleCountTask
+     * const CycleCountTask = await prisma.cycleCountTask.delete({
+     *   where: {
+     *     // ... filter to delete one CycleCountTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CycleCountTaskDeleteArgs>(args: SelectSubset<T, CycleCountTaskDeleteArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CycleCountTask.
+     * @param {CycleCountTaskUpdateArgs} args - Arguments to update one CycleCountTask.
+     * @example
+     * // Update one CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CycleCountTaskUpdateArgs>(args: SelectSubset<T, CycleCountTaskUpdateArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CycleCountTasks.
+     * @param {CycleCountTaskDeleteManyArgs} args - Arguments to filter CycleCountTasks to delete.
+     * @example
+     * // Delete a few CycleCountTasks
+     * const { count } = await prisma.cycleCountTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CycleCountTaskDeleteManyArgs>(args?: SelectSubset<T, CycleCountTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CycleCountTasks
+     * const cycleCountTask = await prisma.cycleCountTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CycleCountTaskUpdateManyArgs>(args: SelectSubset<T, CycleCountTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountTasks and returns the data updated in the database.
+     * @param {CycleCountTaskUpdateManyAndReturnArgs} args - Arguments to update many CycleCountTasks.
+     * @example
+     * // Update many CycleCountTasks
+     * const cycleCountTask = await prisma.cycleCountTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CycleCountTasks and only return the `id`
+     * const cycleCountTaskWithIdOnly = await prisma.cycleCountTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CycleCountTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, CycleCountTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CycleCountTask.
+     * @param {CycleCountTaskUpsertArgs} args - Arguments to update or create a CycleCountTask.
+     * @example
+     * // Update or create a CycleCountTask
+     * const cycleCountTask = await prisma.cycleCountTask.upsert({
+     *   create: {
+     *     // ... data to create a CycleCountTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CycleCountTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CycleCountTaskUpsertArgs>(args: SelectSubset<T, CycleCountTaskUpsertArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CycleCountTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskCountArgs} args - Arguments to filter CycleCountTasks to count.
+     * @example
+     * // Count the number of CycleCountTasks
+     * const count = await prisma.cycleCountTask.count({
+     *   where: {
+     *     // ... the filter for the CycleCountTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends CycleCountTaskCountArgs>(
+      args?: Subset<T, CycleCountTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CycleCountTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CycleCountTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CycleCountTaskAggregateArgs>(args: Subset<T, CycleCountTaskAggregateArgs>): Prisma.PrismaPromise<GetCycleCountTaskAggregateType<T>>
+
+    /**
+     * Group by CycleCountTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CycleCountTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CycleCountTaskGroupByArgs['orderBy'] }
+        : { orderBy?: CycleCountTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CycleCountTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCycleCountTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CycleCountTask model
+   */
+  readonly fields: CycleCountTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CycleCountTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CycleCountTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    assignedTo<T extends CycleCountTask$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountTask$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sessions<T extends CycleCountTask$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountTask$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CycleCountTask model
+   */
+  interface CycleCountTaskFieldRefs {
+    readonly id: FieldRef<"CycleCountTask", 'String'>
+    readonly taskNumber: FieldRef<"CycleCountTask", 'String'>
+    readonly name: FieldRef<"CycleCountTask", 'String'>
+    readonly description: FieldRef<"CycleCountTask", 'String'>
+    readonly type: FieldRef<"CycleCountTask", 'CycleCountType'>
+    readonly locationIds: FieldRef<"CycleCountTask", 'String[]'>
+    readonly zoneId: FieldRef<"CycleCountTask", 'String'>
+    readonly skuFilter: FieldRef<"CycleCountTask", 'String'>
+    readonly abcClass: FieldRef<"CycleCountTask", 'String'>
+    readonly blindCount: FieldRef<"CycleCountTask", 'Boolean'>
+    readonly includeZeroQty: FieldRef<"CycleCountTask", 'Boolean'>
+    readonly priority: FieldRef<"CycleCountTask", 'Int'>
+    readonly scheduledDate: FieldRef<"CycleCountTask", 'DateTime'>
+    readonly dueDate: FieldRef<"CycleCountTask", 'DateTime'>
+    readonly assignedToId: FieldRef<"CycleCountTask", 'String'>
+    readonly createdById: FieldRef<"CycleCountTask", 'String'>
+    readonly status: FieldRef<"CycleCountTask", 'CycleCountTaskStatus'>
+    readonly createdAt: FieldRef<"CycleCountTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"CycleCountTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CycleCountTask findUnique
+   */
+  export type CycleCountTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountTask to fetch.
+     */
+    where: CycleCountTaskWhereUniqueInput
+  }
+
+  /**
+   * CycleCountTask findUniqueOrThrow
+   */
+  export type CycleCountTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountTask to fetch.
+     */
+    where: CycleCountTaskWhereUniqueInput
+  }
+
+  /**
+   * CycleCountTask findFirst
+   */
+  export type CycleCountTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountTask to fetch.
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountTasks to fetch.
+     */
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountTasks.
+     */
+    cursor?: CycleCountTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountTasks.
+     */
+    distinct?: CycleCountTaskScalarFieldEnum | CycleCountTaskScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountTask findFirstOrThrow
+   */
+  export type CycleCountTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountTask to fetch.
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountTasks to fetch.
+     */
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountTasks.
+     */
+    cursor?: CycleCountTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountTasks.
+     */
+    distinct?: CycleCountTaskScalarFieldEnum | CycleCountTaskScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountTask findMany
+   */
+  export type CycleCountTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountTasks to fetch.
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountTasks to fetch.
+     */
+    orderBy?: CycleCountTaskOrderByWithRelationInput | CycleCountTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CycleCountTasks.
+     */
+    cursor?: CycleCountTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountTasks.
+     */
+    skip?: number
+    distinct?: CycleCountTaskScalarFieldEnum | CycleCountTaskScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountTask create
+   */
+  export type CycleCountTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CycleCountTask.
+     */
+    data: XOR<CycleCountTaskCreateInput, CycleCountTaskUncheckedCreateInput>
+  }
+
+  /**
+   * CycleCountTask createMany
+   */
+  export type CycleCountTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CycleCountTasks.
+     */
+    data: CycleCountTaskCreateManyInput | CycleCountTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CycleCountTask createManyAndReturn
+   */
+  export type CycleCountTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many CycleCountTasks.
+     */
+    data: CycleCountTaskCreateManyInput | CycleCountTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountTask update
+   */
+  export type CycleCountTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CycleCountTask.
+     */
+    data: XOR<CycleCountTaskUpdateInput, CycleCountTaskUncheckedUpdateInput>
+    /**
+     * Choose, which CycleCountTask to update.
+     */
+    where: CycleCountTaskWhereUniqueInput
+  }
+
+  /**
+   * CycleCountTask updateMany
+   */
+  export type CycleCountTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CycleCountTasks.
+     */
+    data: XOR<CycleCountTaskUpdateManyMutationInput, CycleCountTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountTasks to update
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * Limit how many CycleCountTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountTask updateManyAndReturn
+   */
+  export type CycleCountTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update CycleCountTasks.
+     */
+    data: XOR<CycleCountTaskUpdateManyMutationInput, CycleCountTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountTasks to update
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * Limit how many CycleCountTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountTask upsert
+   */
+  export type CycleCountTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CycleCountTask to update in case it exists.
+     */
+    where: CycleCountTaskWhereUniqueInput
+    /**
+     * In case the CycleCountTask found by the `where` argument doesn't exist, create a new CycleCountTask with this data.
+     */
+    create: XOR<CycleCountTaskCreateInput, CycleCountTaskUncheckedCreateInput>
+    /**
+     * In case the CycleCountTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CycleCountTaskUpdateInput, CycleCountTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * CycleCountTask delete
+   */
+  export type CycleCountTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    /**
+     * Filter which CycleCountTask to delete.
+     */
+    where: CycleCountTaskWhereUniqueInput
+  }
+
+  /**
+   * CycleCountTask deleteMany
+   */
+  export type CycleCountTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountTasks to delete
+     */
+    where?: CycleCountTaskWhereInput
+    /**
+     * Limit how many CycleCountTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountTask.assignedTo
+   */
+  export type CycleCountTask$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CycleCountTask.sessions
+   */
+  export type CycleCountTask$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    cursor?: CycleCountSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountTask without action
+   */
+  export type CycleCountTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CycleCountSession
+   */
+
+  export type AggregateCycleCountSession = {
+    _count: CycleCountSessionCountAggregateOutputType | null
+    _avg: CycleCountSessionAvgAggregateOutputType | null
+    _sum: CycleCountSessionSumAggregateOutputType | null
+    _min: CycleCountSessionMinAggregateOutputType | null
+    _max: CycleCountSessionMaxAggregateOutputType | null
+  }
+
+  export type CycleCountSessionAvgAggregateOutputType = {
+    version: number | null
+    totalExpected: number | null
+    totalCounted: number | null
+    varianceCount: number | null
+  }
+
+  export type CycleCountSessionSumAggregateOutputType = {
+    version: number | null
+    totalExpected: number | null
+    totalCounted: number | null
+    varianceCount: number | null
+  }
+
+  export type CycleCountSessionMinAggregateOutputType = {
+    id: string | null
+    taskId: string | null
+    locationId: string | null
+    blindCount: boolean | null
+    version: number | null
+    lockedBy: string | null
+    lockedAt: Date | null
+    status: $Enums.CycleCountSessionStatus | null
+    countedById: string | null
+    startedAt: Date | null
+    submittedAt: Date | null
+    reviewedById: string | null
+    reviewedAt: Date | null
+    reviewNotes: string | null
+    totalExpected: number | null
+    totalCounted: number | null
+    varianceCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountSessionMaxAggregateOutputType = {
+    id: string | null
+    taskId: string | null
+    locationId: string | null
+    blindCount: boolean | null
+    version: number | null
+    lockedBy: string | null
+    lockedAt: Date | null
+    status: $Enums.CycleCountSessionStatus | null
+    countedById: string | null
+    startedAt: Date | null
+    submittedAt: Date | null
+    reviewedById: string | null
+    reviewedAt: Date | null
+    reviewNotes: string | null
+    totalExpected: number | null
+    totalCounted: number | null
+    varianceCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountSessionCountAggregateOutputType = {
+    id: number
+    taskId: number
+    locationId: number
+    blindCount: number
+    version: number
+    lockedBy: number
+    lockedAt: number
+    status: number
+    countedById: number
+    startedAt: number
+    submittedAt: number
+    reviewedById: number
+    reviewedAt: number
+    reviewNotes: number
+    totalExpected: number
+    totalCounted: number
+    varianceCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CycleCountSessionAvgAggregateInputType = {
+    version?: true
+    totalExpected?: true
+    totalCounted?: true
+    varianceCount?: true
+  }
+
+  export type CycleCountSessionSumAggregateInputType = {
+    version?: true
+    totalExpected?: true
+    totalCounted?: true
+    varianceCount?: true
+  }
+
+  export type CycleCountSessionMinAggregateInputType = {
+    id?: true
+    taskId?: true
+    locationId?: true
+    blindCount?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    status?: true
+    countedById?: true
+    startedAt?: true
+    submittedAt?: true
+    reviewedById?: true
+    reviewedAt?: true
+    reviewNotes?: true
+    totalExpected?: true
+    totalCounted?: true
+    varianceCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountSessionMaxAggregateInputType = {
+    id?: true
+    taskId?: true
+    locationId?: true
+    blindCount?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    status?: true
+    countedById?: true
+    startedAt?: true
+    submittedAt?: true
+    reviewedById?: true
+    reviewedAt?: true
+    reviewNotes?: true
+    totalExpected?: true
+    totalCounted?: true
+    varianceCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountSessionCountAggregateInputType = {
+    id?: true
+    taskId?: true
+    locationId?: true
+    blindCount?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    status?: true
+    countedById?: true
+    startedAt?: true
+    submittedAt?: true
+    reviewedById?: true
+    reviewedAt?: true
+    reviewNotes?: true
+    totalExpected?: true
+    totalCounted?: true
+    varianceCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CycleCountSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountSession to aggregate.
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountSessions to fetch.
+     */
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CycleCountSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CycleCountSessions
+    **/
+    _count?: true | CycleCountSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CycleCountSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CycleCountSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CycleCountSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CycleCountSessionMaxAggregateInputType
+  }
+
+  export type GetCycleCountSessionAggregateType<T extends CycleCountSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateCycleCountSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCycleCountSession[P]>
+      : GetScalarType<T[P], AggregateCycleCountSession[P]>
+  }
+
+
+
+
+  export type CycleCountSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountSessionWhereInput
+    orderBy?: CycleCountSessionOrderByWithAggregationInput | CycleCountSessionOrderByWithAggregationInput[]
+    by: CycleCountSessionScalarFieldEnum[] | CycleCountSessionScalarFieldEnum
+    having?: CycleCountSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CycleCountSessionCountAggregateInputType | true
+    _avg?: CycleCountSessionAvgAggregateInputType
+    _sum?: CycleCountSessionSumAggregateInputType
+    _min?: CycleCountSessionMinAggregateInputType
+    _max?: CycleCountSessionMaxAggregateInputType
+  }
+
+  export type CycleCountSessionGroupByOutputType = {
+    id: string
+    taskId: string | null
+    locationId: string
+    blindCount: boolean
+    version: number
+    lockedBy: string | null
+    lockedAt: Date | null
+    status: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt: Date
+    submittedAt: Date | null
+    reviewedById: string | null
+    reviewedAt: Date | null
+    reviewNotes: string | null
+    totalExpected: number
+    totalCounted: number
+    varianceCount: number
+    createdAt: Date
+    updatedAt: Date
+    _count: CycleCountSessionCountAggregateOutputType | null
+    _avg: CycleCountSessionAvgAggregateOutputType | null
+    _sum: CycleCountSessionSumAggregateOutputType | null
+    _min: CycleCountSessionMinAggregateOutputType | null
+    _max: CycleCountSessionMaxAggregateOutputType | null
+  }
+
+  type GetCycleCountSessionGroupByPayload<T extends CycleCountSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CycleCountSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CycleCountSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CycleCountSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], CycleCountSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CycleCountSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskId?: boolean
+    locationId?: boolean
+    blindCount?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    status?: boolean
+    countedById?: boolean
+    startedAt?: boolean
+    submittedAt?: boolean
+    reviewedById?: boolean
+    reviewedAt?: boolean
+    reviewNotes?: boolean
+    totalExpected?: boolean
+    totalCounted?: boolean
+    varianceCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+    lineItems?: boolean | CycleCountSession$lineItemsArgs<ExtArgs>
+    auditLogs?: boolean | CycleCountSession$auditLogsArgs<ExtArgs>
+    adjustments?: boolean | CycleCountSession$adjustmentsArgs<ExtArgs>
+    _count?: boolean | CycleCountSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountSession"]>
+
+  export type CycleCountSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskId?: boolean
+    locationId?: boolean
+    blindCount?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    status?: boolean
+    countedById?: boolean
+    startedAt?: boolean
+    submittedAt?: boolean
+    reviewedById?: boolean
+    reviewedAt?: boolean
+    reviewNotes?: boolean
+    totalExpected?: boolean
+    totalCounted?: boolean
+    varianceCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountSession"]>
+
+  export type CycleCountSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    taskId?: boolean
+    locationId?: boolean
+    blindCount?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    status?: boolean
+    countedById?: boolean
+    startedAt?: boolean
+    submittedAt?: boolean
+    reviewedById?: boolean
+    reviewedAt?: boolean
+    reviewNotes?: boolean
+    totalExpected?: boolean
+    totalCounted?: boolean
+    varianceCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountSession"]>
+
+  export type CycleCountSessionSelectScalar = {
+    id?: boolean
+    taskId?: boolean
+    locationId?: boolean
+    blindCount?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    status?: boolean
+    countedById?: boolean
+    startedAt?: boolean
+    submittedAt?: boolean
+    reviewedById?: boolean
+    reviewedAt?: boolean
+    reviewNotes?: boolean
+    totalExpected?: boolean
+    totalCounted?: boolean
+    varianceCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CycleCountSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "locationId" | "blindCount" | "version" | "lockedBy" | "lockedAt" | "status" | "countedById" | "startedAt" | "submittedAt" | "reviewedById" | "reviewedAt" | "reviewNotes" | "totalExpected" | "totalCounted" | "varianceCount" | "createdAt" | "updatedAt", ExtArgs["result"]["cycleCountSession"]>
+  export type CycleCountSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+    lineItems?: boolean | CycleCountSession$lineItemsArgs<ExtArgs>
+    auditLogs?: boolean | CycleCountSession$auditLogsArgs<ExtArgs>
+    adjustments?: boolean | CycleCountSession$adjustmentsArgs<ExtArgs>
+    _count?: boolean | CycleCountSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CycleCountSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+  }
+  export type CycleCountSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    task?: boolean | CycleCountSession$taskArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | CycleCountSession$lockedByUserArgs<ExtArgs>
+    countedBy?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedBy?: boolean | CycleCountSession$reviewedByArgs<ExtArgs>
+  }
+
+  export type $CycleCountSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CycleCountSession"
+    objects: {
+      task: Prisma.$CycleCountTaskPayload<ExtArgs> | null
+      location: Prisma.$LocationPayload<ExtArgs>
+      lockedByUser: Prisma.$UserPayload<ExtArgs> | null
+      countedBy: Prisma.$UserPayload<ExtArgs>
+      reviewedBy: Prisma.$UserPayload<ExtArgs> | null
+      lineItems: Prisma.$CycleCountLinePayload<ExtArgs>[]
+      auditLogs: Prisma.$CycleCountAuditPayload<ExtArgs>[]
+      adjustments: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      taskId: string | null
+      locationId: string
+      blindCount: boolean
+      version: number
+      lockedBy: string | null
+      lockedAt: Date | null
+      status: $Enums.CycleCountSessionStatus
+      countedById: string
+      startedAt: Date
+      submittedAt: Date | null
+      reviewedById: string | null
+      reviewedAt: Date | null
+      reviewNotes: string | null
+      totalExpected: number
+      totalCounted: number
+      varianceCount: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cycleCountSession"]>
+    composites: {}
+  }
+
+  type CycleCountSessionGetPayload<S extends boolean | null | undefined | CycleCountSessionDefaultArgs> = $Result.GetResult<Prisma.$CycleCountSessionPayload, S>
+
+  type CycleCountSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CycleCountSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CycleCountSessionCountAggregateInputType | true
+    }
+
+  export interface CycleCountSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CycleCountSession'], meta: { name: 'CycleCountSession' } }
+    /**
+     * Find zero or one CycleCountSession that matches the filter.
+     * @param {CycleCountSessionFindUniqueArgs} args - Arguments to find a CycleCountSession
+     * @example
+     * // Get one CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CycleCountSessionFindUniqueArgs>(args: SelectSubset<T, CycleCountSessionFindUniqueArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CycleCountSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CycleCountSessionFindUniqueOrThrowArgs} args - Arguments to find a CycleCountSession
+     * @example
+     * // Get one CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CycleCountSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, CycleCountSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionFindFirstArgs} args - Arguments to find a CycleCountSession
+     * @example
+     * // Get one CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CycleCountSessionFindFirstArgs>(args?: SelectSubset<T, CycleCountSessionFindFirstArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionFindFirstOrThrowArgs} args - Arguments to find a CycleCountSession
+     * @example
+     * // Get one CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CycleCountSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, CycleCountSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CycleCountSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CycleCountSessions
+     * const cycleCountSessions = await prisma.cycleCountSession.findMany()
+     * 
+     * // Get first 10 CycleCountSessions
+     * const cycleCountSessions = await prisma.cycleCountSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cycleCountSessionWithIdOnly = await prisma.cycleCountSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CycleCountSessionFindManyArgs>(args?: SelectSubset<T, CycleCountSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CycleCountSession.
+     * @param {CycleCountSessionCreateArgs} args - Arguments to create a CycleCountSession.
+     * @example
+     * // Create one CycleCountSession
+     * const CycleCountSession = await prisma.cycleCountSession.create({
+     *   data: {
+     *     // ... data to create a CycleCountSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends CycleCountSessionCreateArgs>(args: SelectSubset<T, CycleCountSessionCreateArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CycleCountSessions.
+     * @param {CycleCountSessionCreateManyArgs} args - Arguments to create many CycleCountSessions.
+     * @example
+     * // Create many CycleCountSessions
+     * const cycleCountSession = await prisma.cycleCountSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CycleCountSessionCreateManyArgs>(args?: SelectSubset<T, CycleCountSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CycleCountSessions and returns the data saved in the database.
+     * @param {CycleCountSessionCreateManyAndReturnArgs} args - Arguments to create many CycleCountSessions.
+     * @example
+     * // Create many CycleCountSessions
+     * const cycleCountSession = await prisma.cycleCountSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CycleCountSessions and only return the `id`
+     * const cycleCountSessionWithIdOnly = await prisma.cycleCountSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CycleCountSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, CycleCountSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CycleCountSession.
+     * @param {CycleCountSessionDeleteArgs} args - Arguments to delete one CycleCountSession.
+     * @example
+     * // Delete one CycleCountSession
+     * const CycleCountSession = await prisma.cycleCountSession.delete({
+     *   where: {
+     *     // ... filter to delete one CycleCountSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CycleCountSessionDeleteArgs>(args: SelectSubset<T, CycleCountSessionDeleteArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CycleCountSession.
+     * @param {CycleCountSessionUpdateArgs} args - Arguments to update one CycleCountSession.
+     * @example
+     * // Update one CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CycleCountSessionUpdateArgs>(args: SelectSubset<T, CycleCountSessionUpdateArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CycleCountSessions.
+     * @param {CycleCountSessionDeleteManyArgs} args - Arguments to filter CycleCountSessions to delete.
+     * @example
+     * // Delete a few CycleCountSessions
+     * const { count } = await prisma.cycleCountSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CycleCountSessionDeleteManyArgs>(args?: SelectSubset<T, CycleCountSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CycleCountSessions
+     * const cycleCountSession = await prisma.cycleCountSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CycleCountSessionUpdateManyArgs>(args: SelectSubset<T, CycleCountSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountSessions and returns the data updated in the database.
+     * @param {CycleCountSessionUpdateManyAndReturnArgs} args - Arguments to update many CycleCountSessions.
+     * @example
+     * // Update many CycleCountSessions
+     * const cycleCountSession = await prisma.cycleCountSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CycleCountSessions and only return the `id`
+     * const cycleCountSessionWithIdOnly = await prisma.cycleCountSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CycleCountSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, CycleCountSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CycleCountSession.
+     * @param {CycleCountSessionUpsertArgs} args - Arguments to update or create a CycleCountSession.
+     * @example
+     * // Update or create a CycleCountSession
+     * const cycleCountSession = await prisma.cycleCountSession.upsert({
+     *   create: {
+     *     // ... data to create a CycleCountSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CycleCountSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CycleCountSessionUpsertArgs>(args: SelectSubset<T, CycleCountSessionUpsertArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CycleCountSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionCountArgs} args - Arguments to filter CycleCountSessions to count.
+     * @example
+     * // Count the number of CycleCountSessions
+     * const count = await prisma.cycleCountSession.count({
+     *   where: {
+     *     // ... the filter for the CycleCountSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends CycleCountSessionCountArgs>(
+      args?: Subset<T, CycleCountSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CycleCountSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CycleCountSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CycleCountSessionAggregateArgs>(args: Subset<T, CycleCountSessionAggregateArgs>): Prisma.PrismaPromise<GetCycleCountSessionAggregateType<T>>
+
+    /**
+     * Group by CycleCountSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CycleCountSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CycleCountSessionGroupByArgs['orderBy'] }
+        : { orderBy?: CycleCountSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CycleCountSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCycleCountSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CycleCountSession model
+   */
+  readonly fields: CycleCountSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CycleCountSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CycleCountSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    task<T extends CycleCountSession$taskArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$taskArgs<ExtArgs>>): Prisma__CycleCountTaskClient<$Result.GetResult<Prisma.$CycleCountTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    location<T extends LocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocationDefaultArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    lockedByUser<T extends CycleCountSession$lockedByUserArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$lockedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    countedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reviewedBy<T extends CycleCountSession$reviewedByArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$reviewedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    lineItems<T extends CycleCountSession$lineItemsArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$lineItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends CycleCountSession$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adjustments<T extends CycleCountSession$adjustmentsArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSession$adjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CycleCountSession model
+   */
+  interface CycleCountSessionFieldRefs {
+    readonly id: FieldRef<"CycleCountSession", 'String'>
+    readonly taskId: FieldRef<"CycleCountSession", 'String'>
+    readonly locationId: FieldRef<"CycleCountSession", 'String'>
+    readonly blindCount: FieldRef<"CycleCountSession", 'Boolean'>
+    readonly version: FieldRef<"CycleCountSession", 'Int'>
+    readonly lockedBy: FieldRef<"CycleCountSession", 'String'>
+    readonly lockedAt: FieldRef<"CycleCountSession", 'DateTime'>
+    readonly status: FieldRef<"CycleCountSession", 'CycleCountSessionStatus'>
+    readonly countedById: FieldRef<"CycleCountSession", 'String'>
+    readonly startedAt: FieldRef<"CycleCountSession", 'DateTime'>
+    readonly submittedAt: FieldRef<"CycleCountSession", 'DateTime'>
+    readonly reviewedById: FieldRef<"CycleCountSession", 'String'>
+    readonly reviewedAt: FieldRef<"CycleCountSession", 'DateTime'>
+    readonly reviewNotes: FieldRef<"CycleCountSession", 'String'>
+    readonly totalExpected: FieldRef<"CycleCountSession", 'Int'>
+    readonly totalCounted: FieldRef<"CycleCountSession", 'Int'>
+    readonly varianceCount: FieldRef<"CycleCountSession", 'Int'>
+    readonly createdAt: FieldRef<"CycleCountSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"CycleCountSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CycleCountSession findUnique
+   */
+  export type CycleCountSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountSession to fetch.
+     */
+    where: CycleCountSessionWhereUniqueInput
+  }
+
+  /**
+   * CycleCountSession findUniqueOrThrow
+   */
+  export type CycleCountSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountSession to fetch.
+     */
+    where: CycleCountSessionWhereUniqueInput
+  }
+
+  /**
+   * CycleCountSession findFirst
+   */
+  export type CycleCountSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountSession to fetch.
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountSessions to fetch.
+     */
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountSessions.
+     */
+    cursor?: CycleCountSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountSessions.
+     */
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession findFirstOrThrow
+   */
+  export type CycleCountSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountSession to fetch.
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountSessions to fetch.
+     */
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountSessions.
+     */
+    cursor?: CycleCountSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountSessions.
+     */
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession findMany
+   */
+  export type CycleCountSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountSessions to fetch.
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountSessions to fetch.
+     */
+    orderBy?: CycleCountSessionOrderByWithRelationInput | CycleCountSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CycleCountSessions.
+     */
+    cursor?: CycleCountSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountSessions.
+     */
+    skip?: number
+    distinct?: CycleCountSessionScalarFieldEnum | CycleCountSessionScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession create
+   */
+  export type CycleCountSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CycleCountSession.
+     */
+    data: XOR<CycleCountSessionCreateInput, CycleCountSessionUncheckedCreateInput>
+  }
+
+  /**
+   * CycleCountSession createMany
+   */
+  export type CycleCountSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CycleCountSessions.
+     */
+    data: CycleCountSessionCreateManyInput | CycleCountSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CycleCountSession createManyAndReturn
+   */
+  export type CycleCountSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many CycleCountSessions.
+     */
+    data: CycleCountSessionCreateManyInput | CycleCountSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountSession update
+   */
+  export type CycleCountSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CycleCountSession.
+     */
+    data: XOR<CycleCountSessionUpdateInput, CycleCountSessionUncheckedUpdateInput>
+    /**
+     * Choose, which CycleCountSession to update.
+     */
+    where: CycleCountSessionWhereUniqueInput
+  }
+
+  /**
+   * CycleCountSession updateMany
+   */
+  export type CycleCountSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CycleCountSessions.
+     */
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountSessions to update
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * Limit how many CycleCountSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountSession updateManyAndReturn
+   */
+  export type CycleCountSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update CycleCountSessions.
+     */
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountSessions to update
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * Limit how many CycleCountSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountSession upsert
+   */
+  export type CycleCountSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CycleCountSession to update in case it exists.
+     */
+    where: CycleCountSessionWhereUniqueInput
+    /**
+     * In case the CycleCountSession found by the `where` argument doesn't exist, create a new CycleCountSession with this data.
+     */
+    create: XOR<CycleCountSessionCreateInput, CycleCountSessionUncheckedCreateInput>
+    /**
+     * In case the CycleCountSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CycleCountSessionUpdateInput, CycleCountSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * CycleCountSession delete
+   */
+  export type CycleCountSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    /**
+     * Filter which CycleCountSession to delete.
+     */
+    where: CycleCountSessionWhereUniqueInput
+  }
+
+  /**
+   * CycleCountSession deleteMany
+   */
+  export type CycleCountSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountSessions to delete
+     */
+    where?: CycleCountSessionWhereInput
+    /**
+     * Limit how many CycleCountSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountSession.task
+   */
+  export type CycleCountSession$taskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountTask
+     */
+    select?: CycleCountTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountTask
+     */
+    omit?: CycleCountTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountTaskInclude<ExtArgs> | null
+    where?: CycleCountTaskWhereInput
+  }
+
+  /**
+   * CycleCountSession.lockedByUser
+   */
+  export type CycleCountSession$lockedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CycleCountSession.reviewedBy
+   */
+  export type CycleCountSession$reviewedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CycleCountSession.lineItems
+   */
+  export type CycleCountSession$lineItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    where?: CycleCountLineWhereInput
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    cursor?: CycleCountLineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession.auditLogs
+   */
+  export type CycleCountSession$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    where?: CycleCountAuditWhereInput
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    cursor?: CycleCountAuditWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CycleCountAuditScalarFieldEnum | CycleCountAuditScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession.adjustments
+   */
+  export type CycleCountSession$adjustmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountSession without action
+   */
+  export type CycleCountSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CycleCountLine
+   */
+
+  export type AggregateCycleCountLine = {
+    _count: CycleCountLineCountAggregateOutputType | null
+    _avg: CycleCountLineAvgAggregateOutputType | null
+    _sum: CycleCountLineSumAggregateOutputType | null
+    _min: CycleCountLineMinAggregateOutputType | null
+    _max: CycleCountLineMaxAggregateOutputType | null
+  }
+
+  export type CycleCountLineAvgAggregateOutputType = {
+    systemQty: number | null
+    countedQty: number | null
+    variance: number | null
+  }
+
+  export type CycleCountLineSumAggregateOutputType = {
+    systemQty: number | null
+    countedQty: number | null
+    variance: number | null
+  }
+
+  export type CycleCountLineMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    productVariantId: string | null
+    sku: string | null
+    productName: string | null
+    inventoryUnitId: string | null
+    systemQty: number | null
+    countedQty: number | null
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    status: $Enums.CycleCountLineStatus | null
+    isUnexpected: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountLineMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    productVariantId: string | null
+    sku: string | null
+    productName: string | null
+    inventoryUnitId: string | null
+    systemQty: number | null
+    countedQty: number | null
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    status: $Enums.CycleCountLineStatus | null
+    isUnexpected: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CycleCountLineCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    productVariantId: number
+    sku: number
+    productName: number
+    inventoryUnitId: number
+    systemQty: number
+    countedQty: number
+    variance: number
+    lotNumber: number
+    expiryDate: number
+    status: number
+    isUnexpected: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CycleCountLineAvgAggregateInputType = {
+    systemQty?: true
+    countedQty?: true
+    variance?: true
+  }
+
+  export type CycleCountLineSumAggregateInputType = {
+    systemQty?: true
+    countedQty?: true
+    variance?: true
+  }
+
+  export type CycleCountLineMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    productVariantId?: true
+    sku?: true
+    productName?: true
+    inventoryUnitId?: true
+    systemQty?: true
+    countedQty?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    status?: true
+    isUnexpected?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountLineMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    productVariantId?: true
+    sku?: true
+    productName?: true
+    inventoryUnitId?: true
+    systemQty?: true
+    countedQty?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    status?: true
+    isUnexpected?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CycleCountLineCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    productVariantId?: true
+    sku?: true
+    productName?: true
+    inventoryUnitId?: true
+    systemQty?: true
+    countedQty?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    status?: true
+    isUnexpected?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CycleCountLineAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountLine to aggregate.
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountLines to fetch.
+     */
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CycleCountLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CycleCountLines
+    **/
+    _count?: true | CycleCountLineCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CycleCountLineAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CycleCountLineSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CycleCountLineMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CycleCountLineMaxAggregateInputType
+  }
+
+  export type GetCycleCountLineAggregateType<T extends CycleCountLineAggregateArgs> = {
+        [P in keyof T & keyof AggregateCycleCountLine]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCycleCountLine[P]>
+      : GetScalarType<T[P], AggregateCycleCountLine[P]>
+  }
+
+
+
+
+  export type CycleCountLineGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountLineWhereInput
+    orderBy?: CycleCountLineOrderByWithAggregationInput | CycleCountLineOrderByWithAggregationInput[]
+    by: CycleCountLineScalarFieldEnum[] | CycleCountLineScalarFieldEnum
+    having?: CycleCountLineScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CycleCountLineCountAggregateInputType | true
+    _avg?: CycleCountLineAvgAggregateInputType
+    _sum?: CycleCountLineSumAggregateInputType
+    _min?: CycleCountLineMinAggregateInputType
+    _max?: CycleCountLineMaxAggregateInputType
+  }
+
+  export type CycleCountLineGroupByOutputType = {
+    id: string
+    sessionId: string
+    productVariantId: string
+    sku: string
+    productName: string
+    inventoryUnitId: string | null
+    systemQty: number
+    countedQty: number | null
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    status: $Enums.CycleCountLineStatus
+    isUnexpected: boolean
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CycleCountLineCountAggregateOutputType | null
+    _avg: CycleCountLineAvgAggregateOutputType | null
+    _sum: CycleCountLineSumAggregateOutputType | null
+    _min: CycleCountLineMinAggregateOutputType | null
+    _max: CycleCountLineMaxAggregateOutputType | null
+  }
+
+  type GetCycleCountLineGroupByPayload<T extends CycleCountLineGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CycleCountLineGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CycleCountLineGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CycleCountLineGroupByOutputType[P]>
+            : GetScalarType<T[P], CycleCountLineGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CycleCountLineSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    productVariantId?: boolean
+    sku?: boolean
+    productName?: boolean
+    inventoryUnitId?: boolean
+    systemQty?: boolean
+    countedQty?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    status?: boolean
+    isUnexpected?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountLine"]>
+
+  export type CycleCountLineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    productVariantId?: boolean
+    sku?: boolean
+    productName?: boolean
+    inventoryUnitId?: boolean
+    systemQty?: boolean
+    countedQty?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    status?: boolean
+    isUnexpected?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountLine"]>
+
+  export type CycleCountLineSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    productVariantId?: boolean
+    sku?: boolean
+    productName?: boolean
+    inventoryUnitId?: boolean
+    systemQty?: boolean
+    countedQty?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    status?: boolean
+    isUnexpected?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountLine"]>
+
+  export type CycleCountLineSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    productVariantId?: boolean
+    sku?: boolean
+    productName?: boolean
+    inventoryUnitId?: boolean
+    systemQty?: boolean
+    countedQty?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    status?: boolean
+    isUnexpected?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CycleCountLineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "productVariantId" | "sku" | "productName" | "inventoryUnitId" | "systemQty" | "countedQty" | "variance" | "lotNumber" | "expiryDate" | "status" | "isUnexpected" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["cycleCountLine"]>
+  export type CycleCountLineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }
+  export type CycleCountLineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }
+  export type CycleCountLineIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    inventoryUnit?: boolean | CycleCountLine$inventoryUnitArgs<ExtArgs>
+  }
+
+  export type $CycleCountLinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CycleCountLine"
+    objects: {
+      session: Prisma.$CycleCountSessionPayload<ExtArgs>
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs>
+      inventoryUnit: Prisma.$InventoryUnitPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      productVariantId: string
+      sku: string
+      productName: string
+      inventoryUnitId: string | null
+      systemQty: number
+      countedQty: number | null
+      variance: number | null
+      lotNumber: string | null
+      expiryDate: Date | null
+      status: $Enums.CycleCountLineStatus
+      isUnexpected: boolean
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cycleCountLine"]>
+    composites: {}
+  }
+
+  type CycleCountLineGetPayload<S extends boolean | null | undefined | CycleCountLineDefaultArgs> = $Result.GetResult<Prisma.$CycleCountLinePayload, S>
+
+  type CycleCountLineCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CycleCountLineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CycleCountLineCountAggregateInputType | true
+    }
+
+  export interface CycleCountLineDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CycleCountLine'], meta: { name: 'CycleCountLine' } }
+    /**
+     * Find zero or one CycleCountLine that matches the filter.
+     * @param {CycleCountLineFindUniqueArgs} args - Arguments to find a CycleCountLine
+     * @example
+     * // Get one CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CycleCountLineFindUniqueArgs>(args: SelectSubset<T, CycleCountLineFindUniqueArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CycleCountLine that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CycleCountLineFindUniqueOrThrowArgs} args - Arguments to find a CycleCountLine
+     * @example
+     * // Get one CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CycleCountLineFindUniqueOrThrowArgs>(args: SelectSubset<T, CycleCountLineFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountLine that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineFindFirstArgs} args - Arguments to find a CycleCountLine
+     * @example
+     * // Get one CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CycleCountLineFindFirstArgs>(args?: SelectSubset<T, CycleCountLineFindFirstArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountLine that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineFindFirstOrThrowArgs} args - Arguments to find a CycleCountLine
+     * @example
+     * // Get one CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CycleCountLineFindFirstOrThrowArgs>(args?: SelectSubset<T, CycleCountLineFindFirstOrThrowArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CycleCountLines that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CycleCountLines
+     * const cycleCountLines = await prisma.cycleCountLine.findMany()
+     * 
+     * // Get first 10 CycleCountLines
+     * const cycleCountLines = await prisma.cycleCountLine.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cycleCountLineWithIdOnly = await prisma.cycleCountLine.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CycleCountLineFindManyArgs>(args?: SelectSubset<T, CycleCountLineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CycleCountLine.
+     * @param {CycleCountLineCreateArgs} args - Arguments to create a CycleCountLine.
+     * @example
+     * // Create one CycleCountLine
+     * const CycleCountLine = await prisma.cycleCountLine.create({
+     *   data: {
+     *     // ... data to create a CycleCountLine
+     *   }
+     * })
+     * 
+     */
+    create<T extends CycleCountLineCreateArgs>(args: SelectSubset<T, CycleCountLineCreateArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CycleCountLines.
+     * @param {CycleCountLineCreateManyArgs} args - Arguments to create many CycleCountLines.
+     * @example
+     * // Create many CycleCountLines
+     * const cycleCountLine = await prisma.cycleCountLine.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CycleCountLineCreateManyArgs>(args?: SelectSubset<T, CycleCountLineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CycleCountLines and returns the data saved in the database.
+     * @param {CycleCountLineCreateManyAndReturnArgs} args - Arguments to create many CycleCountLines.
+     * @example
+     * // Create many CycleCountLines
+     * const cycleCountLine = await prisma.cycleCountLine.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CycleCountLines and only return the `id`
+     * const cycleCountLineWithIdOnly = await prisma.cycleCountLine.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CycleCountLineCreateManyAndReturnArgs>(args?: SelectSubset<T, CycleCountLineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CycleCountLine.
+     * @param {CycleCountLineDeleteArgs} args - Arguments to delete one CycleCountLine.
+     * @example
+     * // Delete one CycleCountLine
+     * const CycleCountLine = await prisma.cycleCountLine.delete({
+     *   where: {
+     *     // ... filter to delete one CycleCountLine
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CycleCountLineDeleteArgs>(args: SelectSubset<T, CycleCountLineDeleteArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CycleCountLine.
+     * @param {CycleCountLineUpdateArgs} args - Arguments to update one CycleCountLine.
+     * @example
+     * // Update one CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CycleCountLineUpdateArgs>(args: SelectSubset<T, CycleCountLineUpdateArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CycleCountLines.
+     * @param {CycleCountLineDeleteManyArgs} args - Arguments to filter CycleCountLines to delete.
+     * @example
+     * // Delete a few CycleCountLines
+     * const { count } = await prisma.cycleCountLine.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CycleCountLineDeleteManyArgs>(args?: SelectSubset<T, CycleCountLineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CycleCountLines
+     * const cycleCountLine = await prisma.cycleCountLine.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CycleCountLineUpdateManyArgs>(args: SelectSubset<T, CycleCountLineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountLines and returns the data updated in the database.
+     * @param {CycleCountLineUpdateManyAndReturnArgs} args - Arguments to update many CycleCountLines.
+     * @example
+     * // Update many CycleCountLines
+     * const cycleCountLine = await prisma.cycleCountLine.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CycleCountLines and only return the `id`
+     * const cycleCountLineWithIdOnly = await prisma.cycleCountLine.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CycleCountLineUpdateManyAndReturnArgs>(args: SelectSubset<T, CycleCountLineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CycleCountLine.
+     * @param {CycleCountLineUpsertArgs} args - Arguments to update or create a CycleCountLine.
+     * @example
+     * // Update or create a CycleCountLine
+     * const cycleCountLine = await prisma.cycleCountLine.upsert({
+     *   create: {
+     *     // ... data to create a CycleCountLine
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CycleCountLine we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CycleCountLineUpsertArgs>(args: SelectSubset<T, CycleCountLineUpsertArgs<ExtArgs>>): Prisma__CycleCountLineClient<$Result.GetResult<Prisma.$CycleCountLinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CycleCountLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineCountArgs} args - Arguments to filter CycleCountLines to count.
+     * @example
+     * // Count the number of CycleCountLines
+     * const count = await prisma.cycleCountLine.count({
+     *   where: {
+     *     // ... the filter for the CycleCountLines we want to count
+     *   }
+     * })
+    **/
+    count<T extends CycleCountLineCountArgs>(
+      args?: Subset<T, CycleCountLineCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CycleCountLineCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CycleCountLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CycleCountLineAggregateArgs>(args: Subset<T, CycleCountLineAggregateArgs>): Prisma.PrismaPromise<GetCycleCountLineAggregateType<T>>
+
+    /**
+     * Group by CycleCountLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountLineGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CycleCountLineGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CycleCountLineGroupByArgs['orderBy'] }
+        : { orderBy?: CycleCountLineGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CycleCountLineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCycleCountLineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CycleCountLine model
+   */
+  readonly fields: CycleCountLineFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CycleCountLine.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CycleCountLineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends CycleCountSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSessionDefaultArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariantDefaultArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    inventoryUnit<T extends CycleCountLine$inventoryUnitArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountLine$inventoryUnitArgs<ExtArgs>>): Prisma__InventoryUnitClient<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CycleCountLine model
+   */
+  interface CycleCountLineFieldRefs {
+    readonly id: FieldRef<"CycleCountLine", 'String'>
+    readonly sessionId: FieldRef<"CycleCountLine", 'String'>
+    readonly productVariantId: FieldRef<"CycleCountLine", 'String'>
+    readonly sku: FieldRef<"CycleCountLine", 'String'>
+    readonly productName: FieldRef<"CycleCountLine", 'String'>
+    readonly inventoryUnitId: FieldRef<"CycleCountLine", 'String'>
+    readonly systemQty: FieldRef<"CycleCountLine", 'Int'>
+    readonly countedQty: FieldRef<"CycleCountLine", 'Int'>
+    readonly variance: FieldRef<"CycleCountLine", 'Int'>
+    readonly lotNumber: FieldRef<"CycleCountLine", 'String'>
+    readonly expiryDate: FieldRef<"CycleCountLine", 'DateTime'>
+    readonly status: FieldRef<"CycleCountLine", 'CycleCountLineStatus'>
+    readonly isUnexpected: FieldRef<"CycleCountLine", 'Boolean'>
+    readonly notes: FieldRef<"CycleCountLine", 'String'>
+    readonly createdAt: FieldRef<"CycleCountLine", 'DateTime'>
+    readonly updatedAt: FieldRef<"CycleCountLine", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CycleCountLine findUnique
+   */
+  export type CycleCountLineFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountLine to fetch.
+     */
+    where: CycleCountLineWhereUniqueInput
+  }
+
+  /**
+   * CycleCountLine findUniqueOrThrow
+   */
+  export type CycleCountLineFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountLine to fetch.
+     */
+    where: CycleCountLineWhereUniqueInput
+  }
+
+  /**
+   * CycleCountLine findFirst
+   */
+  export type CycleCountLineFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountLine to fetch.
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountLines to fetch.
+     */
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountLines.
+     */
+    cursor?: CycleCountLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountLines.
+     */
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountLine findFirstOrThrow
+   */
+  export type CycleCountLineFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountLine to fetch.
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountLines to fetch.
+     */
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountLines.
+     */
+    cursor?: CycleCountLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountLines.
+     */
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountLine findMany
+   */
+  export type CycleCountLineFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountLines to fetch.
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountLines to fetch.
+     */
+    orderBy?: CycleCountLineOrderByWithRelationInput | CycleCountLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CycleCountLines.
+     */
+    cursor?: CycleCountLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountLines.
+     */
+    skip?: number
+    distinct?: CycleCountLineScalarFieldEnum | CycleCountLineScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountLine create
+   */
+  export type CycleCountLineCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CycleCountLine.
+     */
+    data: XOR<CycleCountLineCreateInput, CycleCountLineUncheckedCreateInput>
+  }
+
+  /**
+   * CycleCountLine createMany
+   */
+  export type CycleCountLineCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CycleCountLines.
+     */
+    data: CycleCountLineCreateManyInput | CycleCountLineCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CycleCountLine createManyAndReturn
+   */
+  export type CycleCountLineCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * The data used to create many CycleCountLines.
+     */
+    data: CycleCountLineCreateManyInput | CycleCountLineCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountLine update
+   */
+  export type CycleCountLineUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CycleCountLine.
+     */
+    data: XOR<CycleCountLineUpdateInput, CycleCountLineUncheckedUpdateInput>
+    /**
+     * Choose, which CycleCountLine to update.
+     */
+    where: CycleCountLineWhereUniqueInput
+  }
+
+  /**
+   * CycleCountLine updateMany
+   */
+  export type CycleCountLineUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CycleCountLines.
+     */
+    data: XOR<CycleCountLineUpdateManyMutationInput, CycleCountLineUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountLines to update
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * Limit how many CycleCountLines to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountLine updateManyAndReturn
+   */
+  export type CycleCountLineUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * The data used to update CycleCountLines.
+     */
+    data: XOR<CycleCountLineUpdateManyMutationInput, CycleCountLineUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountLines to update
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * Limit how many CycleCountLines to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountLine upsert
+   */
+  export type CycleCountLineUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CycleCountLine to update in case it exists.
+     */
+    where: CycleCountLineWhereUniqueInput
+    /**
+     * In case the CycleCountLine found by the `where` argument doesn't exist, create a new CycleCountLine with this data.
+     */
+    create: XOR<CycleCountLineCreateInput, CycleCountLineUncheckedCreateInput>
+    /**
+     * In case the CycleCountLine was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CycleCountLineUpdateInput, CycleCountLineUncheckedUpdateInput>
+  }
+
+  /**
+   * CycleCountLine delete
+   */
+  export type CycleCountLineDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+    /**
+     * Filter which CycleCountLine to delete.
+     */
+    where: CycleCountLineWhereUniqueInput
+  }
+
+  /**
+   * CycleCountLine deleteMany
+   */
+  export type CycleCountLineDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountLines to delete
+     */
+    where?: CycleCountLineWhereInput
+    /**
+     * Limit how many CycleCountLines to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountLine.inventoryUnit
+   */
+  export type CycleCountLine$inventoryUnitArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryUnit
+     */
+    select?: InventoryUnitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryUnit
+     */
+    omit?: InventoryUnitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryUnitInclude<ExtArgs> | null
+    where?: InventoryUnitWhereInput
+  }
+
+  /**
+   * CycleCountLine without action
+   */
+  export type CycleCountLineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountLine
+     */
+    select?: CycleCountLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountLine
+     */
+    omit?: CycleCountLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountLineInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CycleCountAudit
+   */
+
+  export type AggregateCycleCountAudit = {
+    _count: CycleCountAuditCountAggregateOutputType | null
+    _min: CycleCountAuditMinAggregateOutputType | null
+    _max: CycleCountAuditMaxAggregateOutputType | null
+  }
+
+  export type CycleCountAuditMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    action: string | null
+    userId: string | null
+    lineId: string | null
+    createdAt: Date | null
+  }
+
+  export type CycleCountAuditMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    action: string | null
+    userId: string | null
+    lineId: string | null
+    createdAt: Date | null
+  }
+
+  export type CycleCountAuditCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    action: number
+    userId: number
+    lineId: number
+    data: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CycleCountAuditMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    action?: true
+    userId?: true
+    lineId?: true
+    createdAt?: true
+  }
+
+  export type CycleCountAuditMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    action?: true
+    userId?: true
+    lineId?: true
+    createdAt?: true
+  }
+
+  export type CycleCountAuditCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    action?: true
+    userId?: true
+    lineId?: true
+    data?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CycleCountAuditAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountAudit to aggregate.
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountAudits to fetch.
+     */
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CycleCountAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CycleCountAudits
+    **/
+    _count?: true | CycleCountAuditCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CycleCountAuditMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CycleCountAuditMaxAggregateInputType
+  }
+
+  export type GetCycleCountAuditAggregateType<T extends CycleCountAuditAggregateArgs> = {
+        [P in keyof T & keyof AggregateCycleCountAudit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCycleCountAudit[P]>
+      : GetScalarType<T[P], AggregateCycleCountAudit[P]>
+  }
+
+
+
+
+  export type CycleCountAuditGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CycleCountAuditWhereInput
+    orderBy?: CycleCountAuditOrderByWithAggregationInput | CycleCountAuditOrderByWithAggregationInput[]
+    by: CycleCountAuditScalarFieldEnum[] | CycleCountAuditScalarFieldEnum
+    having?: CycleCountAuditScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CycleCountAuditCountAggregateInputType | true
+    _min?: CycleCountAuditMinAggregateInputType
+    _max?: CycleCountAuditMaxAggregateInputType
+  }
+
+  export type CycleCountAuditGroupByOutputType = {
+    id: string
+    sessionId: string
+    action: string
+    userId: string
+    lineId: string | null
+    data: JsonValue | null
+    createdAt: Date
+    _count: CycleCountAuditCountAggregateOutputType | null
+    _min: CycleCountAuditMinAggregateOutputType | null
+    _max: CycleCountAuditMaxAggregateOutputType | null
+  }
+
+  type GetCycleCountAuditGroupByPayload<T extends CycleCountAuditGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CycleCountAuditGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CycleCountAuditGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CycleCountAuditGroupByOutputType[P]>
+            : GetScalarType<T[P], CycleCountAuditGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CycleCountAuditSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    action?: boolean
+    userId?: boolean
+    lineId?: boolean
+    data?: boolean
+    createdAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountAudit"]>
+
+  export type CycleCountAuditSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    action?: boolean
+    userId?: boolean
+    lineId?: boolean
+    data?: boolean
+    createdAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountAudit"]>
+
+  export type CycleCountAuditSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    action?: boolean
+    userId?: boolean
+    lineId?: boolean
+    data?: boolean
+    createdAt?: boolean
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cycleCountAudit"]>
+
+  export type CycleCountAuditSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    action?: boolean
+    userId?: boolean
+    lineId?: boolean
+    data?: boolean
+    createdAt?: boolean
+  }
+
+  export type CycleCountAuditOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "action" | "userId" | "lineId" | "data" | "createdAt", ExtArgs["result"]["cycleCountAudit"]>
+  export type CycleCountAuditInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CycleCountAuditIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CycleCountAuditIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | CycleCountSessionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CycleCountAuditPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CycleCountAudit"
+    objects: {
+      session: Prisma.$CycleCountSessionPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      action: string
+      userId: string
+      lineId: string | null
+      data: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["cycleCountAudit"]>
+    composites: {}
+  }
+
+  type CycleCountAuditGetPayload<S extends boolean | null | undefined | CycleCountAuditDefaultArgs> = $Result.GetResult<Prisma.$CycleCountAuditPayload, S>
+
+  type CycleCountAuditCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CycleCountAuditFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CycleCountAuditCountAggregateInputType | true
+    }
+
+  export interface CycleCountAuditDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CycleCountAudit'], meta: { name: 'CycleCountAudit' } }
+    /**
+     * Find zero or one CycleCountAudit that matches the filter.
+     * @param {CycleCountAuditFindUniqueArgs} args - Arguments to find a CycleCountAudit
+     * @example
+     * // Get one CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CycleCountAuditFindUniqueArgs>(args: SelectSubset<T, CycleCountAuditFindUniqueArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CycleCountAudit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CycleCountAuditFindUniqueOrThrowArgs} args - Arguments to find a CycleCountAudit
+     * @example
+     * // Get one CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CycleCountAuditFindUniqueOrThrowArgs>(args: SelectSubset<T, CycleCountAuditFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountAudit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditFindFirstArgs} args - Arguments to find a CycleCountAudit
+     * @example
+     * // Get one CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CycleCountAuditFindFirstArgs>(args?: SelectSubset<T, CycleCountAuditFindFirstArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CycleCountAudit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditFindFirstOrThrowArgs} args - Arguments to find a CycleCountAudit
+     * @example
+     * // Get one CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CycleCountAuditFindFirstOrThrowArgs>(args?: SelectSubset<T, CycleCountAuditFindFirstOrThrowArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CycleCountAudits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CycleCountAudits
+     * const cycleCountAudits = await prisma.cycleCountAudit.findMany()
+     * 
+     * // Get first 10 CycleCountAudits
+     * const cycleCountAudits = await prisma.cycleCountAudit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cycleCountAuditWithIdOnly = await prisma.cycleCountAudit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CycleCountAuditFindManyArgs>(args?: SelectSubset<T, CycleCountAuditFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CycleCountAudit.
+     * @param {CycleCountAuditCreateArgs} args - Arguments to create a CycleCountAudit.
+     * @example
+     * // Create one CycleCountAudit
+     * const CycleCountAudit = await prisma.cycleCountAudit.create({
+     *   data: {
+     *     // ... data to create a CycleCountAudit
+     *   }
+     * })
+     * 
+     */
+    create<T extends CycleCountAuditCreateArgs>(args: SelectSubset<T, CycleCountAuditCreateArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CycleCountAudits.
+     * @param {CycleCountAuditCreateManyArgs} args - Arguments to create many CycleCountAudits.
+     * @example
+     * // Create many CycleCountAudits
+     * const cycleCountAudit = await prisma.cycleCountAudit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CycleCountAuditCreateManyArgs>(args?: SelectSubset<T, CycleCountAuditCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CycleCountAudits and returns the data saved in the database.
+     * @param {CycleCountAuditCreateManyAndReturnArgs} args - Arguments to create many CycleCountAudits.
+     * @example
+     * // Create many CycleCountAudits
+     * const cycleCountAudit = await prisma.cycleCountAudit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CycleCountAudits and only return the `id`
+     * const cycleCountAuditWithIdOnly = await prisma.cycleCountAudit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CycleCountAuditCreateManyAndReturnArgs>(args?: SelectSubset<T, CycleCountAuditCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CycleCountAudit.
+     * @param {CycleCountAuditDeleteArgs} args - Arguments to delete one CycleCountAudit.
+     * @example
+     * // Delete one CycleCountAudit
+     * const CycleCountAudit = await prisma.cycleCountAudit.delete({
+     *   where: {
+     *     // ... filter to delete one CycleCountAudit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CycleCountAuditDeleteArgs>(args: SelectSubset<T, CycleCountAuditDeleteArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CycleCountAudit.
+     * @param {CycleCountAuditUpdateArgs} args - Arguments to update one CycleCountAudit.
+     * @example
+     * // Update one CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CycleCountAuditUpdateArgs>(args: SelectSubset<T, CycleCountAuditUpdateArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CycleCountAudits.
+     * @param {CycleCountAuditDeleteManyArgs} args - Arguments to filter CycleCountAudits to delete.
+     * @example
+     * // Delete a few CycleCountAudits
+     * const { count } = await prisma.cycleCountAudit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CycleCountAuditDeleteManyArgs>(args?: SelectSubset<T, CycleCountAuditDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CycleCountAudits
+     * const cycleCountAudit = await prisma.cycleCountAudit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CycleCountAuditUpdateManyArgs>(args: SelectSubset<T, CycleCountAuditUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CycleCountAudits and returns the data updated in the database.
+     * @param {CycleCountAuditUpdateManyAndReturnArgs} args - Arguments to update many CycleCountAudits.
+     * @example
+     * // Update many CycleCountAudits
+     * const cycleCountAudit = await prisma.cycleCountAudit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CycleCountAudits and only return the `id`
+     * const cycleCountAuditWithIdOnly = await prisma.cycleCountAudit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CycleCountAuditUpdateManyAndReturnArgs>(args: SelectSubset<T, CycleCountAuditUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CycleCountAudit.
+     * @param {CycleCountAuditUpsertArgs} args - Arguments to update or create a CycleCountAudit.
+     * @example
+     * // Update or create a CycleCountAudit
+     * const cycleCountAudit = await prisma.cycleCountAudit.upsert({
+     *   create: {
+     *     // ... data to create a CycleCountAudit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CycleCountAudit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CycleCountAuditUpsertArgs>(args: SelectSubset<T, CycleCountAuditUpsertArgs<ExtArgs>>): Prisma__CycleCountAuditClient<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CycleCountAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditCountArgs} args - Arguments to filter CycleCountAudits to count.
+     * @example
+     * // Count the number of CycleCountAudits
+     * const count = await prisma.cycleCountAudit.count({
+     *   where: {
+     *     // ... the filter for the CycleCountAudits we want to count
+     *   }
+     * })
+    **/
+    count<T extends CycleCountAuditCountArgs>(
+      args?: Subset<T, CycleCountAuditCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CycleCountAuditCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CycleCountAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CycleCountAuditAggregateArgs>(args: Subset<T, CycleCountAuditAggregateArgs>): Prisma.PrismaPromise<GetCycleCountAuditAggregateType<T>>
+
+    /**
+     * Group by CycleCountAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CycleCountAuditGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CycleCountAuditGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CycleCountAuditGroupByArgs['orderBy'] }
+        : { orderBy?: CycleCountAuditGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CycleCountAuditGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCycleCountAuditGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CycleCountAudit model
+   */
+  readonly fields: CycleCountAuditFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CycleCountAudit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CycleCountAuditClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends CycleCountSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CycleCountSessionDefaultArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CycleCountAudit model
+   */
+  interface CycleCountAuditFieldRefs {
+    readonly id: FieldRef<"CycleCountAudit", 'String'>
+    readonly sessionId: FieldRef<"CycleCountAudit", 'String'>
+    readonly action: FieldRef<"CycleCountAudit", 'String'>
+    readonly userId: FieldRef<"CycleCountAudit", 'String'>
+    readonly lineId: FieldRef<"CycleCountAudit", 'String'>
+    readonly data: FieldRef<"CycleCountAudit", 'Json'>
+    readonly createdAt: FieldRef<"CycleCountAudit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CycleCountAudit findUnique
+   */
+  export type CycleCountAuditFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountAudit to fetch.
+     */
+    where: CycleCountAuditWhereUniqueInput
+  }
+
+  /**
+   * CycleCountAudit findUniqueOrThrow
+   */
+  export type CycleCountAuditFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountAudit to fetch.
+     */
+    where: CycleCountAuditWhereUniqueInput
+  }
+
+  /**
+   * CycleCountAudit findFirst
+   */
+  export type CycleCountAuditFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountAudit to fetch.
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountAudits to fetch.
+     */
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountAudits.
+     */
+    cursor?: CycleCountAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountAudits.
+     */
+    distinct?: CycleCountAuditScalarFieldEnum | CycleCountAuditScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountAudit findFirstOrThrow
+   */
+  export type CycleCountAuditFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountAudit to fetch.
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountAudits to fetch.
+     */
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CycleCountAudits.
+     */
+    cursor?: CycleCountAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CycleCountAudits.
+     */
+    distinct?: CycleCountAuditScalarFieldEnum | CycleCountAuditScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountAudit findMany
+   */
+  export type CycleCountAuditFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which CycleCountAudits to fetch.
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CycleCountAudits to fetch.
+     */
+    orderBy?: CycleCountAuditOrderByWithRelationInput | CycleCountAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CycleCountAudits.
+     */
+    cursor?: CycleCountAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CycleCountAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CycleCountAudits.
+     */
+    skip?: number
+    distinct?: CycleCountAuditScalarFieldEnum | CycleCountAuditScalarFieldEnum[]
+  }
+
+  /**
+   * CycleCountAudit create
+   */
+  export type CycleCountAuditCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CycleCountAudit.
+     */
+    data: XOR<CycleCountAuditCreateInput, CycleCountAuditUncheckedCreateInput>
+  }
+
+  /**
+   * CycleCountAudit createMany
+   */
+  export type CycleCountAuditCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CycleCountAudits.
+     */
+    data: CycleCountAuditCreateManyInput | CycleCountAuditCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CycleCountAudit createManyAndReturn
+   */
+  export type CycleCountAuditCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * The data used to create many CycleCountAudits.
+     */
+    data: CycleCountAuditCreateManyInput | CycleCountAuditCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountAudit update
+   */
+  export type CycleCountAuditUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CycleCountAudit.
+     */
+    data: XOR<CycleCountAuditUpdateInput, CycleCountAuditUncheckedUpdateInput>
+    /**
+     * Choose, which CycleCountAudit to update.
+     */
+    where: CycleCountAuditWhereUniqueInput
+  }
+
+  /**
+   * CycleCountAudit updateMany
+   */
+  export type CycleCountAuditUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CycleCountAudits.
+     */
+    data: XOR<CycleCountAuditUpdateManyMutationInput, CycleCountAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountAudits to update
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * Limit how many CycleCountAudits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountAudit updateManyAndReturn
+   */
+  export type CycleCountAuditUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * The data used to update CycleCountAudits.
+     */
+    data: XOR<CycleCountAuditUpdateManyMutationInput, CycleCountAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which CycleCountAudits to update
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * Limit how many CycleCountAudits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CycleCountAudit upsert
+   */
+  export type CycleCountAuditUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CycleCountAudit to update in case it exists.
+     */
+    where: CycleCountAuditWhereUniqueInput
+    /**
+     * In case the CycleCountAudit found by the `where` argument doesn't exist, create a new CycleCountAudit with this data.
+     */
+    create: XOR<CycleCountAuditCreateInput, CycleCountAuditUncheckedCreateInput>
+    /**
+     * In case the CycleCountAudit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CycleCountAuditUpdateInput, CycleCountAuditUncheckedUpdateInput>
+  }
+
+  /**
+   * CycleCountAudit delete
+   */
+  export type CycleCountAuditDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+    /**
+     * Filter which CycleCountAudit to delete.
+     */
+    where: CycleCountAuditWhereUniqueInput
+  }
+
+  /**
+   * CycleCountAudit deleteMany
+   */
+  export type CycleCountAuditDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CycleCountAudits to delete
+     */
+    where?: CycleCountAuditWhereInput
+    /**
+     * Limit how many CycleCountAudits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CycleCountAudit without action
+   */
+  export type CycleCountAuditDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountAudit
+     */
+    select?: CycleCountAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountAudit
+     */
+    omit?: CycleCountAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountAuditInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InventoryAdjustment
+   */
+
+  export type AggregateInventoryAdjustment = {
+    _count: InventoryAdjustmentCountAggregateOutputType | null
+    _avg: InventoryAdjustmentAvgAggregateOutputType | null
+    _sum: InventoryAdjustmentSumAggregateOutputType | null
+    _min: InventoryAdjustmentMinAggregateOutputType | null
+    _max: InventoryAdjustmentMaxAggregateOutputType | null
+  }
+
+  export type InventoryAdjustmentAvgAggregateOutputType = {
+    previousQty: number | null
+    adjustedQty: number | null
+    changeQty: number | null
+  }
+
+  export type InventoryAdjustmentSumAggregateOutputType = {
+    previousQty: number | null
+    adjustedQty: number | null
+    changeQty: number | null
+  }
+
+  export type InventoryAdjustmentMinAggregateOutputType = {
+    id: string | null
+    adjustmentNumber: string | null
+    reason: $Enums.AdjustmentReason | null
+    sourceType: string | null
+    sourceId: string | null
+    productVariantId: string | null
+    locationId: string | null
+    inventoryUnitId: string | null
+    previousQty: number | null
+    adjustedQty: number | null
+    changeQty: number | null
+    lotNumber: string | null
+    status: $Enums.AdjustmentStatus | null
+    createdById: string | null
+    approvedById: string | null
+    approvedAt: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InventoryAdjustmentMaxAggregateOutputType = {
+    id: string | null
+    adjustmentNumber: string | null
+    reason: $Enums.AdjustmentReason | null
+    sourceType: string | null
+    sourceId: string | null
+    productVariantId: string | null
+    locationId: string | null
+    inventoryUnitId: string | null
+    previousQty: number | null
+    adjustedQty: number | null
+    changeQty: number | null
+    lotNumber: string | null
+    status: $Enums.AdjustmentStatus | null
+    createdById: string | null
+    approvedById: string | null
+    approvedAt: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InventoryAdjustmentCountAggregateOutputType = {
+    id: number
+    adjustmentNumber: number
+    reason: number
+    sourceType: number
+    sourceId: number
+    productVariantId: number
+    locationId: number
+    inventoryUnitId: number
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber: number
+    status: number
+    createdById: number
+    approvedById: number
+    approvedAt: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InventoryAdjustmentAvgAggregateInputType = {
+    previousQty?: true
+    adjustedQty?: true
+    changeQty?: true
+  }
+
+  export type InventoryAdjustmentSumAggregateInputType = {
+    previousQty?: true
+    adjustedQty?: true
+    changeQty?: true
+  }
+
+  export type InventoryAdjustmentMinAggregateInputType = {
+    id?: true
+    adjustmentNumber?: true
+    reason?: true
+    sourceType?: true
+    sourceId?: true
+    productVariantId?: true
+    locationId?: true
+    inventoryUnitId?: true
+    previousQty?: true
+    adjustedQty?: true
+    changeQty?: true
+    lotNumber?: true
+    status?: true
+    createdById?: true
+    approvedById?: true
+    approvedAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InventoryAdjustmentMaxAggregateInputType = {
+    id?: true
+    adjustmentNumber?: true
+    reason?: true
+    sourceType?: true
+    sourceId?: true
+    productVariantId?: true
+    locationId?: true
+    inventoryUnitId?: true
+    previousQty?: true
+    adjustedQty?: true
+    changeQty?: true
+    lotNumber?: true
+    status?: true
+    createdById?: true
+    approvedById?: true
+    approvedAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InventoryAdjustmentCountAggregateInputType = {
+    id?: true
+    adjustmentNumber?: true
+    reason?: true
+    sourceType?: true
+    sourceId?: true
+    productVariantId?: true
+    locationId?: true
+    inventoryUnitId?: true
+    previousQty?: true
+    adjustedQty?: true
+    changeQty?: true
+    lotNumber?: true
+    status?: true
+    createdById?: true
+    approvedById?: true
+    approvedAt?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InventoryAdjustmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InventoryAdjustment to aggregate.
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryAdjustments to fetch.
+     */
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryAdjustments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryAdjustments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InventoryAdjustments
+    **/
+    _count?: true | InventoryAdjustmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InventoryAdjustmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InventoryAdjustmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InventoryAdjustmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InventoryAdjustmentMaxAggregateInputType
+  }
+
+  export type GetInventoryAdjustmentAggregateType<T extends InventoryAdjustmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateInventoryAdjustment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInventoryAdjustment[P]>
+      : GetScalarType<T[P], AggregateInventoryAdjustment[P]>
+  }
+
+
+
+
+  export type InventoryAdjustmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryAdjustmentWhereInput
+    orderBy?: InventoryAdjustmentOrderByWithAggregationInput | InventoryAdjustmentOrderByWithAggregationInput[]
+    by: InventoryAdjustmentScalarFieldEnum[] | InventoryAdjustmentScalarFieldEnum
+    having?: InventoryAdjustmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InventoryAdjustmentCountAggregateInputType | true
+    _avg?: InventoryAdjustmentAvgAggregateInputType
+    _sum?: InventoryAdjustmentSumAggregateInputType
+    _min?: InventoryAdjustmentMinAggregateInputType
+    _max?: InventoryAdjustmentMaxAggregateInputType
+  }
+
+  export type InventoryAdjustmentGroupByOutputType = {
+    id: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber: string | null
+    status: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById: string | null
+    approvedAt: Date | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InventoryAdjustmentCountAggregateOutputType | null
+    _avg: InventoryAdjustmentAvgAggregateOutputType | null
+    _sum: InventoryAdjustmentSumAggregateOutputType | null
+    _min: InventoryAdjustmentMinAggregateOutputType | null
+    _max: InventoryAdjustmentMaxAggregateOutputType | null
+  }
+
+  type GetInventoryAdjustmentGroupByPayload<T extends InventoryAdjustmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InventoryAdjustmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InventoryAdjustmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InventoryAdjustmentGroupByOutputType[P]>
+            : GetScalarType<T[P], InventoryAdjustmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InventoryAdjustmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adjustmentNumber?: boolean
+    reason?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    inventoryUnitId?: boolean
+    previousQty?: boolean
+    adjustedQty?: boolean
+    changeQty?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    createdById?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryAdjustment"]>
+
+  export type InventoryAdjustmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adjustmentNumber?: boolean
+    reason?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    inventoryUnitId?: boolean
+    previousQty?: boolean
+    adjustedQty?: boolean
+    changeQty?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    createdById?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryAdjustment"]>
+
+  export type InventoryAdjustmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adjustmentNumber?: boolean
+    reason?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    inventoryUnitId?: boolean
+    previousQty?: boolean
+    adjustedQty?: boolean
+    changeQty?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    createdById?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryAdjustment"]>
+
+  export type InventoryAdjustmentSelectScalar = {
+    id?: boolean
+    adjustmentNumber?: boolean
+    reason?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    productVariantId?: boolean
+    locationId?: boolean
+    inventoryUnitId?: boolean
+    previousQty?: boolean
+    adjustedQty?: boolean
+    changeQty?: boolean
+    lotNumber?: boolean
+    status?: boolean
+    createdById?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InventoryAdjustmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "adjustmentNumber" | "reason" | "sourceType" | "sourceId" | "productVariantId" | "locationId" | "inventoryUnitId" | "previousQty" | "adjustedQty" | "changeQty" | "lotNumber" | "status" | "createdById" | "approvedById" | "approvedAt" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["inventoryAdjustment"]>
+  export type InventoryAdjustmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }
+  export type InventoryAdjustmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }
+  export type InventoryAdjustmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cycleCountSession?: boolean | InventoryAdjustment$cycleCountSessionArgs<ExtArgs>
+    productVariant?: boolean | ProductVariantDefaultArgs<ExtArgs>
+    location?: boolean | LocationDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | InventoryAdjustment$approvedByArgs<ExtArgs>
+  }
+
+  export type $InventoryAdjustmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InventoryAdjustment"
+    objects: {
+      cycleCountSession: Prisma.$CycleCountSessionPayload<ExtArgs> | null
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs>
+      location: Prisma.$LocationPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      approvedBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      adjustmentNumber: string
+      reason: $Enums.AdjustmentReason
+      sourceType: string
+      sourceId: string | null
+      productVariantId: string
+      locationId: string
+      inventoryUnitId: string | null
+      previousQty: number
+      adjustedQty: number
+      changeQty: number
+      lotNumber: string | null
+      status: $Enums.AdjustmentStatus
+      createdById: string
+      approvedById: string | null
+      approvedAt: Date | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["inventoryAdjustment"]>
+    composites: {}
+  }
+
+  type InventoryAdjustmentGetPayload<S extends boolean | null | undefined | InventoryAdjustmentDefaultArgs> = $Result.GetResult<Prisma.$InventoryAdjustmentPayload, S>
+
+  type InventoryAdjustmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InventoryAdjustmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InventoryAdjustmentCountAggregateInputType | true
+    }
+
+  export interface InventoryAdjustmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InventoryAdjustment'], meta: { name: 'InventoryAdjustment' } }
+    /**
+     * Find zero or one InventoryAdjustment that matches the filter.
+     * @param {InventoryAdjustmentFindUniqueArgs} args - Arguments to find a InventoryAdjustment
+     * @example
+     * // Get one InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InventoryAdjustmentFindUniqueArgs>(args: SelectSubset<T, InventoryAdjustmentFindUniqueArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InventoryAdjustment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InventoryAdjustmentFindUniqueOrThrowArgs} args - Arguments to find a InventoryAdjustment
+     * @example
+     * // Get one InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InventoryAdjustmentFindUniqueOrThrowArgs>(args: SelectSubset<T, InventoryAdjustmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InventoryAdjustment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentFindFirstArgs} args - Arguments to find a InventoryAdjustment
+     * @example
+     * // Get one InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InventoryAdjustmentFindFirstArgs>(args?: SelectSubset<T, InventoryAdjustmentFindFirstArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InventoryAdjustment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentFindFirstOrThrowArgs} args - Arguments to find a InventoryAdjustment
+     * @example
+     * // Get one InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InventoryAdjustmentFindFirstOrThrowArgs>(args?: SelectSubset<T, InventoryAdjustmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InventoryAdjustments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InventoryAdjustments
+     * const inventoryAdjustments = await prisma.inventoryAdjustment.findMany()
+     * 
+     * // Get first 10 InventoryAdjustments
+     * const inventoryAdjustments = await prisma.inventoryAdjustment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inventoryAdjustmentWithIdOnly = await prisma.inventoryAdjustment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InventoryAdjustmentFindManyArgs>(args?: SelectSubset<T, InventoryAdjustmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InventoryAdjustment.
+     * @param {InventoryAdjustmentCreateArgs} args - Arguments to create a InventoryAdjustment.
+     * @example
+     * // Create one InventoryAdjustment
+     * const InventoryAdjustment = await prisma.inventoryAdjustment.create({
+     *   data: {
+     *     // ... data to create a InventoryAdjustment
+     *   }
+     * })
+     * 
+     */
+    create<T extends InventoryAdjustmentCreateArgs>(args: SelectSubset<T, InventoryAdjustmentCreateArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InventoryAdjustments.
+     * @param {InventoryAdjustmentCreateManyArgs} args - Arguments to create many InventoryAdjustments.
+     * @example
+     * // Create many InventoryAdjustments
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InventoryAdjustmentCreateManyArgs>(args?: SelectSubset<T, InventoryAdjustmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InventoryAdjustments and returns the data saved in the database.
+     * @param {InventoryAdjustmentCreateManyAndReturnArgs} args - Arguments to create many InventoryAdjustments.
+     * @example
+     * // Create many InventoryAdjustments
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InventoryAdjustments and only return the `id`
+     * const inventoryAdjustmentWithIdOnly = await prisma.inventoryAdjustment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InventoryAdjustmentCreateManyAndReturnArgs>(args?: SelectSubset<T, InventoryAdjustmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InventoryAdjustment.
+     * @param {InventoryAdjustmentDeleteArgs} args - Arguments to delete one InventoryAdjustment.
+     * @example
+     * // Delete one InventoryAdjustment
+     * const InventoryAdjustment = await prisma.inventoryAdjustment.delete({
+     *   where: {
+     *     // ... filter to delete one InventoryAdjustment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InventoryAdjustmentDeleteArgs>(args: SelectSubset<T, InventoryAdjustmentDeleteArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InventoryAdjustment.
+     * @param {InventoryAdjustmentUpdateArgs} args - Arguments to update one InventoryAdjustment.
+     * @example
+     * // Update one InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InventoryAdjustmentUpdateArgs>(args: SelectSubset<T, InventoryAdjustmentUpdateArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InventoryAdjustments.
+     * @param {InventoryAdjustmentDeleteManyArgs} args - Arguments to filter InventoryAdjustments to delete.
+     * @example
+     * // Delete a few InventoryAdjustments
+     * const { count } = await prisma.inventoryAdjustment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InventoryAdjustmentDeleteManyArgs>(args?: SelectSubset<T, InventoryAdjustmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InventoryAdjustments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InventoryAdjustments
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InventoryAdjustmentUpdateManyArgs>(args: SelectSubset<T, InventoryAdjustmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InventoryAdjustments and returns the data updated in the database.
+     * @param {InventoryAdjustmentUpdateManyAndReturnArgs} args - Arguments to update many InventoryAdjustments.
+     * @example
+     * // Update many InventoryAdjustments
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InventoryAdjustments and only return the `id`
+     * const inventoryAdjustmentWithIdOnly = await prisma.inventoryAdjustment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InventoryAdjustmentUpdateManyAndReturnArgs>(args: SelectSubset<T, InventoryAdjustmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InventoryAdjustment.
+     * @param {InventoryAdjustmentUpsertArgs} args - Arguments to update or create a InventoryAdjustment.
+     * @example
+     * // Update or create a InventoryAdjustment
+     * const inventoryAdjustment = await prisma.inventoryAdjustment.upsert({
+     *   create: {
+     *     // ... data to create a InventoryAdjustment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InventoryAdjustment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InventoryAdjustmentUpsertArgs>(args: SelectSubset<T, InventoryAdjustmentUpsertArgs<ExtArgs>>): Prisma__InventoryAdjustmentClient<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InventoryAdjustments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentCountArgs} args - Arguments to filter InventoryAdjustments to count.
+     * @example
+     * // Count the number of InventoryAdjustments
+     * const count = await prisma.inventoryAdjustment.count({
+     *   where: {
+     *     // ... the filter for the InventoryAdjustments we want to count
+     *   }
+     * })
+    **/
+    count<T extends InventoryAdjustmentCountArgs>(
+      args?: Subset<T, InventoryAdjustmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InventoryAdjustmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InventoryAdjustment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InventoryAdjustmentAggregateArgs>(args: Subset<T, InventoryAdjustmentAggregateArgs>): Prisma.PrismaPromise<GetInventoryAdjustmentAggregateType<T>>
+
+    /**
+     * Group by InventoryAdjustment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryAdjustmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InventoryAdjustmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InventoryAdjustmentGroupByArgs['orderBy'] }
+        : { orderBy?: InventoryAdjustmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InventoryAdjustmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInventoryAdjustmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InventoryAdjustment model
+   */
+  readonly fields: InventoryAdjustmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InventoryAdjustment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InventoryAdjustmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    cycleCountSession<T extends InventoryAdjustment$cycleCountSessionArgs<ExtArgs> = {}>(args?: Subset<T, InventoryAdjustment$cycleCountSessionArgs<ExtArgs>>): Prisma__CycleCountSessionClient<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariantDefaultArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    location<T extends LocationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocationDefaultArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    approvedBy<T extends InventoryAdjustment$approvedByArgs<ExtArgs> = {}>(args?: Subset<T, InventoryAdjustment$approvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InventoryAdjustment model
+   */
+  interface InventoryAdjustmentFieldRefs {
+    readonly id: FieldRef<"InventoryAdjustment", 'String'>
+    readonly adjustmentNumber: FieldRef<"InventoryAdjustment", 'String'>
+    readonly reason: FieldRef<"InventoryAdjustment", 'AdjustmentReason'>
+    readonly sourceType: FieldRef<"InventoryAdjustment", 'String'>
+    readonly sourceId: FieldRef<"InventoryAdjustment", 'String'>
+    readonly productVariantId: FieldRef<"InventoryAdjustment", 'String'>
+    readonly locationId: FieldRef<"InventoryAdjustment", 'String'>
+    readonly inventoryUnitId: FieldRef<"InventoryAdjustment", 'String'>
+    readonly previousQty: FieldRef<"InventoryAdjustment", 'Int'>
+    readonly adjustedQty: FieldRef<"InventoryAdjustment", 'Int'>
+    readonly changeQty: FieldRef<"InventoryAdjustment", 'Int'>
+    readonly lotNumber: FieldRef<"InventoryAdjustment", 'String'>
+    readonly status: FieldRef<"InventoryAdjustment", 'AdjustmentStatus'>
+    readonly createdById: FieldRef<"InventoryAdjustment", 'String'>
+    readonly approvedById: FieldRef<"InventoryAdjustment", 'String'>
+    readonly approvedAt: FieldRef<"InventoryAdjustment", 'DateTime'>
+    readonly notes: FieldRef<"InventoryAdjustment", 'String'>
+    readonly createdAt: FieldRef<"InventoryAdjustment", 'DateTime'>
+    readonly updatedAt: FieldRef<"InventoryAdjustment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InventoryAdjustment findUnique
+   */
+  export type InventoryAdjustmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryAdjustment to fetch.
+     */
+    where: InventoryAdjustmentWhereUniqueInput
+  }
+
+  /**
+   * InventoryAdjustment findUniqueOrThrow
+   */
+  export type InventoryAdjustmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryAdjustment to fetch.
+     */
+    where: InventoryAdjustmentWhereUniqueInput
+  }
+
+  /**
+   * InventoryAdjustment findFirst
+   */
+  export type InventoryAdjustmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryAdjustment to fetch.
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryAdjustments to fetch.
+     */
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InventoryAdjustments.
+     */
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryAdjustments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryAdjustments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InventoryAdjustments.
+     */
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryAdjustment findFirstOrThrow
+   */
+  export type InventoryAdjustmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryAdjustment to fetch.
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryAdjustments to fetch.
+     */
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InventoryAdjustments.
+     */
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryAdjustments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryAdjustments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InventoryAdjustments.
+     */
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryAdjustment findMany
+   */
+  export type InventoryAdjustmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryAdjustments to fetch.
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryAdjustments to fetch.
+     */
+    orderBy?: InventoryAdjustmentOrderByWithRelationInput | InventoryAdjustmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InventoryAdjustments.
+     */
+    cursor?: InventoryAdjustmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryAdjustments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryAdjustments.
+     */
+    skip?: number
+    distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryAdjustment create
+   */
+  export type InventoryAdjustmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InventoryAdjustment.
+     */
+    data: XOR<InventoryAdjustmentCreateInput, InventoryAdjustmentUncheckedCreateInput>
+  }
+
+  /**
+   * InventoryAdjustment createMany
+   */
+  export type InventoryAdjustmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InventoryAdjustments.
+     */
+    data: InventoryAdjustmentCreateManyInput | InventoryAdjustmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InventoryAdjustment createManyAndReturn
+   */
+  export type InventoryAdjustmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many InventoryAdjustments.
+     */
+    data: InventoryAdjustmentCreateManyInput | InventoryAdjustmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InventoryAdjustment update
+   */
+  export type InventoryAdjustmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InventoryAdjustment.
+     */
+    data: XOR<InventoryAdjustmentUpdateInput, InventoryAdjustmentUncheckedUpdateInput>
+    /**
+     * Choose, which InventoryAdjustment to update.
+     */
+    where: InventoryAdjustmentWhereUniqueInput
+  }
+
+  /**
+   * InventoryAdjustment updateMany
+   */
+  export type InventoryAdjustmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InventoryAdjustments.
+     */
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyInput>
+    /**
+     * Filter which InventoryAdjustments to update
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * Limit how many InventoryAdjustments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InventoryAdjustment updateManyAndReturn
+   */
+  export type InventoryAdjustmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * The data used to update InventoryAdjustments.
+     */
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyInput>
+    /**
+     * Filter which InventoryAdjustments to update
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * Limit how many InventoryAdjustments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InventoryAdjustment upsert
+   */
+  export type InventoryAdjustmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InventoryAdjustment to update in case it exists.
+     */
+    where: InventoryAdjustmentWhereUniqueInput
+    /**
+     * In case the InventoryAdjustment found by the `where` argument doesn't exist, create a new InventoryAdjustment with this data.
+     */
+    create: XOR<InventoryAdjustmentCreateInput, InventoryAdjustmentUncheckedCreateInput>
+    /**
+     * In case the InventoryAdjustment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InventoryAdjustmentUpdateInput, InventoryAdjustmentUncheckedUpdateInput>
+  }
+
+  /**
+   * InventoryAdjustment delete
+   */
+  export type InventoryAdjustmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+    /**
+     * Filter which InventoryAdjustment to delete.
+     */
+    where: InventoryAdjustmentWhereUniqueInput
+  }
+
+  /**
+   * InventoryAdjustment deleteMany
+   */
+  export type InventoryAdjustmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InventoryAdjustments to delete
+     */
+    where?: InventoryAdjustmentWhereInput
+    /**
+     * Limit how many InventoryAdjustments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InventoryAdjustment.cycleCountSession
+   */
+  export type InventoryAdjustment$cycleCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CycleCountSession
+     */
+    select?: CycleCountSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CycleCountSession
+     */
+    omit?: CycleCountSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CycleCountSessionInclude<ExtArgs> | null
+    where?: CycleCountSessionWhereInput
+  }
+
+  /**
+   * InventoryAdjustment.approvedBy
+   */
+  export type InventoryAdjustment$approvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * InventoryAdjustment without action
+   */
+  export type InventoryAdjustmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryAdjustment
+     */
+    select?: InventoryAdjustmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryAdjustment
+     */
+    omit?: InventoryAdjustmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryAdjustmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -32850,6 +40460,116 @@ export namespace Prisma {
   export type ReceivingExceptionScalarFieldEnum = (typeof ReceivingExceptionScalarFieldEnum)[keyof typeof ReceivingExceptionScalarFieldEnum]
 
 
+  export const CycleCountTaskScalarFieldEnum: {
+    id: 'id',
+    taskNumber: 'taskNumber',
+    name: 'name',
+    description: 'description',
+    type: 'type',
+    locationIds: 'locationIds',
+    zoneId: 'zoneId',
+    skuFilter: 'skuFilter',
+    abcClass: 'abcClass',
+    blindCount: 'blindCount',
+    includeZeroQty: 'includeZeroQty',
+    priority: 'priority',
+    scheduledDate: 'scheduledDate',
+    dueDate: 'dueDate',
+    assignedToId: 'assignedToId',
+    createdById: 'createdById',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CycleCountTaskScalarFieldEnum = (typeof CycleCountTaskScalarFieldEnum)[keyof typeof CycleCountTaskScalarFieldEnum]
+
+
+  export const CycleCountSessionScalarFieldEnum: {
+    id: 'id',
+    taskId: 'taskId',
+    locationId: 'locationId',
+    blindCount: 'blindCount',
+    version: 'version',
+    lockedBy: 'lockedBy',
+    lockedAt: 'lockedAt',
+    status: 'status',
+    countedById: 'countedById',
+    startedAt: 'startedAt',
+    submittedAt: 'submittedAt',
+    reviewedById: 'reviewedById',
+    reviewedAt: 'reviewedAt',
+    reviewNotes: 'reviewNotes',
+    totalExpected: 'totalExpected',
+    totalCounted: 'totalCounted',
+    varianceCount: 'varianceCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CycleCountSessionScalarFieldEnum = (typeof CycleCountSessionScalarFieldEnum)[keyof typeof CycleCountSessionScalarFieldEnum]
+
+
+  export const CycleCountLineScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    productVariantId: 'productVariantId',
+    sku: 'sku',
+    productName: 'productName',
+    inventoryUnitId: 'inventoryUnitId',
+    systemQty: 'systemQty',
+    countedQty: 'countedQty',
+    variance: 'variance',
+    lotNumber: 'lotNumber',
+    expiryDate: 'expiryDate',
+    status: 'status',
+    isUnexpected: 'isUnexpected',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CycleCountLineScalarFieldEnum = (typeof CycleCountLineScalarFieldEnum)[keyof typeof CycleCountLineScalarFieldEnum]
+
+
+  export const CycleCountAuditScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    action: 'action',
+    userId: 'userId',
+    lineId: 'lineId',
+    data: 'data',
+    createdAt: 'createdAt'
+  };
+
+  export type CycleCountAuditScalarFieldEnum = (typeof CycleCountAuditScalarFieldEnum)[keyof typeof CycleCountAuditScalarFieldEnum]
+
+
+  export const InventoryAdjustmentScalarFieldEnum: {
+    id: 'id',
+    adjustmentNumber: 'adjustmentNumber',
+    reason: 'reason',
+    sourceType: 'sourceType',
+    sourceId: 'sourceId',
+    productVariantId: 'productVariantId',
+    locationId: 'locationId',
+    inventoryUnitId: 'inventoryUnitId',
+    previousQty: 'previousQty',
+    adjustedQty: 'adjustedQty',
+    changeQty: 'changeQty',
+    lotNumber: 'lotNumber',
+    status: 'status',
+    createdById: 'createdById',
+    approvedById: 'approvedById',
+    approvedAt: 'approvedAt',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InventoryAdjustmentScalarFieldEnum = (typeof InventoryAdjustmentScalarFieldEnum)[keyof typeof InventoryAdjustmentScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -33191,6 +40911,90 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CycleCountType'
+   */
+  export type EnumCycleCountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountType[]'
+   */
+  export type ListEnumCycleCountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountTaskStatus'
+   */
+  export type EnumCycleCountTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountTaskStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountTaskStatus[]'
+   */
+  export type ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountTaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountSessionStatus'
+   */
+  export type EnumCycleCountSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountSessionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountSessionStatus[]'
+   */
+  export type ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountSessionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountLineStatus'
+   */
+  export type EnumCycleCountLineStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountLineStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CycleCountLineStatus[]'
+   */
+  export type ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CycleCountLineStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AdjustmentReason'
+   */
+  export type EnumAdjustmentReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentReason'>
+    
+
+
+  /**
+   * Reference to a field of type 'AdjustmentReason[]'
+   */
+  export type ListEnumAdjustmentReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentReason[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AdjustmentStatus'
+   */
+  export type EnumAdjustmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AdjustmentStatus[]'
+   */
+  export type ListEnumAdjustmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdjustmentStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -33234,6 +41038,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionListRelationFilter
     exceptionsReported?: ReceivingExceptionListRelationFilter
     exceptionsResolved?: ReceivingExceptionListRelationFilter
+    cycleCountTasksAssigned?: CycleCountTaskListRelationFilter
+    cycleCountTasksCreated?: CycleCountTaskListRelationFilter
+    cycleCountSessionsLocked?: CycleCountSessionListRelationFilter
+    cycleCountSessionsCounted?: CycleCountSessionListRelationFilter
+    cycleCountSessionsReviewed?: CycleCountSessionListRelationFilter
+    cycleCountAudits?: CycleCountAuditListRelationFilter
+    adjustmentsCreated?: InventoryAdjustmentListRelationFilter
+    adjustmentsApproved?: InventoryAdjustmentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -33260,6 +41072,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionOrderByRelationAggregateInput
     exceptionsReported?: ReceivingExceptionOrderByRelationAggregateInput
     exceptionsResolved?: ReceivingExceptionOrderByRelationAggregateInput
+    cycleCountTasksAssigned?: CycleCountTaskOrderByRelationAggregateInput
+    cycleCountTasksCreated?: CycleCountTaskOrderByRelationAggregateInput
+    cycleCountSessionsLocked?: CycleCountSessionOrderByRelationAggregateInput
+    cycleCountSessionsCounted?: CycleCountSessionOrderByRelationAggregateInput
+    cycleCountSessionsReviewed?: CycleCountSessionOrderByRelationAggregateInput
+    cycleCountAudits?: CycleCountAuditOrderByRelationAggregateInput
+    adjustmentsCreated?: InventoryAdjustmentOrderByRelationAggregateInput
+    adjustmentsApproved?: InventoryAdjustmentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -33289,6 +41109,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionListRelationFilter
     exceptionsReported?: ReceivingExceptionListRelationFilter
     exceptionsResolved?: ReceivingExceptionListRelationFilter
+    cycleCountTasksAssigned?: CycleCountTaskListRelationFilter
+    cycleCountTasksCreated?: CycleCountTaskListRelationFilter
+    cycleCountSessionsLocked?: CycleCountSessionListRelationFilter
+    cycleCountSessionsCounted?: CycleCountSessionListRelationFilter
+    cycleCountSessionsReviewed?: CycleCountSessionListRelationFilter
+    cycleCountAudits?: CycleCountAuditListRelationFilter
+    adjustmentsCreated?: InventoryAdjustmentListRelationFilter
+    adjustmentsApproved?: InventoryAdjustmentListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -33544,6 +41372,8 @@ export namespace Prisma {
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
     receivingLines?: ReceivingLineListRelationFilter
+    cycleCountLines?: CycleCountLineListRelationFilter
+    inventoryAdjustments?: InventoryAdjustmentListRelationFilter
   }
 
   export type ProductVariantOrderByWithRelationInput = {
@@ -33569,6 +41399,8 @@ export namespace Prisma {
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
     receivingLines?: ReceivingLineOrderByRelationAggregateInput
+    cycleCountLines?: CycleCountLineOrderByRelationAggregateInput
+    inventoryAdjustments?: InventoryAdjustmentOrderByRelationAggregateInput
   }
 
   export type ProductVariantWhereUniqueInput = Prisma.AtLeast<{
@@ -33597,6 +41429,8 @@ export namespace Prisma {
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
     receivingLines?: ReceivingLineListRelationFilter
+    cycleCountLines?: CycleCountLineListRelationFilter
+    inventoryAdjustments?: InventoryAdjustmentListRelationFilter
   }, "id" | "sku" | "upc" | "shopifyVariantId">
 
   export type ProductVariantOrderByWithAggregationInput = {
@@ -33665,6 +41499,8 @@ export namespace Prisma {
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
     receivingSessions?: ReceivingSessionListRelationFilter
+    cycleCountSessions?: CycleCountSessionListRelationFilter
+    inventoryAdjustments?: InventoryAdjustmentListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -33686,6 +41522,8 @@ export namespace Prisma {
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
     receivingSessions?: ReceivingSessionOrderByRelationAggregateInput
+    cycleCountSessions?: CycleCountSessionOrderByRelationAggregateInput
+    inventoryAdjustments?: InventoryAdjustmentOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = Prisma.AtLeast<{
@@ -33710,6 +41548,8 @@ export namespace Prisma {
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
     receivingSessions?: ReceivingSessionListRelationFilter
+    cycleCountSessions?: CycleCountSessionListRelationFilter
+    inventoryAdjustments?: InventoryAdjustmentListRelationFilter
   }, "id" | "name" | "barcode">
 
   export type LocationOrderByWithAggregationInput = {
@@ -33773,6 +41613,7 @@ export namespace Prisma {
     productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
     location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
     allocations?: AllocationListRelationFilter
+    cycleCountLines?: CycleCountLineListRelationFilter
   }
 
   export type InventoryUnitOrderByWithRelationInput = {
@@ -33791,6 +41632,7 @@ export namespace Prisma {
     productVariant?: ProductVariantOrderByWithRelationInput
     location?: LocationOrderByWithRelationInput
     allocations?: AllocationOrderByRelationAggregateInput
+    cycleCountLines?: CycleCountLineOrderByRelationAggregateInput
   }
 
   export type InventoryUnitWhereUniqueInput = Prisma.AtLeast<{
@@ -33812,6 +41654,7 @@ export namespace Prisma {
     productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
     location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
     allocations?: AllocationListRelationFilter
+    cycleCountLines?: CycleCountLineListRelationFilter
   }, "id">
 
   export type InventoryUnitOrderByWithAggregationInput = {
@@ -35588,6 +43431,613 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ReceivingException"> | Date | string
   }
 
+  export type CycleCountTaskWhereInput = {
+    AND?: CycleCountTaskWhereInput | CycleCountTaskWhereInput[]
+    OR?: CycleCountTaskWhereInput[]
+    NOT?: CycleCountTaskWhereInput | CycleCountTaskWhereInput[]
+    id?: StringFilter<"CycleCountTask"> | string
+    taskNumber?: StringFilter<"CycleCountTask"> | string
+    name?: StringNullableFilter<"CycleCountTask"> | string | null
+    description?: StringNullableFilter<"CycleCountTask"> | string | null
+    type?: EnumCycleCountTypeFilter<"CycleCountTask"> | $Enums.CycleCountType
+    locationIds?: StringNullableListFilter<"CycleCountTask">
+    zoneId?: StringNullableFilter<"CycleCountTask"> | string | null
+    skuFilter?: StringNullableFilter<"CycleCountTask"> | string | null
+    abcClass?: StringNullableFilter<"CycleCountTask"> | string | null
+    blindCount?: BoolFilter<"CycleCountTask"> | boolean
+    includeZeroQty?: BoolFilter<"CycleCountTask"> | boolean
+    priority?: IntFilter<"CycleCountTask"> | number
+    scheduledDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    dueDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    assignedToId?: StringNullableFilter<"CycleCountTask"> | string | null
+    createdById?: StringFilter<"CycleCountTask"> | string
+    status?: EnumCycleCountTaskStatusFilter<"CycleCountTask"> | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sessions?: CycleCountSessionListRelationFilter
+  }
+
+  export type CycleCountTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    taskNumber?: SortOrder
+    name?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    locationIds?: SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    skuFilter?: SortOrderInput | SortOrder
+    abcClass?: SortOrderInput | SortOrder
+    blindCount?: SortOrder
+    includeZeroQty?: SortOrder
+    priority?: SortOrder
+    scheduledDate?: SortOrderInput | SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    assignedTo?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    sessions?: CycleCountSessionOrderByRelationAggregateInput
+  }
+
+  export type CycleCountTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    taskNumber?: string
+    AND?: CycleCountTaskWhereInput | CycleCountTaskWhereInput[]
+    OR?: CycleCountTaskWhereInput[]
+    NOT?: CycleCountTaskWhereInput | CycleCountTaskWhereInput[]
+    name?: StringNullableFilter<"CycleCountTask"> | string | null
+    description?: StringNullableFilter<"CycleCountTask"> | string | null
+    type?: EnumCycleCountTypeFilter<"CycleCountTask"> | $Enums.CycleCountType
+    locationIds?: StringNullableListFilter<"CycleCountTask">
+    zoneId?: StringNullableFilter<"CycleCountTask"> | string | null
+    skuFilter?: StringNullableFilter<"CycleCountTask"> | string | null
+    abcClass?: StringNullableFilter<"CycleCountTask"> | string | null
+    blindCount?: BoolFilter<"CycleCountTask"> | boolean
+    includeZeroQty?: BoolFilter<"CycleCountTask"> | boolean
+    priority?: IntFilter<"CycleCountTask"> | number
+    scheduledDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    dueDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    assignedToId?: StringNullableFilter<"CycleCountTask"> | string | null
+    createdById?: StringFilter<"CycleCountTask"> | string
+    status?: EnumCycleCountTaskStatusFilter<"CycleCountTask"> | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sessions?: CycleCountSessionListRelationFilter
+  }, "id" | "taskNumber">
+
+  export type CycleCountTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    taskNumber?: SortOrder
+    name?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    locationIds?: SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    skuFilter?: SortOrderInput | SortOrder
+    abcClass?: SortOrderInput | SortOrder
+    blindCount?: SortOrder
+    includeZeroQty?: SortOrder
+    priority?: SortOrder
+    scheduledDate?: SortOrderInput | SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CycleCountTaskCountOrderByAggregateInput
+    _avg?: CycleCountTaskAvgOrderByAggregateInput
+    _max?: CycleCountTaskMaxOrderByAggregateInput
+    _min?: CycleCountTaskMinOrderByAggregateInput
+    _sum?: CycleCountTaskSumOrderByAggregateInput
+  }
+
+  export type CycleCountTaskScalarWhereWithAggregatesInput = {
+    AND?: CycleCountTaskScalarWhereWithAggregatesInput | CycleCountTaskScalarWhereWithAggregatesInput[]
+    OR?: CycleCountTaskScalarWhereWithAggregatesInput[]
+    NOT?: CycleCountTaskScalarWhereWithAggregatesInput | CycleCountTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CycleCountTask"> | string
+    taskNumber?: StringWithAggregatesFilter<"CycleCountTask"> | string
+    name?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    description?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    type?: EnumCycleCountTypeWithAggregatesFilter<"CycleCountTask"> | $Enums.CycleCountType
+    locationIds?: StringNullableListFilter<"CycleCountTask">
+    zoneId?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    skuFilter?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    abcClass?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    blindCount?: BoolWithAggregatesFilter<"CycleCountTask"> | boolean
+    includeZeroQty?: BoolWithAggregatesFilter<"CycleCountTask"> | boolean
+    priority?: IntWithAggregatesFilter<"CycleCountTask"> | number
+    scheduledDate?: DateTimeNullableWithAggregatesFilter<"CycleCountTask"> | Date | string | null
+    dueDate?: DateTimeNullableWithAggregatesFilter<"CycleCountTask"> | Date | string | null
+    assignedToId?: StringNullableWithAggregatesFilter<"CycleCountTask"> | string | null
+    createdById?: StringWithAggregatesFilter<"CycleCountTask"> | string
+    status?: EnumCycleCountTaskStatusWithAggregatesFilter<"CycleCountTask"> | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeWithAggregatesFilter<"CycleCountTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CycleCountTask"> | Date | string
+  }
+
+  export type CycleCountSessionWhereInput = {
+    AND?: CycleCountSessionWhereInput | CycleCountSessionWhereInput[]
+    OR?: CycleCountSessionWhereInput[]
+    NOT?: CycleCountSessionWhereInput | CycleCountSessionWhereInput[]
+    id?: StringFilter<"CycleCountSession"> | string
+    taskId?: StringNullableFilter<"CycleCountSession"> | string | null
+    locationId?: StringFilter<"CycleCountSession"> | string
+    blindCount?: BoolFilter<"CycleCountSession"> | boolean
+    version?: IntFilter<"CycleCountSession"> | number
+    lockedBy?: StringNullableFilter<"CycleCountSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    status?: EnumCycleCountSessionStatusFilter<"CycleCountSession"> | $Enums.CycleCountSessionStatus
+    countedById?: StringFilter<"CycleCountSession"> | string
+    startedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewedById?: StringNullableFilter<"CycleCountSession"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewNotes?: StringNullableFilter<"CycleCountSession"> | string | null
+    totalExpected?: IntFilter<"CycleCountSession"> | number
+    totalCounted?: IntFilter<"CycleCountSession"> | number
+    varianceCount?: IntFilter<"CycleCountSession"> | number
+    createdAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    task?: XOR<CycleCountTaskNullableScalarRelationFilter, CycleCountTaskWhereInput> | null
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    lockedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    countedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    reviewedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    lineItems?: CycleCountLineListRelationFilter
+    auditLogs?: CycleCountAuditListRelationFilter
+    adjustments?: InventoryAdjustmentListRelationFilter
+  }
+
+  export type CycleCountSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    locationId?: SortOrder
+    blindCount?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrderInput | SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    countedById?: SortOrder
+    startedAt?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    reviewedById?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewNotes?: SortOrderInput | SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    task?: CycleCountTaskOrderByWithRelationInput
+    location?: LocationOrderByWithRelationInput
+    lockedByUser?: UserOrderByWithRelationInput
+    countedBy?: UserOrderByWithRelationInput
+    reviewedBy?: UserOrderByWithRelationInput
+    lineItems?: CycleCountLineOrderByRelationAggregateInput
+    auditLogs?: CycleCountAuditOrderByRelationAggregateInput
+    adjustments?: InventoryAdjustmentOrderByRelationAggregateInput
+  }
+
+  export type CycleCountSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CycleCountSessionWhereInput | CycleCountSessionWhereInput[]
+    OR?: CycleCountSessionWhereInput[]
+    NOT?: CycleCountSessionWhereInput | CycleCountSessionWhereInput[]
+    taskId?: StringNullableFilter<"CycleCountSession"> | string | null
+    locationId?: StringFilter<"CycleCountSession"> | string
+    blindCount?: BoolFilter<"CycleCountSession"> | boolean
+    version?: IntFilter<"CycleCountSession"> | number
+    lockedBy?: StringNullableFilter<"CycleCountSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    status?: EnumCycleCountSessionStatusFilter<"CycleCountSession"> | $Enums.CycleCountSessionStatus
+    countedById?: StringFilter<"CycleCountSession"> | string
+    startedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewedById?: StringNullableFilter<"CycleCountSession"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewNotes?: StringNullableFilter<"CycleCountSession"> | string | null
+    totalExpected?: IntFilter<"CycleCountSession"> | number
+    totalCounted?: IntFilter<"CycleCountSession"> | number
+    varianceCount?: IntFilter<"CycleCountSession"> | number
+    createdAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    task?: XOR<CycleCountTaskNullableScalarRelationFilter, CycleCountTaskWhereInput> | null
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    lockedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    countedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    reviewedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    lineItems?: CycleCountLineListRelationFilter
+    auditLogs?: CycleCountAuditListRelationFilter
+    adjustments?: InventoryAdjustmentListRelationFilter
+  }, "id">
+
+  export type CycleCountSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    locationId?: SortOrder
+    blindCount?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrderInput | SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    countedById?: SortOrder
+    startedAt?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    reviewedById?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    reviewNotes?: SortOrderInput | SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CycleCountSessionCountOrderByAggregateInput
+    _avg?: CycleCountSessionAvgOrderByAggregateInput
+    _max?: CycleCountSessionMaxOrderByAggregateInput
+    _min?: CycleCountSessionMinOrderByAggregateInput
+    _sum?: CycleCountSessionSumOrderByAggregateInput
+  }
+
+  export type CycleCountSessionScalarWhereWithAggregatesInput = {
+    AND?: CycleCountSessionScalarWhereWithAggregatesInput | CycleCountSessionScalarWhereWithAggregatesInput[]
+    OR?: CycleCountSessionScalarWhereWithAggregatesInput[]
+    NOT?: CycleCountSessionScalarWhereWithAggregatesInput | CycleCountSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CycleCountSession"> | string
+    taskId?: StringNullableWithAggregatesFilter<"CycleCountSession"> | string | null
+    locationId?: StringWithAggregatesFilter<"CycleCountSession"> | string
+    blindCount?: BoolWithAggregatesFilter<"CycleCountSession"> | boolean
+    version?: IntWithAggregatesFilter<"CycleCountSession"> | number
+    lockedBy?: StringNullableWithAggregatesFilter<"CycleCountSession"> | string | null
+    lockedAt?: DateTimeNullableWithAggregatesFilter<"CycleCountSession"> | Date | string | null
+    status?: EnumCycleCountSessionStatusWithAggregatesFilter<"CycleCountSession"> | $Enums.CycleCountSessionStatus
+    countedById?: StringWithAggregatesFilter<"CycleCountSession"> | string
+    startedAt?: DateTimeWithAggregatesFilter<"CycleCountSession"> | Date | string
+    submittedAt?: DateTimeNullableWithAggregatesFilter<"CycleCountSession"> | Date | string | null
+    reviewedById?: StringNullableWithAggregatesFilter<"CycleCountSession"> | string | null
+    reviewedAt?: DateTimeNullableWithAggregatesFilter<"CycleCountSession"> | Date | string | null
+    reviewNotes?: StringNullableWithAggregatesFilter<"CycleCountSession"> | string | null
+    totalExpected?: IntWithAggregatesFilter<"CycleCountSession"> | number
+    totalCounted?: IntWithAggregatesFilter<"CycleCountSession"> | number
+    varianceCount?: IntWithAggregatesFilter<"CycleCountSession"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CycleCountSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CycleCountSession"> | Date | string
+  }
+
+  export type CycleCountLineWhereInput = {
+    AND?: CycleCountLineWhereInput | CycleCountLineWhereInput[]
+    OR?: CycleCountLineWhereInput[]
+    NOT?: CycleCountLineWhereInput | CycleCountLineWhereInput[]
+    id?: StringFilter<"CycleCountLine"> | string
+    sessionId?: StringFilter<"CycleCountLine"> | string
+    productVariantId?: StringFilter<"CycleCountLine"> | string
+    sku?: StringFilter<"CycleCountLine"> | string
+    productName?: StringFilter<"CycleCountLine"> | string
+    inventoryUnitId?: StringNullableFilter<"CycleCountLine"> | string | null
+    systemQty?: IntFilter<"CycleCountLine"> | number
+    countedQty?: IntNullableFilter<"CycleCountLine"> | number | null
+    variance?: IntNullableFilter<"CycleCountLine"> | number | null
+    lotNumber?: StringNullableFilter<"CycleCountLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"CycleCountLine"> | Date | string | null
+    status?: EnumCycleCountLineStatusFilter<"CycleCountLine"> | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFilter<"CycleCountLine"> | boolean
+    notes?: StringNullableFilter<"CycleCountLine"> | string | null
+    createdAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+    session?: XOR<CycleCountSessionScalarRelationFilter, CycleCountSessionWhereInput>
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    inventoryUnit?: XOR<InventoryUnitNullableScalarRelationFilter, InventoryUnitWhereInput> | null
+  }
+
+  export type CycleCountLineOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    productVariantId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    inventoryUnitId?: SortOrderInput | SortOrder
+    systemQty?: SortOrder
+    countedQty?: SortOrderInput | SortOrder
+    variance?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    isUnexpected?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    session?: CycleCountSessionOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+    inventoryUnit?: InventoryUnitOrderByWithRelationInput
+  }
+
+  export type CycleCountLineWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_productVariantId_lotNumber?: CycleCountLineSessionIdProductVariantIdLotNumberCompoundUniqueInput
+    AND?: CycleCountLineWhereInput | CycleCountLineWhereInput[]
+    OR?: CycleCountLineWhereInput[]
+    NOT?: CycleCountLineWhereInput | CycleCountLineWhereInput[]
+    sessionId?: StringFilter<"CycleCountLine"> | string
+    productVariantId?: StringFilter<"CycleCountLine"> | string
+    sku?: StringFilter<"CycleCountLine"> | string
+    productName?: StringFilter<"CycleCountLine"> | string
+    inventoryUnitId?: StringNullableFilter<"CycleCountLine"> | string | null
+    systemQty?: IntFilter<"CycleCountLine"> | number
+    countedQty?: IntNullableFilter<"CycleCountLine"> | number | null
+    variance?: IntNullableFilter<"CycleCountLine"> | number | null
+    lotNumber?: StringNullableFilter<"CycleCountLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"CycleCountLine"> | Date | string | null
+    status?: EnumCycleCountLineStatusFilter<"CycleCountLine"> | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFilter<"CycleCountLine"> | boolean
+    notes?: StringNullableFilter<"CycleCountLine"> | string | null
+    createdAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+    session?: XOR<CycleCountSessionScalarRelationFilter, CycleCountSessionWhereInput>
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    inventoryUnit?: XOR<InventoryUnitNullableScalarRelationFilter, InventoryUnitWhereInput> | null
+  }, "id" | "sessionId_productVariantId_lotNumber">
+
+  export type CycleCountLineOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    productVariantId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    inventoryUnitId?: SortOrderInput | SortOrder
+    systemQty?: SortOrder
+    countedQty?: SortOrderInput | SortOrder
+    variance?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    isUnexpected?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CycleCountLineCountOrderByAggregateInput
+    _avg?: CycleCountLineAvgOrderByAggregateInput
+    _max?: CycleCountLineMaxOrderByAggregateInput
+    _min?: CycleCountLineMinOrderByAggregateInput
+    _sum?: CycleCountLineSumOrderByAggregateInput
+  }
+
+  export type CycleCountLineScalarWhereWithAggregatesInput = {
+    AND?: CycleCountLineScalarWhereWithAggregatesInput | CycleCountLineScalarWhereWithAggregatesInput[]
+    OR?: CycleCountLineScalarWhereWithAggregatesInput[]
+    NOT?: CycleCountLineScalarWhereWithAggregatesInput | CycleCountLineScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CycleCountLine"> | string
+    sessionId?: StringWithAggregatesFilter<"CycleCountLine"> | string
+    productVariantId?: StringWithAggregatesFilter<"CycleCountLine"> | string
+    sku?: StringWithAggregatesFilter<"CycleCountLine"> | string
+    productName?: StringWithAggregatesFilter<"CycleCountLine"> | string
+    inventoryUnitId?: StringNullableWithAggregatesFilter<"CycleCountLine"> | string | null
+    systemQty?: IntWithAggregatesFilter<"CycleCountLine"> | number
+    countedQty?: IntNullableWithAggregatesFilter<"CycleCountLine"> | number | null
+    variance?: IntNullableWithAggregatesFilter<"CycleCountLine"> | number | null
+    lotNumber?: StringNullableWithAggregatesFilter<"CycleCountLine"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"CycleCountLine"> | Date | string | null
+    status?: EnumCycleCountLineStatusWithAggregatesFilter<"CycleCountLine"> | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolWithAggregatesFilter<"CycleCountLine"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"CycleCountLine"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CycleCountLine"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CycleCountLine"> | Date | string
+  }
+
+  export type CycleCountAuditWhereInput = {
+    AND?: CycleCountAuditWhereInput | CycleCountAuditWhereInput[]
+    OR?: CycleCountAuditWhereInput[]
+    NOT?: CycleCountAuditWhereInput | CycleCountAuditWhereInput[]
+    id?: StringFilter<"CycleCountAudit"> | string
+    sessionId?: StringFilter<"CycleCountAudit"> | string
+    action?: StringFilter<"CycleCountAudit"> | string
+    userId?: StringFilter<"CycleCountAudit"> | string
+    lineId?: StringNullableFilter<"CycleCountAudit"> | string | null
+    data?: JsonNullableFilter<"CycleCountAudit">
+    createdAt?: DateTimeFilter<"CycleCountAudit"> | Date | string
+    session?: XOR<CycleCountSessionScalarRelationFilter, CycleCountSessionWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CycleCountAuditOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    action?: SortOrder
+    userId?: SortOrder
+    lineId?: SortOrderInput | SortOrder
+    data?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    session?: CycleCountSessionOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CycleCountAuditWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CycleCountAuditWhereInput | CycleCountAuditWhereInput[]
+    OR?: CycleCountAuditWhereInput[]
+    NOT?: CycleCountAuditWhereInput | CycleCountAuditWhereInput[]
+    sessionId?: StringFilter<"CycleCountAudit"> | string
+    action?: StringFilter<"CycleCountAudit"> | string
+    userId?: StringFilter<"CycleCountAudit"> | string
+    lineId?: StringNullableFilter<"CycleCountAudit"> | string | null
+    data?: JsonNullableFilter<"CycleCountAudit">
+    createdAt?: DateTimeFilter<"CycleCountAudit"> | Date | string
+    session?: XOR<CycleCountSessionScalarRelationFilter, CycleCountSessionWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CycleCountAuditOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    action?: SortOrder
+    userId?: SortOrder
+    lineId?: SortOrderInput | SortOrder
+    data?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: CycleCountAuditCountOrderByAggregateInput
+    _max?: CycleCountAuditMaxOrderByAggregateInput
+    _min?: CycleCountAuditMinOrderByAggregateInput
+  }
+
+  export type CycleCountAuditScalarWhereWithAggregatesInput = {
+    AND?: CycleCountAuditScalarWhereWithAggregatesInput | CycleCountAuditScalarWhereWithAggregatesInput[]
+    OR?: CycleCountAuditScalarWhereWithAggregatesInput[]
+    NOT?: CycleCountAuditScalarWhereWithAggregatesInput | CycleCountAuditScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CycleCountAudit"> | string
+    sessionId?: StringWithAggregatesFilter<"CycleCountAudit"> | string
+    action?: StringWithAggregatesFilter<"CycleCountAudit"> | string
+    userId?: StringWithAggregatesFilter<"CycleCountAudit"> | string
+    lineId?: StringNullableWithAggregatesFilter<"CycleCountAudit"> | string | null
+    data?: JsonNullableWithAggregatesFilter<"CycleCountAudit">
+    createdAt?: DateTimeWithAggregatesFilter<"CycleCountAudit"> | Date | string
+  }
+
+  export type InventoryAdjustmentWhereInput = {
+    AND?: InventoryAdjustmentWhereInput | InventoryAdjustmentWhereInput[]
+    OR?: InventoryAdjustmentWhereInput[]
+    NOT?: InventoryAdjustmentWhereInput | InventoryAdjustmentWhereInput[]
+    id?: StringFilter<"InventoryAdjustment"> | string
+    adjustmentNumber?: StringFilter<"InventoryAdjustment"> | string
+    reason?: EnumAdjustmentReasonFilter<"InventoryAdjustment"> | $Enums.AdjustmentReason
+    sourceType?: StringFilter<"InventoryAdjustment"> | string
+    sourceId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    productVariantId?: StringFilter<"InventoryAdjustment"> | string
+    locationId?: StringFilter<"InventoryAdjustment"> | string
+    inventoryUnitId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    previousQty?: IntFilter<"InventoryAdjustment"> | number
+    adjustedQty?: IntFilter<"InventoryAdjustment"> | number
+    changeQty?: IntFilter<"InventoryAdjustment"> | number
+    lotNumber?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    status?: EnumAdjustmentStatusFilter<"InventoryAdjustment"> | $Enums.AdjustmentStatus
+    createdById?: StringFilter<"InventoryAdjustment"> | string
+    approvedById?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"InventoryAdjustment"> | Date | string | null
+    notes?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    createdAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+    cycleCountSession?: XOR<CycleCountSessionNullableScalarRelationFilter, CycleCountSessionWhereInput> | null
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type InventoryAdjustmentOrderByWithRelationInput = {
+    id?: SortOrder
+    adjustmentNumber?: SortOrder
+    reason?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    inventoryUnitId?: SortOrderInput | SortOrder
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    cycleCountSession?: CycleCountSessionOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+    location?: LocationOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    approvedBy?: UserOrderByWithRelationInput
+  }
+
+  export type InventoryAdjustmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    adjustmentNumber?: string
+    AND?: InventoryAdjustmentWhereInput | InventoryAdjustmentWhereInput[]
+    OR?: InventoryAdjustmentWhereInput[]
+    NOT?: InventoryAdjustmentWhereInput | InventoryAdjustmentWhereInput[]
+    reason?: EnumAdjustmentReasonFilter<"InventoryAdjustment"> | $Enums.AdjustmentReason
+    sourceType?: StringFilter<"InventoryAdjustment"> | string
+    sourceId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    productVariantId?: StringFilter<"InventoryAdjustment"> | string
+    locationId?: StringFilter<"InventoryAdjustment"> | string
+    inventoryUnitId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    previousQty?: IntFilter<"InventoryAdjustment"> | number
+    adjustedQty?: IntFilter<"InventoryAdjustment"> | number
+    changeQty?: IntFilter<"InventoryAdjustment"> | number
+    lotNumber?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    status?: EnumAdjustmentStatusFilter<"InventoryAdjustment"> | $Enums.AdjustmentStatus
+    createdById?: StringFilter<"InventoryAdjustment"> | string
+    approvedById?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"InventoryAdjustment"> | Date | string | null
+    notes?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    createdAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+    cycleCountSession?: XOR<CycleCountSessionNullableScalarRelationFilter, CycleCountSessionWhereInput> | null
+    productVariant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
+    location?: XOR<LocationScalarRelationFilter, LocationWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "adjustmentNumber">
+
+  export type InventoryAdjustmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    adjustmentNumber?: SortOrder
+    reason?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    inventoryUnitId?: SortOrderInput | SortOrder
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InventoryAdjustmentCountOrderByAggregateInput
+    _avg?: InventoryAdjustmentAvgOrderByAggregateInput
+    _max?: InventoryAdjustmentMaxOrderByAggregateInput
+    _min?: InventoryAdjustmentMinOrderByAggregateInput
+    _sum?: InventoryAdjustmentSumOrderByAggregateInput
+  }
+
+  export type InventoryAdjustmentScalarWhereWithAggregatesInput = {
+    AND?: InventoryAdjustmentScalarWhereWithAggregatesInput | InventoryAdjustmentScalarWhereWithAggregatesInput[]
+    OR?: InventoryAdjustmentScalarWhereWithAggregatesInput[]
+    NOT?: InventoryAdjustmentScalarWhereWithAggregatesInput | InventoryAdjustmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    adjustmentNumber?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    reason?: EnumAdjustmentReasonWithAggregatesFilter<"InventoryAdjustment"> | $Enums.AdjustmentReason
+    sourceType?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    sourceId?: StringNullableWithAggregatesFilter<"InventoryAdjustment"> | string | null
+    productVariantId?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    locationId?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    inventoryUnitId?: StringNullableWithAggregatesFilter<"InventoryAdjustment"> | string | null
+    previousQty?: IntWithAggregatesFilter<"InventoryAdjustment"> | number
+    adjustedQty?: IntWithAggregatesFilter<"InventoryAdjustment"> | number
+    changeQty?: IntWithAggregatesFilter<"InventoryAdjustment"> | number
+    lotNumber?: StringNullableWithAggregatesFilter<"InventoryAdjustment"> | string | null
+    status?: EnumAdjustmentStatusWithAggregatesFilter<"InventoryAdjustment"> | $Enums.AdjustmentStatus
+    createdById?: StringWithAggregatesFilter<"InventoryAdjustment"> | string
+    approvedById?: StringNullableWithAggregatesFilter<"InventoryAdjustment"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"InventoryAdjustment"> | Date | string | null
+    notes?: StringNullableWithAggregatesFilter<"InventoryAdjustment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InventoryAdjustment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InventoryAdjustment"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -35612,6 +44062,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -35638,6 +44096,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUpdateInput = {
@@ -35664,6 +44130,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -35690,6 +44164,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -35965,6 +44447,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateInput = {
@@ -35989,6 +44473,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUpdateInput = {
@@ -36013,6 +44499,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateInput = {
@@ -36037,6 +44525,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantCreateManyInput = {
@@ -36111,6 +44601,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -36132,6 +44624,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUpdateInput = {
@@ -36153,6 +44647,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -36174,6 +44670,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -36241,6 +44739,7 @@ export namespace Prisma {
     productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
     location: LocationCreateNestedOneWithoutInventoryUnitsInput
     allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitUncheckedCreateInput = {
@@ -36257,6 +44756,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitUpdateInput = {
@@ -36273,6 +44773,7 @@ export namespace Prisma {
     productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
     location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
     allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateInput = {
@@ -36289,6 +44790,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitCreateManyInput = {
@@ -38281,6 +46783,670 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CycleCountTaskCreateInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedTo?: UserCreateNestedOneWithoutCycleCountTasksAssignedInput
+    createdBy: UserCreateNestedOneWithoutCycleCountTasksCreatedInput
+    sessions?: CycleCountSessionCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskUncheckedCreateInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    assignedToId?: string | null
+    createdById: string
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: CycleCountSessionUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedTo?: UserUpdateOneWithoutCycleCountTasksAssignedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCycleCountTasksCreatedNestedInput
+    sessions?: CycleCountSessionUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: CycleCountSessionUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskCreateManyInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    assignedToId?: string | null
+    createdById: string
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionCreateInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionCreateManyInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineCreateInput = {
+    id?: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: CycleCountSessionCreateNestedOneWithoutLineItemsInput
+    productVariant: ProductVariantCreateNestedOneWithoutCycleCountLinesInput
+    inventoryUnit?: InventoryUnitCreateNestedOneWithoutCycleCountLinesInput
+  }
+
+  export type CycleCountLineUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    productVariantId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: CycleCountSessionUpdateOneRequiredWithoutLineItemsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutCycleCountLinesNestedInput
+    inventoryUnit?: InventoryUnitUpdateOneWithoutCycleCountLinesNestedInput
+  }
+
+  export type CycleCountLineUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineCreateManyInput = {
+    id?: string
+    sessionId: string
+    productVariantId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditCreateInput = {
+    id?: string
+    action: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    session: CycleCountSessionCreateNestedOneWithoutAuditLogsInput
+    user: UserCreateNestedOneWithoutCycleCountAuditsInput
+  }
+
+  export type CycleCountAuditUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    action: string
+    userId: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type CycleCountAuditUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: CycleCountSessionUpdateOneRequiredWithoutAuditLogsNestedInput
+    user?: UserUpdateOneRequiredWithoutCycleCountAuditsNestedInput
+  }
+
+  export type CycleCountAuditUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditCreateManyInput = {
+    id?: string
+    sessionId: string
+    action: string
+    userId: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type CycleCountAuditUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentCreateInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cycleCountSession?: CycleCountSessionCreateNestedOneWithoutAdjustmentsInput
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput
+    location: LocationCreateNestedOneWithoutInventoryAdjustmentsInput
+    createdBy: UserCreateNestedOneWithoutAdjustmentsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutAdjustmentsApprovedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountSession?: CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutAdjustmentsApprovedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -38399,6 +47565,30 @@ export namespace Prisma {
     none?: ReceivingExceptionWhereInput
   }
 
+  export type CycleCountTaskListRelationFilter = {
+    every?: CycleCountTaskWhereInput
+    some?: CycleCountTaskWhereInput
+    none?: CycleCountTaskWhereInput
+  }
+
+  export type CycleCountSessionListRelationFilter = {
+    every?: CycleCountSessionWhereInput
+    some?: CycleCountSessionWhereInput
+    none?: CycleCountSessionWhereInput
+  }
+
+  export type CycleCountAuditListRelationFilter = {
+    every?: CycleCountAuditWhereInput
+    some?: CycleCountAuditWhereInput
+    none?: CycleCountAuditWhereInput
+  }
+
+  export type InventoryAdjustmentListRelationFilter = {
+    every?: InventoryAdjustmentWhereInput
+    some?: InventoryAdjustmentWhereInput
+    none?: InventoryAdjustmentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -38437,6 +47627,22 @@ export namespace Prisma {
   }
 
   export type ReceivingExceptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CycleCountTaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CycleCountSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CycleCountAuditOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InventoryAdjustmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -38712,6 +47918,12 @@ export namespace Prisma {
     none?: ReceivingLineWhereInput
   }
 
+  export type CycleCountLineListRelationFilter = {
+    every?: CycleCountLineWhereInput
+    some?: CycleCountLineWhereInput
+    none?: CycleCountLineWhereInput
+  }
+
   export type ShippingPackageItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -38729,6 +47941,10 @@ export namespace Prisma {
   }
 
   export type ReceivingLineOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CycleCountLineOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -40397,6 +49613,461 @@ export namespace Prisma {
     _max?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
   }
 
+  export type EnumCycleCountTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountType | EnumCycleCountTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTypeFilter<$PrismaModel> | $Enums.CycleCountType
+  }
+
+  export type EnumCycleCountTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountTaskStatus | EnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel> | $Enums.CycleCountTaskStatus
+  }
+
+  export type CycleCountTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    taskNumber?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    locationIds?: SortOrder
+    zoneId?: SortOrder
+    skuFilter?: SortOrder
+    abcClass?: SortOrder
+    blindCount?: SortOrder
+    includeZeroQty?: SortOrder
+    priority?: SortOrder
+    scheduledDate?: SortOrder
+    dueDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountTaskAvgOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type CycleCountTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    taskNumber?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    zoneId?: SortOrder
+    skuFilter?: SortOrder
+    abcClass?: SortOrder
+    blindCount?: SortOrder
+    includeZeroQty?: SortOrder
+    priority?: SortOrder
+    scheduledDate?: SortOrder
+    dueDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    taskNumber?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    zoneId?: SortOrder
+    skuFilter?: SortOrder
+    abcClass?: SortOrder
+    blindCount?: SortOrder
+    includeZeroQty?: SortOrder
+    priority?: SortOrder
+    scheduledDate?: SortOrder
+    dueDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountTaskSumOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type EnumCycleCountTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountType | EnumCycleCountTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTypeWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountTypeFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountTypeFilter<$PrismaModel>
+  }
+
+  export type EnumCycleCountTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountTaskStatus | EnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel>
+  }
+
+  export type EnumCycleCountSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountSessionStatus | EnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel> | $Enums.CycleCountSessionStatus
+  }
+
+  export type CycleCountTaskNullableScalarRelationFilter = {
+    is?: CycleCountTaskWhereInput | null
+    isNot?: CycleCountTaskWhereInput | null
+  }
+
+  export type CycleCountSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    taskId?: SortOrder
+    locationId?: SortOrder
+    blindCount?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    status?: SortOrder
+    countedById?: SortOrder
+    startedAt?: SortOrder
+    submittedAt?: SortOrder
+    reviewedById?: SortOrder
+    reviewedAt?: SortOrder
+    reviewNotes?: SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountSessionAvgOrderByAggregateInput = {
+    version?: SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+  }
+
+  export type CycleCountSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    taskId?: SortOrder
+    locationId?: SortOrder
+    blindCount?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    status?: SortOrder
+    countedById?: SortOrder
+    startedAt?: SortOrder
+    submittedAt?: SortOrder
+    reviewedById?: SortOrder
+    reviewedAt?: SortOrder
+    reviewNotes?: SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    taskId?: SortOrder
+    locationId?: SortOrder
+    blindCount?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    status?: SortOrder
+    countedById?: SortOrder
+    startedAt?: SortOrder
+    submittedAt?: SortOrder
+    reviewedById?: SortOrder
+    reviewedAt?: SortOrder
+    reviewNotes?: SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountSessionSumOrderByAggregateInput = {
+    version?: SortOrder
+    totalExpected?: SortOrder
+    totalCounted?: SortOrder
+    varianceCount?: SortOrder
+  }
+
+  export type EnumCycleCountSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountSessionStatus | EnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel>
+  }
+
+  export type EnumCycleCountLineStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountLineStatus | EnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountLineStatusFilter<$PrismaModel> | $Enums.CycleCountLineStatus
+  }
+
+  export type CycleCountSessionScalarRelationFilter = {
+    is?: CycleCountSessionWhereInput
+    isNot?: CycleCountSessionWhereInput
+  }
+
+  export type InventoryUnitNullableScalarRelationFilter = {
+    is?: InventoryUnitWhereInput | null
+    isNot?: InventoryUnitWhereInput | null
+  }
+
+  export type CycleCountLineSessionIdProductVariantIdLotNumberCompoundUniqueInput = {
+    sessionId: string
+    productVariantId: string
+    lotNumber: string
+  }
+
+  export type CycleCountLineCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    productVariantId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    inventoryUnitId?: SortOrder
+    systemQty?: SortOrder
+    countedQty?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    status?: SortOrder
+    isUnexpected?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountLineAvgOrderByAggregateInput = {
+    systemQty?: SortOrder
+    countedQty?: SortOrder
+    variance?: SortOrder
+  }
+
+  export type CycleCountLineMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    productVariantId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    inventoryUnitId?: SortOrder
+    systemQty?: SortOrder
+    countedQty?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    status?: SortOrder
+    isUnexpected?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountLineMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    productVariantId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    inventoryUnitId?: SortOrder
+    systemQty?: SortOrder
+    countedQty?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    status?: SortOrder
+    isUnexpected?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CycleCountLineSumOrderByAggregateInput = {
+    systemQty?: SortOrder
+    countedQty?: SortOrder
+    variance?: SortOrder
+  }
+
+  export type EnumCycleCountLineStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountLineStatus | EnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountLineStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountLineStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountLineStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountLineStatusFilter<$PrismaModel>
+  }
+
+  export type CycleCountAuditCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    action?: SortOrder
+    userId?: SortOrder
+    lineId?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CycleCountAuditMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    action?: SortOrder
+    userId?: SortOrder
+    lineId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CycleCountAuditMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    action?: SortOrder
+    userId?: SortOrder
+    lineId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumAdjustmentReasonFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentReason | EnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentReasonFilter<$PrismaModel> | $Enums.AdjustmentReason
+  }
+
+  export type EnumAdjustmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentStatus | EnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentStatusFilter<$PrismaModel> | $Enums.AdjustmentStatus
+  }
+
+  export type CycleCountSessionNullableScalarRelationFilter = {
+    is?: CycleCountSessionWhereInput | null
+    isNot?: CycleCountSessionWhereInput | null
+  }
+
+  export type InventoryAdjustmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    adjustmentNumber?: SortOrder
+    reason?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    inventoryUnitId?: SortOrder
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InventoryAdjustmentAvgOrderByAggregateInput = {
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+  }
+
+  export type InventoryAdjustmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    adjustmentNumber?: SortOrder
+    reason?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    inventoryUnitId?: SortOrder
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InventoryAdjustmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    adjustmentNumber?: SortOrder
+    reason?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    productVariantId?: SortOrder
+    locationId?: SortOrder
+    inventoryUnitId?: SortOrder
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+    lotNumber?: SortOrder
+    status?: SortOrder
+    createdById?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InventoryAdjustmentSumOrderByAggregateInput = {
+    previousQty?: SortOrder
+    adjustedQty?: SortOrder
+    changeQty?: SortOrder
+  }
+
+  export type EnumAdjustmentReasonWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentReason | EnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentReasonWithAggregatesFilter<$PrismaModel> | $Enums.AdjustmentReason
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAdjustmentReasonFilter<$PrismaModel>
+    _max?: NestedEnumAdjustmentReasonFilter<$PrismaModel>
+  }
+
+  export type EnumAdjustmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentStatus | EnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AdjustmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAdjustmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumAdjustmentStatusFilter<$PrismaModel>
+  }
+
   export type RefreshTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -40488,6 +50159,62 @@ export namespace Prisma {
     connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
   }
 
+  export type CycleCountTaskCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput> | CycleCountTaskCreateWithoutAssignedToInput[] | CycleCountTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutAssignedToInput | CycleCountTaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: CycleCountTaskCreateManyAssignedToInputEnvelope
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+  }
+
+  export type CycleCountTaskCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput> | CycleCountTaskCreateWithoutCreatedByInput[] | CycleCountTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutCreatedByInput | CycleCountTaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CycleCountTaskCreateManyCreatedByInputEnvelope
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionCreateNestedManyWithoutLockedByUserInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput> | CycleCountSessionCreateWithoutLockedByUserInput[] | CycleCountSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLockedByUserInput | CycleCountSessionCreateOrConnectWithoutLockedByUserInput[]
+    createMany?: CycleCountSessionCreateManyLockedByUserInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionCreateNestedManyWithoutCountedByInput = {
+    create?: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput> | CycleCountSessionCreateWithoutCountedByInput[] | CycleCountSessionUncheckedCreateWithoutCountedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutCountedByInput | CycleCountSessionCreateOrConnectWithoutCountedByInput[]
+    createMany?: CycleCountSessionCreateManyCountedByInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionCreateNestedManyWithoutReviewedByInput = {
+    create?: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput> | CycleCountSessionCreateWithoutReviewedByInput[] | CycleCountSessionUncheckedCreateWithoutReviewedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutReviewedByInput | CycleCountSessionCreateOrConnectWithoutReviewedByInput[]
+    createMany?: CycleCountSessionCreateManyReviewedByInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountAuditCreateNestedManyWithoutUserInput = {
+    create?: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput> | CycleCountAuditCreateWithoutUserInput[] | CycleCountAuditUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutUserInput | CycleCountAuditCreateOrConnectWithoutUserInput[]
+    createMany?: CycleCountAuditCreateManyUserInputEnvelope
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput> | InventoryAdjustmentCreateWithoutCreatedByInput[] | InventoryAdjustmentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCreatedByInput | InventoryAdjustmentCreateOrConnectWithoutCreatedByInput[]
+    createMany?: InventoryAdjustmentCreateManyCreatedByInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput> | InventoryAdjustmentCreateWithoutApprovedByInput[] | InventoryAdjustmentUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutApprovedByInput | InventoryAdjustmentCreateOrConnectWithoutApprovedByInput[]
+    createMany?: InventoryAdjustmentCreateManyApprovedByInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
   export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -40577,6 +50304,62 @@ export namespace Prisma {
     connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutResolverInput | ReceivingExceptionCreateOrConnectWithoutResolverInput[]
     createMany?: ReceivingExceptionCreateManyResolverInputEnvelope
     connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
+  export type CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput> | CycleCountTaskCreateWithoutAssignedToInput[] | CycleCountTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutAssignedToInput | CycleCountTaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: CycleCountTaskCreateManyAssignedToInputEnvelope
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+  }
+
+  export type CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput> | CycleCountTaskCreateWithoutCreatedByInput[] | CycleCountTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutCreatedByInput | CycleCountTaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CycleCountTaskCreateManyCreatedByInputEnvelope
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput> | CycleCountSessionCreateWithoutLockedByUserInput[] | CycleCountSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLockedByUserInput | CycleCountSessionCreateOrConnectWithoutLockedByUserInput[]
+    createMany?: CycleCountSessionCreateManyLockedByUserInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput = {
+    create?: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput> | CycleCountSessionCreateWithoutCountedByInput[] | CycleCountSessionUncheckedCreateWithoutCountedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutCountedByInput | CycleCountSessionCreateOrConnectWithoutCountedByInput[]
+    createMany?: CycleCountSessionCreateManyCountedByInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput = {
+    create?: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput> | CycleCountSessionCreateWithoutReviewedByInput[] | CycleCountSessionUncheckedCreateWithoutReviewedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutReviewedByInput | CycleCountSessionCreateOrConnectWithoutReviewedByInput[]
+    createMany?: CycleCountSessionCreateManyReviewedByInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountAuditUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput> | CycleCountAuditCreateWithoutUserInput[] | CycleCountAuditUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutUserInput | CycleCountAuditCreateOrConnectWithoutUserInput[]
+    createMany?: CycleCountAuditCreateManyUserInputEnvelope
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput> | InventoryAdjustmentCreateWithoutCreatedByInput[] | InventoryAdjustmentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCreatedByInput | InventoryAdjustmentCreateOrConnectWithoutCreatedByInput[]
+    createMany?: InventoryAdjustmentCreateManyCreatedByInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput> | InventoryAdjustmentCreateWithoutApprovedByInput[] | InventoryAdjustmentUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutApprovedByInput | InventoryAdjustmentCreateOrConnectWithoutApprovedByInput[]
+    createMany?: InventoryAdjustmentCreateManyApprovedByInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -40785,6 +50568,118 @@ export namespace Prisma {
     deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
   }
 
+  export type CycleCountTaskUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput> | CycleCountTaskCreateWithoutAssignedToInput[] | CycleCountTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutAssignedToInput | CycleCountTaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: CycleCountTaskUpsertWithWhereUniqueWithoutAssignedToInput | CycleCountTaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: CycleCountTaskCreateManyAssignedToInputEnvelope
+    set?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    disconnect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    delete?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    update?: CycleCountTaskUpdateWithWhereUniqueWithoutAssignedToInput | CycleCountTaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: CycleCountTaskUpdateManyWithWhereWithoutAssignedToInput | CycleCountTaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+  }
+
+  export type CycleCountTaskUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput> | CycleCountTaskCreateWithoutCreatedByInput[] | CycleCountTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutCreatedByInput | CycleCountTaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CycleCountTaskUpsertWithWhereUniqueWithoutCreatedByInput | CycleCountTaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CycleCountTaskCreateManyCreatedByInputEnvelope
+    set?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    disconnect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    delete?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    update?: CycleCountTaskUpdateWithWhereUniqueWithoutCreatedByInput | CycleCountTaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CycleCountTaskUpdateManyWithWhereWithoutCreatedByInput | CycleCountTaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUpdateManyWithoutLockedByUserNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput> | CycleCountSessionCreateWithoutLockedByUserInput[] | CycleCountSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLockedByUserInput | CycleCountSessionCreateOrConnectWithoutLockedByUserInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutLockedByUserInput | CycleCountSessionUpsertWithWhereUniqueWithoutLockedByUserInput[]
+    createMany?: CycleCountSessionCreateManyLockedByUserInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutLockedByUserInput | CycleCountSessionUpdateWithWhereUniqueWithoutLockedByUserInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutLockedByUserInput | CycleCountSessionUpdateManyWithWhereWithoutLockedByUserInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUpdateManyWithoutCountedByNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput> | CycleCountSessionCreateWithoutCountedByInput[] | CycleCountSessionUncheckedCreateWithoutCountedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutCountedByInput | CycleCountSessionCreateOrConnectWithoutCountedByInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutCountedByInput | CycleCountSessionUpsertWithWhereUniqueWithoutCountedByInput[]
+    createMany?: CycleCountSessionCreateManyCountedByInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutCountedByInput | CycleCountSessionUpdateWithWhereUniqueWithoutCountedByInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutCountedByInput | CycleCountSessionUpdateManyWithWhereWithoutCountedByInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUpdateManyWithoutReviewedByNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput> | CycleCountSessionCreateWithoutReviewedByInput[] | CycleCountSessionUncheckedCreateWithoutReviewedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutReviewedByInput | CycleCountSessionCreateOrConnectWithoutReviewedByInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutReviewedByInput | CycleCountSessionUpsertWithWhereUniqueWithoutReviewedByInput[]
+    createMany?: CycleCountSessionCreateManyReviewedByInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutReviewedByInput | CycleCountSessionUpdateWithWhereUniqueWithoutReviewedByInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutReviewedByInput | CycleCountSessionUpdateManyWithWhereWithoutReviewedByInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountAuditUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput> | CycleCountAuditCreateWithoutUserInput[] | CycleCountAuditUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutUserInput | CycleCountAuditCreateOrConnectWithoutUserInput[]
+    upsert?: CycleCountAuditUpsertWithWhereUniqueWithoutUserInput | CycleCountAuditUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CycleCountAuditCreateManyUserInputEnvelope
+    set?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    disconnect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    delete?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    update?: CycleCountAuditUpdateWithWhereUniqueWithoutUserInput | CycleCountAuditUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CycleCountAuditUpdateManyWithWhereWithoutUserInput | CycleCountAuditUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput> | InventoryAdjustmentCreateWithoutCreatedByInput[] | InventoryAdjustmentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCreatedByInput | InventoryAdjustmentCreateOrConnectWithoutCreatedByInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutCreatedByInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: InventoryAdjustmentCreateManyCreatedByInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutCreatedByInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutCreatedByInput | InventoryAdjustmentUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput> | InventoryAdjustmentCreateWithoutApprovedByInput[] | InventoryAdjustmentUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutApprovedByInput | InventoryAdjustmentCreateOrConnectWithoutApprovedByInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutApprovedByInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: InventoryAdjustmentCreateManyApprovedByInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutApprovedByInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutApprovedByInput | InventoryAdjustmentUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -40967,6 +50862,118 @@ export namespace Prisma {
     deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
   }
 
+  export type CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput> | CycleCountTaskCreateWithoutAssignedToInput[] | CycleCountTaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutAssignedToInput | CycleCountTaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: CycleCountTaskUpsertWithWhereUniqueWithoutAssignedToInput | CycleCountTaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: CycleCountTaskCreateManyAssignedToInputEnvelope
+    set?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    disconnect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    delete?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    update?: CycleCountTaskUpdateWithWhereUniqueWithoutAssignedToInput | CycleCountTaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: CycleCountTaskUpdateManyWithWhereWithoutAssignedToInput | CycleCountTaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+  }
+
+  export type CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput> | CycleCountTaskCreateWithoutCreatedByInput[] | CycleCountTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutCreatedByInput | CycleCountTaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CycleCountTaskUpsertWithWhereUniqueWithoutCreatedByInput | CycleCountTaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CycleCountTaskCreateManyCreatedByInputEnvelope
+    set?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    disconnect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    delete?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    connect?: CycleCountTaskWhereUniqueInput | CycleCountTaskWhereUniqueInput[]
+    update?: CycleCountTaskUpdateWithWhereUniqueWithoutCreatedByInput | CycleCountTaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CycleCountTaskUpdateManyWithWhereWithoutCreatedByInput | CycleCountTaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput> | CycleCountSessionCreateWithoutLockedByUserInput[] | CycleCountSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLockedByUserInput | CycleCountSessionCreateOrConnectWithoutLockedByUserInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutLockedByUserInput | CycleCountSessionUpsertWithWhereUniqueWithoutLockedByUserInput[]
+    createMany?: CycleCountSessionCreateManyLockedByUserInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutLockedByUserInput | CycleCountSessionUpdateWithWhereUniqueWithoutLockedByUserInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutLockedByUserInput | CycleCountSessionUpdateManyWithWhereWithoutLockedByUserInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput> | CycleCountSessionCreateWithoutCountedByInput[] | CycleCountSessionUncheckedCreateWithoutCountedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutCountedByInput | CycleCountSessionCreateOrConnectWithoutCountedByInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutCountedByInput | CycleCountSessionUpsertWithWhereUniqueWithoutCountedByInput[]
+    createMany?: CycleCountSessionCreateManyCountedByInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutCountedByInput | CycleCountSessionUpdateWithWhereUniqueWithoutCountedByInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutCountedByInput | CycleCountSessionUpdateManyWithWhereWithoutCountedByInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput> | CycleCountSessionCreateWithoutReviewedByInput[] | CycleCountSessionUncheckedCreateWithoutReviewedByInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutReviewedByInput | CycleCountSessionCreateOrConnectWithoutReviewedByInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutReviewedByInput | CycleCountSessionUpsertWithWhereUniqueWithoutReviewedByInput[]
+    createMany?: CycleCountSessionCreateManyReviewedByInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutReviewedByInput | CycleCountSessionUpdateWithWhereUniqueWithoutReviewedByInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutReviewedByInput | CycleCountSessionUpdateManyWithWhereWithoutReviewedByInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput> | CycleCountAuditCreateWithoutUserInput[] | CycleCountAuditUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutUserInput | CycleCountAuditCreateOrConnectWithoutUserInput[]
+    upsert?: CycleCountAuditUpsertWithWhereUniqueWithoutUserInput | CycleCountAuditUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CycleCountAuditCreateManyUserInputEnvelope
+    set?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    disconnect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    delete?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    update?: CycleCountAuditUpdateWithWhereUniqueWithoutUserInput | CycleCountAuditUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CycleCountAuditUpdateManyWithWhereWithoutUserInput | CycleCountAuditUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput> | InventoryAdjustmentCreateWithoutCreatedByInput[] | InventoryAdjustmentUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCreatedByInput | InventoryAdjustmentCreateOrConnectWithoutCreatedByInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutCreatedByInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: InventoryAdjustmentCreateManyCreatedByInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutCreatedByInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutCreatedByInput | InventoryAdjustmentUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput> | InventoryAdjustmentCreateWithoutApprovedByInput[] | InventoryAdjustmentUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutApprovedByInput | InventoryAdjustmentCreateOrConnectWithoutApprovedByInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutApprovedByInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: InventoryAdjustmentCreateManyApprovedByInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutApprovedByInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutApprovedByInput | InventoryAdjustmentUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
     create?: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutRefreshTokensInput
@@ -41085,6 +51092,20 @@ export namespace Prisma {
     connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
   }
 
+  export type CycleCountLineCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput> | CycleCountLineCreateWithoutProductVariantInput[] | CycleCountLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutProductVariantInput | CycleCountLineCreateOrConnectWithoutProductVariantInput[]
+    createMany?: CycleCountLineCreateManyProductVariantInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput> | InventoryAdjustmentCreateWithoutProductVariantInput[] | InventoryAdjustmentUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutProductVariantInput | InventoryAdjustmentCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InventoryAdjustmentCreateManyProductVariantInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
   export type ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -41125,6 +51146,20 @@ export namespace Prisma {
     connectOrCreate?: ReceivingLineCreateOrConnectWithoutProductVariantInput | ReceivingLineCreateOrConnectWithoutProductVariantInput[]
     createMany?: ReceivingLineCreateManyProductVariantInputEnvelope
     connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+  }
+
+  export type CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput> | CycleCountLineCreateWithoutProductVariantInput[] | CycleCountLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutProductVariantInput | CycleCountLineCreateOrConnectWithoutProductVariantInput[]
+    createMany?: CycleCountLineCreateManyProductVariantInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput> | InventoryAdjustmentCreateWithoutProductVariantInput[] | InventoryAdjustmentUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutProductVariantInput | InventoryAdjustmentCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InventoryAdjustmentCreateManyProductVariantInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -41227,6 +51262,34 @@ export namespace Prisma {
     deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
   }
 
+  export type CycleCountLineUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput> | CycleCountLineCreateWithoutProductVariantInput[] | CycleCountLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutProductVariantInput | CycleCountLineCreateOrConnectWithoutProductVariantInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutProductVariantInput | CycleCountLineUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: CycleCountLineCreateManyProductVariantInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutProductVariantInput | CycleCountLineUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutProductVariantInput | CycleCountLineUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput> | InventoryAdjustmentCreateWithoutProductVariantInput[] | InventoryAdjustmentUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutProductVariantInput | InventoryAdjustmentCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutProductVariantInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InventoryAdjustmentCreateManyProductVariantInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutProductVariantInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutProductVariantInput | InventoryAdjustmentUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -41311,6 +51374,34 @@ export namespace Prisma {
     deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
   }
 
+  export type CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput> | CycleCountLineCreateWithoutProductVariantInput[] | CycleCountLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutProductVariantInput | CycleCountLineCreateOrConnectWithoutProductVariantInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutProductVariantInput | CycleCountLineUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: CycleCountLineCreateManyProductVariantInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutProductVariantInput | CycleCountLineUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutProductVariantInput | CycleCountLineUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput> | InventoryAdjustmentCreateWithoutProductVariantInput[] | InventoryAdjustmentUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutProductVariantInput | InventoryAdjustmentCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutProductVariantInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InventoryAdjustmentCreateManyProductVariantInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutProductVariantInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutProductVariantInput | InventoryAdjustmentUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type InventoryUnitCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -41339,6 +51430,20 @@ export namespace Prisma {
     connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
   }
 
+  export type CycleCountSessionCreateNestedManyWithoutLocationInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput> | CycleCountSessionCreateWithoutLocationInput[] | CycleCountSessionUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLocationInput | CycleCountSessionCreateOrConnectWithoutLocationInput[]
+    createMany?: CycleCountSessionCreateManyLocationInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput> | InventoryAdjustmentCreateWithoutLocationInput[] | InventoryAdjustmentUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutLocationInput | InventoryAdjustmentCreateOrConnectWithoutLocationInput[]
+    createMany?: InventoryAdjustmentCreateManyLocationInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
   export type InventoryUnitUncheckedCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -41365,6 +51470,20 @@ export namespace Prisma {
     connectOrCreate?: ReceivingSessionCreateOrConnectWithoutReceivingLocationInput | ReceivingSessionCreateOrConnectWithoutReceivingLocationInput[]
     createMany?: ReceivingSessionCreateManyReceivingLocationInputEnvelope
     connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput> | CycleCountSessionCreateWithoutLocationInput[] | CycleCountSessionUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLocationInput | CycleCountSessionCreateOrConnectWithoutLocationInput[]
+    createMany?: CycleCountSessionCreateManyLocationInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput> | InventoryAdjustmentCreateWithoutLocationInput[] | InventoryAdjustmentUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutLocationInput | InventoryAdjustmentCreateOrConnectWithoutLocationInput[]
+    createMany?: InventoryAdjustmentCreateManyLocationInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
   }
 
   export type EnumLocationTypeFieldUpdateOperationsInput = {
@@ -41435,6 +51554,34 @@ export namespace Prisma {
     deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
   }
 
+  export type CycleCountSessionUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput> | CycleCountSessionCreateWithoutLocationInput[] | CycleCountSessionUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLocationInput | CycleCountSessionCreateOrConnectWithoutLocationInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutLocationInput | CycleCountSessionUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: CycleCountSessionCreateManyLocationInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutLocationInput | CycleCountSessionUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutLocationInput | CycleCountSessionUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput> | InventoryAdjustmentCreateWithoutLocationInput[] | InventoryAdjustmentUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutLocationInput | InventoryAdjustmentCreateOrConnectWithoutLocationInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutLocationInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InventoryAdjustmentCreateManyLocationInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutLocationInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutLocationInput | InventoryAdjustmentUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -41491,6 +51638,34 @@ export namespace Prisma {
     deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
   }
 
+  export type CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput> | CycleCountSessionCreateWithoutLocationInput[] | CycleCountSessionUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLocationInput | CycleCountSessionCreateOrConnectWithoutLocationInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutLocationInput | CycleCountSessionUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: CycleCountSessionCreateManyLocationInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutLocationInput | CycleCountSessionUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutLocationInput | CycleCountSessionUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput> | InventoryAdjustmentCreateWithoutLocationInput[] | InventoryAdjustmentUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutLocationInput | InventoryAdjustmentCreateOrConnectWithoutLocationInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutLocationInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InventoryAdjustmentCreateManyLocationInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutLocationInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutLocationInput | InventoryAdjustmentUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
   export type ProductVariantCreateNestedOneWithoutInventoryUnitsInput = {
     create?: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
     connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryUnitsInput
@@ -41510,11 +51685,25 @@ export namespace Prisma {
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
+  export type CycleCountLineCreateNestedManyWithoutInventoryUnitInput = {
+    create?: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput> | CycleCountLineCreateWithoutInventoryUnitInput[] | CycleCountLineUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutInventoryUnitInput | CycleCountLineCreateOrConnectWithoutInventoryUnitInput[]
+    createMany?: CycleCountLineCreateManyInventoryUnitInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+  }
+
   export type AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput = {
     create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
     connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
     createMany?: AllocationCreateManyInventoryUnitInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type CycleCountLineUncheckedCreateNestedManyWithoutInventoryUnitInput = {
+    create?: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput> | CycleCountLineCreateWithoutInventoryUnitInput[] | CycleCountLineUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutInventoryUnitInput | CycleCountLineCreateOrConnectWithoutInventoryUnitInput[]
+    createMany?: CycleCountLineCreateManyInventoryUnitInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -41559,6 +51748,20 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type CycleCountLineUpdateManyWithoutInventoryUnitNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput> | CycleCountLineCreateWithoutInventoryUnitInput[] | CycleCountLineUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutInventoryUnitInput | CycleCountLineCreateOrConnectWithoutInventoryUnitInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutInventoryUnitInput | CycleCountLineUpsertWithWhereUniqueWithoutInventoryUnitInput[]
+    createMany?: CycleCountLineCreateManyInventoryUnitInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutInventoryUnitInput | CycleCountLineUpdateWithWhereUniqueWithoutInventoryUnitInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutInventoryUnitInput | CycleCountLineUpdateManyWithWhereWithoutInventoryUnitInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+  }
+
   export type AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput = {
     create?: XOR<AllocationCreateWithoutInventoryUnitInput, AllocationUncheckedCreateWithoutInventoryUnitInput> | AllocationCreateWithoutInventoryUnitInput[] | AllocationUncheckedCreateWithoutInventoryUnitInput[]
     connectOrCreate?: AllocationCreateOrConnectWithoutInventoryUnitInput | AllocationCreateOrConnectWithoutInventoryUnitInput[]
@@ -41571,6 +51774,20 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput | AllocationUpdateWithWhereUniqueWithoutInventoryUnitInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutInventoryUnitInput | AllocationUpdateManyWithWhereWithoutInventoryUnitInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type CycleCountLineUncheckedUpdateManyWithoutInventoryUnitNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput> | CycleCountLineCreateWithoutInventoryUnitInput[] | CycleCountLineUncheckedCreateWithoutInventoryUnitInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutInventoryUnitInput | CycleCountLineCreateOrConnectWithoutInventoryUnitInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutInventoryUnitInput | CycleCountLineUpsertWithWhereUniqueWithoutInventoryUnitInput[]
+    createMany?: CycleCountLineCreateManyInventoryUnitInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutInventoryUnitInput | CycleCountLineUpdateWithWhereUniqueWithoutInventoryUnitInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutInventoryUnitInput | CycleCountLineUpdateManyWithWhereWithoutInventoryUnitInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
   }
 
   export type InventoryUnitCreateNestedOneWithoutAllocationsInput = {
@@ -42720,6 +52937,459 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExceptionsResolvedInput, UserUpdateWithoutExceptionsResolvedInput>, UserUncheckedUpdateWithoutExceptionsResolvedInput>
   }
 
+  export type CycleCountTaskCreatelocationIdsInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountTasksAssignedInput = {
+    create?: XOR<UserCreateWithoutCycleCountTasksAssignedInput, UserUncheckedCreateWithoutCycleCountTasksAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountTasksAssignedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountTasksCreatedInput = {
+    create?: XOR<UserCreateWithoutCycleCountTasksCreatedInput, UserUncheckedCreateWithoutCycleCountTasksCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountTasksCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CycleCountSessionCreateNestedManyWithoutTaskInput = {
+    create?: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput> | CycleCountSessionCreateWithoutTaskInput[] | CycleCountSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutTaskInput | CycleCountSessionCreateOrConnectWithoutTaskInput[]
+    createMany?: CycleCountSessionCreateManyTaskInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type CycleCountSessionUncheckedCreateNestedManyWithoutTaskInput = {
+    create?: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput> | CycleCountSessionCreateWithoutTaskInput[] | CycleCountSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutTaskInput | CycleCountSessionCreateOrConnectWithoutTaskInput[]
+    createMany?: CycleCountSessionCreateManyTaskInputEnvelope
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+  }
+
+  export type EnumCycleCountTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CycleCountType
+  }
+
+  export type CycleCountTaskUpdatelocationIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EnumCycleCountTaskStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CycleCountTaskStatus
+  }
+
+  export type UserUpdateOneWithoutCycleCountTasksAssignedNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountTasksAssignedInput, UserUncheckedCreateWithoutCycleCountTasksAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountTasksAssignedInput
+    upsert?: UserUpsertWithoutCycleCountTasksAssignedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountTasksAssignedInput, UserUpdateWithoutCycleCountTasksAssignedInput>, UserUncheckedUpdateWithoutCycleCountTasksAssignedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCycleCountTasksCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountTasksCreatedInput, UserUncheckedCreateWithoutCycleCountTasksCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountTasksCreatedInput
+    upsert?: UserUpsertWithoutCycleCountTasksCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountTasksCreatedInput, UserUpdateWithoutCycleCountTasksCreatedInput>, UserUncheckedUpdateWithoutCycleCountTasksCreatedInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithoutTaskNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput> | CycleCountSessionCreateWithoutTaskInput[] | CycleCountSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutTaskInput | CycleCountSessionCreateOrConnectWithoutTaskInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput | CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput[]
+    createMany?: CycleCountSessionCreateManyTaskInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutTaskInput | CycleCountSessionUpdateWithWhereUniqueWithoutTaskInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutTaskInput | CycleCountSessionUpdateManyWithWhereWithoutTaskInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutTaskNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput> | CycleCountSessionCreateWithoutTaskInput[] | CycleCountSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutTaskInput | CycleCountSessionCreateOrConnectWithoutTaskInput[]
+    upsert?: CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput | CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput[]
+    createMany?: CycleCountSessionCreateManyTaskInputEnvelope
+    set?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    disconnect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    delete?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    connect?: CycleCountSessionWhereUniqueInput | CycleCountSessionWhereUniqueInput[]
+    update?: CycleCountSessionUpdateWithWhereUniqueWithoutTaskInput | CycleCountSessionUpdateWithWhereUniqueWithoutTaskInput[]
+    updateMany?: CycleCountSessionUpdateManyWithWhereWithoutTaskInput | CycleCountSessionUpdateManyWithWhereWithoutTaskInput[]
+    deleteMany?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+  }
+
+  export type CycleCountTaskCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<CycleCountTaskCreateWithoutSessionsInput, CycleCountTaskUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutSessionsInput
+    connect?: CycleCountTaskWhereUniqueInput
+  }
+
+  export type LocationCreateNestedOneWithoutCycleCountSessionsInput = {
+    create?: XOR<LocationCreateWithoutCycleCountSessionsInput, LocationUncheckedCreateWithoutCycleCountSessionsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutCycleCountSessionsInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountSessionsLockedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsLockedInput, UserUncheckedCreateWithoutCycleCountSessionsLockedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsLockedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountSessionsCountedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsCountedInput, UserUncheckedCreateWithoutCycleCountSessionsCountedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsCountedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountSessionsReviewedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsReviewedInput, UserUncheckedCreateWithoutCycleCountSessionsReviewedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsReviewedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CycleCountLineCreateNestedManyWithoutSessionInput = {
+    create?: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput> | CycleCountLineCreateWithoutSessionInput[] | CycleCountLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutSessionInput | CycleCountLineCreateOrConnectWithoutSessionInput[]
+    createMany?: CycleCountLineCreateManySessionInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+  }
+
+  export type CycleCountAuditCreateNestedManyWithoutSessionInput = {
+    create?: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput> | CycleCountAuditCreateWithoutSessionInput[] | CycleCountAuditUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutSessionInput | CycleCountAuditCreateOrConnectWithoutSessionInput[]
+    createMany?: CycleCountAuditCreateManySessionInputEnvelope
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput> | InventoryAdjustmentCreateWithoutCycleCountSessionInput[] | InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput | InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput[]
+    createMany?: InventoryAdjustmentCreateManyCycleCountSessionInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
+  export type CycleCountLineUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput> | CycleCountLineCreateWithoutSessionInput[] | CycleCountLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutSessionInput | CycleCountLineCreateOrConnectWithoutSessionInput[]
+    createMany?: CycleCountLineCreateManySessionInputEnvelope
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+  }
+
+  export type CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput> | CycleCountAuditCreateWithoutSessionInput[] | CycleCountAuditUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutSessionInput | CycleCountAuditCreateOrConnectWithoutSessionInput[]
+    createMany?: CycleCountAuditCreateManySessionInputEnvelope
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput> | InventoryAdjustmentCreateWithoutCycleCountSessionInput[] | InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput | InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput[]
+    createMany?: InventoryAdjustmentCreateManyCycleCountSessionInputEnvelope
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
+  export type EnumCycleCountSessionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CycleCountSessionStatus
+  }
+
+  export type CycleCountTaskUpdateOneWithoutSessionsNestedInput = {
+    create?: XOR<CycleCountTaskCreateWithoutSessionsInput, CycleCountTaskUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: CycleCountTaskCreateOrConnectWithoutSessionsInput
+    upsert?: CycleCountTaskUpsertWithoutSessionsInput
+    disconnect?: CycleCountTaskWhereInput | boolean
+    delete?: CycleCountTaskWhereInput | boolean
+    connect?: CycleCountTaskWhereUniqueInput
+    update?: XOR<XOR<CycleCountTaskUpdateToOneWithWhereWithoutSessionsInput, CycleCountTaskUpdateWithoutSessionsInput>, CycleCountTaskUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput = {
+    create?: XOR<LocationCreateWithoutCycleCountSessionsInput, LocationUncheckedCreateWithoutCycleCountSessionsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutCycleCountSessionsInput
+    upsert?: LocationUpsertWithoutCycleCountSessionsInput
+    connect?: LocationWhereUniqueInput
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutCycleCountSessionsInput, LocationUpdateWithoutCycleCountSessionsInput>, LocationUncheckedUpdateWithoutCycleCountSessionsInput>
+  }
+
+  export type UserUpdateOneWithoutCycleCountSessionsLockedNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsLockedInput, UserUncheckedCreateWithoutCycleCountSessionsLockedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsLockedInput
+    upsert?: UserUpsertWithoutCycleCountSessionsLockedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountSessionsLockedInput, UserUpdateWithoutCycleCountSessionsLockedInput>, UserUncheckedUpdateWithoutCycleCountSessionsLockedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsCountedInput, UserUncheckedCreateWithoutCycleCountSessionsCountedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsCountedInput
+    upsert?: UserUpsertWithoutCycleCountSessionsCountedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountSessionsCountedInput, UserUpdateWithoutCycleCountSessionsCountedInput>, UserUncheckedUpdateWithoutCycleCountSessionsCountedInput>
+  }
+
+  export type UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountSessionsReviewedInput, UserUncheckedCreateWithoutCycleCountSessionsReviewedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountSessionsReviewedInput
+    upsert?: UserUpsertWithoutCycleCountSessionsReviewedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountSessionsReviewedInput, UserUpdateWithoutCycleCountSessionsReviewedInput>, UserUncheckedUpdateWithoutCycleCountSessionsReviewedInput>
+  }
+
+  export type CycleCountLineUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput> | CycleCountLineCreateWithoutSessionInput[] | CycleCountLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutSessionInput | CycleCountLineCreateOrConnectWithoutSessionInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutSessionInput | CycleCountLineUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: CycleCountLineCreateManySessionInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutSessionInput | CycleCountLineUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutSessionInput | CycleCountLineUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+  }
+
+  export type CycleCountAuditUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput> | CycleCountAuditCreateWithoutSessionInput[] | CycleCountAuditUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutSessionInput | CycleCountAuditCreateOrConnectWithoutSessionInput[]
+    upsert?: CycleCountAuditUpsertWithWhereUniqueWithoutSessionInput | CycleCountAuditUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: CycleCountAuditCreateManySessionInputEnvelope
+    set?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    disconnect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    delete?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    update?: CycleCountAuditUpdateWithWhereUniqueWithoutSessionInput | CycleCountAuditUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: CycleCountAuditUpdateManyWithWhereWithoutSessionInput | CycleCountAuditUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput> | InventoryAdjustmentCreateWithoutCycleCountSessionInput[] | InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput | InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutCycleCountSessionInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutCycleCountSessionInput[]
+    createMany?: InventoryAdjustmentCreateManyCycleCountSessionInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutCycleCountSessionInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutCycleCountSessionInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutCycleCountSessionInput | InventoryAdjustmentUpdateManyWithWhereWithoutCycleCountSessionInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
+  export type CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput> | CycleCountLineCreateWithoutSessionInput[] | CycleCountLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountLineCreateOrConnectWithoutSessionInput | CycleCountLineCreateOrConnectWithoutSessionInput[]
+    upsert?: CycleCountLineUpsertWithWhereUniqueWithoutSessionInput | CycleCountLineUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: CycleCountLineCreateManySessionInputEnvelope
+    set?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    disconnect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    delete?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    connect?: CycleCountLineWhereUniqueInput | CycleCountLineWhereUniqueInput[]
+    update?: CycleCountLineUpdateWithWhereUniqueWithoutSessionInput | CycleCountLineUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: CycleCountLineUpdateManyWithWhereWithoutSessionInput | CycleCountLineUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+  }
+
+  export type CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput> | CycleCountAuditCreateWithoutSessionInput[] | CycleCountAuditUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: CycleCountAuditCreateOrConnectWithoutSessionInput | CycleCountAuditCreateOrConnectWithoutSessionInput[]
+    upsert?: CycleCountAuditUpsertWithWhereUniqueWithoutSessionInput | CycleCountAuditUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: CycleCountAuditCreateManySessionInputEnvelope
+    set?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    disconnect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    delete?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    connect?: CycleCountAuditWhereUniqueInput | CycleCountAuditWhereUniqueInput[]
+    update?: CycleCountAuditUpdateWithWhereUniqueWithoutSessionInput | CycleCountAuditUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: CycleCountAuditUpdateManyWithWhereWithoutSessionInput | CycleCountAuditUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput = {
+    create?: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput> | InventoryAdjustmentCreateWithoutCycleCountSessionInput[] | InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput[]
+    connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput | InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput[]
+    upsert?: InventoryAdjustmentUpsertWithWhereUniqueWithoutCycleCountSessionInput | InventoryAdjustmentUpsertWithWhereUniqueWithoutCycleCountSessionInput[]
+    createMany?: InventoryAdjustmentCreateManyCycleCountSessionInputEnvelope
+    set?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    disconnect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    delete?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+    update?: InventoryAdjustmentUpdateWithWhereUniqueWithoutCycleCountSessionInput | InventoryAdjustmentUpdateWithWhereUniqueWithoutCycleCountSessionInput[]
+    updateMany?: InventoryAdjustmentUpdateManyWithWhereWithoutCycleCountSessionInput | InventoryAdjustmentUpdateManyWithWhereWithoutCycleCountSessionInput[]
+    deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+  }
+
+  export type CycleCountSessionCreateNestedOneWithoutLineItemsInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLineItemsInput, CycleCountSessionUncheckedCreateWithoutLineItemsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLineItemsInput
+    connect?: CycleCountSessionWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutCycleCountLinesInput = {
+    create?: XOR<ProductVariantCreateWithoutCycleCountLinesInput, ProductVariantUncheckedCreateWithoutCycleCountLinesInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutCycleCountLinesInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type InventoryUnitCreateNestedOneWithoutCycleCountLinesInput = {
+    create?: XOR<InventoryUnitCreateWithoutCycleCountLinesInput, InventoryUnitUncheckedCreateWithoutCycleCountLinesInput>
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutCycleCountLinesInput
+    connect?: InventoryUnitWhereUniqueInput
+  }
+
+  export type EnumCycleCountLineStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CycleCountLineStatus
+  }
+
+  export type CycleCountSessionUpdateOneRequiredWithoutLineItemsNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutLineItemsInput, CycleCountSessionUncheckedCreateWithoutLineItemsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutLineItemsInput
+    upsert?: CycleCountSessionUpsertWithoutLineItemsInput
+    connect?: CycleCountSessionWhereUniqueInput
+    update?: XOR<XOR<CycleCountSessionUpdateToOneWithWhereWithoutLineItemsInput, CycleCountSessionUpdateWithoutLineItemsInput>, CycleCountSessionUncheckedUpdateWithoutLineItemsInput>
+  }
+
+  export type ProductVariantUpdateOneRequiredWithoutCycleCountLinesNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutCycleCountLinesInput, ProductVariantUncheckedCreateWithoutCycleCountLinesInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutCycleCountLinesInput
+    upsert?: ProductVariantUpsertWithoutCycleCountLinesInput
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutCycleCountLinesInput, ProductVariantUpdateWithoutCycleCountLinesInput>, ProductVariantUncheckedUpdateWithoutCycleCountLinesInput>
+  }
+
+  export type InventoryUnitUpdateOneWithoutCycleCountLinesNestedInput = {
+    create?: XOR<InventoryUnitCreateWithoutCycleCountLinesInput, InventoryUnitUncheckedCreateWithoutCycleCountLinesInput>
+    connectOrCreate?: InventoryUnitCreateOrConnectWithoutCycleCountLinesInput
+    upsert?: InventoryUnitUpsertWithoutCycleCountLinesInput
+    disconnect?: InventoryUnitWhereInput | boolean
+    delete?: InventoryUnitWhereInput | boolean
+    connect?: InventoryUnitWhereUniqueInput
+    update?: XOR<XOR<InventoryUnitUpdateToOneWithWhereWithoutCycleCountLinesInput, InventoryUnitUpdateWithoutCycleCountLinesInput>, InventoryUnitUncheckedUpdateWithoutCycleCountLinesInput>
+  }
+
+  export type CycleCountSessionCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<CycleCountSessionCreateWithoutAuditLogsInput, CycleCountSessionUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutAuditLogsInput
+    connect?: CycleCountSessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCycleCountAuditsInput = {
+    create?: XOR<UserCreateWithoutCycleCountAuditsInput, UserUncheckedCreateWithoutCycleCountAuditsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountAuditsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CycleCountSessionUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutAuditLogsInput, CycleCountSessionUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutAuditLogsInput
+    upsert?: CycleCountSessionUpsertWithoutAuditLogsInput
+    connect?: CycleCountSessionWhereUniqueInput
+    update?: XOR<XOR<CycleCountSessionUpdateToOneWithWhereWithoutAuditLogsInput, CycleCountSessionUpdateWithoutAuditLogsInput>, CycleCountSessionUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCycleCountAuditsNestedInput = {
+    create?: XOR<UserCreateWithoutCycleCountAuditsInput, UserUncheckedCreateWithoutCycleCountAuditsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCycleCountAuditsInput
+    upsert?: UserUpsertWithoutCycleCountAuditsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCycleCountAuditsInput, UserUpdateWithoutCycleCountAuditsInput>, UserUncheckedUpdateWithoutCycleCountAuditsInput>
+  }
+
+  export type CycleCountSessionCreateNestedOneWithoutAdjustmentsInput = {
+    create?: XOR<CycleCountSessionCreateWithoutAdjustmentsInput, CycleCountSessionUncheckedCreateWithoutAdjustmentsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutAdjustmentsInput
+    connect?: CycleCountSessionWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput = {
+    create?: XOR<ProductVariantCreateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryAdjustmentsInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type LocationCreateNestedOneWithoutInventoryAdjustmentsInput = {
+    create?: XOR<LocationCreateWithoutInventoryAdjustmentsInput, LocationUncheckedCreateWithoutInventoryAdjustmentsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInventoryAdjustmentsInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdjustmentsCreatedInput = {
+    create?: XOR<UserCreateWithoutAdjustmentsCreatedInput, UserUncheckedCreateWithoutAdjustmentsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdjustmentsCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdjustmentsApprovedInput = {
+    create?: XOR<UserCreateWithoutAdjustmentsApprovedInput, UserUncheckedCreateWithoutAdjustmentsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdjustmentsApprovedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAdjustmentReasonFieldUpdateOperationsInput = {
+    set?: $Enums.AdjustmentReason
+  }
+
+  export type EnumAdjustmentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AdjustmentStatus
+  }
+
+  export type CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput = {
+    create?: XOR<CycleCountSessionCreateWithoutAdjustmentsInput, CycleCountSessionUncheckedCreateWithoutAdjustmentsInput>
+    connectOrCreate?: CycleCountSessionCreateOrConnectWithoutAdjustmentsInput
+    upsert?: CycleCountSessionUpsertWithoutAdjustmentsInput
+    disconnect?: CycleCountSessionWhereInput | boolean
+    delete?: CycleCountSessionWhereInput | boolean
+    connect?: CycleCountSessionWhereUniqueInput
+    update?: XOR<XOR<CycleCountSessionUpdateToOneWithWhereWithoutAdjustmentsInput, CycleCountSessionUpdateWithoutAdjustmentsInput>, CycleCountSessionUncheckedUpdateWithoutAdjustmentsInput>
+  }
+
+  export type ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInventoryAdjustmentsInput
+    upsert?: ProductVariantUpsertWithoutInventoryAdjustmentsInput
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutInventoryAdjustmentsInput, ProductVariantUpdateWithoutInventoryAdjustmentsInput>, ProductVariantUncheckedUpdateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput = {
+    create?: XOR<LocationCreateWithoutInventoryAdjustmentsInput, LocationUncheckedCreateWithoutInventoryAdjustmentsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInventoryAdjustmentsInput
+    upsert?: LocationUpsertWithoutInventoryAdjustmentsInput
+    connect?: LocationWhereUniqueInput
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutInventoryAdjustmentsInput, LocationUpdateWithoutInventoryAdjustmentsInput>, LocationUncheckedUpdateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutAdjustmentsCreatedInput, UserUncheckedCreateWithoutAdjustmentsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdjustmentsCreatedInput
+    upsert?: UserUpsertWithoutAdjustmentsCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdjustmentsCreatedInput, UserUpdateWithoutAdjustmentsCreatedInput>, UserUncheckedUpdateWithoutAdjustmentsCreatedInput>
+  }
+
+  export type UserUpdateOneWithoutAdjustmentsApprovedNestedInput = {
+    create?: XOR<UserCreateWithoutAdjustmentsApprovedInput, UserUncheckedCreateWithoutAdjustmentsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdjustmentsApprovedInput
+    upsert?: UserUpsertWithoutAdjustmentsApprovedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdjustmentsApprovedInput, UserUpdateWithoutAdjustmentsApprovedInput>, UserUncheckedUpdateWithoutAdjustmentsApprovedInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -43274,6 +53944,108 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
     _max?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCycleCountTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountType | EnumCycleCountTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTypeFilter<$PrismaModel> | $Enums.CycleCountType
+  }
+
+  export type NestedEnumCycleCountTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountTaskStatus | EnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel> | $Enums.CycleCountTaskStatus
+  }
+
+  export type NestedEnumCycleCountTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountType | EnumCycleCountTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountType[] | ListEnumCycleCountTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTypeWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountTypeFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCycleCountTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountTaskStatus | EnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountTaskStatus[] | ListEnumCycleCountTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCycleCountSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountSessionStatus | EnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel> | $Enums.CycleCountSessionStatus
+  }
+
+  export type NestedEnumCycleCountSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountSessionStatus | EnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountSessionStatus[] | ListEnumCycleCountSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountSessionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCycleCountLineStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountLineStatus | EnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountLineStatusFilter<$PrismaModel> | $Enums.CycleCountLineStatus
+  }
+
+  export type NestedEnumCycleCountLineStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CycleCountLineStatus | EnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CycleCountLineStatus[] | ListEnumCycleCountLineStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCycleCountLineStatusWithAggregatesFilter<$PrismaModel> | $Enums.CycleCountLineStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCycleCountLineStatusFilter<$PrismaModel>
+    _max?: NestedEnumCycleCountLineStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAdjustmentReasonFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentReason | EnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentReasonFilter<$PrismaModel> | $Enums.AdjustmentReason
+  }
+
+  export type NestedEnumAdjustmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentStatus | EnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentStatusFilter<$PrismaModel> | $Enums.AdjustmentStatus
+  }
+
+  export type NestedEnumAdjustmentReasonWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentReason | EnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentReason[] | ListEnumAdjustmentReasonFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentReasonWithAggregatesFilter<$PrismaModel> | $Enums.AdjustmentReason
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAdjustmentReasonFilter<$PrismaModel>
+    _max?: NestedEnumAdjustmentReasonFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAdjustmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AdjustmentStatus | EnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AdjustmentStatus[] | ListEnumAdjustmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAdjustmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.AdjustmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAdjustmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumAdjustmentStatusFilter<$PrismaModel>
   }
 
   export type RefreshTokenCreateWithoutUserInput = {
@@ -43842,6 +54614,420 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CycleCountTaskCreateWithoutAssignedToInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCycleCountTasksCreatedInput
+    sessions?: CycleCountSessionCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    createdById: string
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: CycleCountSessionUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskCreateOrConnectWithoutAssignedToInput = {
+    where: CycleCountTaskWhereUniqueInput
+    create: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type CycleCountTaskCreateManyAssignedToInputEnvelope = {
+    data: CycleCountTaskCreateManyAssignedToInput | CycleCountTaskCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountTaskCreateWithoutCreatedByInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedTo?: UserCreateNestedOneWithoutCycleCountTasksAssignedInput
+    sessions?: CycleCountSessionCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    assignedToId?: string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: CycleCountSessionUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type CycleCountTaskCreateOrConnectWithoutCreatedByInput = {
+    where: CycleCountTaskWhereUniqueInput
+    create: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CycleCountTaskCreateManyCreatedByInputEnvelope = {
+    data: CycleCountTaskCreateManyCreatedByInput | CycleCountTaskCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountSessionCreateWithoutLockedByUserInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutLockedByUserInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutLockedByUserInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput>
+  }
+
+  export type CycleCountSessionCreateManyLockedByUserInputEnvelope = {
+    data: CycleCountSessionCreateManyLockedByUserInput | CycleCountSessionCreateManyLockedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountSessionCreateWithoutCountedByInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutCountedByInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutCountedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput>
+  }
+
+  export type CycleCountSessionCreateManyCountedByInputEnvelope = {
+    data: CycleCountSessionCreateManyCountedByInput | CycleCountSessionCreateManyCountedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountSessionCreateWithoutReviewedByInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutReviewedByInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutReviewedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput>
+  }
+
+  export type CycleCountSessionCreateManyReviewedByInputEnvelope = {
+    data: CycleCountSessionCreateManyReviewedByInput | CycleCountSessionCreateManyReviewedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountAuditCreateWithoutUserInput = {
+    id?: string
+    action: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    session: CycleCountSessionCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type CycleCountAuditUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionId: string
+    action: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type CycleCountAuditCreateOrConnectWithoutUserInput = {
+    where: CycleCountAuditWhereUniqueInput
+    create: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput>
+  }
+
+  export type CycleCountAuditCreateManyUserInputEnvelope = {
+    data: CycleCountAuditCreateManyUserInput | CycleCountAuditCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryAdjustmentCreateWithoutCreatedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cycleCountSession?: CycleCountSessionCreateNestedOneWithoutAdjustmentsInput
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput
+    location: LocationCreateNestedOneWithoutInventoryAdjustmentsInput
+    approvedBy?: UserCreateNestedOneWithoutAdjustmentsApprovedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateOrConnectWithoutCreatedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    create: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type InventoryAdjustmentCreateManyCreatedByInputEnvelope = {
+    data: InventoryAdjustmentCreateManyCreatedByInput | InventoryAdjustmentCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryAdjustmentCreateWithoutApprovedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cycleCountSession?: CycleCountSessionCreateNestedOneWithoutAdjustmentsInput
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput
+    location: LocationCreateNestedOneWithoutInventoryAdjustmentsInput
+    createdBy: UserCreateNestedOneWithoutAdjustmentsCreatedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateWithoutApprovedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateOrConnectWithoutApprovedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    create: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type InventoryAdjustmentCreateManyApprovedByInputEnvelope = {
+    data: InventoryAdjustmentCreateManyApprovedByInput | InventoryAdjustmentCreateManyApprovedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
     where: RefreshTokenWhereUniqueInput
     update: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
@@ -44213,6 +55399,222 @@ export namespace Prisma {
     data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyWithoutResolverInput>
   }
 
+  export type CycleCountTaskUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: CycleCountTaskWhereUniqueInput
+    update: XOR<CycleCountTaskUpdateWithoutAssignedToInput, CycleCountTaskUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<CycleCountTaskCreateWithoutAssignedToInput, CycleCountTaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type CycleCountTaskUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: CycleCountTaskWhereUniqueInput
+    data: XOR<CycleCountTaskUpdateWithoutAssignedToInput, CycleCountTaskUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type CycleCountTaskUpdateManyWithWhereWithoutAssignedToInput = {
+    where: CycleCountTaskScalarWhereInput
+    data: XOR<CycleCountTaskUpdateManyMutationInput, CycleCountTaskUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type CycleCountTaskScalarWhereInput = {
+    AND?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+    OR?: CycleCountTaskScalarWhereInput[]
+    NOT?: CycleCountTaskScalarWhereInput | CycleCountTaskScalarWhereInput[]
+    id?: StringFilter<"CycleCountTask"> | string
+    taskNumber?: StringFilter<"CycleCountTask"> | string
+    name?: StringNullableFilter<"CycleCountTask"> | string | null
+    description?: StringNullableFilter<"CycleCountTask"> | string | null
+    type?: EnumCycleCountTypeFilter<"CycleCountTask"> | $Enums.CycleCountType
+    locationIds?: StringNullableListFilter<"CycleCountTask">
+    zoneId?: StringNullableFilter<"CycleCountTask"> | string | null
+    skuFilter?: StringNullableFilter<"CycleCountTask"> | string | null
+    abcClass?: StringNullableFilter<"CycleCountTask"> | string | null
+    blindCount?: BoolFilter<"CycleCountTask"> | boolean
+    includeZeroQty?: BoolFilter<"CycleCountTask"> | boolean
+    priority?: IntFilter<"CycleCountTask"> | number
+    scheduledDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    dueDate?: DateTimeNullableFilter<"CycleCountTask"> | Date | string | null
+    assignedToId?: StringNullableFilter<"CycleCountTask"> | string | null
+    createdById?: StringFilter<"CycleCountTask"> | string
+    status?: EnumCycleCountTaskStatusFilter<"CycleCountTask"> | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountTask"> | Date | string
+  }
+
+  export type CycleCountTaskUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: CycleCountTaskWhereUniqueInput
+    update: XOR<CycleCountTaskUpdateWithoutCreatedByInput, CycleCountTaskUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<CycleCountTaskCreateWithoutCreatedByInput, CycleCountTaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CycleCountTaskUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: CycleCountTaskWhereUniqueInput
+    data: XOR<CycleCountTaskUpdateWithoutCreatedByInput, CycleCountTaskUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type CycleCountTaskUpdateManyWithWhereWithoutCreatedByInput = {
+    where: CycleCountTaskScalarWhereInput
+    data: XOR<CycleCountTaskUpdateManyMutationInput, CycleCountTaskUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type CycleCountSessionUpsertWithWhereUniqueWithoutLockedByUserInput = {
+    where: CycleCountSessionWhereUniqueInput
+    update: XOR<CycleCountSessionUpdateWithoutLockedByUserInput, CycleCountSessionUncheckedUpdateWithoutLockedByUserInput>
+    create: XOR<CycleCountSessionCreateWithoutLockedByUserInput, CycleCountSessionUncheckedCreateWithoutLockedByUserInput>
+  }
+
+  export type CycleCountSessionUpdateWithWhereUniqueWithoutLockedByUserInput = {
+    where: CycleCountSessionWhereUniqueInput
+    data: XOR<CycleCountSessionUpdateWithoutLockedByUserInput, CycleCountSessionUncheckedUpdateWithoutLockedByUserInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithWhereWithoutLockedByUserInput = {
+    where: CycleCountSessionScalarWhereInput
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyWithoutLockedByUserInput>
+  }
+
+  export type CycleCountSessionScalarWhereInput = {
+    AND?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+    OR?: CycleCountSessionScalarWhereInput[]
+    NOT?: CycleCountSessionScalarWhereInput | CycleCountSessionScalarWhereInput[]
+    id?: StringFilter<"CycleCountSession"> | string
+    taskId?: StringNullableFilter<"CycleCountSession"> | string | null
+    locationId?: StringFilter<"CycleCountSession"> | string
+    blindCount?: BoolFilter<"CycleCountSession"> | boolean
+    version?: IntFilter<"CycleCountSession"> | number
+    lockedBy?: StringNullableFilter<"CycleCountSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    status?: EnumCycleCountSessionStatusFilter<"CycleCountSession"> | $Enums.CycleCountSessionStatus
+    countedById?: StringFilter<"CycleCountSession"> | string
+    startedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewedById?: StringNullableFilter<"CycleCountSession"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"CycleCountSession"> | Date | string | null
+    reviewNotes?: StringNullableFilter<"CycleCountSession"> | string | null
+    totalExpected?: IntFilter<"CycleCountSession"> | number
+    totalCounted?: IntFilter<"CycleCountSession"> | number
+    varianceCount?: IntFilter<"CycleCountSession"> | number
+    createdAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountSession"> | Date | string
+  }
+
+  export type CycleCountSessionUpsertWithWhereUniqueWithoutCountedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    update: XOR<CycleCountSessionUpdateWithoutCountedByInput, CycleCountSessionUncheckedUpdateWithoutCountedByInput>
+    create: XOR<CycleCountSessionCreateWithoutCountedByInput, CycleCountSessionUncheckedCreateWithoutCountedByInput>
+  }
+
+  export type CycleCountSessionUpdateWithWhereUniqueWithoutCountedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    data: XOR<CycleCountSessionUpdateWithoutCountedByInput, CycleCountSessionUncheckedUpdateWithoutCountedByInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithWhereWithoutCountedByInput = {
+    where: CycleCountSessionScalarWhereInput
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyWithoutCountedByInput>
+  }
+
+  export type CycleCountSessionUpsertWithWhereUniqueWithoutReviewedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    update: XOR<CycleCountSessionUpdateWithoutReviewedByInput, CycleCountSessionUncheckedUpdateWithoutReviewedByInput>
+    create: XOR<CycleCountSessionCreateWithoutReviewedByInput, CycleCountSessionUncheckedCreateWithoutReviewedByInput>
+  }
+
+  export type CycleCountSessionUpdateWithWhereUniqueWithoutReviewedByInput = {
+    where: CycleCountSessionWhereUniqueInput
+    data: XOR<CycleCountSessionUpdateWithoutReviewedByInput, CycleCountSessionUncheckedUpdateWithoutReviewedByInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithWhereWithoutReviewedByInput = {
+    where: CycleCountSessionScalarWhereInput
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyWithoutReviewedByInput>
+  }
+
+  export type CycleCountAuditUpsertWithWhereUniqueWithoutUserInput = {
+    where: CycleCountAuditWhereUniqueInput
+    update: XOR<CycleCountAuditUpdateWithoutUserInput, CycleCountAuditUncheckedUpdateWithoutUserInput>
+    create: XOR<CycleCountAuditCreateWithoutUserInput, CycleCountAuditUncheckedCreateWithoutUserInput>
+  }
+
+  export type CycleCountAuditUpdateWithWhereUniqueWithoutUserInput = {
+    where: CycleCountAuditWhereUniqueInput
+    data: XOR<CycleCountAuditUpdateWithoutUserInput, CycleCountAuditUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CycleCountAuditUpdateManyWithWhereWithoutUserInput = {
+    where: CycleCountAuditScalarWhereInput
+    data: XOR<CycleCountAuditUpdateManyMutationInput, CycleCountAuditUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CycleCountAuditScalarWhereInput = {
+    AND?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+    OR?: CycleCountAuditScalarWhereInput[]
+    NOT?: CycleCountAuditScalarWhereInput | CycleCountAuditScalarWhereInput[]
+    id?: StringFilter<"CycleCountAudit"> | string
+    sessionId?: StringFilter<"CycleCountAudit"> | string
+    action?: StringFilter<"CycleCountAudit"> | string
+    userId?: StringFilter<"CycleCountAudit"> | string
+    lineId?: StringNullableFilter<"CycleCountAudit"> | string | null
+    data?: JsonNullableFilter<"CycleCountAudit">
+    createdAt?: DateTimeFilter<"CycleCountAudit"> | Date | string
+  }
+
+  export type InventoryAdjustmentUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    update: XOR<InventoryAdjustmentUpdateWithoutCreatedByInput, InventoryAdjustmentUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<InventoryAdjustmentCreateWithoutCreatedByInput, InventoryAdjustmentUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type InventoryAdjustmentUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    data: XOR<InventoryAdjustmentUpdateWithoutCreatedByInput, InventoryAdjustmentUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type InventoryAdjustmentUpdateManyWithWhereWithoutCreatedByInput = {
+    where: InventoryAdjustmentScalarWhereInput
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type InventoryAdjustmentScalarWhereInput = {
+    AND?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+    OR?: InventoryAdjustmentScalarWhereInput[]
+    NOT?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
+    id?: StringFilter<"InventoryAdjustment"> | string
+    adjustmentNumber?: StringFilter<"InventoryAdjustment"> | string
+    reason?: EnumAdjustmentReasonFilter<"InventoryAdjustment"> | $Enums.AdjustmentReason
+    sourceType?: StringFilter<"InventoryAdjustment"> | string
+    sourceId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    productVariantId?: StringFilter<"InventoryAdjustment"> | string
+    locationId?: StringFilter<"InventoryAdjustment"> | string
+    inventoryUnitId?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    previousQty?: IntFilter<"InventoryAdjustment"> | number
+    adjustedQty?: IntFilter<"InventoryAdjustment"> | number
+    changeQty?: IntFilter<"InventoryAdjustment"> | number
+    lotNumber?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    status?: EnumAdjustmentStatusFilter<"InventoryAdjustment"> | $Enums.AdjustmentStatus
+    createdById?: StringFilter<"InventoryAdjustment"> | string
+    approvedById?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"InventoryAdjustment"> | Date | string | null
+    notes?: StringNullableFilter<"InventoryAdjustment"> | string | null
+    createdAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+    updatedAt?: DateTimeFilter<"InventoryAdjustment"> | Date | string
+  }
+
+  export type InventoryAdjustmentUpsertWithWhereUniqueWithoutApprovedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    update: XOR<InventoryAdjustmentUpdateWithoutApprovedByInput, InventoryAdjustmentUncheckedUpdateWithoutApprovedByInput>
+    create: XOR<InventoryAdjustmentCreateWithoutApprovedByInput, InventoryAdjustmentUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type InventoryAdjustmentUpdateWithWhereUniqueWithoutApprovedByInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    data: XOR<InventoryAdjustmentUpdateWithoutApprovedByInput, InventoryAdjustmentUncheckedUpdateWithoutApprovedByInput>
+  }
+
+  export type InventoryAdjustmentUpdateManyWithWhereWithoutApprovedByInput = {
+    where: InventoryAdjustmentScalarWhereInput
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByInput>
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -44236,6 +55638,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -44261,6 +55671,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -44302,6 +55720,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -44327,6 +55753,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -44352,6 +55786,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -44377,6 +55819,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -44418,6 +55868,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -44443,6 +55901,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type ProductVariantCreateWithoutProductInput = {
@@ -44466,6 +55932,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
@@ -44489,6 +55957,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutProductInput = {
@@ -44654,6 +56124,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     location: LocationCreateNestedOneWithoutInventoryUnitsInput
     allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitUncheckedCreateWithoutProductVariantInput = {
@@ -44669,6 +56140,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitCreateOrConnectWithoutProductVariantInput = {
@@ -44816,6 +56288,104 @@ export namespace Prisma {
 
   export type ReceivingLineCreateManyProductVariantInputEnvelope = {
     data: ReceivingLineCreateManyProductVariantInput | ReceivingLineCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountLineCreateWithoutProductVariantInput = {
+    id?: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: CycleCountSessionCreateNestedOneWithoutLineItemsInput
+    inventoryUnit?: InventoryUnitCreateNestedOneWithoutCycleCountLinesInput
+  }
+
+  export type CycleCountLineUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineCreateOrConnectWithoutProductVariantInput = {
+    where: CycleCountLineWhereUniqueInput
+    create: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type CycleCountLineCreateManyProductVariantInputEnvelope = {
+    data: CycleCountLineCreateManyProductVariantInput | CycleCountLineCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryAdjustmentCreateWithoutProductVariantInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cycleCountSession?: CycleCountSessionCreateNestedOneWithoutAdjustmentsInput
+    location: LocationCreateNestedOneWithoutInventoryAdjustmentsInput
+    createdBy: UserCreateNestedOneWithoutAdjustmentsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutAdjustmentsApprovedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateOrConnectWithoutProductVariantInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    create: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type InventoryAdjustmentCreateManyProductVariantInputEnvelope = {
+    data: InventoryAdjustmentCreateManyProductVariantInput | InventoryAdjustmentCreateManyProductVariantInput[]
     skipDuplicates?: boolean
   }
 
@@ -45043,6 +56613,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ReceivingLine"> | Date | string
   }
 
+  export type CycleCountLineUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: CycleCountLineWhereUniqueInput
+    update: XOR<CycleCountLineUpdateWithoutProductVariantInput, CycleCountLineUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<CycleCountLineCreateWithoutProductVariantInput, CycleCountLineUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type CycleCountLineUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: CycleCountLineWhereUniqueInput
+    data: XOR<CycleCountLineUpdateWithoutProductVariantInput, CycleCountLineUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type CycleCountLineUpdateManyWithWhereWithoutProductVariantInput = {
+    where: CycleCountLineScalarWhereInput
+    data: XOR<CycleCountLineUpdateManyMutationInput, CycleCountLineUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type CycleCountLineScalarWhereInput = {
+    AND?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+    OR?: CycleCountLineScalarWhereInput[]
+    NOT?: CycleCountLineScalarWhereInput | CycleCountLineScalarWhereInput[]
+    id?: StringFilter<"CycleCountLine"> | string
+    sessionId?: StringFilter<"CycleCountLine"> | string
+    productVariantId?: StringFilter<"CycleCountLine"> | string
+    sku?: StringFilter<"CycleCountLine"> | string
+    productName?: StringFilter<"CycleCountLine"> | string
+    inventoryUnitId?: StringNullableFilter<"CycleCountLine"> | string | null
+    systemQty?: IntFilter<"CycleCountLine"> | number
+    countedQty?: IntNullableFilter<"CycleCountLine"> | number | null
+    variance?: IntNullableFilter<"CycleCountLine"> | number | null
+    lotNumber?: StringNullableFilter<"CycleCountLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"CycleCountLine"> | Date | string | null
+    status?: EnumCycleCountLineStatusFilter<"CycleCountLine"> | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFilter<"CycleCountLine"> | boolean
+    notes?: StringNullableFilter<"CycleCountLine"> | string | null
+    createdAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+    updatedAt?: DateTimeFilter<"CycleCountLine"> | Date | string
+  }
+
+  export type InventoryAdjustmentUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    update: XOR<InventoryAdjustmentUpdateWithoutProductVariantInput, InventoryAdjustmentUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<InventoryAdjustmentCreateWithoutProductVariantInput, InventoryAdjustmentUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type InventoryAdjustmentUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    data: XOR<InventoryAdjustmentUpdateWithoutProductVariantInput, InventoryAdjustmentUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type InventoryAdjustmentUpdateManyWithWhereWithoutProductVariantInput = {
+    where: InventoryAdjustmentScalarWhereInput
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
   export type InventoryUnitCreateWithoutLocationInput = {
     id?: string
     quantity?: number
@@ -45056,6 +56680,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
     allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitUncheckedCreateWithoutLocationInput = {
@@ -45071,6 +56696,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitCreateOrConnectWithoutLocationInput = {
@@ -45233,6 +56859,116 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CycleCountSessionCreateWithoutLocationInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutLocationInput = {
+    id?: string
+    taskId?: string | null
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutLocationInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput>
+  }
+
+  export type CycleCountSessionCreateManyLocationInputEnvelope = {
+    data: CycleCountSessionCreateManyLocationInput | CycleCountSessionCreateManyLocationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryAdjustmentCreateWithoutLocationInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cycleCountSession?: CycleCountSessionCreateNestedOneWithoutAdjustmentsInput
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput
+    createdBy: UserCreateNestedOneWithoutAdjustmentsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutAdjustmentsApprovedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateWithoutLocationInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateOrConnectWithoutLocationInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    create: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput>
+  }
+
+  export type InventoryAdjustmentCreateManyLocationInputEnvelope = {
+    data: InventoryAdjustmentCreateManyLocationInput | InventoryAdjustmentCreateManyLocationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type InventoryUnitUpsertWithWhereUniqueWithoutLocationInput = {
     where: InventoryUnitWhereUniqueInput
     update: XOR<InventoryUnitUpdateWithoutLocationInput, InventoryUnitUncheckedUpdateWithoutLocationInput>
@@ -45297,6 +57033,38 @@ export namespace Prisma {
     data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationInput>
   }
 
+  export type CycleCountSessionUpsertWithWhereUniqueWithoutLocationInput = {
+    where: CycleCountSessionWhereUniqueInput
+    update: XOR<CycleCountSessionUpdateWithoutLocationInput, CycleCountSessionUncheckedUpdateWithoutLocationInput>
+    create: XOR<CycleCountSessionCreateWithoutLocationInput, CycleCountSessionUncheckedCreateWithoutLocationInput>
+  }
+
+  export type CycleCountSessionUpdateWithWhereUniqueWithoutLocationInput = {
+    where: CycleCountSessionWhereUniqueInput
+    data: XOR<CycleCountSessionUpdateWithoutLocationInput, CycleCountSessionUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithWhereWithoutLocationInput = {
+    where: CycleCountSessionScalarWhereInput
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyWithoutLocationInput>
+  }
+
+  export type InventoryAdjustmentUpsertWithWhereUniqueWithoutLocationInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    update: XOR<InventoryAdjustmentUpdateWithoutLocationInput, InventoryAdjustmentUncheckedUpdateWithoutLocationInput>
+    create: XOR<InventoryAdjustmentCreateWithoutLocationInput, InventoryAdjustmentUncheckedCreateWithoutLocationInput>
+  }
+
+  export type InventoryAdjustmentUpdateWithWhereUniqueWithoutLocationInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    data: XOR<InventoryAdjustmentUpdateWithoutLocationInput, InventoryAdjustmentUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type InventoryAdjustmentUpdateManyWithWhereWithoutLocationInput = {
+    where: InventoryAdjustmentScalarWhereInput
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutLocationInput>
+  }
+
   export type ProductVariantCreateWithoutInventoryUnitsInput = {
     id?: string
     sku: string
@@ -45318,6 +57086,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutInventoryUnitsInput = {
@@ -45341,6 +57111,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutInventoryUnitsInput = {
@@ -45366,6 +57138,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutInventoryUnitsInput = {
@@ -45386,6 +57160,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutInventoryUnitsInput = {
@@ -45433,6 +57209,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CycleCountLineCreateWithoutInventoryUnitInput = {
+    id?: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: CycleCountSessionCreateNestedOneWithoutLineItemsInput
+    productVariant: ProductVariantCreateNestedOneWithoutCycleCountLinesInput
+  }
+
+  export type CycleCountLineUncheckedCreateWithoutInventoryUnitInput = {
+    id?: string
+    sessionId: string
+    productVariantId: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineCreateOrConnectWithoutInventoryUnitInput = {
+    where: CycleCountLineWhereUniqueInput
+    create: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput>
+  }
+
+  export type CycleCountLineCreateManyInventoryUnitInputEnvelope = {
+    data: CycleCountLineCreateManyInventoryUnitInput | CycleCountLineCreateManyInventoryUnitInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProductVariantUpsertWithoutInventoryUnitsInput = {
     update: XOR<ProductVariantUpdateWithoutInventoryUnitsInput, ProductVariantUncheckedUpdateWithoutInventoryUnitsInput>
     create: XOR<ProductVariantCreateWithoutInventoryUnitsInput, ProductVariantUncheckedCreateWithoutInventoryUnitsInput>
@@ -45465,6 +57287,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -45488,6 +57312,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutInventoryUnitsInput = {
@@ -45519,6 +57345,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -45539,6 +57367,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput = {
@@ -45557,6 +57387,22 @@ export namespace Prisma {
     data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutInventoryUnitInput>
   }
 
+  export type CycleCountLineUpsertWithWhereUniqueWithoutInventoryUnitInput = {
+    where: CycleCountLineWhereUniqueInput
+    update: XOR<CycleCountLineUpdateWithoutInventoryUnitInput, CycleCountLineUncheckedUpdateWithoutInventoryUnitInput>
+    create: XOR<CycleCountLineCreateWithoutInventoryUnitInput, CycleCountLineUncheckedCreateWithoutInventoryUnitInput>
+  }
+
+  export type CycleCountLineUpdateWithWhereUniqueWithoutInventoryUnitInput = {
+    where: CycleCountLineWhereUniqueInput
+    data: XOR<CycleCountLineUpdateWithoutInventoryUnitInput, CycleCountLineUncheckedUpdateWithoutInventoryUnitInput>
+  }
+
+  export type CycleCountLineUpdateManyWithWhereWithoutInventoryUnitInput = {
+    where: CycleCountLineScalarWhereInput
+    data: XOR<CycleCountLineUpdateManyMutationInput, CycleCountLineUncheckedUpdateManyWithoutInventoryUnitInput>
+  }
+
   export type InventoryUnitCreateWithoutAllocationsInput = {
     id?: string
     quantity?: number
@@ -45570,6 +57416,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
     location: LocationCreateNestedOneWithoutInventoryUnitsInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitUncheckedCreateWithoutAllocationsInput = {
@@ -45585,6 +57432,7 @@ export namespace Prisma {
     unitCost?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutInventoryUnitInput
   }
 
   export type InventoryUnitCreateOrConnectWithoutAllocationsInput = {
@@ -45715,6 +57563,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutAllocationsInput = {
@@ -45738,6 +57588,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutAllocationsInput = {
@@ -45763,6 +57615,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutAllocationsInput = {
@@ -45783,6 +57637,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutAllocationsInput = {
@@ -45861,6 +57717,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
     location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateWithoutAllocationsInput = {
@@ -45876,6 +57733,7 @@ export namespace Prisma {
     unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type OrderUpsertWithoutAllocationsInput = {
@@ -46024,6 +57882,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutAllocationsInput = {
@@ -46047,6 +57907,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutAllocationsInput = {
@@ -46078,6 +57940,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutAllocationsInput = {
@@ -46098,6 +57962,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type TaskItemUpsertWithoutAllocationInput = {
@@ -46609,6 +58475,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutOrderItemsInput = {
@@ -46632,6 +58500,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutOrderItemsInput = {
@@ -46832,6 +58702,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutOrderItemsInput = {
@@ -46855,6 +58727,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderItemInput = {
@@ -47261,6 +59135,8 @@ export namespace Prisma {
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutShippingPackageItemsInput = {
@@ -47284,6 +59160,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutShippingPackageItemsInput = {
@@ -47372,6 +59250,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput = {
@@ -47395,6 +59275,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type UserCreateWithoutAssignedTasksInput = {
@@ -47420,6 +59302,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -47445,6 +59335,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -47619,6 +59517,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -47644,6 +59550,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutTaskInput = {
@@ -47929,6 +59843,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutTaskItemsInput = {
@@ -47952,6 +59868,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
     receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutTaskItemsInput = {
@@ -47977,6 +59895,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutTaskItemsInput = {
@@ -47997,6 +59917,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutTaskItemsInput = {
@@ -48027,6 +59949,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutCompletedTaskItemsInput = {
@@ -48052,6 +59982,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutCompletedTaskItemsInput = {
@@ -48315,6 +60253,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutTaskItemsInput = {
@@ -48338,6 +60278,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutTaskItemsInput = {
@@ -48369,6 +60311,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutTaskItemsInput = {
@@ -48389,6 +60333,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type UserUpsertWithoutCompletedTaskItemsInput = {
@@ -48425,6 +60371,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedTaskItemsInput = {
@@ -48450,6 +60404,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type AllocationUpsertWithoutTaskItemInput = {
@@ -48585,6 +60547,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutTaskEventsInput = {
@@ -48610,6 +60580,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutTaskEventsInput = {
@@ -48726,6 +60704,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTaskEventsInput = {
@@ -48751,6 +60737,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -48776,6 +60770,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -48801,6 +60803,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -48842,6 +60852,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -48867,6 +60885,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -48892,6 +60918,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -48917,6 +60951,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -48958,6 +61000,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -48983,6 +61033,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type ReceivingLineCreateWithoutSessionInput = {
@@ -49090,6 +61148,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsCountedInput = {
@@ -49115,6 +61181,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsCountedInput = {
@@ -49145,6 +61219,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsLockedInput = {
@@ -49170,6 +61252,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsLockedInput = {
@@ -49200,6 +61290,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsAssignedInput = {
@@ -49225,6 +61323,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsAssignedInput = {
@@ -49255,6 +61361,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsApprovedInput = {
@@ -49280,6 +61394,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsApprovedInput = {
@@ -49305,6 +61427,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutReceivingSessionsInput = {
@@ -49325,6 +61449,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutReceivingSessionsInput = {
@@ -49467,6 +61593,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsCountedInput = {
@@ -49492,6 +61626,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsLockedInput = {
@@ -49528,6 +61670,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsLockedInput = {
@@ -49553,6 +61703,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsAssignedInput = {
@@ -49589,6 +61747,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsAssignedInput = {
@@ -49614,6 +61780,14 @@ export namespace Prisma {
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsApprovedInput = {
@@ -49650,6 +61824,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsApprovedInput = {
@@ -49675,6 +61857,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type LocationUpsertWithoutReceivingSessionsInput = {
@@ -49706,6 +61896,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutReceivingSessionsInput = {
@@ -49726,6 +61918,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type WorkTaskUpsertWithoutReceivingSessionInput = {
@@ -49877,6 +62071,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutReceivingLinesInput = {
@@ -49900,6 +62096,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutReceivingLinesInput = {
@@ -49998,6 +62196,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutReceivingLinesInput = {
@@ -50021,6 +62221,8 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ReceivingSessionCreateWithoutExceptionsInput = {
@@ -50099,6 +62301,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutExceptionsReportedInput = {
@@ -50124,6 +62334,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutExceptionsReportedInput = {
@@ -50154,6 +62372,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutExceptionsResolvedInput = {
@@ -50179,6 +62405,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
     exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutExceptionsResolvedInput = {
@@ -50279,6 +62513,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExceptionsReportedInput = {
@@ -50304,6 +62546,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUpsertWithoutExceptionsResolvedInput = {
@@ -50340,6 +62590,14 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExceptionsResolvedInput = {
@@ -50365,6 +62623,2406 @@ export namespace Prisma {
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
     exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserCreateWithoutCycleCountTasksAssignedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountTasksAssignedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountTasksAssignedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountTasksAssignedInput, UserUncheckedCreateWithoutCycleCountTasksAssignedInput>
+  }
+
+  export type UserCreateWithoutCycleCountTasksCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountTasksCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountTasksCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountTasksCreatedInput, UserUncheckedCreateWithoutCycleCountTasksCreatedInput>
+  }
+
+  export type CycleCountSessionCreateWithoutTaskInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutTaskInput = {
+    id?: string
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutTaskInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput>
+  }
+
+  export type CycleCountSessionCreateManyTaskInputEnvelope = {
+    data: CycleCountSessionCreateManyTaskInput | CycleCountSessionCreateManyTaskInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCycleCountTasksAssignedInput = {
+    update: XOR<UserUpdateWithoutCycleCountTasksAssignedInput, UserUncheckedUpdateWithoutCycleCountTasksAssignedInput>
+    create: XOR<UserCreateWithoutCycleCountTasksAssignedInput, UserUncheckedCreateWithoutCycleCountTasksAssignedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountTasksAssignedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountTasksAssignedInput, UserUncheckedUpdateWithoutCycleCountTasksAssignedInput>
+  }
+
+  export type UserUpdateWithoutCycleCountTasksAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountTasksAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutCycleCountTasksCreatedInput = {
+    update: XOR<UserUpdateWithoutCycleCountTasksCreatedInput, UserUncheckedUpdateWithoutCycleCountTasksCreatedInput>
+    create: XOR<UserCreateWithoutCycleCountTasksCreatedInput, UserUncheckedCreateWithoutCycleCountTasksCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountTasksCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountTasksCreatedInput, UserUncheckedUpdateWithoutCycleCountTasksCreatedInput>
+  }
+
+  export type UserUpdateWithoutCycleCountTasksCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountTasksCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput = {
+    where: CycleCountSessionWhereUniqueInput
+    update: XOR<CycleCountSessionUpdateWithoutTaskInput, CycleCountSessionUncheckedUpdateWithoutTaskInput>
+    create: XOR<CycleCountSessionCreateWithoutTaskInput, CycleCountSessionUncheckedCreateWithoutTaskInput>
+  }
+
+  export type CycleCountSessionUpdateWithWhereUniqueWithoutTaskInput = {
+    where: CycleCountSessionWhereUniqueInput
+    data: XOR<CycleCountSessionUpdateWithoutTaskInput, CycleCountSessionUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type CycleCountSessionUpdateManyWithWhereWithoutTaskInput = {
+    where: CycleCountSessionScalarWhereInput
+    data: XOR<CycleCountSessionUpdateManyMutationInput, CycleCountSessionUncheckedUpdateManyWithoutTaskInput>
+  }
+
+  export type CycleCountTaskCreateWithoutSessionsInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedTo?: UserCreateNestedOneWithoutCycleCountTasksAssignedInput
+    createdBy: UserCreateNestedOneWithoutCycleCountTasksCreatedInput
+  }
+
+  export type CycleCountTaskUncheckedCreateWithoutSessionsInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    assignedToId?: string | null
+    createdById: string
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountTaskCreateOrConnectWithoutSessionsInput = {
+    where: CycleCountTaskWhereUniqueInput
+    create: XOR<CycleCountTaskCreateWithoutSessionsInput, CycleCountTaskUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type LocationCreateWithoutCycleCountSessionsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationUncheckedCreateWithoutCycleCountSessionsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationCreateOrConnectWithoutCycleCountSessionsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutCycleCountSessionsInput, LocationUncheckedCreateWithoutCycleCountSessionsInput>
+  }
+
+  export type UserCreateWithoutCycleCountSessionsLockedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountSessionsLockedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountSessionsLockedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountSessionsLockedInput, UserUncheckedCreateWithoutCycleCountSessionsLockedInput>
+  }
+
+  export type UserCreateWithoutCycleCountSessionsCountedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountSessionsCountedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountSessionsCountedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountSessionsCountedInput, UserUncheckedCreateWithoutCycleCountSessionsCountedInput>
+  }
+
+  export type UserCreateWithoutCycleCountSessionsReviewedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountSessionsReviewedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountSessionsReviewedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountSessionsReviewedInput, UserUncheckedCreateWithoutCycleCountSessionsReviewedInput>
+  }
+
+  export type CycleCountLineCreateWithoutSessionInput = {
+    id?: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant: ProductVariantCreateNestedOneWithoutCycleCountLinesInput
+    inventoryUnit?: InventoryUnitCreateNestedOneWithoutCycleCountLinesInput
+  }
+
+  export type CycleCountLineUncheckedCreateWithoutSessionInput = {
+    id?: string
+    productVariantId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineCreateOrConnectWithoutSessionInput = {
+    where: CycleCountLineWhereUniqueInput
+    create: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput>
+  }
+
+  export type CycleCountLineCreateManySessionInputEnvelope = {
+    data: CycleCountLineCreateManySessionInput | CycleCountLineCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountAuditCreateWithoutSessionInput = {
+    id?: string
+    action: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutCycleCountAuditsInput
+  }
+
+  export type CycleCountAuditUncheckedCreateWithoutSessionInput = {
+    id?: string
+    action: string
+    userId: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type CycleCountAuditCreateOrConnectWithoutSessionInput = {
+    where: CycleCountAuditWhereUniqueInput
+    create: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput>
+  }
+
+  export type CycleCountAuditCreateManySessionInputEnvelope = {
+    data: CycleCountAuditCreateManySessionInput | CycleCountAuditCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InventoryAdjustmentCreateWithoutCycleCountSessionInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryAdjustmentsInput
+    location: LocationCreateNestedOneWithoutInventoryAdjustmentsInput
+    createdBy: UserCreateNestedOneWithoutAdjustmentsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutAdjustmentsApprovedInput
+  }
+
+  export type InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateOrConnectWithoutCycleCountSessionInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    create: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput>
+  }
+
+  export type InventoryAdjustmentCreateManyCycleCountSessionInputEnvelope = {
+    data: InventoryAdjustmentCreateManyCycleCountSessionInput | InventoryAdjustmentCreateManyCycleCountSessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CycleCountTaskUpsertWithoutSessionsInput = {
+    update: XOR<CycleCountTaskUpdateWithoutSessionsInput, CycleCountTaskUncheckedUpdateWithoutSessionsInput>
+    create: XOR<CycleCountTaskCreateWithoutSessionsInput, CycleCountTaskUncheckedCreateWithoutSessionsInput>
+    where?: CycleCountTaskWhereInput
+  }
+
+  export type CycleCountTaskUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: CycleCountTaskWhereInput
+    data: XOR<CycleCountTaskUpdateWithoutSessionsInput, CycleCountTaskUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type CycleCountTaskUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedTo?: UserUpdateOneWithoutCycleCountTasksAssignedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCycleCountTasksCreatedNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LocationUpsertWithoutCycleCountSessionsInput = {
+    update: XOR<LocationUpdateWithoutCycleCountSessionsInput, LocationUncheckedUpdateWithoutCycleCountSessionsInput>
+    create: XOR<LocationCreateWithoutCycleCountSessionsInput, LocationUncheckedCreateWithoutCycleCountSessionsInput>
+    where?: LocationWhereInput
+  }
+
+  export type LocationUpdateToOneWithWhereWithoutCycleCountSessionsInput = {
+    where?: LocationWhereInput
+    data: XOR<LocationUpdateWithoutCycleCountSessionsInput, LocationUncheckedUpdateWithoutCycleCountSessionsInput>
+  }
+
+  export type LocationUpdateWithoutCycleCountSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutCycleCountSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type UserUpsertWithoutCycleCountSessionsLockedInput = {
+    update: XOR<UserUpdateWithoutCycleCountSessionsLockedInput, UserUncheckedUpdateWithoutCycleCountSessionsLockedInput>
+    create: XOR<UserCreateWithoutCycleCountSessionsLockedInput, UserUncheckedCreateWithoutCycleCountSessionsLockedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountSessionsLockedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountSessionsLockedInput, UserUncheckedUpdateWithoutCycleCountSessionsLockedInput>
+  }
+
+  export type UserUpdateWithoutCycleCountSessionsLockedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountSessionsLockedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutCycleCountSessionsCountedInput = {
+    update: XOR<UserUpdateWithoutCycleCountSessionsCountedInput, UserUncheckedUpdateWithoutCycleCountSessionsCountedInput>
+    create: XOR<UserCreateWithoutCycleCountSessionsCountedInput, UserUncheckedCreateWithoutCycleCountSessionsCountedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountSessionsCountedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountSessionsCountedInput, UserUncheckedUpdateWithoutCycleCountSessionsCountedInput>
+  }
+
+  export type UserUpdateWithoutCycleCountSessionsCountedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountSessionsCountedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutCycleCountSessionsReviewedInput = {
+    update: XOR<UserUpdateWithoutCycleCountSessionsReviewedInput, UserUncheckedUpdateWithoutCycleCountSessionsReviewedInput>
+    create: XOR<UserCreateWithoutCycleCountSessionsReviewedInput, UserUncheckedCreateWithoutCycleCountSessionsReviewedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountSessionsReviewedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountSessionsReviewedInput, UserUncheckedUpdateWithoutCycleCountSessionsReviewedInput>
+  }
+
+  export type UserUpdateWithoutCycleCountSessionsReviewedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountSessionsReviewedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type CycleCountLineUpsertWithWhereUniqueWithoutSessionInput = {
+    where: CycleCountLineWhereUniqueInput
+    update: XOR<CycleCountLineUpdateWithoutSessionInput, CycleCountLineUncheckedUpdateWithoutSessionInput>
+    create: XOR<CycleCountLineCreateWithoutSessionInput, CycleCountLineUncheckedCreateWithoutSessionInput>
+  }
+
+  export type CycleCountLineUpdateWithWhereUniqueWithoutSessionInput = {
+    where: CycleCountLineWhereUniqueInput
+    data: XOR<CycleCountLineUpdateWithoutSessionInput, CycleCountLineUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type CycleCountLineUpdateManyWithWhereWithoutSessionInput = {
+    where: CycleCountLineScalarWhereInput
+    data: XOR<CycleCountLineUpdateManyMutationInput, CycleCountLineUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type CycleCountAuditUpsertWithWhereUniqueWithoutSessionInput = {
+    where: CycleCountAuditWhereUniqueInput
+    update: XOR<CycleCountAuditUpdateWithoutSessionInput, CycleCountAuditUncheckedUpdateWithoutSessionInput>
+    create: XOR<CycleCountAuditCreateWithoutSessionInput, CycleCountAuditUncheckedCreateWithoutSessionInput>
+  }
+
+  export type CycleCountAuditUpdateWithWhereUniqueWithoutSessionInput = {
+    where: CycleCountAuditWhereUniqueInput
+    data: XOR<CycleCountAuditUpdateWithoutSessionInput, CycleCountAuditUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type CycleCountAuditUpdateManyWithWhereWithoutSessionInput = {
+    where: CycleCountAuditScalarWhereInput
+    data: XOR<CycleCountAuditUpdateManyMutationInput, CycleCountAuditUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type InventoryAdjustmentUpsertWithWhereUniqueWithoutCycleCountSessionInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    update: XOR<InventoryAdjustmentUpdateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedUpdateWithoutCycleCountSessionInput>
+    create: XOR<InventoryAdjustmentCreateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedCreateWithoutCycleCountSessionInput>
+  }
+
+  export type InventoryAdjustmentUpdateWithWhereUniqueWithoutCycleCountSessionInput = {
+    where: InventoryAdjustmentWhereUniqueInput
+    data: XOR<InventoryAdjustmentUpdateWithoutCycleCountSessionInput, InventoryAdjustmentUncheckedUpdateWithoutCycleCountSessionInput>
+  }
+
+  export type InventoryAdjustmentUpdateManyWithWhereWithoutCycleCountSessionInput = {
+    where: InventoryAdjustmentScalarWhereInput
+    data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionInput>
+  }
+
+  export type CycleCountSessionCreateWithoutLineItemsInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutLineItemsInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutLineItemsInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutLineItemsInput, CycleCountSessionUncheckedCreateWithoutLineItemsInput>
+  }
+
+  export type ProductVariantCreateWithoutCycleCountLinesInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
+    product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutCycleCountLinesInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutCycleCountLinesInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutCycleCountLinesInput, ProductVariantUncheckedCreateWithoutCycleCountLinesInput>
+  }
+
+  export type InventoryUnitCreateWithoutCycleCountLinesInput = {
+    id?: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant: ProductVariantCreateNestedOneWithoutInventoryUnitsInput
+    location: LocationCreateNestedOneWithoutInventoryUnitsInput
+    allocations?: AllocationCreateNestedManyWithoutInventoryUnitInput
+  }
+
+  export type InventoryUnitUncheckedCreateWithoutCycleCountLinesInput = {
+    id?: string
+    productVariantId: string
+    locationId: string
+    quantity?: number
+    status?: $Enums.InventoryStatus
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    receivedAt?: Date | string
+    receivedFrom?: string | null
+    unitCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    allocations?: AllocationUncheckedCreateNestedManyWithoutInventoryUnitInput
+  }
+
+  export type InventoryUnitCreateOrConnectWithoutCycleCountLinesInput = {
+    where: InventoryUnitWhereUniqueInput
+    create: XOR<InventoryUnitCreateWithoutCycleCountLinesInput, InventoryUnitUncheckedCreateWithoutCycleCountLinesInput>
+  }
+
+  export type CycleCountSessionUpsertWithoutLineItemsInput = {
+    update: XOR<CycleCountSessionUpdateWithoutLineItemsInput, CycleCountSessionUncheckedUpdateWithoutLineItemsInput>
+    create: XOR<CycleCountSessionCreateWithoutLineItemsInput, CycleCountSessionUncheckedCreateWithoutLineItemsInput>
+    where?: CycleCountSessionWhereInput
+  }
+
+  export type CycleCountSessionUpdateToOneWithWhereWithoutLineItemsInput = {
+    where?: CycleCountSessionWhereInput
+    data: XOR<CycleCountSessionUpdateWithoutLineItemsInput, CycleCountSessionUncheckedUpdateWithoutLineItemsInput>
+  }
+
+  export type CycleCountSessionUpdateWithoutLineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutLineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type ProductVariantUpsertWithoutCycleCountLinesInput = {
+    update: XOR<ProductVariantUpdateWithoutCycleCountLinesInput, ProductVariantUncheckedUpdateWithoutCycleCountLinesInput>
+    create: XOR<ProductVariantCreateWithoutCycleCountLinesInput, ProductVariantUncheckedCreateWithoutCycleCountLinesInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutCycleCountLinesInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutCycleCountLinesInput, ProductVariantUncheckedUpdateWithoutCycleCountLinesInput>
+  }
+
+  export type ProductVariantUpdateWithoutCycleCountLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutCycleCountLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type InventoryUnitUpsertWithoutCycleCountLinesInput = {
+    update: XOR<InventoryUnitUpdateWithoutCycleCountLinesInput, InventoryUnitUncheckedUpdateWithoutCycleCountLinesInput>
+    create: XOR<InventoryUnitCreateWithoutCycleCountLinesInput, InventoryUnitUncheckedCreateWithoutCycleCountLinesInput>
+    where?: InventoryUnitWhereInput
+  }
+
+  export type InventoryUnitUpdateToOneWithWhereWithoutCycleCountLinesInput = {
+    where?: InventoryUnitWhereInput
+    data: XOR<InventoryUnitUpdateWithoutCycleCountLinesInput, InventoryUnitUncheckedUpdateWithoutCycleCountLinesInput>
+  }
+
+  export type InventoryUnitUpdateWithoutCycleCountLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
+    allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
+  }
+
+  export type InventoryUnitUncheckedUpdateWithoutCycleCountLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: EnumInventoryStatusFieldUpdateOperationsInput | $Enums.InventoryStatus
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receivedFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    unitCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+  }
+
+  export type CycleCountSessionCreateWithoutAuditLogsInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    adjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCycleCountSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutAuditLogsInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutAuditLogsInput, CycleCountSessionUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type UserCreateWithoutCycleCountAuditsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCycleCountAuditsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCycleCountAuditsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCycleCountAuditsInput, UserUncheckedCreateWithoutCycleCountAuditsInput>
+  }
+
+  export type CycleCountSessionUpsertWithoutAuditLogsInput = {
+    update: XOR<CycleCountSessionUpdateWithoutAuditLogsInput, CycleCountSessionUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<CycleCountSessionCreateWithoutAuditLogsInput, CycleCountSessionUncheckedCreateWithoutAuditLogsInput>
+    where?: CycleCountSessionWhereInput
+  }
+
+  export type CycleCountSessionUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: CycleCountSessionWhereInput
+    data: XOR<CycleCountSessionUpdateWithoutAuditLogsInput, CycleCountSessionUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type CycleCountSessionUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type UserUpsertWithoutCycleCountAuditsInput = {
+    update: XOR<UserUpdateWithoutCycleCountAuditsInput, UserUncheckedUpdateWithoutCycleCountAuditsInput>
+    create: XOR<UserCreateWithoutCycleCountAuditsInput, UserUncheckedCreateWithoutCycleCountAuditsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCycleCountAuditsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCycleCountAuditsInput, UserUncheckedUpdateWithoutCycleCountAuditsInput>
+  }
+
+  export type UserUpdateWithoutCycleCountAuditsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCycleCountAuditsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type CycleCountSessionCreateWithoutAdjustmentsInput = {
+    id?: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    task?: CycleCountTaskCreateNestedOneWithoutSessionsInput
+    location: LocationCreateNestedOneWithoutCycleCountSessionsInput
+    lockedByUser?: UserCreateNestedOneWithoutCycleCountSessionsLockedInput
+    countedBy: UserCreateNestedOneWithoutCycleCountSessionsCountedInput
+    reviewedBy?: UserCreateNestedOneWithoutCycleCountSessionsReviewedInput
+    lineItems?: CycleCountLineCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditCreateNestedManyWithoutSessionInput
+  }
+
+  export type CycleCountSessionUncheckedCreateWithoutAdjustmentsInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: CycleCountLineUncheckedCreateNestedManyWithoutSessionInput
+    auditLogs?: CycleCountAuditUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type CycleCountSessionCreateOrConnectWithoutAdjustmentsInput = {
+    where: CycleCountSessionWhereUniqueInput
+    create: XOR<CycleCountSessionCreateWithoutAdjustmentsInput, CycleCountSessionUncheckedCreateWithoutAdjustmentsInput>
+  }
+
+  export type ProductVariantCreateWithoutInventoryAdjustmentsInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
+    product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutInventoryAdjustmentsInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type LocationCreateWithoutInventoryAdjustmentsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationUncheckedCreateWithoutInventoryAdjustmentsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationCreateOrConnectWithoutInventoryAdjustmentsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutInventoryAdjustmentsInput, LocationUncheckedCreateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type UserCreateWithoutAdjustmentsCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAdjustmentsCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAdjustmentsCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdjustmentsCreatedInput, UserUncheckedCreateWithoutAdjustmentsCreatedInput>
+  }
+
+  export type UserCreateWithoutAdjustmentsApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAdjustmentsApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAdjustmentsApprovedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdjustmentsApprovedInput, UserUncheckedCreateWithoutAdjustmentsApprovedInput>
+  }
+
+  export type CycleCountSessionUpsertWithoutAdjustmentsInput = {
+    update: XOR<CycleCountSessionUpdateWithoutAdjustmentsInput, CycleCountSessionUncheckedUpdateWithoutAdjustmentsInput>
+    create: XOR<CycleCountSessionCreateWithoutAdjustmentsInput, CycleCountSessionUncheckedCreateWithoutAdjustmentsInput>
+    where?: CycleCountSessionWhereInput
+  }
+
+  export type CycleCountSessionUpdateToOneWithWhereWithoutAdjustmentsInput = {
+    where?: CycleCountSessionWhereInput
+    data: XOR<CycleCountSessionUpdateWithoutAdjustmentsInput, CycleCountSessionUncheckedUpdateWithoutAdjustmentsInput>
+  }
+
+  export type CycleCountSessionUpdateWithoutAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ProductVariantUpsertWithoutInventoryAdjustmentsInput = {
+    update: XOR<ProductVariantUpdateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedUpdateWithoutInventoryAdjustmentsInput>
+    create: XOR<ProductVariantCreateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutInventoryAdjustmentsInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutInventoryAdjustmentsInput, ProductVariantUncheckedUpdateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type ProductVariantUpdateWithoutInventoryAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutInventoryAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type LocationUpsertWithoutInventoryAdjustmentsInput = {
+    update: XOR<LocationUpdateWithoutInventoryAdjustmentsInput, LocationUncheckedUpdateWithoutInventoryAdjustmentsInput>
+    create: XOR<LocationCreateWithoutInventoryAdjustmentsInput, LocationUncheckedCreateWithoutInventoryAdjustmentsInput>
+    where?: LocationWhereInput
+  }
+
+  export type LocationUpdateToOneWithWhereWithoutInventoryAdjustmentsInput = {
+    where?: LocationWhereInput
+    data: XOR<LocationUpdateWithoutInventoryAdjustmentsInput, LocationUncheckedUpdateWithoutInventoryAdjustmentsInput>
+  }
+
+  export type LocationUpdateWithoutInventoryAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutInventoryAdjustmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type UserUpsertWithoutAdjustmentsCreatedInput = {
+    update: XOR<UserUpdateWithoutAdjustmentsCreatedInput, UserUncheckedUpdateWithoutAdjustmentsCreatedInput>
+    create: XOR<UserCreateWithoutAdjustmentsCreatedInput, UserUncheckedCreateWithoutAdjustmentsCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdjustmentsCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdjustmentsCreatedInput, UserUncheckedUpdateWithoutAdjustmentsCreatedInput>
+  }
+
+  export type UserUpdateWithoutAdjustmentsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdjustmentsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutAdjustmentsApprovedInput = {
+    update: XOR<UserUpdateWithoutAdjustmentsApprovedInput, UserUncheckedUpdateWithoutAdjustmentsApprovedInput>
+    create: XOR<UserCreateWithoutAdjustmentsApprovedInput, UserUncheckedCreateWithoutAdjustmentsApprovedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdjustmentsApprovedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdjustmentsApprovedInput, UserUncheckedUpdateWithoutAdjustmentsApprovedInput>
+  }
+
+  export type UserUpdateWithoutAdjustmentsApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdjustmentsApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type RefreshTokenCreateManyUserInput = {
@@ -50571,6 +65229,162 @@ export namespace Prisma {
     reportedBy: string
     resolvedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type CycleCountTaskCreateManyAssignedToInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    createdById: string
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountTaskCreateManyCreatedByInput = {
+    id?: string
+    taskNumber: string
+    name?: string | null
+    description?: string | null
+    type?: $Enums.CycleCountType
+    locationIds?: CycleCountTaskCreatelocationIdsInput | string[]
+    zoneId?: string | null
+    skuFilter?: string | null
+    abcClass?: string | null
+    blindCount?: boolean
+    includeZeroQty?: boolean
+    priority?: number
+    scheduledDate?: Date | string | null
+    dueDate?: Date | string | null
+    assignedToId?: string | null
+    status?: $Enums.CycleCountTaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountSessionCreateManyLockedByUserInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountSessionCreateManyCountedByInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountSessionCreateManyReviewedByInput = {
+    id?: string
+    taskId?: string | null
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountAuditCreateManyUserInput = {
+    id?: string
+    sessionId: string
+    action: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyCreatedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyApprovedByInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type RefreshTokenUpdateWithoutUserInput = {
@@ -51215,6 +66029,496 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CycleCountTaskUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCycleCountTasksCreatedNestedInput
+    sessions?: CycleCountSessionUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: CycleCountSessionUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountTaskUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedTo?: UserUpdateOneWithoutCycleCountTasksAssignedNestedInput
+    sessions?: CycleCountSessionUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: CycleCountSessionUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type CycleCountTaskUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumCycleCountTypeFieldUpdateOperationsInput | $Enums.CycleCountType
+    locationIds?: CycleCountTaskUpdatelocationIdsInput | string[]
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    skuFilter?: NullableStringFieldUpdateOperationsInput | string | null
+    abcClass?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    includeZeroQty?: BoolFieldUpdateOperationsInput | boolean
+    priority?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCycleCountTaskStatusFieldUpdateOperationsInput | $Enums.CycleCountTaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionUpdateWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionUpdateWithoutCountedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutCountedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutCountedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionUpdateWithoutReviewedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutReviewedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutReviewedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: CycleCountSessionUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type CycleCountAuditUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountSession?: CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    approvedBy?: UserUpdateOneWithoutAdjustmentsApprovedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountSession?: CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductVariantCreateManyProductInput = {
     id?: string
     sku: string
@@ -51253,6 +66557,8 @@ export namespace Prisma {
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
@@ -51276,6 +66582,8 @@ export namespace Prisma {
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
     receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
@@ -51386,6 +66694,45 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type CycleCountLineCreateManyProductVariantInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyProductVariantInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ShippingPackageItemUpdateWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     productName?: StringFieldUpdateOperationsInput | string
@@ -51475,6 +66822,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: LocationUpdateOneRequiredWithoutInventoryUnitsNestedInput
     allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateWithoutProductVariantInput = {
@@ -51490,6 +66838,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateManyWithoutProductVariantInput = {
@@ -51667,6 +67016,123 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CycleCountLineUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: CycleCountSessionUpdateOneRequiredWithoutLineItemsNestedInput
+    inventoryUnit?: InventoryUnitUpdateOneWithoutCycleCountLinesNestedInput
+  }
+
+  export type CycleCountLineUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountSession?: CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutAdjustmentsApprovedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InventoryUnitCreateManyLocationInput = {
     id?: string
     productVariantId: string
@@ -51738,6 +67204,48 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type CycleCountSessionCreateManyLocationInput = {
+    id?: string
+    taskId?: string | null
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyLocationInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    sourceId?: string | null
+    productVariantId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type InventoryUnitUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -51751,6 +67259,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryUnitsNestedInput
     allocations?: AllocationUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateWithoutLocationInput = {
@@ -51766,6 +67275,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     allocations?: AllocationUncheckedUpdateManyWithoutInventoryUnitNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutInventoryUnitNestedInput
   }
 
   export type InventoryUnitUncheckedUpdateManyWithoutLocationInput = {
@@ -51959,6 +67469,138 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CycleCountSessionUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: CycleCountTaskUpdateOneWithoutSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cycleCountSession?: CycleCountSessionUpdateOneWithoutAdjustmentsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutAdjustmentsApprovedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AllocationCreateManyInventoryUnitInput = {
     id?: string
     orderId: string
@@ -51972,6 +67614,24 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type CycleCountLineCreateManyInventoryUnitInput = {
+    id?: string
+    sessionId: string
+    productVariantId: string
+    sku: string
+    productName: string
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AllocationUpdateWithoutInventoryUnitInput = {
@@ -52017,6 +67677,60 @@ export namespace Prisma {
     releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CycleCountLineUpdateWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: CycleCountSessionUpdateOneRequiredWithoutLineItemsNestedInput
+    productVariant?: ProductVariantUpdateOneRequiredWithoutCycleCountLinesNestedInput
+  }
+
+  export type CycleCountLineUncheckedUpdateWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineUncheckedUpdateManyWithoutInventoryUnitInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ShippingPackageCreateManyOrderInput = {
@@ -52813,6 +68527,288 @@ export namespace Prisma {
     resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountSessionCreateManyTaskInput = {
+    id?: string
+    locationId: string
+    blindCount?: boolean
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    status?: $Enums.CycleCountSessionStatus
+    countedById: string
+    startedAt?: Date | string
+    submittedAt?: Date | string | null
+    reviewedById?: string | null
+    reviewedAt?: Date | string | null
+    reviewNotes?: string | null
+    totalExpected?: number
+    totalCounted?: number
+    varianceCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountSessionUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: LocationUpdateOneRequiredWithoutCycleCountSessionsNestedInput
+    lockedByUser?: UserUpdateOneWithoutCycleCountSessionsLockedNestedInput
+    countedBy?: UserUpdateOneRequiredWithoutCycleCountSessionsCountedNestedInput
+    reviewedBy?: UserUpdateOneWithoutCycleCountSessionsReviewedNestedInput
+    lineItems?: CycleCountLineUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: CycleCountLineUncheckedUpdateManyWithoutSessionNestedInput
+    auditLogs?: CycleCountAuditUncheckedUpdateManyWithoutSessionNestedInput
+    adjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionNestedInput
+  }
+
+  export type CycleCountSessionUncheckedUpdateManyWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    blindCount?: BoolFieldUpdateOperationsInput | boolean
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountSessionStatusFieldUpdateOperationsInput | $Enums.CycleCountSessionStatus
+    countedById?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewedById?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    totalExpected?: IntFieldUpdateOperationsInput | number
+    totalCounted?: IntFieldUpdateOperationsInput | number
+    varianceCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineCreateManySessionInput = {
+    id?: string
+    productVariantId: string
+    sku: string
+    productName: string
+    inventoryUnitId?: string | null
+    systemQty: number
+    countedQty?: number | null
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    status?: $Enums.CycleCountLineStatus
+    isUnexpected?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountAuditCreateManySessionInput = {
+    id?: string
+    action: string
+    userId: string
+    lineId?: string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type InventoryAdjustmentCreateManyCycleCountSessionInput = {
+    id?: string
+    adjustmentNumber: string
+    reason: $Enums.AdjustmentReason
+    sourceType: string
+    productVariantId: string
+    locationId: string
+    inventoryUnitId?: string | null
+    previousQty: number
+    adjustedQty: number
+    changeQty: number
+    lotNumber?: string | null
+    status?: $Enums.AdjustmentStatus
+    createdById: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CycleCountLineUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutCycleCountLinesNestedInput
+    inventoryUnit?: InventoryUnitUpdateOneWithoutCycleCountLinesNestedInput
+  }
+
+  export type CycleCountLineUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountLineUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    systemQty?: IntFieldUpdateOperationsInput | number
+    countedQty?: NullableIntFieldUpdateOperationsInput | number | null
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumCycleCountLineStatusFieldUpdateOperationsInput | $Enums.CycleCountLineStatus
+    isUnexpected?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCycleCountAuditsNestedInput
+  }
+
+  export type CycleCountAuditUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CycleCountAuditUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUpdateWithoutCycleCountSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    location?: LocationUpdateOneRequiredWithoutInventoryAdjustmentsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutAdjustmentsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutAdjustmentsApprovedNestedInput
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateWithoutCycleCountSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryAdjustmentUncheckedUpdateManyWithoutCycleCountSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adjustmentNumber?: StringFieldUpdateOperationsInput | string
+    reason?: EnumAdjustmentReasonFieldUpdateOperationsInput | $Enums.AdjustmentReason
+    sourceType?: StringFieldUpdateOperationsInput | string
+    productVariantId?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    inventoryUnitId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousQty?: IntFieldUpdateOperationsInput | number
+    adjustedQty?: IntFieldUpdateOperationsInput | number
+    changeQty?: IntFieldUpdateOperationsInput | number
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAdjustmentStatusFieldUpdateOperationsInput | $Enums.AdjustmentStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

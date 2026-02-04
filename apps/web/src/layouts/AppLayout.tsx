@@ -37,6 +37,7 @@ import {
   ShieldCheck,
   MapPin,
   Combine,
+  RefreshCw,
 } from "lucide-react";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth, type User as AuthUser } from "../lib/auth";
@@ -95,6 +96,7 @@ const allNavItems: NavItem[] = [
   { to: "/pick", label: "Pick", icon: PackageCheck },
   { to: "/pack", label: "Pack", icon: Package },
   { to: "/receiving", label: "Receive", icon: PackagePlus },
+  { to: "/cycle-count", label: "Cycle Count", icon: RefreshCw },
   { to: "/scan", label: "Scan", icon: ScanBarcode },
   {
     to: "/orders",
@@ -155,6 +157,8 @@ const compactNavItems: NavItem[] = [
   { to: "/tasks", label: "Tasks", icon: ClipboardList },
   { to: "/pick", label: "Pick", icon: PackageCheck },
   { to: "/pack", label: "Pack", icon: Package },
+  { to: "/receiving", label: "Receive", icon: PackagePlus },
+  { to: "/cycle-count", label: "Cycle Count", icon: RefreshCw },
   { to: "/scan", label: "Scan", icon: ScanBarcode },
 ];
 
@@ -365,6 +369,7 @@ export function AppLayout() {
                   "/tasks",
                   "/pick",
                   "/pack",
+                  "/cycle-count",
                   "/receiving",
                   "/scan",
                 ].includes(i.to),

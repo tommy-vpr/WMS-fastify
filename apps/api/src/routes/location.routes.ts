@@ -20,14 +20,31 @@ export const locationRoutes: FastifyPluginAsync = async (app) => {
       active?: string;
       zone?: string;
       type?: string;
+      search?: string;
     };
   }>("/", async (request, reply) => {
-    const { skip = "0", take = "100", active, zone, type } = request.query;
+    const {
+      skip = "0",
+      take = "50",
+      active,
+      zone,
+      type,
+      search,
+    } = request.query;
 
     const where: any = {};
     if (active !== undefined) where.active = active === "true";
     if (zone) where.zone = zone;
     if (type) where.type = type;
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { barcode: { contains: search, mode: "insensitive" } },
+        { aisle: { contains: search, mode: "insensitive" } },
+        { zone: { contains: search, mode: "insensitive" } },
+      ];
+    }
 
     const [locations, total] = await Promise.all([
       prisma.location.findMany({

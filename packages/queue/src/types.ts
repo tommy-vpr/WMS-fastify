@@ -16,6 +16,7 @@ export const QUEUES = {
   FULFILLMENT: "fulfillment",
   SHIPPING: "shipping",
   RECEIVING: "receiving",
+  CYCLE_COUNT: "cycle-count",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -407,4 +408,49 @@ export interface SyncInventoryPlannerResult {
   errors: string[];
   totalIPVariants: number;
   totalWMSVariants: number;
+}
+
+// ============================================================================
+// Cycle Count
+// ============================================================================
+
+export const CYCLE_COUNT_JOBS = {
+  PROCESS_APPROVAL: "cycle-count:process-approval",
+  GENERATE_TASKS: "cycle-count:generate-tasks",
+  NOTIFY_REVIEWERS: "cycle-count:notify-reviewers",
+  GENERATE_VARIANCE_REPORT: "cycle-count:generate-variance-report",
+} as const;
+
+export interface ProcessCycleCountApprovalJobData {
+  sessionId: string;
+  approvedById: string;
+  idempotencyKey?: string;
+}
+
+export interface GenerateCycleCountTasksJobData {
+  type: "ABC" | "ZONE" | "DAYS_SINCE_COUNT";
+  criteria: {
+    abcClass?: string;
+    zoneId?: string;
+    daysSinceCount?: number;
+    maxLocations?: number;
+  };
+  assignToId?: string;
+  createdById: string;
+  idempotencyKey?: string;
+}
+
+export interface NotifyCycleCountReviewersJobData {
+  sessionId: string;
+  locationName: string;
+  countedByName: string;
+  varianceCount: number;
+  idempotencyKey?: string;
+}
+
+export interface GenerateVarianceReportJobData {
+  sessionId: string;
+  format: "PDF" | "CSV";
+  emailTo?: string;
+  idempotencyKey?: string;
 }

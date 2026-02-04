@@ -15,6 +15,7 @@ import {
   ORDER_JOBS,
   PRODUCT_JOBS,
   INVENTORY_PLANNER_JOBS,
+  CYCLE_COUNT_JOBS,
 } from "@wms/queue";
 import {
   processWorkTaskJob,
@@ -22,6 +23,7 @@ import {
   processOrderJob,
   processProductJob,
   processInventoryPlannerJob,
+  processCycleCountJob,
 } from "./processors/index.js";
 
 // ============================================================================
@@ -73,6 +75,33 @@ function createWorkTaskWorker() {
 
   worker.on("error", (err) => {
     console.error("[Worker] Worker error:", err);
+  });
+
+  return worker;
+}
+
+function createCycleCountWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.CYCLE_COUNT,
+    async (job: Job) => processCycleCountJob(job),
+    {
+      connection,
+      concurrency: 5,
+      removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+      removeOnFail: { count: 2000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.CYCLE_COUNT} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[CycleCount] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[CycleCount] Job failed: ${job?.name}`, err.message);
   });
 
   return worker;
@@ -242,6 +271,10 @@ async function main() {
   const inventoryPlannerWorker = createInventoryPlannerWorker();
   workers.push(inventoryPlannerWorker);
 
+  // Cycle Count Worker
+  const cycleCountWorker = createCycleCountWorker();
+  workers.push(cycleCountWorker);
+
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
   process.on("SIGINT", () => shutdown(workers));
@@ -263,6 +296,10 @@ async function main() {
   });
   Object.values(INVENTORY_PLANNER_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.INVENTORY_PLANNER}:${job}`);
+  });
+
+  Object.values(CYCLE_COUNT_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.CYCLE_COUNT}:${job}`);
   });
   console.log("");
 }

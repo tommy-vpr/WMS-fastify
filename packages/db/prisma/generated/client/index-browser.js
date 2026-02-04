@@ -488,6 +488,101 @@ exports.Prisma.ReceivingExceptionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CycleCountTaskScalarFieldEnum = {
+  id: 'id',
+  taskNumber: 'taskNumber',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  locationIds: 'locationIds',
+  zoneId: 'zoneId',
+  skuFilter: 'skuFilter',
+  abcClass: 'abcClass',
+  blindCount: 'blindCount',
+  includeZeroQty: 'includeZeroQty',
+  priority: 'priority',
+  scheduledDate: 'scheduledDate',
+  dueDate: 'dueDate',
+  assignedToId: 'assignedToId',
+  createdById: 'createdById',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CycleCountSessionScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  locationId: 'locationId',
+  blindCount: 'blindCount',
+  version: 'version',
+  lockedBy: 'lockedBy',
+  lockedAt: 'lockedAt',
+  status: 'status',
+  countedById: 'countedById',
+  startedAt: 'startedAt',
+  submittedAt: 'submittedAt',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  totalExpected: 'totalExpected',
+  totalCounted: 'totalCounted',
+  varianceCount: 'varianceCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CycleCountLineScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  productVariantId: 'productVariantId',
+  sku: 'sku',
+  productName: 'productName',
+  inventoryUnitId: 'inventoryUnitId',
+  systemQty: 'systemQty',
+  countedQty: 'countedQty',
+  variance: 'variance',
+  lotNumber: 'lotNumber',
+  expiryDate: 'expiryDate',
+  status: 'status',
+  isUnexpected: 'isUnexpected',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CycleCountAuditScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  action: 'action',
+  userId: 'userId',
+  lineId: 'lineId',
+  data: 'data',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.InventoryAdjustmentScalarFieldEnum = {
+  id: 'id',
+  adjustmentNumber: 'adjustmentNumber',
+  reason: 'reason',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  productVariantId: 'productVariantId',
+  locationId: 'locationId',
+  inventoryUnitId: 'inventoryUnitId',
+  previousQty: 'previousQty',
+  adjustedQty: 'adjustedQty',
+  changeQty: 'changeQty',
+  lotNumber: 'lotNumber',
+  status: 'status',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -665,6 +760,52 @@ exports.ReceivingExceptionType = exports.$Enums.ReceivingExceptionType = {
   OTHER: 'OTHER'
 };
 
+exports.CycleCountType = exports.$Enums.CycleCountType = {
+  LOCATION: 'LOCATION',
+  ZONE: 'ZONE',
+  SKU: 'SKU',
+  ABC: 'ABC',
+  AD_HOC: 'AD_HOC'
+};
+
+exports.CycleCountTaskStatus = exports.$Enums.CycleCountTaskStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.CycleCountSessionStatus = exports.$Enums.CycleCountSessionStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.CycleCountLineStatus = exports.$Enums.CycleCountLineStatus = {
+  PENDING: 'PENDING',
+  COUNTED: 'COUNTED',
+  VERIFIED: 'VERIFIED',
+  SKIPPED: 'SKIPPED'
+};
+
+exports.AdjustmentReason = exports.$Enums.AdjustmentReason = {
+  CYCLE_COUNT: 'CYCLE_COUNT',
+  DAMAGED: 'DAMAGED',
+  LOST: 'LOST',
+  FOUND: 'FOUND',
+  CORRECTION: 'CORRECTION',
+  RECEIVING_VARIANCE: 'RECEIVING_VARIANCE',
+  SHIPPING_VARIANCE: 'SHIPPING_VARIANCE',
+  OTHER: 'OTHER'
+};
+
+exports.AdjustmentStatus = exports.$Enums.AdjustmentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
@@ -688,7 +829,12 @@ exports.Prisma.ModelName = {
   Notification: 'Notification',
   ReceivingSession: 'ReceivingSession',
   ReceivingLine: 'ReceivingLine',
-  ReceivingException: 'ReceivingException'
+  ReceivingException: 'ReceivingException',
+  CycleCountTask: 'CycleCountTask',
+  CycleCountSession: 'CycleCountSession',
+  CycleCountLine: 'CycleCountLine',
+  CycleCountAudit: 'CycleCountAudit',
+  InventoryAdjustment: 'InventoryAdjustment'
 };
 
 /**

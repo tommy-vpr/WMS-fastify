@@ -19,6 +19,8 @@ import { fulfillmentRoutes } from "./routes/fulfillment.routes.js";
 import { ssePlugin } from "./plugins/sse.plugin.js";
 import { shippingRoutes } from "./routes/shipping.routes.js";
 import { receivingRoutes } from "./routes/receiving.routes.js";
+import cycleCountRoutes from "./routes/cycle-count.routes.js";
+import scanRoutes from "./routes/scan.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -92,6 +94,14 @@ export async function buildApp() {
     // Inventory planner
     await protectedRoutes.register(inventoryPlannerRoutes, {
       prefix: "/inventory-planner",
+    });
+    // Scan lookup
+    await protectedRoutes.register(scanRoutes, {
+      prefix: "/scan",
+    });
+    // Cycle Count
+    await protectedRoutes.register(cycleCountRoutes, {
+      prefix: "/cycle-count",
     });
 
     // await protectedRoutes.register(taskRoutes, { prefix: "/tasks" });

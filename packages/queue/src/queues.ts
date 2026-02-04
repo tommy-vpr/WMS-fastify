@@ -38,6 +38,11 @@ import {
   type NotifyApproversJobData,
   type AutoApproveSessionJobData,
   type GenerateBarcodeLabelsJobData,
+  CYCLE_COUNT_JOBS,
+  type ProcessCycleCountApprovalJobData,
+  type GenerateCycleCountTasksJobData,
+  type NotifyCycleCountReviewersJobData,
+  type GenerateVarianceReportJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -52,6 +57,7 @@ let inventoryPlannerQueue: Queue | null = null;
 let fulfillmentQueue: Queue | null = null;
 let shippingQueue: Queue | null = null;
 let receivingQueue: Queue | null = null;
+let cycleCountQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -203,6 +209,24 @@ export function getReceivingQueue(): Queue {
     });
   }
   return receivingQueue;
+}
+
+export function getCycleCountQueue(): Queue {
+  if (!cycleCountQueue) {
+    cycleCountQueue = new Queue(QUEUES.CYCLE_COUNT, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+        removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+        removeOnFail: { count: 2000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return cycleCountQueue;
 }
 
 // ============================================================================
@@ -455,6 +479,67 @@ export async function enqueueGenerateBarcodeLabels(
   });
 }
 
+export async function enqueueProcessCycleCountApproval(
+  data: ProcessCycleCountApprovalJobData,
+  options?: JobsOptions,
+) {
+  const queue = getCycleCountQueue();
+  return queue.add(CYCLE_COUNT_JOBS.PROCESS_APPROVAL, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `cc-approve-${data.sessionId}`,
+    attempts: 1, // Don't retry approvals - could double-adjust inventory
+  });
+}
+
+export async function enqueueGenerateCycleCountTasks(
+  data: GenerateCycleCountTasksJobData,
+  options?: JobsOptions,
+) {
+  const queue = getCycleCountQueue();
+  return queue.add(CYCLE_COUNT_JOBS.GENERATE_TASKS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `cc-generate-${Date.now()}`,
+  });
+}
+
+export async function enqueueNotifyCycleCountReviewers(
+  data: NotifyCycleCountReviewersJobData,
+  options?: JobsOptions,
+) {
+  const queue = getCycleCountQueue();
+  return queue.add(CYCLE_COUNT_JOBS.NOTIFY_REVIEWERS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `cc-notify-${data.sessionId}`,
+  });
+}
+
+export async function enqueueGenerateVarianceReport(
+  data: GenerateVarianceReportJobData,
+  options?: JobsOptions,
+) {
+  const queue = getCycleCountQueue();
+  return queue.add(CYCLE_COUNT_JOBS.GENERATE_VARIANCE_REPORT, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `cc-report-${data.sessionId}`,
+  });
+}
+
+export async function getCycleCountQueueStats() {
+  const queue = getCycleCountQueue();
+  const [waiting, active, completed, failed, delayed] = await Promise.all([
+    queue.getWaitingCount(),
+    queue.getActiveCount(),
+    queue.getCompletedCount(),
+    queue.getFailedCount(),
+    queue.getDelayedCount(),
+  ]);
+  return { waiting, active, completed, failed, delayed };
+}
+
 // ============================================================================
 // Queue Management
 // ============================================================================
@@ -537,6 +622,11 @@ export async function closeQueues() {
   if (receivingQueue) {
     await receivingQueue.close();
     receivingQueue = null;
+  }
+
+  if (cycleCountQueue) {
+    await cycleCountQueue.close();
+    cycleCountQueue = null;
   }
 }
 

@@ -42,6 +42,11 @@ export const EVENT_TYPES = {
   SHIPPING_LABEL_CREATED: "shipping:label_created",
   // Inventory
   INVENTORY_UPDATED: "inventory:updated",
+  // Cycle Count
+  CYCLE_COUNT_STARTED: "cycle_count:started",
+  CYCLE_COUNT_SUBMITTED: "cycle_count:submitted",
+  CYCLE_COUNT_APPROVED: "cycle_count:approved",
+  CYCLE_COUNT_REJECTED: "cycle_count:rejected",
 } as const;
 
 export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];

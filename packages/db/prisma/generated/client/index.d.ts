@@ -113,6 +113,21 @@ export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model ReceivingSession
+ * 
+ */
+export type ReceivingSession = $Result.DefaultSelection<Prisma.$ReceivingSessionPayload>
+/**
+ * Model ReceivingLine
+ * 
+ */
+export type ReceivingLine = $Result.DefaultSelection<Prisma.$ReceivingLinePayload>
+/**
+ * Model ReceivingException
+ * 
+ */
+export type ReceivingException = $Result.DefaultSelection<Prisma.$ReceivingExceptionPayload>
 
 /**
  * Enums
@@ -287,6 +302,29 @@ export const WorkTaskEventType: {
 
 export type WorkTaskEventType = (typeof WorkTaskEventType)[keyof typeof WorkTaskEventType]
 
+
+export const ReceivingStatus: {
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type ReceivingStatus = (typeof ReceivingStatus)[keyof typeof ReceivingStatus]
+
+
+export const ReceivingExceptionType: {
+  DAMAGED: 'DAMAGED',
+  WRONG_ITEM: 'WRONG_ITEM',
+  MISSING: 'MISSING',
+  OVERAGE: 'OVERAGE',
+  QUALITY_ISSUE: 'QUALITY_ISSUE',
+  OTHER: 'OTHER'
+};
+
+export type ReceivingExceptionType = (typeof ReceivingExceptionType)[keyof typeof ReceivingExceptionType]
+
 }
 
 export type ShippingLabelStatus = $Enums.ShippingLabelStatus
@@ -340,6 +378,14 @@ export const WorkTaskBlockReason: typeof $Enums.WorkTaskBlockReason
 export type WorkTaskEventType = $Enums.WorkTaskEventType
 
 export const WorkTaskEventType: typeof $Enums.WorkTaskEventType
+
+export type ReceivingStatus = $Enums.ReceivingStatus
+
+export const ReceivingStatus: typeof $Enums.ReceivingStatus
+
+export type ReceivingExceptionType = $Enums.ReceivingExceptionType
+
+export const ReceivingExceptionType: typeof $Enums.ReceivingExceptionType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -657,6 +703,36 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.receivingSession`: Exposes CRUD operations for the **ReceivingSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReceivingSessions
+    * const receivingSessions = await prisma.receivingSession.findMany()
+    * ```
+    */
+  get receivingSession(): Prisma.ReceivingSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.receivingLine`: Exposes CRUD operations for the **ReceivingLine** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReceivingLines
+    * const receivingLines = await prisma.receivingLine.findMany()
+    * ```
+    */
+  get receivingLine(): Prisma.ReceivingLineDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.receivingException`: Exposes CRUD operations for the **ReceivingException** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReceivingExceptions
+    * const receivingExceptions = await prisma.receivingException.findMany()
+    * ```
+    */
+  get receivingException(): Prisma.ReceivingExceptionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1110,7 +1186,10 @@ export namespace Prisma {
     TaskEvent: 'TaskEvent',
     JobRecord: 'JobRecord',
     AuditLog: 'AuditLog',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    ReceivingSession: 'ReceivingSession',
+    ReceivingLine: 'ReceivingLine',
+    ReceivingException: 'ReceivingException'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1126,7 +1205,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2610,6 +2689,228 @@ export namespace Prisma {
           }
         }
       }
+      ReceivingSession: {
+        payload: Prisma.$ReceivingSessionPayload<ExtArgs>
+        fields: Prisma.ReceivingSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReceivingSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReceivingSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.ReceivingSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReceivingSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          findMany: {
+            args: Prisma.ReceivingSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>[]
+          }
+          create: {
+            args: Prisma.ReceivingSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          createMany: {
+            args: Prisma.ReceivingSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReceivingSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.ReceivingSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          update: {
+            args: Prisma.ReceivingSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReceivingSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReceivingSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReceivingSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReceivingSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.ReceivingSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReceivingSession>
+          }
+          groupBy: {
+            args: Prisma.ReceivingSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReceivingSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      ReceivingLine: {
+        payload: Prisma.$ReceivingLinePayload<ExtArgs>
+        fields: Prisma.ReceivingLineFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReceivingLineFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReceivingLineFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          findFirst: {
+            args: Prisma.ReceivingLineFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReceivingLineFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          findMany: {
+            args: Prisma.ReceivingLineFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>[]
+          }
+          create: {
+            args: Prisma.ReceivingLineCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          createMany: {
+            args: Prisma.ReceivingLineCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReceivingLineCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>[]
+          }
+          delete: {
+            args: Prisma.ReceivingLineDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          update: {
+            args: Prisma.ReceivingLineUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          deleteMany: {
+            args: Prisma.ReceivingLineDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReceivingLineUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReceivingLineUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>[]
+          }
+          upsert: {
+            args: Prisma.ReceivingLineUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingLinePayload>
+          }
+          aggregate: {
+            args: Prisma.ReceivingLineAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReceivingLine>
+          }
+          groupBy: {
+            args: Prisma.ReceivingLineGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingLineGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReceivingLineCountArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingLineCountAggregateOutputType> | number
+          }
+        }
+      }
+      ReceivingException: {
+        payload: Prisma.$ReceivingExceptionPayload<ExtArgs>
+        fields: Prisma.ReceivingExceptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReceivingExceptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReceivingExceptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          findFirst: {
+            args: Prisma.ReceivingExceptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReceivingExceptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          findMany: {
+            args: Prisma.ReceivingExceptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>[]
+          }
+          create: {
+            args: Prisma.ReceivingExceptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          createMany: {
+            args: Prisma.ReceivingExceptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReceivingExceptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>[]
+          }
+          delete: {
+            args: Prisma.ReceivingExceptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          update: {
+            args: Prisma.ReceivingExceptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReceivingExceptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReceivingExceptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReceivingExceptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReceivingExceptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceivingExceptionPayload>
+          }
+          aggregate: {
+            args: Prisma.ReceivingExceptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReceivingException>
+          }
+          groupBy: {
+            args: Prisma.ReceivingExceptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingExceptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReceivingExceptionCountArgs<ExtArgs>
+            result: $Utils.Optional<ReceivingExceptionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2738,6 +3039,9 @@ export namespace Prisma {
     jobRecord?: JobRecordOmit
     auditLog?: AuditLogOmit
     notification?: NotificationOmit
+    receivingSession?: ReceivingSessionOmit
+    receivingLine?: ReceivingLineOmit
+    receivingException?: ReceivingExceptionOmit
   }
 
   /* Types for Logging */
@@ -2825,6 +3129,12 @@ export namespace Prisma {
     completedTaskItems: number
     auditLogs: number
     notifications: number
+    receivingSessionsCounted: number
+    receivingSessionsLocked: number
+    receivingSessionsAssigned: number
+    receivingSessionsApproved: number
+    exceptionsReported: number
+    exceptionsResolved: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2835,6 +3145,12 @@ export namespace Prisma {
     completedTaskItems?: boolean | UserCountOutputTypeCountCompletedTaskItemsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    receivingSessionsCounted?: boolean | UserCountOutputTypeCountReceivingSessionsCountedArgs
+    receivingSessionsLocked?: boolean | UserCountOutputTypeCountReceivingSessionsLockedArgs
+    receivingSessionsAssigned?: boolean | UserCountOutputTypeCountReceivingSessionsAssignedArgs
+    receivingSessionsApproved?: boolean | UserCountOutputTypeCountReceivingSessionsApprovedArgs
+    exceptionsReported?: boolean | UserCountOutputTypeCountExceptionsReportedArgs
+    exceptionsResolved?: boolean | UserCountOutputTypeCountExceptionsResolvedArgs
   }
 
   // Custom InputTypes
@@ -2897,6 +3213,48 @@ export namespace Prisma {
     where?: NotificationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivingSessionsCountedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivingSessionsLockedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivingSessionsAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivingSessionsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExceptionsReportedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingExceptionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExceptionsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingExceptionWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -2939,6 +3297,7 @@ export namespace Prisma {
     inventoryUnits: number
     taskItems: number
     allocations: number
+    receivingLines: number
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2947,6 +3306,7 @@ export namespace Prisma {
     inventoryUnits?: boolean | ProductVariantCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | ProductVariantCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | ProductVariantCountOutputTypeCountAllocationsArgs
+    receivingLines?: boolean | ProductVariantCountOutputTypeCountReceivingLinesArgs
   }
 
   // Custom InputTypes
@@ -2995,6 +3355,13 @@ export namespace Prisma {
     where?: AllocationWhereInput
   }
 
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountReceivingLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingLineWhereInput
+  }
+
 
   /**
    * Count Type LocationCountOutputType
@@ -3004,12 +3371,14 @@ export namespace Prisma {
     inventoryUnits: number
     taskItems: number
     allocations: number
+    receivingSessions: number
   }
 
   export type LocationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inventoryUnits?: boolean | LocationCountOutputTypeCountInventoryUnitsArgs
     taskItems?: boolean | LocationCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | LocationCountOutputTypeCountAllocationsArgs
+    receivingSessions?: boolean | LocationCountOutputTypeCountReceivingSessionsArgs
   }
 
   // Custom InputTypes
@@ -3042,6 +3411,13 @@ export namespace Prisma {
    */
   export type LocationCountOutputTypeCountAllocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AllocationWhereInput
+  }
+
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeCountReceivingSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
   }
 
 
@@ -3251,6 +3627,46 @@ export namespace Prisma {
    */
   export type WorkTaskCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskEventWhereInput
+  }
+
+
+  /**
+   * Count Type ReceivingSessionCountOutputType
+   */
+
+  export type ReceivingSessionCountOutputType = {
+    lineItems: number
+    exceptions: number
+  }
+
+  export type ReceivingSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lineItems?: boolean | ReceivingSessionCountOutputTypeCountLineItemsArgs
+    exceptions?: boolean | ReceivingSessionCountOutputTypeCountExceptionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ReceivingSessionCountOutputType without action
+   */
+  export type ReceivingSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSessionCountOutputType
+     */
+    select?: ReceivingSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingSessionCountOutputType without action
+   */
+  export type ReceivingSessionCountOutputTypeCountLineItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingLineWhereInput
+  }
+
+  /**
+   * ReceivingSessionCountOutputType without action
+   */
+  export type ReceivingSessionCountOutputTypeCountExceptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingExceptionWhereInput
   }
 
 
@@ -3469,6 +3885,12 @@ export namespace Prisma {
     completedTaskItems?: boolean | User$completedTaskItemsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    receivingSessionsCounted?: boolean | User$receivingSessionsCountedArgs<ExtArgs>
+    receivingSessionsLocked?: boolean | User$receivingSessionsLockedArgs<ExtArgs>
+    receivingSessionsAssigned?: boolean | User$receivingSessionsAssignedArgs<ExtArgs>
+    receivingSessionsApproved?: boolean | User$receivingSessionsApprovedArgs<ExtArgs>
+    exceptionsReported?: boolean | User$exceptionsReportedArgs<ExtArgs>
+    exceptionsResolved?: boolean | User$exceptionsResolvedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3520,6 +3942,12 @@ export namespace Prisma {
     completedTaskItems?: boolean | User$completedTaskItemsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    receivingSessionsCounted?: boolean | User$receivingSessionsCountedArgs<ExtArgs>
+    receivingSessionsLocked?: boolean | User$receivingSessionsLockedArgs<ExtArgs>
+    receivingSessionsAssigned?: boolean | User$receivingSessionsAssignedArgs<ExtArgs>
+    receivingSessionsApproved?: boolean | User$receivingSessionsApprovedArgs<ExtArgs>
+    exceptionsReported?: boolean | User$exceptionsReportedArgs<ExtArgs>
+    exceptionsResolved?: boolean | User$exceptionsResolvedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3535,6 +3963,12 @@ export namespace Prisma {
       completedTaskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      receivingSessionsCounted: Prisma.$ReceivingSessionPayload<ExtArgs>[]
+      receivingSessionsLocked: Prisma.$ReceivingSessionPayload<ExtArgs>[]
+      receivingSessionsAssigned: Prisma.$ReceivingSessionPayload<ExtArgs>[]
+      receivingSessionsApproved: Prisma.$ReceivingSessionPayload<ExtArgs>[]
+      exceptionsReported: Prisma.$ReceivingExceptionPayload<ExtArgs>[]
+      exceptionsResolved: Prisma.$ReceivingExceptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3948,6 +4382,12 @@ export namespace Prisma {
     completedTaskItems<T extends User$completedTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$completedTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSessionsCounted<T extends User$receivingSessionsCountedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsCountedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSessionsLocked<T extends User$receivingSessionsLockedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsLockedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSessionsAssigned<T extends User$receivingSessionsAssignedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSessionsApproved<T extends User$receivingSessionsApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exceptionsReported<T extends User$exceptionsReportedArgs<ExtArgs> = {}>(args?: Subset<T, User$exceptionsReportedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exceptionsResolved<T extends User$exceptionsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$exceptionsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4540,6 +4980,150 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivingSessionsCounted
+   */
+  export type User$receivingSessionsCountedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    cursor?: ReceivingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivingSessionsLocked
+   */
+  export type User$receivingSessionsLockedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    cursor?: ReceivingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivingSessionsAssigned
+   */
+  export type User$receivingSessionsAssignedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    cursor?: ReceivingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivingSessionsApproved
+   */
+  export type User$receivingSessionsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    cursor?: ReceivingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.exceptionsReported
+   */
+  export type User$exceptionsReportedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    where?: ReceivingExceptionWhereInput
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    cursor?: ReceivingExceptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * User.exceptionsResolved
+   */
+  export type User$exceptionsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    where?: ReceivingExceptionWhereInput
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    cursor?: ReceivingExceptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
   }
 
   /**
@@ -8117,6 +8701,7 @@ export namespace Prisma {
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
+    receivingLines?: boolean | ProductVariant$receivingLinesArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["productVariant"]>
 
@@ -8184,6 +8769,7 @@ export namespace Prisma {
     inventoryUnits?: boolean | ProductVariant$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | ProductVariant$taskItemsArgs<ExtArgs>
     allocations?: boolean | ProductVariant$allocationsArgs<ExtArgs>
+    receivingLines?: boolean | ProductVariant$receivingLinesArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductVariantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8202,6 +8788,7 @@ export namespace Prisma {
       inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
+      receivingLines: Prisma.$ReceivingLinePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8619,6 +9206,7 @@ export namespace Prisma {
     inventoryUnits<T extends ProductVariant$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends ProductVariant$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends ProductVariant$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingLines<T extends ProductVariant$receivingLinesArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$receivingLinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9179,6 +9767,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProductVariant.receivingLines
+   */
+  export type ProductVariant$receivingLinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    where?: ReceivingLineWhereInput
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    cursor?: ReceivingLineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingLineScalarFieldEnum | ReceivingLineScalarFieldEnum[]
+  }
+
+  /**
    * ProductVariant without action
    */
   export type ProductVariantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9470,6 +10082,7 @@ export namespace Prisma {
     inventoryUnits?: boolean | Location$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
     allocations?: boolean | Location$allocationsArgs<ExtArgs>
+    receivingSessions?: boolean | Location$receivingSessionsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["location"]>
 
@@ -9529,6 +10142,7 @@ export namespace Prisma {
     inventoryUnits?: boolean | Location$inventoryUnitsArgs<ExtArgs>
     taskItems?: boolean | Location$taskItemsArgs<ExtArgs>
     allocations?: boolean | Location$allocationsArgs<ExtArgs>
+    receivingSessions?: boolean | Location$receivingSessionsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9540,6 +10154,7 @@ export namespace Prisma {
       inventoryUnits: Prisma.$InventoryUnitPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
+      receivingSessions: Prisma.$ReceivingSessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9953,6 +10568,7 @@ export namespace Prisma {
     inventoryUnits<T extends Location$inventoryUnitsArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryUnitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends Location$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Location$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends Location$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Location$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSessions<T extends Location$receivingSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Location$receivingSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10453,6 +11069,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AllocationScalarFieldEnum | AllocationScalarFieldEnum[]
+  }
+
+  /**
+   * Location.receivingSessions
+   */
+  export type Location$receivingSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    cursor?: ReceivingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
   }
 
   /**
@@ -20853,6 +21493,7 @@ export namespace Prisma {
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
     events?: boolean | WorkTask$eventsArgs<ExtArgs>
+    receivingSession?: boolean | WorkTask$receivingSessionArgs<ExtArgs>
     _count?: boolean | WorkTaskCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workTask"]>
 
@@ -20953,6 +21594,7 @@ export namespace Prisma {
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
     events?: boolean | WorkTask$eventsArgs<ExtArgs>
+    receivingSession?: boolean | WorkTask$receivingSessionArgs<ExtArgs>
     _count?: boolean | WorkTaskCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20968,6 +21610,7 @@ export namespace Prisma {
       assignedUser: Prisma.$UserPayload<ExtArgs> | null
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       events: Prisma.$TaskEventPayload<ExtArgs>[]
+      receivingSession: Prisma.$ReceivingSessionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21394,6 +22037,7 @@ export namespace Prisma {
     assignedUser<T extends WorkTask$assignedUserArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$assignedUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     taskItems<T extends WorkTask$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     events<T extends WorkTask$eventsArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivingSession<T extends WorkTask$receivingSessionArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$receivingSessionArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21913,6 +22557,25 @@ export namespace Prisma {
   }
 
   /**
+   * WorkTask.receivingSession
+   */
+  export type WorkTask$receivingSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    where?: ReceivingSessionWhereInput
+  }
+
+  /**
    * WorkTask without action
    */
   export type WorkTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22185,7 +22848,7 @@ export namespace Prisma {
   export type TaskItemGroupByOutputType = {
     id: string
     taskId: string
-    orderId: string
+    orderId: string | null
     orderItemId: string | null
     productVariantId: string | null
     locationId: string | null
@@ -22242,7 +22905,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22270,7 +22933,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22297,7 +22960,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22328,7 +22991,7 @@ export namespace Prisma {
   export type TaskItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskId" | "orderId" | "orderItemId" | "productVariantId" | "locationId" | "allocationId" | "sequence" | "quantityRequired" | "quantityCompleted" | "status" | "completedBy" | "completedAt" | "shortReason" | "locationScanned" | "itemScanned" | "createdAt" | "updatedAt", ExtArgs["result"]["taskItem"]>
   export type TaskItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22337,7 +23000,7 @@ export namespace Prisma {
   }
   export type TaskItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22345,7 +23008,7 @@ export namespace Prisma {
   }
   export type TaskItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     task?: boolean | WorkTaskDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
+    order?: boolean | TaskItem$orderArgs<ExtArgs>
     orderItem?: boolean | TaskItem$orderItemArgs<ExtArgs>
     productVariant?: boolean | TaskItem$productVariantArgs<ExtArgs>
     location?: boolean | TaskItem$locationArgs<ExtArgs>
@@ -22356,7 +23019,7 @@ export namespace Prisma {
     name: "TaskItem"
     objects: {
       task: Prisma.$WorkTaskPayload<ExtArgs>
-      order: Prisma.$OrderPayload<ExtArgs>
+      order: Prisma.$OrderPayload<ExtArgs> | null
       orderItem: Prisma.$OrderItemPayload<ExtArgs> | null
       productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
       location: Prisma.$LocationPayload<ExtArgs> | null
@@ -22366,7 +23029,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       taskId: string
-      orderId: string
+      orderId: string | null
       orderItemId: string | null
       productVariantId: string | null
       locationId: string | null
@@ -22777,7 +23440,7 @@ export namespace Prisma {
   export interface Prisma__TaskItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     task<T extends WorkTaskDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkTaskDefaultArgs<ExtArgs>>): Prisma__WorkTaskClient<$Result.GetResult<Prisma.$WorkTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends TaskItem$orderArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$orderArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orderItem<T extends TaskItem$orderItemArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$orderItemArgs<ExtArgs>>): Prisma__OrderItemClient<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     productVariant<T extends TaskItem$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     location<T extends TaskItem$locationArgs<ExtArgs> = {}>(args?: Subset<T, TaskItem$locationArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -23223,6 +23886,25 @@ export namespace Prisma {
      * Limit how many TaskItems to delete.
      */
     limit?: number
+  }
+
+  /**
+   * TaskItem.order
+   */
+  export type TaskItem$orderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
   }
 
   /**
@@ -27755,6 +28437,3969 @@ export namespace Prisma {
 
 
   /**
+   * Model ReceivingSession
+   */
+
+  export type AggregateReceivingSession = {
+    _count: ReceivingSessionCountAggregateOutputType | null
+    _avg: ReceivingSessionAvgAggregateOutputType | null
+    _sum: ReceivingSessionSumAggregateOutputType | null
+    _min: ReceivingSessionMinAggregateOutputType | null
+    _max: ReceivingSessionMaxAggregateOutputType | null
+  }
+
+  export type ReceivingSessionAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type ReceivingSessionSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type ReceivingSessionMinAggregateOutputType = {
+    id: string | null
+    poId: string | null
+    poReference: string | null
+    vendor: string | null
+    status: $Enums.ReceivingStatus | null
+    version: number | null
+    lockedBy: string | null
+    lockedAt: Date | null
+    countedBy: string | null
+    countedAt: Date | null
+    submittedAt: Date | null
+    assignedTo: string | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    rejectionReason: string | null
+    receivingLocationId: string | null
+    putawayTaskId: string | null
+    idempotencyKey: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceivingSessionMaxAggregateOutputType = {
+    id: string | null
+    poId: string | null
+    poReference: string | null
+    vendor: string | null
+    status: $Enums.ReceivingStatus | null
+    version: number | null
+    lockedBy: string | null
+    lockedAt: Date | null
+    countedBy: string | null
+    countedAt: Date | null
+    submittedAt: Date | null
+    assignedTo: string | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    rejectionReason: string | null
+    receivingLocationId: string | null
+    putawayTaskId: string | null
+    idempotencyKey: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceivingSessionCountAggregateOutputType = {
+    id: number
+    poId: number
+    poReference: number
+    vendor: number
+    status: number
+    version: number
+    lockedBy: number
+    lockedAt: number
+    countedBy: number
+    countedAt: number
+    submittedAt: number
+    assignedTo: number
+    approvedBy: number
+    approvedAt: number
+    rejectionReason: number
+    receivingLocationId: number
+    putawayTaskId: number
+    idempotencyKey: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ReceivingSessionAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type ReceivingSessionSumAggregateInputType = {
+    version?: true
+  }
+
+  export type ReceivingSessionMinAggregateInputType = {
+    id?: true
+    poId?: true
+    poReference?: true
+    vendor?: true
+    status?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    countedBy?: true
+    countedAt?: true
+    submittedAt?: true
+    assignedTo?: true
+    approvedBy?: true
+    approvedAt?: true
+    rejectionReason?: true
+    receivingLocationId?: true
+    putawayTaskId?: true
+    idempotencyKey?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceivingSessionMaxAggregateInputType = {
+    id?: true
+    poId?: true
+    poReference?: true
+    vendor?: true
+    status?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    countedBy?: true
+    countedAt?: true
+    submittedAt?: true
+    assignedTo?: true
+    approvedBy?: true
+    approvedAt?: true
+    rejectionReason?: true
+    receivingLocationId?: true
+    putawayTaskId?: true
+    idempotencyKey?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceivingSessionCountAggregateInputType = {
+    id?: true
+    poId?: true
+    poReference?: true
+    vendor?: true
+    status?: true
+    version?: true
+    lockedBy?: true
+    lockedAt?: true
+    countedBy?: true
+    countedAt?: true
+    submittedAt?: true
+    assignedTo?: true
+    approvedBy?: true
+    approvedAt?: true
+    rejectionReason?: true
+    receivingLocationId?: true
+    putawayTaskId?: true
+    idempotencyKey?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ReceivingSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingSession to aggregate.
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingSessions to fetch.
+     */
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReceivingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReceivingSessions
+    **/
+    _count?: true | ReceivingSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReceivingSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReceivingSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReceivingSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReceivingSessionMaxAggregateInputType
+  }
+
+  export type GetReceivingSessionAggregateType<T extends ReceivingSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateReceivingSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReceivingSession[P]>
+      : GetScalarType<T[P], AggregateReceivingSession[P]>
+  }
+
+
+
+
+  export type ReceivingSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingSessionWhereInput
+    orderBy?: ReceivingSessionOrderByWithAggregationInput | ReceivingSessionOrderByWithAggregationInput[]
+    by: ReceivingSessionScalarFieldEnum[] | ReceivingSessionScalarFieldEnum
+    having?: ReceivingSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReceivingSessionCountAggregateInputType | true
+    _avg?: ReceivingSessionAvgAggregateInputType
+    _sum?: ReceivingSessionSumAggregateInputType
+    _min?: ReceivingSessionMinAggregateInputType
+    _max?: ReceivingSessionMaxAggregateInputType
+  }
+
+  export type ReceivingSessionGroupByOutputType = {
+    id: string
+    poId: string
+    poReference: string
+    vendor: string | null
+    status: $Enums.ReceivingStatus
+    version: number
+    lockedBy: string | null
+    lockedAt: Date | null
+    countedBy: string
+    countedAt: Date
+    submittedAt: Date | null
+    assignedTo: string | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    rejectionReason: string | null
+    receivingLocationId: string | null
+    putawayTaskId: string | null
+    idempotencyKey: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ReceivingSessionCountAggregateOutputType | null
+    _avg: ReceivingSessionAvgAggregateOutputType | null
+    _sum: ReceivingSessionSumAggregateOutputType | null
+    _min: ReceivingSessionMinAggregateOutputType | null
+    _max: ReceivingSessionMaxAggregateOutputType | null
+  }
+
+  type GetReceivingSessionGroupByPayload<T extends ReceivingSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReceivingSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReceivingSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReceivingSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], ReceivingSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReceivingSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    poId?: boolean
+    poReference?: boolean
+    vendor?: boolean
+    status?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    countedBy?: boolean
+    countedAt?: boolean
+    submittedAt?: boolean
+    assignedTo?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    rejectionReason?: boolean
+    receivingLocationId?: boolean
+    putawayTaskId?: boolean
+    idempotencyKey?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lineItems?: boolean | ReceivingSession$lineItemsArgs<ExtArgs>
+    exceptions?: boolean | ReceivingSession$exceptionsArgs<ExtArgs>
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+    _count?: boolean | ReceivingSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingSession"]>
+
+  export type ReceivingSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    poId?: boolean
+    poReference?: boolean
+    vendor?: boolean
+    status?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    countedBy?: boolean
+    countedAt?: boolean
+    submittedAt?: boolean
+    assignedTo?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    rejectionReason?: boolean
+    receivingLocationId?: boolean
+    putawayTaskId?: boolean
+    idempotencyKey?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingSession"]>
+
+  export type ReceivingSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    poId?: boolean
+    poReference?: boolean
+    vendor?: boolean
+    status?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    countedBy?: boolean
+    countedAt?: boolean
+    submittedAt?: boolean
+    assignedTo?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    rejectionReason?: boolean
+    receivingLocationId?: boolean
+    putawayTaskId?: boolean
+    idempotencyKey?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingSession"]>
+
+  export type ReceivingSessionSelectScalar = {
+    id?: boolean
+    poId?: boolean
+    poReference?: boolean
+    vendor?: boolean
+    status?: boolean
+    version?: boolean
+    lockedBy?: boolean
+    lockedAt?: boolean
+    countedBy?: boolean
+    countedAt?: boolean
+    submittedAt?: boolean
+    assignedTo?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    rejectionReason?: boolean
+    receivingLocationId?: boolean
+    putawayTaskId?: boolean
+    idempotencyKey?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ReceivingSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "poId" | "poReference" | "vendor" | "status" | "version" | "lockedBy" | "lockedAt" | "countedBy" | "countedAt" | "submittedAt" | "assignedTo" | "approvedBy" | "approvedAt" | "rejectionReason" | "receivingLocationId" | "putawayTaskId" | "idempotencyKey" | "createdAt" | "updatedAt", ExtArgs["result"]["receivingSession"]>
+  export type ReceivingSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lineItems?: boolean | ReceivingSession$lineItemsArgs<ExtArgs>
+    exceptions?: boolean | ReceivingSession$exceptionsArgs<ExtArgs>
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+    _count?: boolean | ReceivingSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ReceivingSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+  }
+  export type ReceivingSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    countedByUser?: boolean | UserDefaultArgs<ExtArgs>
+    lockedByUser?: boolean | ReceivingSession$lockedByUserArgs<ExtArgs>
+    assignedToUser?: boolean | ReceivingSession$assignedToUserArgs<ExtArgs>
+    approvedByUser?: boolean | ReceivingSession$approvedByUserArgs<ExtArgs>
+    receivingLocation?: boolean | ReceivingSession$receivingLocationArgs<ExtArgs>
+    putawayTask?: boolean | ReceivingSession$putawayTaskArgs<ExtArgs>
+  }
+
+  export type $ReceivingSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReceivingSession"
+    objects: {
+      lineItems: Prisma.$ReceivingLinePayload<ExtArgs>[]
+      exceptions: Prisma.$ReceivingExceptionPayload<ExtArgs>[]
+      countedByUser: Prisma.$UserPayload<ExtArgs>
+      lockedByUser: Prisma.$UserPayload<ExtArgs> | null
+      assignedToUser: Prisma.$UserPayload<ExtArgs> | null
+      approvedByUser: Prisma.$UserPayload<ExtArgs> | null
+      receivingLocation: Prisma.$LocationPayload<ExtArgs> | null
+      putawayTask: Prisma.$WorkTaskPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      poId: string
+      poReference: string
+      vendor: string | null
+      status: $Enums.ReceivingStatus
+      version: number
+      lockedBy: string | null
+      lockedAt: Date | null
+      countedBy: string
+      countedAt: Date
+      submittedAt: Date | null
+      assignedTo: string | null
+      approvedBy: string | null
+      approvedAt: Date | null
+      rejectionReason: string | null
+      receivingLocationId: string | null
+      putawayTaskId: string | null
+      idempotencyKey: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["receivingSession"]>
+    composites: {}
+  }
+
+  type ReceivingSessionGetPayload<S extends boolean | null | undefined | ReceivingSessionDefaultArgs> = $Result.GetResult<Prisma.$ReceivingSessionPayload, S>
+
+  type ReceivingSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReceivingSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReceivingSessionCountAggregateInputType | true
+    }
+
+  export interface ReceivingSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReceivingSession'], meta: { name: 'ReceivingSession' } }
+    /**
+     * Find zero or one ReceivingSession that matches the filter.
+     * @param {ReceivingSessionFindUniqueArgs} args - Arguments to find a ReceivingSession
+     * @example
+     * // Get one ReceivingSession
+     * const receivingSession = await prisma.receivingSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReceivingSessionFindUniqueArgs>(args: SelectSubset<T, ReceivingSessionFindUniqueArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReceivingSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReceivingSessionFindUniqueOrThrowArgs} args - Arguments to find a ReceivingSession
+     * @example
+     * // Get one ReceivingSession
+     * const receivingSession = await prisma.receivingSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReceivingSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, ReceivingSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionFindFirstArgs} args - Arguments to find a ReceivingSession
+     * @example
+     * // Get one ReceivingSession
+     * const receivingSession = await prisma.receivingSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReceivingSessionFindFirstArgs>(args?: SelectSubset<T, ReceivingSessionFindFirstArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionFindFirstOrThrowArgs} args - Arguments to find a ReceivingSession
+     * @example
+     * // Get one ReceivingSession
+     * const receivingSession = await prisma.receivingSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReceivingSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, ReceivingSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReceivingSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReceivingSessions
+     * const receivingSessions = await prisma.receivingSession.findMany()
+     * 
+     * // Get first 10 ReceivingSessions
+     * const receivingSessions = await prisma.receivingSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const receivingSessionWithIdOnly = await prisma.receivingSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReceivingSessionFindManyArgs>(args?: SelectSubset<T, ReceivingSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReceivingSession.
+     * @param {ReceivingSessionCreateArgs} args - Arguments to create a ReceivingSession.
+     * @example
+     * // Create one ReceivingSession
+     * const ReceivingSession = await prisma.receivingSession.create({
+     *   data: {
+     *     // ... data to create a ReceivingSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReceivingSessionCreateArgs>(args: SelectSubset<T, ReceivingSessionCreateArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReceivingSessions.
+     * @param {ReceivingSessionCreateManyArgs} args - Arguments to create many ReceivingSessions.
+     * @example
+     * // Create many ReceivingSessions
+     * const receivingSession = await prisma.receivingSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReceivingSessionCreateManyArgs>(args?: SelectSubset<T, ReceivingSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReceivingSessions and returns the data saved in the database.
+     * @param {ReceivingSessionCreateManyAndReturnArgs} args - Arguments to create many ReceivingSessions.
+     * @example
+     * // Create many ReceivingSessions
+     * const receivingSession = await prisma.receivingSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReceivingSessions and only return the `id`
+     * const receivingSessionWithIdOnly = await prisma.receivingSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReceivingSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, ReceivingSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReceivingSession.
+     * @param {ReceivingSessionDeleteArgs} args - Arguments to delete one ReceivingSession.
+     * @example
+     * // Delete one ReceivingSession
+     * const ReceivingSession = await prisma.receivingSession.delete({
+     *   where: {
+     *     // ... filter to delete one ReceivingSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReceivingSessionDeleteArgs>(args: SelectSubset<T, ReceivingSessionDeleteArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReceivingSession.
+     * @param {ReceivingSessionUpdateArgs} args - Arguments to update one ReceivingSession.
+     * @example
+     * // Update one ReceivingSession
+     * const receivingSession = await prisma.receivingSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReceivingSessionUpdateArgs>(args: SelectSubset<T, ReceivingSessionUpdateArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReceivingSessions.
+     * @param {ReceivingSessionDeleteManyArgs} args - Arguments to filter ReceivingSessions to delete.
+     * @example
+     * // Delete a few ReceivingSessions
+     * const { count } = await prisma.receivingSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReceivingSessionDeleteManyArgs>(args?: SelectSubset<T, ReceivingSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReceivingSessions
+     * const receivingSession = await prisma.receivingSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReceivingSessionUpdateManyArgs>(args: SelectSubset<T, ReceivingSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingSessions and returns the data updated in the database.
+     * @param {ReceivingSessionUpdateManyAndReturnArgs} args - Arguments to update many ReceivingSessions.
+     * @example
+     * // Update many ReceivingSessions
+     * const receivingSession = await prisma.receivingSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReceivingSessions and only return the `id`
+     * const receivingSessionWithIdOnly = await prisma.receivingSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReceivingSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, ReceivingSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReceivingSession.
+     * @param {ReceivingSessionUpsertArgs} args - Arguments to update or create a ReceivingSession.
+     * @example
+     * // Update or create a ReceivingSession
+     * const receivingSession = await prisma.receivingSession.upsert({
+     *   create: {
+     *     // ... data to create a ReceivingSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReceivingSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReceivingSessionUpsertArgs>(args: SelectSubset<T, ReceivingSessionUpsertArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReceivingSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionCountArgs} args - Arguments to filter ReceivingSessions to count.
+     * @example
+     * // Count the number of ReceivingSessions
+     * const count = await prisma.receivingSession.count({
+     *   where: {
+     *     // ... the filter for the ReceivingSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReceivingSessionCountArgs>(
+      args?: Subset<T, ReceivingSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReceivingSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReceivingSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReceivingSessionAggregateArgs>(args: Subset<T, ReceivingSessionAggregateArgs>): Prisma.PrismaPromise<GetReceivingSessionAggregateType<T>>
+
+    /**
+     * Group by ReceivingSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReceivingSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReceivingSessionGroupByArgs['orderBy'] }
+        : { orderBy?: ReceivingSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReceivingSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReceivingSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReceivingSession model
+   */
+  readonly fields: ReceivingSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReceivingSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReceivingSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lineItems<T extends ReceivingSession$lineItemsArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$lineItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exceptions<T extends ReceivingSession$exceptionsArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$exceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    countedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    lockedByUser<T extends ReceivingSession$lockedByUserArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$lockedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    assignedToUser<T extends ReceivingSession$assignedToUserArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$assignedToUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    approvedByUser<T extends ReceivingSession$approvedByUserArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$approvedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    receivingLocation<T extends ReceivingSession$receivingLocationArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$receivingLocationArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    putawayTask<T extends ReceivingSession$putawayTaskArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSession$putawayTaskArgs<ExtArgs>>): Prisma__WorkTaskClient<$Result.GetResult<Prisma.$WorkTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReceivingSession model
+   */
+  interface ReceivingSessionFieldRefs {
+    readonly id: FieldRef<"ReceivingSession", 'String'>
+    readonly poId: FieldRef<"ReceivingSession", 'String'>
+    readonly poReference: FieldRef<"ReceivingSession", 'String'>
+    readonly vendor: FieldRef<"ReceivingSession", 'String'>
+    readonly status: FieldRef<"ReceivingSession", 'ReceivingStatus'>
+    readonly version: FieldRef<"ReceivingSession", 'Int'>
+    readonly lockedBy: FieldRef<"ReceivingSession", 'String'>
+    readonly lockedAt: FieldRef<"ReceivingSession", 'DateTime'>
+    readonly countedBy: FieldRef<"ReceivingSession", 'String'>
+    readonly countedAt: FieldRef<"ReceivingSession", 'DateTime'>
+    readonly submittedAt: FieldRef<"ReceivingSession", 'DateTime'>
+    readonly assignedTo: FieldRef<"ReceivingSession", 'String'>
+    readonly approvedBy: FieldRef<"ReceivingSession", 'String'>
+    readonly approvedAt: FieldRef<"ReceivingSession", 'DateTime'>
+    readonly rejectionReason: FieldRef<"ReceivingSession", 'String'>
+    readonly receivingLocationId: FieldRef<"ReceivingSession", 'String'>
+    readonly putawayTaskId: FieldRef<"ReceivingSession", 'String'>
+    readonly idempotencyKey: FieldRef<"ReceivingSession", 'String'>
+    readonly createdAt: FieldRef<"ReceivingSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"ReceivingSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReceivingSession findUnique
+   */
+  export type ReceivingSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingSession to fetch.
+     */
+    where: ReceivingSessionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingSession findUniqueOrThrow
+   */
+  export type ReceivingSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingSession to fetch.
+     */
+    where: ReceivingSessionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingSession findFirst
+   */
+  export type ReceivingSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingSession to fetch.
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingSessions to fetch.
+     */
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingSessions.
+     */
+    cursor?: ReceivingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingSessions.
+     */
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingSession findFirstOrThrow
+   */
+  export type ReceivingSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingSession to fetch.
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingSessions to fetch.
+     */
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingSessions.
+     */
+    cursor?: ReceivingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingSessions.
+     */
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingSession findMany
+   */
+  export type ReceivingSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingSessions to fetch.
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingSessions to fetch.
+     */
+    orderBy?: ReceivingSessionOrderByWithRelationInput | ReceivingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReceivingSessions.
+     */
+    cursor?: ReceivingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingSessions.
+     */
+    skip?: number
+    distinct?: ReceivingSessionScalarFieldEnum | ReceivingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingSession create
+   */
+  export type ReceivingSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReceivingSession.
+     */
+    data: XOR<ReceivingSessionCreateInput, ReceivingSessionUncheckedCreateInput>
+  }
+
+  /**
+   * ReceivingSession createMany
+   */
+  export type ReceivingSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReceivingSessions.
+     */
+    data: ReceivingSessionCreateManyInput | ReceivingSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReceivingSession createManyAndReturn
+   */
+  export type ReceivingSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReceivingSessions.
+     */
+    data: ReceivingSessionCreateManyInput | ReceivingSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingSession update
+   */
+  export type ReceivingSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReceivingSession.
+     */
+    data: XOR<ReceivingSessionUpdateInput, ReceivingSessionUncheckedUpdateInput>
+    /**
+     * Choose, which ReceivingSession to update.
+     */
+    where: ReceivingSessionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingSession updateMany
+   */
+  export type ReceivingSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReceivingSessions.
+     */
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingSessions to update
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * Limit how many ReceivingSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingSession updateManyAndReturn
+   */
+  export type ReceivingSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update ReceivingSessions.
+     */
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingSessions to update
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * Limit how many ReceivingSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingSession upsert
+   */
+  export type ReceivingSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReceivingSession to update in case it exists.
+     */
+    where: ReceivingSessionWhereUniqueInput
+    /**
+     * In case the ReceivingSession found by the `where` argument doesn't exist, create a new ReceivingSession with this data.
+     */
+    create: XOR<ReceivingSessionCreateInput, ReceivingSessionUncheckedCreateInput>
+    /**
+     * In case the ReceivingSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReceivingSessionUpdateInput, ReceivingSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * ReceivingSession delete
+   */
+  export type ReceivingSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+    /**
+     * Filter which ReceivingSession to delete.
+     */
+    where: ReceivingSessionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingSession deleteMany
+   */
+  export type ReceivingSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingSessions to delete
+     */
+    where?: ReceivingSessionWhereInput
+    /**
+     * Limit how many ReceivingSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingSession.lineItems
+   */
+  export type ReceivingSession$lineItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    where?: ReceivingLineWhereInput
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    cursor?: ReceivingLineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingLineScalarFieldEnum | ReceivingLineScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingSession.exceptions
+   */
+  export type ReceivingSession$exceptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    where?: ReceivingExceptionWhereInput
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    cursor?: ReceivingExceptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingSession.lockedByUser
+   */
+  export type ReceivingSession$lockedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ReceivingSession.assignedToUser
+   */
+  export type ReceivingSession$assignedToUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ReceivingSession.approvedByUser
+   */
+  export type ReceivingSession$approvedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ReceivingSession.receivingLocation
+   */
+  export type ReceivingSession$receivingLocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Location
+     */
+    omit?: LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LocationInclude<ExtArgs> | null
+    where?: LocationWhereInput
+  }
+
+  /**
+   * ReceivingSession.putawayTask
+   */
+  export type ReceivingSession$putawayTaskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkTask
+     */
+    select?: WorkTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkTask
+     */
+    omit?: WorkTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkTaskInclude<ExtArgs> | null
+    where?: WorkTaskWhereInput
+  }
+
+  /**
+   * ReceivingSession without action
+   */
+  export type ReceivingSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingSession
+     */
+    select?: ReceivingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingSession
+     */
+    omit?: ReceivingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ReceivingLine
+   */
+
+  export type AggregateReceivingLine = {
+    _count: ReceivingLineCountAggregateOutputType | null
+    _avg: ReceivingLineAvgAggregateOutputType | null
+    _sum: ReceivingLineSumAggregateOutputType | null
+    _min: ReceivingLineMinAggregateOutputType | null
+    _max: ReceivingLineMaxAggregateOutputType | null
+  }
+
+  export type ReceivingLineAvgAggregateOutputType = {
+    quantityExpected: number | null
+    quantityCounted: number | null
+    quantityDamaged: number | null
+    variance: number | null
+    scanCount: number | null
+  }
+
+  export type ReceivingLineSumAggregateOutputType = {
+    quantityExpected: number | null
+    quantityCounted: number | null
+    quantityDamaged: number | null
+    variance: number | null
+    scanCount: number | null
+  }
+
+  export type ReceivingLineMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    sku: string | null
+    productName: string | null
+    productVariantId: string | null
+    quantityExpected: number | null
+    quantityCounted: number | null
+    quantityDamaged: number | null
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    generatedBarcode: string | null
+    lastScannedAt: Date | null
+    scanCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceivingLineMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    sku: string | null
+    productName: string | null
+    productVariantId: string | null
+    quantityExpected: number | null
+    quantityCounted: number | null
+    quantityDamaged: number | null
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    generatedBarcode: string | null
+    lastScannedAt: Date | null
+    scanCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceivingLineCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    sku: number
+    productName: number
+    productVariantId: number
+    quantityExpected: number
+    quantityCounted: number
+    quantityDamaged: number
+    variance: number
+    lotNumber: number
+    expiryDate: number
+    generatedBarcode: number
+    lastScannedAt: number
+    scanCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ReceivingLineAvgAggregateInputType = {
+    quantityExpected?: true
+    quantityCounted?: true
+    quantityDamaged?: true
+    variance?: true
+    scanCount?: true
+  }
+
+  export type ReceivingLineSumAggregateInputType = {
+    quantityExpected?: true
+    quantityCounted?: true
+    quantityDamaged?: true
+    variance?: true
+    scanCount?: true
+  }
+
+  export type ReceivingLineMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    quantityExpected?: true
+    quantityCounted?: true
+    quantityDamaged?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    generatedBarcode?: true
+    lastScannedAt?: true
+    scanCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceivingLineMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    quantityExpected?: true
+    quantityCounted?: true
+    quantityDamaged?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    generatedBarcode?: true
+    lastScannedAt?: true
+    scanCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceivingLineCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    quantityExpected?: true
+    quantityCounted?: true
+    quantityDamaged?: true
+    variance?: true
+    lotNumber?: true
+    expiryDate?: true
+    generatedBarcode?: true
+    lastScannedAt?: true
+    scanCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ReceivingLineAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingLine to aggregate.
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingLines to fetch.
+     */
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReceivingLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReceivingLines
+    **/
+    _count?: true | ReceivingLineCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReceivingLineAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReceivingLineSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReceivingLineMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReceivingLineMaxAggregateInputType
+  }
+
+  export type GetReceivingLineAggregateType<T extends ReceivingLineAggregateArgs> = {
+        [P in keyof T & keyof AggregateReceivingLine]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReceivingLine[P]>
+      : GetScalarType<T[P], AggregateReceivingLine[P]>
+  }
+
+
+
+
+  export type ReceivingLineGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingLineWhereInput
+    orderBy?: ReceivingLineOrderByWithAggregationInput | ReceivingLineOrderByWithAggregationInput[]
+    by: ReceivingLineScalarFieldEnum[] | ReceivingLineScalarFieldEnum
+    having?: ReceivingLineScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReceivingLineCountAggregateInputType | true
+    _avg?: ReceivingLineAvgAggregateInputType
+    _sum?: ReceivingLineSumAggregateInputType
+    _min?: ReceivingLineMinAggregateInputType
+    _max?: ReceivingLineMaxAggregateInputType
+  }
+
+  export type ReceivingLineGroupByOutputType = {
+    id: string
+    sessionId: string
+    sku: string
+    productName: string
+    productVariantId: string | null
+    quantityExpected: number
+    quantityCounted: number
+    quantityDamaged: number
+    variance: number | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    generatedBarcode: string | null
+    lastScannedAt: Date | null
+    scanCount: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ReceivingLineCountAggregateOutputType | null
+    _avg: ReceivingLineAvgAggregateOutputType | null
+    _sum: ReceivingLineSumAggregateOutputType | null
+    _min: ReceivingLineMinAggregateOutputType | null
+    _max: ReceivingLineMaxAggregateOutputType | null
+  }
+
+  type GetReceivingLineGroupByPayload<T extends ReceivingLineGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReceivingLineGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReceivingLineGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReceivingLineGroupByOutputType[P]>
+            : GetScalarType<T[P], ReceivingLineGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReceivingLineSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    quantityExpected?: boolean
+    quantityCounted?: boolean
+    quantityDamaged?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    generatedBarcode?: boolean
+    lastScannedAt?: boolean
+    scanCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingLine"]>
+
+  export type ReceivingLineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    quantityExpected?: boolean
+    quantityCounted?: boolean
+    quantityDamaged?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    generatedBarcode?: boolean
+    lastScannedAt?: boolean
+    scanCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingLine"]>
+
+  export type ReceivingLineSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    quantityExpected?: boolean
+    quantityCounted?: boolean
+    quantityDamaged?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    generatedBarcode?: boolean
+    lastScannedAt?: boolean
+    scanCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingLine"]>
+
+  export type ReceivingLineSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    quantityExpected?: boolean
+    quantityCounted?: boolean
+    quantityDamaged?: boolean
+    variance?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    generatedBarcode?: boolean
+    lastScannedAt?: boolean
+    scanCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ReceivingLineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "sku" | "productName" | "productVariantId" | "quantityExpected" | "quantityCounted" | "quantityDamaged" | "variance" | "lotNumber" | "expiryDate" | "generatedBarcode" | "lastScannedAt" | "scanCount" | "createdAt" | "updatedAt", ExtArgs["result"]["receivingLine"]>
+  export type ReceivingLineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }
+  export type ReceivingLineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }
+  export type ReceivingLineIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    productVariant?: boolean | ReceivingLine$productVariantArgs<ExtArgs>
+  }
+
+  export type $ReceivingLinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReceivingLine"
+    objects: {
+      session: Prisma.$ReceivingSessionPayload<ExtArgs>
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      sku: string
+      productName: string
+      productVariantId: string | null
+      quantityExpected: number
+      quantityCounted: number
+      quantityDamaged: number
+      variance: number | null
+      lotNumber: string | null
+      expiryDate: Date | null
+      generatedBarcode: string | null
+      lastScannedAt: Date | null
+      scanCount: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["receivingLine"]>
+    composites: {}
+  }
+
+  type ReceivingLineGetPayload<S extends boolean | null | undefined | ReceivingLineDefaultArgs> = $Result.GetResult<Prisma.$ReceivingLinePayload, S>
+
+  type ReceivingLineCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReceivingLineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReceivingLineCountAggregateInputType | true
+    }
+
+  export interface ReceivingLineDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReceivingLine'], meta: { name: 'ReceivingLine' } }
+    /**
+     * Find zero or one ReceivingLine that matches the filter.
+     * @param {ReceivingLineFindUniqueArgs} args - Arguments to find a ReceivingLine
+     * @example
+     * // Get one ReceivingLine
+     * const receivingLine = await prisma.receivingLine.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReceivingLineFindUniqueArgs>(args: SelectSubset<T, ReceivingLineFindUniqueArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReceivingLine that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReceivingLineFindUniqueOrThrowArgs} args - Arguments to find a ReceivingLine
+     * @example
+     * // Get one ReceivingLine
+     * const receivingLine = await prisma.receivingLine.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReceivingLineFindUniqueOrThrowArgs>(args: SelectSubset<T, ReceivingLineFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingLine that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineFindFirstArgs} args - Arguments to find a ReceivingLine
+     * @example
+     * // Get one ReceivingLine
+     * const receivingLine = await prisma.receivingLine.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReceivingLineFindFirstArgs>(args?: SelectSubset<T, ReceivingLineFindFirstArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingLine that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineFindFirstOrThrowArgs} args - Arguments to find a ReceivingLine
+     * @example
+     * // Get one ReceivingLine
+     * const receivingLine = await prisma.receivingLine.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReceivingLineFindFirstOrThrowArgs>(args?: SelectSubset<T, ReceivingLineFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReceivingLines that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReceivingLines
+     * const receivingLines = await prisma.receivingLine.findMany()
+     * 
+     * // Get first 10 ReceivingLines
+     * const receivingLines = await prisma.receivingLine.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const receivingLineWithIdOnly = await prisma.receivingLine.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReceivingLineFindManyArgs>(args?: SelectSubset<T, ReceivingLineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReceivingLine.
+     * @param {ReceivingLineCreateArgs} args - Arguments to create a ReceivingLine.
+     * @example
+     * // Create one ReceivingLine
+     * const ReceivingLine = await prisma.receivingLine.create({
+     *   data: {
+     *     // ... data to create a ReceivingLine
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReceivingLineCreateArgs>(args: SelectSubset<T, ReceivingLineCreateArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReceivingLines.
+     * @param {ReceivingLineCreateManyArgs} args - Arguments to create many ReceivingLines.
+     * @example
+     * // Create many ReceivingLines
+     * const receivingLine = await prisma.receivingLine.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReceivingLineCreateManyArgs>(args?: SelectSubset<T, ReceivingLineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReceivingLines and returns the data saved in the database.
+     * @param {ReceivingLineCreateManyAndReturnArgs} args - Arguments to create many ReceivingLines.
+     * @example
+     * // Create many ReceivingLines
+     * const receivingLine = await prisma.receivingLine.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReceivingLines and only return the `id`
+     * const receivingLineWithIdOnly = await prisma.receivingLine.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReceivingLineCreateManyAndReturnArgs>(args?: SelectSubset<T, ReceivingLineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReceivingLine.
+     * @param {ReceivingLineDeleteArgs} args - Arguments to delete one ReceivingLine.
+     * @example
+     * // Delete one ReceivingLine
+     * const ReceivingLine = await prisma.receivingLine.delete({
+     *   where: {
+     *     // ... filter to delete one ReceivingLine
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReceivingLineDeleteArgs>(args: SelectSubset<T, ReceivingLineDeleteArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReceivingLine.
+     * @param {ReceivingLineUpdateArgs} args - Arguments to update one ReceivingLine.
+     * @example
+     * // Update one ReceivingLine
+     * const receivingLine = await prisma.receivingLine.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReceivingLineUpdateArgs>(args: SelectSubset<T, ReceivingLineUpdateArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReceivingLines.
+     * @param {ReceivingLineDeleteManyArgs} args - Arguments to filter ReceivingLines to delete.
+     * @example
+     * // Delete a few ReceivingLines
+     * const { count } = await prisma.receivingLine.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReceivingLineDeleteManyArgs>(args?: SelectSubset<T, ReceivingLineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReceivingLines
+     * const receivingLine = await prisma.receivingLine.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReceivingLineUpdateManyArgs>(args: SelectSubset<T, ReceivingLineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingLines and returns the data updated in the database.
+     * @param {ReceivingLineUpdateManyAndReturnArgs} args - Arguments to update many ReceivingLines.
+     * @example
+     * // Update many ReceivingLines
+     * const receivingLine = await prisma.receivingLine.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReceivingLines and only return the `id`
+     * const receivingLineWithIdOnly = await prisma.receivingLine.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReceivingLineUpdateManyAndReturnArgs>(args: SelectSubset<T, ReceivingLineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReceivingLine.
+     * @param {ReceivingLineUpsertArgs} args - Arguments to update or create a ReceivingLine.
+     * @example
+     * // Update or create a ReceivingLine
+     * const receivingLine = await prisma.receivingLine.upsert({
+     *   create: {
+     *     // ... data to create a ReceivingLine
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReceivingLine we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReceivingLineUpsertArgs>(args: SelectSubset<T, ReceivingLineUpsertArgs<ExtArgs>>): Prisma__ReceivingLineClient<$Result.GetResult<Prisma.$ReceivingLinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReceivingLines.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineCountArgs} args - Arguments to filter ReceivingLines to count.
+     * @example
+     * // Count the number of ReceivingLines
+     * const count = await prisma.receivingLine.count({
+     *   where: {
+     *     // ... the filter for the ReceivingLines we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReceivingLineCountArgs>(
+      args?: Subset<T, ReceivingLineCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReceivingLineCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReceivingLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReceivingLineAggregateArgs>(args: Subset<T, ReceivingLineAggregateArgs>): Prisma.PrismaPromise<GetReceivingLineAggregateType<T>>
+
+    /**
+     * Group by ReceivingLine.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingLineGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReceivingLineGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReceivingLineGroupByArgs['orderBy'] }
+        : { orderBy?: ReceivingLineGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReceivingLineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReceivingLineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReceivingLine model
+   */
+  readonly fields: ReceivingLineFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReceivingLine.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReceivingLineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends ReceivingSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSessionDefaultArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends ReceivingLine$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingLine$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReceivingLine model
+   */
+  interface ReceivingLineFieldRefs {
+    readonly id: FieldRef<"ReceivingLine", 'String'>
+    readonly sessionId: FieldRef<"ReceivingLine", 'String'>
+    readonly sku: FieldRef<"ReceivingLine", 'String'>
+    readonly productName: FieldRef<"ReceivingLine", 'String'>
+    readonly productVariantId: FieldRef<"ReceivingLine", 'String'>
+    readonly quantityExpected: FieldRef<"ReceivingLine", 'Int'>
+    readonly quantityCounted: FieldRef<"ReceivingLine", 'Int'>
+    readonly quantityDamaged: FieldRef<"ReceivingLine", 'Int'>
+    readonly variance: FieldRef<"ReceivingLine", 'Int'>
+    readonly lotNumber: FieldRef<"ReceivingLine", 'String'>
+    readonly expiryDate: FieldRef<"ReceivingLine", 'DateTime'>
+    readonly generatedBarcode: FieldRef<"ReceivingLine", 'String'>
+    readonly lastScannedAt: FieldRef<"ReceivingLine", 'DateTime'>
+    readonly scanCount: FieldRef<"ReceivingLine", 'Int'>
+    readonly createdAt: FieldRef<"ReceivingLine", 'DateTime'>
+    readonly updatedAt: FieldRef<"ReceivingLine", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReceivingLine findUnique
+   */
+  export type ReceivingLineFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingLine to fetch.
+     */
+    where: ReceivingLineWhereUniqueInput
+  }
+
+  /**
+   * ReceivingLine findUniqueOrThrow
+   */
+  export type ReceivingLineFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingLine to fetch.
+     */
+    where: ReceivingLineWhereUniqueInput
+  }
+
+  /**
+   * ReceivingLine findFirst
+   */
+  export type ReceivingLineFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingLine to fetch.
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingLines to fetch.
+     */
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingLines.
+     */
+    cursor?: ReceivingLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingLines.
+     */
+    distinct?: ReceivingLineScalarFieldEnum | ReceivingLineScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingLine findFirstOrThrow
+   */
+  export type ReceivingLineFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingLine to fetch.
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingLines to fetch.
+     */
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingLines.
+     */
+    cursor?: ReceivingLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingLines.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingLines.
+     */
+    distinct?: ReceivingLineScalarFieldEnum | ReceivingLineScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingLine findMany
+   */
+  export type ReceivingLineFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingLines to fetch.
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingLines to fetch.
+     */
+    orderBy?: ReceivingLineOrderByWithRelationInput | ReceivingLineOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReceivingLines.
+     */
+    cursor?: ReceivingLineWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingLines from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingLines.
+     */
+    skip?: number
+    distinct?: ReceivingLineScalarFieldEnum | ReceivingLineScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingLine create
+   */
+  export type ReceivingLineCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReceivingLine.
+     */
+    data: XOR<ReceivingLineCreateInput, ReceivingLineUncheckedCreateInput>
+  }
+
+  /**
+   * ReceivingLine createMany
+   */
+  export type ReceivingLineCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReceivingLines.
+     */
+    data: ReceivingLineCreateManyInput | ReceivingLineCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReceivingLine createManyAndReturn
+   */
+  export type ReceivingLineCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReceivingLines.
+     */
+    data: ReceivingLineCreateManyInput | ReceivingLineCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingLine update
+   */
+  export type ReceivingLineUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReceivingLine.
+     */
+    data: XOR<ReceivingLineUpdateInput, ReceivingLineUncheckedUpdateInput>
+    /**
+     * Choose, which ReceivingLine to update.
+     */
+    where: ReceivingLineWhereUniqueInput
+  }
+
+  /**
+   * ReceivingLine updateMany
+   */
+  export type ReceivingLineUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReceivingLines.
+     */
+    data: XOR<ReceivingLineUpdateManyMutationInput, ReceivingLineUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingLines to update
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * Limit how many ReceivingLines to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingLine updateManyAndReturn
+   */
+  export type ReceivingLineUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * The data used to update ReceivingLines.
+     */
+    data: XOR<ReceivingLineUpdateManyMutationInput, ReceivingLineUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingLines to update
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * Limit how many ReceivingLines to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingLine upsert
+   */
+  export type ReceivingLineUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReceivingLine to update in case it exists.
+     */
+    where: ReceivingLineWhereUniqueInput
+    /**
+     * In case the ReceivingLine found by the `where` argument doesn't exist, create a new ReceivingLine with this data.
+     */
+    create: XOR<ReceivingLineCreateInput, ReceivingLineUncheckedCreateInput>
+    /**
+     * In case the ReceivingLine was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReceivingLineUpdateInput, ReceivingLineUncheckedUpdateInput>
+  }
+
+  /**
+   * ReceivingLine delete
+   */
+  export type ReceivingLineDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+    /**
+     * Filter which ReceivingLine to delete.
+     */
+    where: ReceivingLineWhereUniqueInput
+  }
+
+  /**
+   * ReceivingLine deleteMany
+   */
+  export type ReceivingLineDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingLines to delete
+     */
+    where?: ReceivingLineWhereInput
+    /**
+     * Limit how many ReceivingLines to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingLine.productVariant
+   */
+  export type ReceivingLine$productVariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductVariant
+     */
+    select?: ProductVariantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductVariant
+     */
+    omit?: ProductVariantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductVariantInclude<ExtArgs> | null
+    where?: ProductVariantWhereInput
+  }
+
+  /**
+   * ReceivingLine without action
+   */
+  export type ReceivingLineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingLine
+     */
+    select?: ReceivingLineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingLine
+     */
+    omit?: ReceivingLineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingLineInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ReceivingException
+   */
+
+  export type AggregateReceivingException = {
+    _count: ReceivingExceptionCountAggregateOutputType | null
+    _avg: ReceivingExceptionAvgAggregateOutputType | null
+    _sum: ReceivingExceptionSumAggregateOutputType | null
+    _min: ReceivingExceptionMinAggregateOutputType | null
+    _max: ReceivingExceptionMaxAggregateOutputType | null
+  }
+
+  export type ReceivingExceptionAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type ReceivingExceptionSumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type ReceivingExceptionMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    lineId: string | null
+    type: $Enums.ReceivingExceptionType | null
+    quantity: number | null
+    notes: string | null
+    imageUrl: string | null
+    reportedBy: string | null
+    resolvedBy: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ReceivingExceptionMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    lineId: string | null
+    type: $Enums.ReceivingExceptionType | null
+    quantity: number | null
+    notes: string | null
+    imageUrl: string | null
+    reportedBy: string | null
+    resolvedBy: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ReceivingExceptionCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    lineId: number
+    type: number
+    quantity: number
+    notes: number
+    imageUrl: number
+    reportedBy: number
+    resolvedBy: number
+    resolvedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ReceivingExceptionAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type ReceivingExceptionSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type ReceivingExceptionMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    lineId?: true
+    type?: true
+    quantity?: true
+    notes?: true
+    imageUrl?: true
+    reportedBy?: true
+    resolvedBy?: true
+    resolvedAt?: true
+    createdAt?: true
+  }
+
+  export type ReceivingExceptionMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    lineId?: true
+    type?: true
+    quantity?: true
+    notes?: true
+    imageUrl?: true
+    reportedBy?: true
+    resolvedBy?: true
+    resolvedAt?: true
+    createdAt?: true
+  }
+
+  export type ReceivingExceptionCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    lineId?: true
+    type?: true
+    quantity?: true
+    notes?: true
+    imageUrl?: true
+    reportedBy?: true
+    resolvedBy?: true
+    resolvedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ReceivingExceptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingException to aggregate.
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingExceptions to fetch.
+     */
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReceivingExceptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingExceptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingExceptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReceivingExceptions
+    **/
+    _count?: true | ReceivingExceptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReceivingExceptionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReceivingExceptionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReceivingExceptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReceivingExceptionMaxAggregateInputType
+  }
+
+  export type GetReceivingExceptionAggregateType<T extends ReceivingExceptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateReceivingException]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReceivingException[P]>
+      : GetScalarType<T[P], AggregateReceivingException[P]>
+  }
+
+
+
+
+  export type ReceivingExceptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceivingExceptionWhereInput
+    orderBy?: ReceivingExceptionOrderByWithAggregationInput | ReceivingExceptionOrderByWithAggregationInput[]
+    by: ReceivingExceptionScalarFieldEnum[] | ReceivingExceptionScalarFieldEnum
+    having?: ReceivingExceptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReceivingExceptionCountAggregateInputType | true
+    _avg?: ReceivingExceptionAvgAggregateInputType
+    _sum?: ReceivingExceptionSumAggregateInputType
+    _min?: ReceivingExceptionMinAggregateInputType
+    _max?: ReceivingExceptionMaxAggregateInputType
+  }
+
+  export type ReceivingExceptionGroupByOutputType = {
+    id: string
+    sessionId: string
+    lineId: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes: string | null
+    imageUrl: string | null
+    reportedBy: string
+    resolvedBy: string | null
+    resolvedAt: Date | null
+    createdAt: Date
+    _count: ReceivingExceptionCountAggregateOutputType | null
+    _avg: ReceivingExceptionAvgAggregateOutputType | null
+    _sum: ReceivingExceptionSumAggregateOutputType | null
+    _min: ReceivingExceptionMinAggregateOutputType | null
+    _max: ReceivingExceptionMaxAggregateOutputType | null
+  }
+
+  type GetReceivingExceptionGroupByPayload<T extends ReceivingExceptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReceivingExceptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReceivingExceptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReceivingExceptionGroupByOutputType[P]>
+            : GetScalarType<T[P], ReceivingExceptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReceivingExceptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    lineId?: boolean
+    type?: boolean
+    quantity?: boolean
+    notes?: boolean
+    imageUrl?: boolean
+    reportedBy?: boolean
+    resolvedBy?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingException"]>
+
+  export type ReceivingExceptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    lineId?: boolean
+    type?: boolean
+    quantity?: boolean
+    notes?: boolean
+    imageUrl?: boolean
+    reportedBy?: boolean
+    resolvedBy?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingException"]>
+
+  export type ReceivingExceptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    lineId?: boolean
+    type?: boolean
+    quantity?: boolean
+    notes?: boolean
+    imageUrl?: boolean
+    reportedBy?: boolean
+    resolvedBy?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }, ExtArgs["result"]["receivingException"]>
+
+  export type ReceivingExceptionSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    lineId?: boolean
+    type?: boolean
+    quantity?: boolean
+    notes?: boolean
+    imageUrl?: boolean
+    reportedBy?: boolean
+    resolvedBy?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type ReceivingExceptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "lineId" | "type" | "quantity" | "notes" | "imageUrl" | "reportedBy" | "resolvedBy" | "resolvedAt" | "createdAt", ExtArgs["result"]["receivingException"]>
+  export type ReceivingExceptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }
+  export type ReceivingExceptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }
+  export type ReceivingExceptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | ReceivingSessionDefaultArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolver?: boolean | ReceivingException$resolverArgs<ExtArgs>
+  }
+
+  export type $ReceivingExceptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReceivingException"
+    objects: {
+      session: Prisma.$ReceivingSessionPayload<ExtArgs>
+      reporter: Prisma.$UserPayload<ExtArgs>
+      resolver: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      lineId: string | null
+      type: $Enums.ReceivingExceptionType
+      quantity: number
+      notes: string | null
+      imageUrl: string | null
+      reportedBy: string
+      resolvedBy: string | null
+      resolvedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["receivingException"]>
+    composites: {}
+  }
+
+  type ReceivingExceptionGetPayload<S extends boolean | null | undefined | ReceivingExceptionDefaultArgs> = $Result.GetResult<Prisma.$ReceivingExceptionPayload, S>
+
+  type ReceivingExceptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReceivingExceptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReceivingExceptionCountAggregateInputType | true
+    }
+
+  export interface ReceivingExceptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReceivingException'], meta: { name: 'ReceivingException' } }
+    /**
+     * Find zero or one ReceivingException that matches the filter.
+     * @param {ReceivingExceptionFindUniqueArgs} args - Arguments to find a ReceivingException
+     * @example
+     * // Get one ReceivingException
+     * const receivingException = await prisma.receivingException.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReceivingExceptionFindUniqueArgs>(args: SelectSubset<T, ReceivingExceptionFindUniqueArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReceivingException that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReceivingExceptionFindUniqueOrThrowArgs} args - Arguments to find a ReceivingException
+     * @example
+     * // Get one ReceivingException
+     * const receivingException = await prisma.receivingException.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReceivingExceptionFindUniqueOrThrowArgs>(args: SelectSubset<T, ReceivingExceptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingException that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionFindFirstArgs} args - Arguments to find a ReceivingException
+     * @example
+     * // Get one ReceivingException
+     * const receivingException = await prisma.receivingException.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReceivingExceptionFindFirstArgs>(args?: SelectSubset<T, ReceivingExceptionFindFirstArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReceivingException that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionFindFirstOrThrowArgs} args - Arguments to find a ReceivingException
+     * @example
+     * // Get one ReceivingException
+     * const receivingException = await prisma.receivingException.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReceivingExceptionFindFirstOrThrowArgs>(args?: SelectSubset<T, ReceivingExceptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReceivingExceptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReceivingExceptions
+     * const receivingExceptions = await prisma.receivingException.findMany()
+     * 
+     * // Get first 10 ReceivingExceptions
+     * const receivingExceptions = await prisma.receivingException.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const receivingExceptionWithIdOnly = await prisma.receivingException.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReceivingExceptionFindManyArgs>(args?: SelectSubset<T, ReceivingExceptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReceivingException.
+     * @param {ReceivingExceptionCreateArgs} args - Arguments to create a ReceivingException.
+     * @example
+     * // Create one ReceivingException
+     * const ReceivingException = await prisma.receivingException.create({
+     *   data: {
+     *     // ... data to create a ReceivingException
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReceivingExceptionCreateArgs>(args: SelectSubset<T, ReceivingExceptionCreateArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReceivingExceptions.
+     * @param {ReceivingExceptionCreateManyArgs} args - Arguments to create many ReceivingExceptions.
+     * @example
+     * // Create many ReceivingExceptions
+     * const receivingException = await prisma.receivingException.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReceivingExceptionCreateManyArgs>(args?: SelectSubset<T, ReceivingExceptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReceivingExceptions and returns the data saved in the database.
+     * @param {ReceivingExceptionCreateManyAndReturnArgs} args - Arguments to create many ReceivingExceptions.
+     * @example
+     * // Create many ReceivingExceptions
+     * const receivingException = await prisma.receivingException.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReceivingExceptions and only return the `id`
+     * const receivingExceptionWithIdOnly = await prisma.receivingException.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReceivingExceptionCreateManyAndReturnArgs>(args?: SelectSubset<T, ReceivingExceptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReceivingException.
+     * @param {ReceivingExceptionDeleteArgs} args - Arguments to delete one ReceivingException.
+     * @example
+     * // Delete one ReceivingException
+     * const ReceivingException = await prisma.receivingException.delete({
+     *   where: {
+     *     // ... filter to delete one ReceivingException
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReceivingExceptionDeleteArgs>(args: SelectSubset<T, ReceivingExceptionDeleteArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReceivingException.
+     * @param {ReceivingExceptionUpdateArgs} args - Arguments to update one ReceivingException.
+     * @example
+     * // Update one ReceivingException
+     * const receivingException = await prisma.receivingException.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReceivingExceptionUpdateArgs>(args: SelectSubset<T, ReceivingExceptionUpdateArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReceivingExceptions.
+     * @param {ReceivingExceptionDeleteManyArgs} args - Arguments to filter ReceivingExceptions to delete.
+     * @example
+     * // Delete a few ReceivingExceptions
+     * const { count } = await prisma.receivingException.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReceivingExceptionDeleteManyArgs>(args?: SelectSubset<T, ReceivingExceptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingExceptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReceivingExceptions
+     * const receivingException = await prisma.receivingException.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReceivingExceptionUpdateManyArgs>(args: SelectSubset<T, ReceivingExceptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReceivingExceptions and returns the data updated in the database.
+     * @param {ReceivingExceptionUpdateManyAndReturnArgs} args - Arguments to update many ReceivingExceptions.
+     * @example
+     * // Update many ReceivingExceptions
+     * const receivingException = await prisma.receivingException.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReceivingExceptions and only return the `id`
+     * const receivingExceptionWithIdOnly = await prisma.receivingException.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReceivingExceptionUpdateManyAndReturnArgs>(args: SelectSubset<T, ReceivingExceptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReceivingException.
+     * @param {ReceivingExceptionUpsertArgs} args - Arguments to update or create a ReceivingException.
+     * @example
+     * // Update or create a ReceivingException
+     * const receivingException = await prisma.receivingException.upsert({
+     *   create: {
+     *     // ... data to create a ReceivingException
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReceivingException we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReceivingExceptionUpsertArgs>(args: SelectSubset<T, ReceivingExceptionUpsertArgs<ExtArgs>>): Prisma__ReceivingExceptionClient<$Result.GetResult<Prisma.$ReceivingExceptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReceivingExceptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionCountArgs} args - Arguments to filter ReceivingExceptions to count.
+     * @example
+     * // Count the number of ReceivingExceptions
+     * const count = await prisma.receivingException.count({
+     *   where: {
+     *     // ... the filter for the ReceivingExceptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReceivingExceptionCountArgs>(
+      args?: Subset<T, ReceivingExceptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReceivingExceptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReceivingException.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReceivingExceptionAggregateArgs>(args: Subset<T, ReceivingExceptionAggregateArgs>): Prisma.PrismaPromise<GetReceivingExceptionAggregateType<T>>
+
+    /**
+     * Group by ReceivingException.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceivingExceptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReceivingExceptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReceivingExceptionGroupByArgs['orderBy'] }
+        : { orderBy?: ReceivingExceptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReceivingExceptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReceivingExceptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReceivingException model
+   */
+  readonly fields: ReceivingExceptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReceivingException.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReceivingExceptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends ReceivingSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingSessionDefaultArgs<ExtArgs>>): Prisma__ReceivingSessionClient<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    resolver<T extends ReceivingException$resolverArgs<ExtArgs> = {}>(args?: Subset<T, ReceivingException$resolverArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReceivingException model
+   */
+  interface ReceivingExceptionFieldRefs {
+    readonly id: FieldRef<"ReceivingException", 'String'>
+    readonly sessionId: FieldRef<"ReceivingException", 'String'>
+    readonly lineId: FieldRef<"ReceivingException", 'String'>
+    readonly type: FieldRef<"ReceivingException", 'ReceivingExceptionType'>
+    readonly quantity: FieldRef<"ReceivingException", 'Int'>
+    readonly notes: FieldRef<"ReceivingException", 'String'>
+    readonly imageUrl: FieldRef<"ReceivingException", 'String'>
+    readonly reportedBy: FieldRef<"ReceivingException", 'String'>
+    readonly resolvedBy: FieldRef<"ReceivingException", 'String'>
+    readonly resolvedAt: FieldRef<"ReceivingException", 'DateTime'>
+    readonly createdAt: FieldRef<"ReceivingException", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReceivingException findUnique
+   */
+  export type ReceivingExceptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingException to fetch.
+     */
+    where: ReceivingExceptionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingException findUniqueOrThrow
+   */
+  export type ReceivingExceptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingException to fetch.
+     */
+    where: ReceivingExceptionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingException findFirst
+   */
+  export type ReceivingExceptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingException to fetch.
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingExceptions to fetch.
+     */
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingExceptions.
+     */
+    cursor?: ReceivingExceptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingExceptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingExceptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingExceptions.
+     */
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingException findFirstOrThrow
+   */
+  export type ReceivingExceptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingException to fetch.
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingExceptions to fetch.
+     */
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReceivingExceptions.
+     */
+    cursor?: ReceivingExceptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingExceptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingExceptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReceivingExceptions.
+     */
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingException findMany
+   */
+  export type ReceivingExceptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter, which ReceivingExceptions to fetch.
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReceivingExceptions to fetch.
+     */
+    orderBy?: ReceivingExceptionOrderByWithRelationInput | ReceivingExceptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReceivingExceptions.
+     */
+    cursor?: ReceivingExceptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReceivingExceptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReceivingExceptions.
+     */
+    skip?: number
+    distinct?: ReceivingExceptionScalarFieldEnum | ReceivingExceptionScalarFieldEnum[]
+  }
+
+  /**
+   * ReceivingException create
+   */
+  export type ReceivingExceptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReceivingException.
+     */
+    data: XOR<ReceivingExceptionCreateInput, ReceivingExceptionUncheckedCreateInput>
+  }
+
+  /**
+   * ReceivingException createMany
+   */
+  export type ReceivingExceptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReceivingExceptions.
+     */
+    data: ReceivingExceptionCreateManyInput | ReceivingExceptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReceivingException createManyAndReturn
+   */
+  export type ReceivingExceptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReceivingExceptions.
+     */
+    data: ReceivingExceptionCreateManyInput | ReceivingExceptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingException update
+   */
+  export type ReceivingExceptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReceivingException.
+     */
+    data: XOR<ReceivingExceptionUpdateInput, ReceivingExceptionUncheckedUpdateInput>
+    /**
+     * Choose, which ReceivingException to update.
+     */
+    where: ReceivingExceptionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingException updateMany
+   */
+  export type ReceivingExceptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReceivingExceptions.
+     */
+    data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingExceptions to update
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * Limit how many ReceivingExceptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingException updateManyAndReturn
+   */
+  export type ReceivingExceptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * The data used to update ReceivingExceptions.
+     */
+    data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyInput>
+    /**
+     * Filter which ReceivingExceptions to update
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * Limit how many ReceivingExceptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReceivingException upsert
+   */
+  export type ReceivingExceptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReceivingException to update in case it exists.
+     */
+    where: ReceivingExceptionWhereUniqueInput
+    /**
+     * In case the ReceivingException found by the `where` argument doesn't exist, create a new ReceivingException with this data.
+     */
+    create: XOR<ReceivingExceptionCreateInput, ReceivingExceptionUncheckedCreateInput>
+    /**
+     * In case the ReceivingException was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReceivingExceptionUpdateInput, ReceivingExceptionUncheckedUpdateInput>
+  }
+
+  /**
+   * ReceivingException delete
+   */
+  export type ReceivingExceptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+    /**
+     * Filter which ReceivingException to delete.
+     */
+    where: ReceivingExceptionWhereUniqueInput
+  }
+
+  /**
+   * ReceivingException deleteMany
+   */
+  export type ReceivingExceptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReceivingExceptions to delete
+     */
+    where?: ReceivingExceptionWhereInput
+    /**
+     * Limit how many ReceivingExceptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReceivingException.resolver
+   */
+  export type ReceivingException$resolverArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ReceivingException without action
+   */
+  export type ReceivingExceptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReceivingException
+     */
+    select?: ReceivingExceptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReceivingException
+     */
+    omit?: ReceivingExceptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceivingExceptionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -28140,6 +32785,71 @@ export namespace Prisma {
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+  export const ReceivingSessionScalarFieldEnum: {
+    id: 'id',
+    poId: 'poId',
+    poReference: 'poReference',
+    vendor: 'vendor',
+    status: 'status',
+    version: 'version',
+    lockedBy: 'lockedBy',
+    lockedAt: 'lockedAt',
+    countedBy: 'countedBy',
+    countedAt: 'countedAt',
+    submittedAt: 'submittedAt',
+    assignedTo: 'assignedTo',
+    approvedBy: 'approvedBy',
+    approvedAt: 'approvedAt',
+    rejectionReason: 'rejectionReason',
+    receivingLocationId: 'receivingLocationId',
+    putawayTaskId: 'putawayTaskId',
+    idempotencyKey: 'idempotencyKey',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ReceivingSessionScalarFieldEnum = (typeof ReceivingSessionScalarFieldEnum)[keyof typeof ReceivingSessionScalarFieldEnum]
+
+
+  export const ReceivingLineScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    sku: 'sku',
+    productName: 'productName',
+    productVariantId: 'productVariantId',
+    quantityExpected: 'quantityExpected',
+    quantityCounted: 'quantityCounted',
+    quantityDamaged: 'quantityDamaged',
+    variance: 'variance',
+    lotNumber: 'lotNumber',
+    expiryDate: 'expiryDate',
+    generatedBarcode: 'generatedBarcode',
+    lastScannedAt: 'lastScannedAt',
+    scanCount: 'scanCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ReceivingLineScalarFieldEnum = (typeof ReceivingLineScalarFieldEnum)[keyof typeof ReceivingLineScalarFieldEnum]
+
+
+  export const ReceivingExceptionScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    lineId: 'lineId',
+    type: 'type',
+    quantity: 'quantity',
+    notes: 'notes',
+    imageUrl: 'imageUrl',
+    reportedBy: 'reportedBy',
+    resolvedBy: 'resolvedBy',
+    resolvedAt: 'resolvedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type ReceivingExceptionScalarFieldEnum = (typeof ReceivingExceptionScalarFieldEnum)[keyof typeof ReceivingExceptionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -28453,6 +33163,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ReceivingStatus'
+   */
+  export type EnumReceivingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReceivingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ReceivingStatus[]'
+   */
+  export type ListEnumReceivingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReceivingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ReceivingExceptionType'
+   */
+  export type EnumReceivingExceptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReceivingExceptionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ReceivingExceptionType[]'
+   */
+  export type ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReceivingExceptionType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -28490,6 +33228,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
+    receivingSessionsCounted?: ReceivingSessionListRelationFilter
+    receivingSessionsLocked?: ReceivingSessionListRelationFilter
+    receivingSessionsAssigned?: ReceivingSessionListRelationFilter
+    receivingSessionsApproved?: ReceivingSessionListRelationFilter
+    exceptionsReported?: ReceivingExceptionListRelationFilter
+    exceptionsResolved?: ReceivingExceptionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -28510,6 +33254,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    receivingSessionsCounted?: ReceivingSessionOrderByRelationAggregateInput
+    receivingSessionsLocked?: ReceivingSessionOrderByRelationAggregateInput
+    receivingSessionsAssigned?: ReceivingSessionOrderByRelationAggregateInput
+    receivingSessionsApproved?: ReceivingSessionOrderByRelationAggregateInput
+    exceptionsReported?: ReceivingExceptionOrderByRelationAggregateInput
+    exceptionsResolved?: ReceivingExceptionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -28533,6 +33283,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
+    receivingSessionsCounted?: ReceivingSessionListRelationFilter
+    receivingSessionsLocked?: ReceivingSessionListRelationFilter
+    receivingSessionsAssigned?: ReceivingSessionListRelationFilter
+    receivingSessionsApproved?: ReceivingSessionListRelationFilter
+    exceptionsReported?: ReceivingExceptionListRelationFilter
+    exceptionsResolved?: ReceivingExceptionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -28787,6 +33543,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    receivingLines?: ReceivingLineListRelationFilter
   }
 
   export type ProductVariantOrderByWithRelationInput = {
@@ -28811,6 +33568,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
+    receivingLines?: ReceivingLineOrderByRelationAggregateInput
   }
 
   export type ProductVariantWhereUniqueInput = Prisma.AtLeast<{
@@ -28838,6 +33596,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    receivingLines?: ReceivingLineListRelationFilter
   }, "id" | "sku" | "upc" | "shopifyVariantId">
 
   export type ProductVariantOrderByWithAggregationInput = {
@@ -28905,6 +33664,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    receivingSessions?: ReceivingSessionListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -28925,6 +33685,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
+    receivingSessions?: ReceivingSessionOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = Prisma.AtLeast<{
@@ -28948,6 +33709,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
+    receivingSessions?: ReceivingSessionListRelationFilter
   }, "id" | "name" | "barcode">
 
   export type LocationOrderByWithAggregationInput = {
@@ -29890,6 +34652,7 @@ export namespace Prisma {
     assignedUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     events?: TaskEventListRelationFilter
+    receivingSession?: XOR<ReceivingSessionNullableScalarRelationFilter, ReceivingSessionWhereInput> | null
   }
 
   export type WorkTaskOrderByWithRelationInput = {
@@ -29923,6 +34686,7 @@ export namespace Prisma {
     assignedUser?: UserOrderByWithRelationInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     events?: TaskEventOrderByRelationAggregateInput
+    receivingSession?: ReceivingSessionOrderByWithRelationInput
   }
 
   export type WorkTaskWhereUniqueInput = Prisma.AtLeast<{
@@ -29959,6 +34723,7 @@ export namespace Prisma {
     assignedUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     events?: TaskEventListRelationFilter
+    receivingSession?: XOR<ReceivingSessionNullableScalarRelationFilter, ReceivingSessionWhereInput> | null
   }, "id" | "taskNumber" | "idempotencyKey">
 
   export type WorkTaskOrderByWithAggregationInput = {
@@ -30035,7 +34800,7 @@ export namespace Prisma {
     NOT?: TaskItemWhereInput | TaskItemWhereInput[]
     id?: StringFilter<"TaskItem"> | string
     taskId?: StringFilter<"TaskItem"> | string
-    orderId?: StringFilter<"TaskItem"> | string
+    orderId?: StringNullableFilter<"TaskItem"> | string | null
     orderItemId?: StringNullableFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableFilter<"TaskItem"> | string | null
     locationId?: StringNullableFilter<"TaskItem"> | string | null
@@ -30052,7 +34817,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeFilter<"TaskItem"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
     orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
     productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
@@ -30063,7 +34828,7 @@ export namespace Prisma {
   export type TaskItemOrderByWithRelationInput = {
     id?: SortOrder
     taskId?: SortOrder
-    orderId?: SortOrder
+    orderId?: SortOrderInput | SortOrder
     orderItemId?: SortOrderInput | SortOrder
     productVariantId?: SortOrderInput | SortOrder
     locationId?: SortOrderInput | SortOrder
@@ -30095,7 +34860,7 @@ export namespace Prisma {
     OR?: TaskItemWhereInput[]
     NOT?: TaskItemWhereInput | TaskItemWhereInput[]
     taskId?: StringFilter<"TaskItem"> | string
-    orderId?: StringFilter<"TaskItem"> | string
+    orderId?: StringNullableFilter<"TaskItem"> | string | null
     orderItemId?: StringNullableFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableFilter<"TaskItem"> | string | null
     locationId?: StringNullableFilter<"TaskItem"> | string | null
@@ -30111,7 +34876,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"TaskItem"> | Date | string
     updatedAt?: DateTimeFilter<"TaskItem"> | Date | string
     task?: XOR<WorkTaskScalarRelationFilter, WorkTaskWhereInput>
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
     orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
     productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
@@ -30122,7 +34887,7 @@ export namespace Prisma {
   export type TaskItemOrderByWithAggregationInput = {
     id?: SortOrder
     taskId?: SortOrder
-    orderId?: SortOrder
+    orderId?: SortOrderInput | SortOrder
     orderItemId?: SortOrderInput | SortOrder
     productVariantId?: SortOrderInput | SortOrder
     locationId?: SortOrderInput | SortOrder
@@ -30151,7 +34916,7 @@ export namespace Prisma {
     NOT?: TaskItemScalarWhereWithAggregatesInput | TaskItemScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TaskItem"> | string
     taskId?: StringWithAggregatesFilter<"TaskItem"> | string
-    orderId?: StringWithAggregatesFilter<"TaskItem"> | string
+    orderId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     orderItemId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
     locationId?: StringNullableWithAggregatesFilter<"TaskItem"> | string | null
@@ -30461,6 +35226,368 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
+  export type ReceivingSessionWhereInput = {
+    AND?: ReceivingSessionWhereInput | ReceivingSessionWhereInput[]
+    OR?: ReceivingSessionWhereInput[]
+    NOT?: ReceivingSessionWhereInput | ReceivingSessionWhereInput[]
+    id?: StringFilter<"ReceivingSession"> | string
+    poId?: StringFilter<"ReceivingSession"> | string
+    poReference?: StringFilter<"ReceivingSession"> | string
+    vendor?: StringNullableFilter<"ReceivingSession"> | string | null
+    status?: EnumReceivingStatusFilter<"ReceivingSession"> | $Enums.ReceivingStatus
+    version?: IntFilter<"ReceivingSession"> | number
+    lockedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    countedBy?: StringFilter<"ReceivingSession"> | string
+    countedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    assignedTo?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"ReceivingSession"> | string | null
+    receivingLocationId?: StringNullableFilter<"ReceivingSession"> | string | null
+    putawayTaskId?: StringNullableFilter<"ReceivingSession"> | string | null
+    idempotencyKey?: StringNullableFilter<"ReceivingSession"> | string | null
+    createdAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    lineItems?: ReceivingLineListRelationFilter
+    exceptions?: ReceivingExceptionListRelationFilter
+    countedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    lockedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    assignedToUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    approvedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    receivingLocation?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
+    putawayTask?: XOR<WorkTaskNullableScalarRelationFilter, WorkTaskWhereInput> | null
+  }
+
+  export type ReceivingSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    poId?: SortOrder
+    poReference?: SortOrder
+    vendor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrderInput | SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    countedBy?: SortOrder
+    countedAt?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    receivingLocationId?: SortOrderInput | SortOrder
+    putawayTaskId?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lineItems?: ReceivingLineOrderByRelationAggregateInput
+    exceptions?: ReceivingExceptionOrderByRelationAggregateInput
+    countedByUser?: UserOrderByWithRelationInput
+    lockedByUser?: UserOrderByWithRelationInput
+    assignedToUser?: UserOrderByWithRelationInput
+    approvedByUser?: UserOrderByWithRelationInput
+    receivingLocation?: LocationOrderByWithRelationInput
+    putawayTask?: WorkTaskOrderByWithRelationInput
+  }
+
+  export type ReceivingSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    putawayTaskId?: string
+    idempotencyKey?: string
+    AND?: ReceivingSessionWhereInput | ReceivingSessionWhereInput[]
+    OR?: ReceivingSessionWhereInput[]
+    NOT?: ReceivingSessionWhereInput | ReceivingSessionWhereInput[]
+    poId?: StringFilter<"ReceivingSession"> | string
+    poReference?: StringFilter<"ReceivingSession"> | string
+    vendor?: StringNullableFilter<"ReceivingSession"> | string | null
+    status?: EnumReceivingStatusFilter<"ReceivingSession"> | $Enums.ReceivingStatus
+    version?: IntFilter<"ReceivingSession"> | number
+    lockedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    countedBy?: StringFilter<"ReceivingSession"> | string
+    countedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    assignedTo?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"ReceivingSession"> | string | null
+    receivingLocationId?: StringNullableFilter<"ReceivingSession"> | string | null
+    createdAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    lineItems?: ReceivingLineListRelationFilter
+    exceptions?: ReceivingExceptionListRelationFilter
+    countedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    lockedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    assignedToUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    approvedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    receivingLocation?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
+    putawayTask?: XOR<WorkTaskNullableScalarRelationFilter, WorkTaskWhereInput> | null
+  }, "id" | "putawayTaskId" | "idempotencyKey">
+
+  export type ReceivingSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    poId?: SortOrder
+    poReference?: SortOrder
+    vendor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrderInput | SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    countedBy?: SortOrder
+    countedAt?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    receivingLocationId?: SortOrderInput | SortOrder
+    putawayTaskId?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ReceivingSessionCountOrderByAggregateInput
+    _avg?: ReceivingSessionAvgOrderByAggregateInput
+    _max?: ReceivingSessionMaxOrderByAggregateInput
+    _min?: ReceivingSessionMinOrderByAggregateInput
+    _sum?: ReceivingSessionSumOrderByAggregateInput
+  }
+
+  export type ReceivingSessionScalarWhereWithAggregatesInput = {
+    AND?: ReceivingSessionScalarWhereWithAggregatesInput | ReceivingSessionScalarWhereWithAggregatesInput[]
+    OR?: ReceivingSessionScalarWhereWithAggregatesInput[]
+    NOT?: ReceivingSessionScalarWhereWithAggregatesInput | ReceivingSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReceivingSession"> | string
+    poId?: StringWithAggregatesFilter<"ReceivingSession"> | string
+    poReference?: StringWithAggregatesFilter<"ReceivingSession"> | string
+    vendor?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    status?: EnumReceivingStatusWithAggregatesFilter<"ReceivingSession"> | $Enums.ReceivingStatus
+    version?: IntWithAggregatesFilter<"ReceivingSession"> | number
+    lockedBy?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    lockedAt?: DateTimeNullableWithAggregatesFilter<"ReceivingSession"> | Date | string | null
+    countedBy?: StringWithAggregatesFilter<"ReceivingSession"> | string
+    countedAt?: DateTimeWithAggregatesFilter<"ReceivingSession"> | Date | string
+    submittedAt?: DateTimeNullableWithAggregatesFilter<"ReceivingSession"> | Date | string | null
+    assignedTo?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    approvedBy?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"ReceivingSession"> | Date | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    receivingLocationId?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    putawayTaskId?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    idempotencyKey?: StringNullableWithAggregatesFilter<"ReceivingSession"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ReceivingSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ReceivingSession"> | Date | string
+  }
+
+  export type ReceivingLineWhereInput = {
+    AND?: ReceivingLineWhereInput | ReceivingLineWhereInput[]
+    OR?: ReceivingLineWhereInput[]
+    NOT?: ReceivingLineWhereInput | ReceivingLineWhereInput[]
+    id?: StringFilter<"ReceivingLine"> | string
+    sessionId?: StringFilter<"ReceivingLine"> | string
+    sku?: StringFilter<"ReceivingLine"> | string
+    productName?: StringFilter<"ReceivingLine"> | string
+    productVariantId?: StringNullableFilter<"ReceivingLine"> | string | null
+    quantityExpected?: IntFilter<"ReceivingLine"> | number
+    quantityCounted?: IntFilter<"ReceivingLine"> | number
+    quantityDamaged?: IntFilter<"ReceivingLine"> | number
+    variance?: IntNullableFilter<"ReceivingLine"> | number | null
+    lotNumber?: StringNullableFilter<"ReceivingLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    generatedBarcode?: StringNullableFilter<"ReceivingLine"> | string | null
+    lastScannedAt?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    scanCount?: IntFilter<"ReceivingLine"> | number
+    createdAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+    session?: XOR<ReceivingSessionScalarRelationFilter, ReceivingSessionWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+  }
+
+  export type ReceivingLineOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    generatedBarcode?: SortOrderInput | SortOrder
+    lastScannedAt?: SortOrderInput | SortOrder
+    scanCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    session?: ReceivingSessionOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+  }
+
+  export type ReceivingLineWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_sku?: ReceivingLineSessionIdSkuCompoundUniqueInput
+    AND?: ReceivingLineWhereInput | ReceivingLineWhereInput[]
+    OR?: ReceivingLineWhereInput[]
+    NOT?: ReceivingLineWhereInput | ReceivingLineWhereInput[]
+    sessionId?: StringFilter<"ReceivingLine"> | string
+    sku?: StringFilter<"ReceivingLine"> | string
+    productName?: StringFilter<"ReceivingLine"> | string
+    productVariantId?: StringNullableFilter<"ReceivingLine"> | string | null
+    quantityExpected?: IntFilter<"ReceivingLine"> | number
+    quantityCounted?: IntFilter<"ReceivingLine"> | number
+    quantityDamaged?: IntFilter<"ReceivingLine"> | number
+    variance?: IntNullableFilter<"ReceivingLine"> | number | null
+    lotNumber?: StringNullableFilter<"ReceivingLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    generatedBarcode?: StringNullableFilter<"ReceivingLine"> | string | null
+    lastScannedAt?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    scanCount?: IntFilter<"ReceivingLine"> | number
+    createdAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+    session?: XOR<ReceivingSessionScalarRelationFilter, ReceivingSessionWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+  }, "id" | "sessionId_sku">
+
+  export type ReceivingLineOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    generatedBarcode?: SortOrderInput | SortOrder
+    lastScannedAt?: SortOrderInput | SortOrder
+    scanCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ReceivingLineCountOrderByAggregateInput
+    _avg?: ReceivingLineAvgOrderByAggregateInput
+    _max?: ReceivingLineMaxOrderByAggregateInput
+    _min?: ReceivingLineMinOrderByAggregateInput
+    _sum?: ReceivingLineSumOrderByAggregateInput
+  }
+
+  export type ReceivingLineScalarWhereWithAggregatesInput = {
+    AND?: ReceivingLineScalarWhereWithAggregatesInput | ReceivingLineScalarWhereWithAggregatesInput[]
+    OR?: ReceivingLineScalarWhereWithAggregatesInput[]
+    NOT?: ReceivingLineScalarWhereWithAggregatesInput | ReceivingLineScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReceivingLine"> | string
+    sessionId?: StringWithAggregatesFilter<"ReceivingLine"> | string
+    sku?: StringWithAggregatesFilter<"ReceivingLine"> | string
+    productName?: StringWithAggregatesFilter<"ReceivingLine"> | string
+    productVariantId?: StringNullableWithAggregatesFilter<"ReceivingLine"> | string | null
+    quantityExpected?: IntWithAggregatesFilter<"ReceivingLine"> | number
+    quantityCounted?: IntWithAggregatesFilter<"ReceivingLine"> | number
+    quantityDamaged?: IntWithAggregatesFilter<"ReceivingLine"> | number
+    variance?: IntNullableWithAggregatesFilter<"ReceivingLine"> | number | null
+    lotNumber?: StringNullableWithAggregatesFilter<"ReceivingLine"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"ReceivingLine"> | Date | string | null
+    generatedBarcode?: StringNullableWithAggregatesFilter<"ReceivingLine"> | string | null
+    lastScannedAt?: DateTimeNullableWithAggregatesFilter<"ReceivingLine"> | Date | string | null
+    scanCount?: IntWithAggregatesFilter<"ReceivingLine"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ReceivingLine"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ReceivingLine"> | Date | string
+  }
+
+  export type ReceivingExceptionWhereInput = {
+    AND?: ReceivingExceptionWhereInput | ReceivingExceptionWhereInput[]
+    OR?: ReceivingExceptionWhereInput[]
+    NOT?: ReceivingExceptionWhereInput | ReceivingExceptionWhereInput[]
+    id?: StringFilter<"ReceivingException"> | string
+    sessionId?: StringFilter<"ReceivingException"> | string
+    lineId?: StringNullableFilter<"ReceivingException"> | string | null
+    type?: EnumReceivingExceptionTypeFilter<"ReceivingException"> | $Enums.ReceivingExceptionType
+    quantity?: IntFilter<"ReceivingException"> | number
+    notes?: StringNullableFilter<"ReceivingException"> | string | null
+    imageUrl?: StringNullableFilter<"ReceivingException"> | string | null
+    reportedBy?: StringFilter<"ReceivingException"> | string
+    resolvedBy?: StringNullableFilter<"ReceivingException"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ReceivingException"> | Date | string | null
+    createdAt?: DateTimeFilter<"ReceivingException"> | Date | string
+    session?: XOR<ReceivingSessionScalarRelationFilter, ReceivingSessionWhereInput>
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    resolver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ReceivingExceptionOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    lineId?: SortOrderInput | SortOrder
+    type?: SortOrder
+    quantity?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    reportedBy?: SortOrder
+    resolvedBy?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    session?: ReceivingSessionOrderByWithRelationInput
+    reporter?: UserOrderByWithRelationInput
+    resolver?: UserOrderByWithRelationInput
+  }
+
+  export type ReceivingExceptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ReceivingExceptionWhereInput | ReceivingExceptionWhereInput[]
+    OR?: ReceivingExceptionWhereInput[]
+    NOT?: ReceivingExceptionWhereInput | ReceivingExceptionWhereInput[]
+    sessionId?: StringFilter<"ReceivingException"> | string
+    lineId?: StringNullableFilter<"ReceivingException"> | string | null
+    type?: EnumReceivingExceptionTypeFilter<"ReceivingException"> | $Enums.ReceivingExceptionType
+    quantity?: IntFilter<"ReceivingException"> | number
+    notes?: StringNullableFilter<"ReceivingException"> | string | null
+    imageUrl?: StringNullableFilter<"ReceivingException"> | string | null
+    reportedBy?: StringFilter<"ReceivingException"> | string
+    resolvedBy?: StringNullableFilter<"ReceivingException"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ReceivingException"> | Date | string | null
+    createdAt?: DateTimeFilter<"ReceivingException"> | Date | string
+    session?: XOR<ReceivingSessionScalarRelationFilter, ReceivingSessionWhereInput>
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    resolver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type ReceivingExceptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    lineId?: SortOrderInput | SortOrder
+    type?: SortOrder
+    quantity?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    reportedBy?: SortOrder
+    resolvedBy?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ReceivingExceptionCountOrderByAggregateInput
+    _avg?: ReceivingExceptionAvgOrderByAggregateInput
+    _max?: ReceivingExceptionMaxOrderByAggregateInput
+    _min?: ReceivingExceptionMinOrderByAggregateInput
+    _sum?: ReceivingExceptionSumOrderByAggregateInput
+  }
+
+  export type ReceivingExceptionScalarWhereWithAggregatesInput = {
+    AND?: ReceivingExceptionScalarWhereWithAggregatesInput | ReceivingExceptionScalarWhereWithAggregatesInput[]
+    OR?: ReceivingExceptionScalarWhereWithAggregatesInput[]
+    NOT?: ReceivingExceptionScalarWhereWithAggregatesInput | ReceivingExceptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReceivingException"> | string
+    sessionId?: StringWithAggregatesFilter<"ReceivingException"> | string
+    lineId?: StringNullableWithAggregatesFilter<"ReceivingException"> | string | null
+    type?: EnumReceivingExceptionTypeWithAggregatesFilter<"ReceivingException"> | $Enums.ReceivingExceptionType
+    quantity?: IntWithAggregatesFilter<"ReceivingException"> | number
+    notes?: StringNullableWithAggregatesFilter<"ReceivingException"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"ReceivingException"> | string | null
+    reportedBy?: StringWithAggregatesFilter<"ReceivingException"> | string
+    resolvedBy?: StringNullableWithAggregatesFilter<"ReceivingException"> | string | null
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"ReceivingException"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ReceivingException"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -30479,6 +35606,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -30499,6 +35632,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserUpdateInput = {
@@ -30519,6 +35658,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -30539,6 +35684,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -30813,6 +35964,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateInput = {
@@ -30836,6 +35988,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUpdateInput = {
@@ -30859,6 +36012,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateInput = {
@@ -30882,6 +36036,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantCreateManyInput = {
@@ -30955,6 +36110,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -30975,6 +36131,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationUpdateInput = {
@@ -30995,6 +36152,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -31015,6 +36173,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -32079,6 +37238,7 @@ export namespace Prisma {
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskUncheckedCreateInput = {
@@ -32111,6 +37271,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskUpdateInput = {
@@ -32143,6 +37304,7 @@ export namespace Prisma {
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskUncheckedUpdateInput = {
@@ -32175,6 +37337,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskCreateManyInput = {
@@ -32280,7 +37443,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
@@ -32291,7 +37454,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -32324,7 +37487,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
@@ -32335,7 +37498,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32357,7 +37520,7 @@ export namespace Prisma {
   export type TaskItemCreateManyInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -32393,7 +37556,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32729,6 +37892,395 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReceivingSessionCreateInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionCreateManyInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineCreateInput = {
+    id?: string
+    sku: string
+    productName: string
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: ReceivingSessionCreateNestedOneWithoutLineItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutReceivingLinesInput
+  }
+
+  export type ReceivingLineUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingLineUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: ReceivingSessionUpdateOneRequiredWithoutLineItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutReceivingLinesNestedInput
+  }
+
+  export type ReceivingLineUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineCreateManyInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingLineUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionCreateInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    session: ReceivingSessionCreateNestedOneWithoutExceptionsInput
+    reporter: UserCreateNestedOneWithoutExceptionsReportedInput
+    resolver?: UserCreateNestedOneWithoutExceptionsResolvedInput
+  }
+
+  export type ReceivingExceptionUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: ReceivingSessionUpdateOneRequiredWithoutExceptionsNestedInput
+    reporter?: UserUpdateOneRequiredWithoutExceptionsReportedNestedInput
+    resolver?: UserUpdateOneWithoutExceptionsResolvedNestedInput
+  }
+
+  export type ReceivingExceptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionCreateManyInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -32835,6 +38387,18 @@ export namespace Prisma {
     none?: NotificationWhereInput
   }
 
+  export type ReceivingSessionListRelationFilter = {
+    every?: ReceivingSessionWhereInput
+    some?: ReceivingSessionWhereInput
+    none?: ReceivingSessionWhereInput
+  }
+
+  export type ReceivingExceptionListRelationFilter = {
+    every?: ReceivingExceptionWhereInput
+    some?: ReceivingExceptionWhereInput
+    none?: ReceivingExceptionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -32865,6 +38429,14 @@ export namespace Prisma {
   }
 
   export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReceivingSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReceivingExceptionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33134,6 +38706,12 @@ export namespace Prisma {
     none?: AllocationWhereInput
   }
 
+  export type ReceivingLineListRelationFilter = {
+    every?: ReceivingLineWhereInput
+    some?: ReceivingLineWhereInput
+    none?: ReceivingLineWhereInput
+  }
+
   export type ShippingPackageItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -33147,6 +38725,10 @@ export namespace Prisma {
   }
 
   export type AllocationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReceivingLineOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34156,6 +39738,11 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type ReceivingSessionNullableScalarRelationFilter = {
+    is?: ReceivingSessionWhereInput | null
+    isNot?: ReceivingSessionWhereInput | null
+  }
+
   export type WorkTaskCountOrderByAggregateInput = {
     id?: SortOrder
     taskNumber?: SortOrder
@@ -34304,6 +39891,11 @@ export namespace Prisma {
   export type WorkTaskScalarRelationFilter = {
     is?: WorkTaskWhereInput
     isNot?: WorkTaskWhereInput
+  }
+
+  export type OrderNullableScalarRelationFilter = {
+    is?: OrderWhereInput | null
+    isNot?: OrderWhereInput | null
   }
 
   export type LocationNullableScalarRelationFilter = {
@@ -34556,6 +40148,255 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumReceivingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingStatus | EnumReceivingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingStatusFilter<$PrismaModel> | $Enums.ReceivingStatus
+  }
+
+  export type WorkTaskNullableScalarRelationFilter = {
+    is?: WorkTaskWhereInput | null
+    isNot?: WorkTaskWhereInput | null
+  }
+
+  export type ReceivingSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    poId?: SortOrder
+    poReference?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    countedBy?: SortOrder
+    countedAt?: SortOrder
+    submittedAt?: SortOrder
+    assignedTo?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    rejectionReason?: SortOrder
+    receivingLocationId?: SortOrder
+    putawayTaskId?: SortOrder
+    idempotencyKey?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingSessionAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type ReceivingSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    poId?: SortOrder
+    poReference?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    countedBy?: SortOrder
+    countedAt?: SortOrder
+    submittedAt?: SortOrder
+    assignedTo?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    rejectionReason?: SortOrder
+    receivingLocationId?: SortOrder
+    putawayTaskId?: SortOrder
+    idempotencyKey?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    poId?: SortOrder
+    poReference?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    lockedBy?: SortOrder
+    lockedAt?: SortOrder
+    countedBy?: SortOrder
+    countedAt?: SortOrder
+    submittedAt?: SortOrder
+    assignedTo?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    rejectionReason?: SortOrder
+    receivingLocationId?: SortOrder
+    putawayTaskId?: SortOrder
+    idempotencyKey?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingSessionSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type EnumReceivingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingStatus | EnumReceivingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingStatusWithAggregatesFilter<$PrismaModel> | $Enums.ReceivingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReceivingStatusFilter<$PrismaModel>
+    _max?: NestedEnumReceivingStatusFilter<$PrismaModel>
+  }
+
+  export type ReceivingSessionScalarRelationFilter = {
+    is?: ReceivingSessionWhereInput
+    isNot?: ReceivingSessionWhereInput
+  }
+
+  export type ReceivingLineSessionIdSkuCompoundUniqueInput = {
+    sessionId: string
+    sku: string
+  }
+
+  export type ReceivingLineCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    generatedBarcode?: SortOrder
+    lastScannedAt?: SortOrder
+    scanCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingLineAvgOrderByAggregateInput = {
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrder
+    scanCount?: SortOrder
+  }
+
+  export type ReceivingLineMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    generatedBarcode?: SortOrder
+    lastScannedAt?: SortOrder
+    scanCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingLineMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    generatedBarcode?: SortOrder
+    lastScannedAt?: SortOrder
+    scanCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceivingLineSumOrderByAggregateInput = {
+    quantityExpected?: SortOrder
+    quantityCounted?: SortOrder
+    quantityDamaged?: SortOrder
+    variance?: SortOrder
+    scanCount?: SortOrder
+  }
+
+  export type EnumReceivingExceptionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingExceptionType | EnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel> | $Enums.ReceivingExceptionType
+  }
+
+  export type ReceivingExceptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    lineId?: SortOrder
+    type?: SortOrder
+    quantity?: SortOrder
+    notes?: SortOrder
+    imageUrl?: SortOrder
+    reportedBy?: SortOrder
+    resolvedBy?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReceivingExceptionAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type ReceivingExceptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    lineId?: SortOrder
+    type?: SortOrder
+    quantity?: SortOrder
+    notes?: SortOrder
+    imageUrl?: SortOrder
+    reportedBy?: SortOrder
+    resolvedBy?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReceivingExceptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    lineId?: SortOrder
+    type?: SortOrder
+    quantity?: SortOrder
+    notes?: SortOrder
+    imageUrl?: SortOrder
+    reportedBy?: SortOrder
+    resolvedBy?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReceivingExceptionSumOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type EnumReceivingExceptionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingExceptionType | EnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingExceptionTypeWithAggregatesFilter<$PrismaModel> | $Enums.ReceivingExceptionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
+    _max?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
+  }
+
   export type RefreshTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -34605,6 +40446,48 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type ReceivingSessionCreateNestedManyWithoutCountedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput> | ReceivingSessionCreateWithoutCountedByUserInput[] | ReceivingSessionUncheckedCreateWithoutCountedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutCountedByUserInput | ReceivingSessionCreateOrConnectWithoutCountedByUserInput[]
+    createMany?: ReceivingSessionCreateManyCountedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionCreateNestedManyWithoutLockedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput> | ReceivingSessionCreateWithoutLockedByUserInput[] | ReceivingSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLockedByUserInput | ReceivingSessionCreateOrConnectWithoutLockedByUserInput[]
+    createMany?: ReceivingSessionCreateManyLockedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionCreateNestedManyWithoutAssignedToUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput> | ReceivingSessionCreateWithoutAssignedToUserInput[] | ReceivingSessionUncheckedCreateWithoutAssignedToUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutAssignedToUserInput | ReceivingSessionCreateOrConnectWithoutAssignedToUserInput[]
+    createMany?: ReceivingSessionCreateManyAssignedToUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionCreateNestedManyWithoutApprovedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput> | ReceivingSessionCreateWithoutApprovedByUserInput[] | ReceivingSessionUncheckedCreateWithoutApprovedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutApprovedByUserInput | ReceivingSessionCreateOrConnectWithoutApprovedByUserInput[]
+    createMany?: ReceivingSessionCreateManyApprovedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionCreateNestedManyWithoutReporterInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput> | ReceivingExceptionCreateWithoutReporterInput[] | ReceivingExceptionUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutReporterInput | ReceivingExceptionCreateOrConnectWithoutReporterInput[]
+    createMany?: ReceivingExceptionCreateManyReporterInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionCreateNestedManyWithoutResolverInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput> | ReceivingExceptionCreateWithoutResolverInput[] | ReceivingExceptionUncheckedCreateWithoutResolverInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutResolverInput | ReceivingExceptionCreateOrConnectWithoutResolverInput[]
+    createMany?: ReceivingExceptionCreateManyResolverInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
   export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -34652,6 +40535,48 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput> | ReceivingSessionCreateWithoutCountedByUserInput[] | ReceivingSessionUncheckedCreateWithoutCountedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutCountedByUserInput | ReceivingSessionCreateOrConnectWithoutCountedByUserInput[]
+    createMany?: ReceivingSessionCreateManyCountedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput> | ReceivingSessionCreateWithoutLockedByUserInput[] | ReceivingSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLockedByUserInput | ReceivingSessionCreateOrConnectWithoutLockedByUserInput[]
+    createMany?: ReceivingSessionCreateManyLockedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput> | ReceivingSessionCreateWithoutAssignedToUserInput[] | ReceivingSessionUncheckedCreateWithoutAssignedToUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutAssignedToUserInput | ReceivingSessionCreateOrConnectWithoutAssignedToUserInput[]
+    createMany?: ReceivingSessionCreateManyAssignedToUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput = {
+    create?: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput> | ReceivingSessionCreateWithoutApprovedByUserInput[] | ReceivingSessionUncheckedCreateWithoutApprovedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutApprovedByUserInput | ReceivingSessionCreateOrConnectWithoutApprovedByUserInput[]
+    createMany?: ReceivingSessionCreateManyApprovedByUserInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput> | ReceivingExceptionCreateWithoutReporterInput[] | ReceivingExceptionUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutReporterInput | ReceivingExceptionCreateOrConnectWithoutReporterInput[]
+    createMany?: ReceivingExceptionCreateManyReporterInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput> | ReceivingExceptionCreateWithoutResolverInput[] | ReceivingExceptionUncheckedCreateWithoutResolverInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutResolverInput | ReceivingExceptionCreateOrConnectWithoutResolverInput[]
+    createMany?: ReceivingExceptionCreateManyResolverInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -34776,6 +40701,90 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
+  export type ReceivingSessionUpdateManyWithoutCountedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput> | ReceivingSessionCreateWithoutCountedByUserInput[] | ReceivingSessionUncheckedCreateWithoutCountedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutCountedByUserInput | ReceivingSessionCreateOrConnectWithoutCountedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput[]
+    createMany?: ReceivingSessionCreateManyCountedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutCountedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutCountedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutCountedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutCountedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUpdateManyWithoutLockedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput> | ReceivingSessionCreateWithoutLockedByUserInput[] | ReceivingSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLockedByUserInput | ReceivingSessionCreateOrConnectWithoutLockedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutLockedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutLockedByUserInput[]
+    createMany?: ReceivingSessionCreateManyLockedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutLockedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutLockedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutLockedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutLockedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput> | ReceivingSessionCreateWithoutAssignedToUserInput[] | ReceivingSessionUncheckedCreateWithoutAssignedToUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutAssignedToUserInput | ReceivingSessionCreateOrConnectWithoutAssignedToUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutAssignedToUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutAssignedToUserInput[]
+    createMany?: ReceivingSessionCreateManyAssignedToUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutAssignedToUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutAssignedToUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutAssignedToUserInput | ReceivingSessionUpdateManyWithWhereWithoutAssignedToUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput> | ReceivingSessionCreateWithoutApprovedByUserInput[] | ReceivingSessionUncheckedCreateWithoutApprovedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutApprovedByUserInput | ReceivingSessionCreateOrConnectWithoutApprovedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutApprovedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutApprovedByUserInput[]
+    createMany?: ReceivingSessionCreateManyApprovedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutApprovedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutApprovedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutApprovedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutApprovedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput> | ReceivingExceptionCreateWithoutReporterInput[] | ReceivingExceptionUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutReporterInput | ReceivingExceptionCreateOrConnectWithoutReporterInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutReporterInput | ReceivingExceptionUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: ReceivingExceptionCreateManyReporterInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutReporterInput | ReceivingExceptionUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutReporterInput | ReceivingExceptionUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUpdateManyWithoutResolverNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput> | ReceivingExceptionCreateWithoutResolverInput[] | ReceivingExceptionUncheckedCreateWithoutResolverInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutResolverInput | ReceivingExceptionCreateOrConnectWithoutResolverInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutResolverInput | ReceivingExceptionUpsertWithWhereUniqueWithoutResolverInput[]
+    createMany?: ReceivingExceptionCreateManyResolverInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutResolverInput | ReceivingExceptionUpdateWithWhereUniqueWithoutResolverInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutResolverInput | ReceivingExceptionUpdateManyWithWhereWithoutResolverInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+  }
+
   export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -34872,6 +40881,90 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput> | ReceivingSessionCreateWithoutCountedByUserInput[] | ReceivingSessionUncheckedCreateWithoutCountedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutCountedByUserInput | ReceivingSessionCreateOrConnectWithoutCountedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput[]
+    createMany?: ReceivingSessionCreateManyCountedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutCountedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutCountedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutCountedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutCountedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput> | ReceivingSessionCreateWithoutLockedByUserInput[] | ReceivingSessionUncheckedCreateWithoutLockedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLockedByUserInput | ReceivingSessionCreateOrConnectWithoutLockedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutLockedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutLockedByUserInput[]
+    createMany?: ReceivingSessionCreateManyLockedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutLockedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutLockedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutLockedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutLockedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput> | ReceivingSessionCreateWithoutAssignedToUserInput[] | ReceivingSessionUncheckedCreateWithoutAssignedToUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutAssignedToUserInput | ReceivingSessionCreateOrConnectWithoutAssignedToUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutAssignedToUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutAssignedToUserInput[]
+    createMany?: ReceivingSessionCreateManyAssignedToUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutAssignedToUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutAssignedToUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutAssignedToUserInput | ReceivingSessionUpdateManyWithWhereWithoutAssignedToUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput> | ReceivingSessionCreateWithoutApprovedByUserInput[] | ReceivingSessionUncheckedCreateWithoutApprovedByUserInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutApprovedByUserInput | ReceivingSessionCreateOrConnectWithoutApprovedByUserInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutApprovedByUserInput | ReceivingSessionUpsertWithWhereUniqueWithoutApprovedByUserInput[]
+    createMany?: ReceivingSessionCreateManyApprovedByUserInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutApprovedByUserInput | ReceivingSessionUpdateWithWhereUniqueWithoutApprovedByUserInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutApprovedByUserInput | ReceivingSessionUpdateManyWithWhereWithoutApprovedByUserInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput> | ReceivingExceptionCreateWithoutReporterInput[] | ReceivingExceptionUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutReporterInput | ReceivingExceptionCreateOrConnectWithoutReporterInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutReporterInput | ReceivingExceptionUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: ReceivingExceptionCreateManyReporterInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutReporterInput | ReceivingExceptionUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutReporterInput | ReceivingExceptionUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput> | ReceivingExceptionCreateWithoutResolverInput[] | ReceivingExceptionUncheckedCreateWithoutResolverInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutResolverInput | ReceivingExceptionCreateOrConnectWithoutResolverInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutResolverInput | ReceivingExceptionUpsertWithWhereUniqueWithoutResolverInput[]
+    createMany?: ReceivingExceptionCreateManyResolverInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutResolverInput | ReceivingExceptionUpdateWithWhereUniqueWithoutResolverInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutResolverInput | ReceivingExceptionUpdateManyWithWhereWithoutResolverInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
@@ -34985,6 +41078,13 @@ export namespace Prisma {
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
+  export type ReceivingLineCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput> | ReceivingLineCreateWithoutProductVariantInput[] | ReceivingLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutProductVariantInput | ReceivingLineCreateOrConnectWithoutProductVariantInput[]
+    createMany?: ReceivingLineCreateManyProductVariantInputEnvelope
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+  }
+
   export type ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -35018,6 +41118,13 @@ export namespace Prisma {
     connectOrCreate?: AllocationCreateOrConnectWithoutProductVariantInput | AllocationCreateOrConnectWithoutProductVariantInput[]
     createMany?: AllocationCreateManyProductVariantInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput> | ReceivingLineCreateWithoutProductVariantInput[] | ReceivingLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutProductVariantInput | ReceivingLineCreateOrConnectWithoutProductVariantInput[]
+    createMany?: ReceivingLineCreateManyProductVariantInputEnvelope
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -35106,6 +41213,20 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type ReceivingLineUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput> | ReceivingLineCreateWithoutProductVariantInput[] | ReceivingLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutProductVariantInput | ReceivingLineCreateOrConnectWithoutProductVariantInput[]
+    upsert?: ReceivingLineUpsertWithWhereUniqueWithoutProductVariantInput | ReceivingLineUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: ReceivingLineCreateManyProductVariantInputEnvelope
+    set?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    disconnect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    delete?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    update?: ReceivingLineUpdateWithWhereUniqueWithoutProductVariantInput | ReceivingLineUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: ReceivingLineUpdateManyWithWhereWithoutProductVariantInput | ReceivingLineUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+  }
+
   export type ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -35176,6 +41297,20 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput> | ReceivingLineCreateWithoutProductVariantInput[] | ReceivingLineUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutProductVariantInput | ReceivingLineCreateOrConnectWithoutProductVariantInput[]
+    upsert?: ReceivingLineUpsertWithWhereUniqueWithoutProductVariantInput | ReceivingLineUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: ReceivingLineCreateManyProductVariantInputEnvelope
+    set?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    disconnect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    delete?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    update?: ReceivingLineUpdateWithWhereUniqueWithoutProductVariantInput | ReceivingLineUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: ReceivingLineUpdateManyWithWhereWithoutProductVariantInput | ReceivingLineUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+  }
+
   export type InventoryUnitCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -35197,6 +41332,13 @@ export namespace Prisma {
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
   }
 
+  export type ReceivingSessionCreateNestedManyWithoutReceivingLocationInput = {
+    create?: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput> | ReceivingSessionCreateWithoutReceivingLocationInput[] | ReceivingSessionUncheckedCreateWithoutReceivingLocationInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutReceivingLocationInput | ReceivingSessionCreateOrConnectWithoutReceivingLocationInput[]
+    createMany?: ReceivingSessionCreateManyReceivingLocationInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+  }
+
   export type InventoryUnitUncheckedCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -35216,6 +41358,13 @@ export namespace Prisma {
     connectOrCreate?: AllocationCreateOrConnectWithoutLocationInput | AllocationCreateOrConnectWithoutLocationInput[]
     createMany?: AllocationCreateManyLocationInputEnvelope
     connect?: AllocationWhereUniqueInput | AllocationWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput = {
+    create?: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput> | ReceivingSessionCreateWithoutReceivingLocationInput[] | ReceivingSessionUncheckedCreateWithoutReceivingLocationInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutReceivingLocationInput | ReceivingSessionCreateOrConnectWithoutReceivingLocationInput[]
+    createMany?: ReceivingSessionCreateManyReceivingLocationInputEnvelope
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
   }
 
   export type EnumLocationTypeFieldUpdateOperationsInput = {
@@ -35272,6 +41421,20 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput> | ReceivingSessionCreateWithoutReceivingLocationInput[] | ReceivingSessionUncheckedCreateWithoutReceivingLocationInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutReceivingLocationInput | ReceivingSessionCreateOrConnectWithoutReceivingLocationInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutReceivingLocationInput | ReceivingSessionUpsertWithWhereUniqueWithoutReceivingLocationInput[]
+    createMany?: ReceivingSessionCreateManyReceivingLocationInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutReceivingLocationInput | ReceivingSessionUpdateWithWhereUniqueWithoutReceivingLocationInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutReceivingLocationInput | ReceivingSessionUpdateManyWithWhereWithoutReceivingLocationInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+  }
+
   export type InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -35312,6 +41475,20 @@ export namespace Prisma {
     update?: AllocationUpdateWithWhereUniqueWithoutLocationInput | AllocationUpdateWithWhereUniqueWithoutLocationInput[]
     updateMany?: AllocationUpdateManyWithWhereWithoutLocationInput | AllocationUpdateManyWithWhereWithoutLocationInput[]
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput> | ReceivingSessionCreateWithoutReceivingLocationInput[] | ReceivingSessionUncheckedCreateWithoutReceivingLocationInput[]
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutReceivingLocationInput | ReceivingSessionCreateOrConnectWithoutReceivingLocationInput[]
+    upsert?: ReceivingSessionUpsertWithWhereUniqueWithoutReceivingLocationInput | ReceivingSessionUpsertWithWhereUniqueWithoutReceivingLocationInput[]
+    createMany?: ReceivingSessionCreateManyReceivingLocationInputEnvelope
+    set?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    disconnect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    delete?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    connect?: ReceivingSessionWhereUniqueInput | ReceivingSessionWhereUniqueInput[]
+    update?: ReceivingSessionUpdateWithWhereUniqueWithoutReceivingLocationInput | ReceivingSessionUpdateWithWhereUniqueWithoutReceivingLocationInput[]
+    updateMany?: ReceivingSessionUpdateManyWithWhereWithoutReceivingLocationInput | ReceivingSessionUpdateManyWithWhereWithoutReceivingLocationInput[]
+    deleteMany?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
   }
 
   export type ProductVariantCreateNestedOneWithoutInventoryUnitsInput = {
@@ -35960,6 +42137,12 @@ export namespace Prisma {
     connect?: TaskEventWhereUniqueInput | TaskEventWhereUniqueInput[]
   }
 
+  export type ReceivingSessionCreateNestedOneWithoutPutawayTaskInput = {
+    create?: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutPutawayTaskInput
+    connect?: ReceivingSessionWhereUniqueInput
+  }
+
   export type TaskItemUncheckedCreateNestedManyWithoutTaskInput = {
     create?: XOR<TaskItemCreateWithoutTaskInput, TaskItemUncheckedCreateWithoutTaskInput> | TaskItemCreateWithoutTaskInput[] | TaskItemUncheckedCreateWithoutTaskInput[]
     connectOrCreate?: TaskItemCreateOrConnectWithoutTaskInput | TaskItemCreateOrConnectWithoutTaskInput[]
@@ -35972,6 +42155,12 @@ export namespace Prisma {
     connectOrCreate?: TaskEventCreateOrConnectWithoutTaskInput | TaskEventCreateOrConnectWithoutTaskInput[]
     createMany?: TaskEventCreateManyTaskInputEnvelope
     connect?: TaskEventWhereUniqueInput | TaskEventWhereUniqueInput[]
+  }
+
+  export type ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput = {
+    create?: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutPutawayTaskInput
+    connect?: ReceivingSessionWhereUniqueInput
   }
 
   export type EnumWorkTaskTypeFieldUpdateOperationsInput = {
@@ -36029,6 +42218,16 @@ export namespace Prisma {
     deleteMany?: TaskEventScalarWhereInput | TaskEventScalarWhereInput[]
   }
 
+  export type ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutPutawayTaskInput
+    upsert?: ReceivingSessionUpsertWithoutPutawayTaskInput
+    disconnect?: ReceivingSessionWhereInput | boolean
+    delete?: ReceivingSessionWhereInput | boolean
+    connect?: ReceivingSessionWhereUniqueInput
+    update?: XOR<XOR<ReceivingSessionUpdateToOneWithWhereWithoutPutawayTaskInput, ReceivingSessionUpdateWithoutPutawayTaskInput>, ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput>
+  }
+
   export type TaskItemUncheckedUpdateManyWithoutTaskNestedInput = {
     create?: XOR<TaskItemCreateWithoutTaskInput, TaskItemUncheckedCreateWithoutTaskInput> | TaskItemCreateWithoutTaskInput[] | TaskItemUncheckedCreateWithoutTaskInput[]
     connectOrCreate?: TaskItemCreateOrConnectWithoutTaskInput | TaskItemCreateOrConnectWithoutTaskInput[]
@@ -36055,6 +42254,16 @@ export namespace Prisma {
     update?: TaskEventUpdateWithWhereUniqueWithoutTaskInput | TaskEventUpdateWithWhereUniqueWithoutTaskInput[]
     updateMany?: TaskEventUpdateManyWithWhereWithoutTaskInput | TaskEventUpdateManyWithWhereWithoutTaskInput[]
     deleteMany?: TaskEventScalarWhereInput | TaskEventScalarWhereInput[]
+  }
+
+  export type ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutPutawayTaskInput
+    upsert?: ReceivingSessionUpsertWithoutPutawayTaskInput
+    disconnect?: ReceivingSessionWhereInput | boolean
+    delete?: ReceivingSessionWhereInput | boolean
+    connect?: ReceivingSessionWhereUniqueInput
+    update?: XOR<XOR<ReceivingSessionUpdateToOneWithWhereWithoutPutawayTaskInput, ReceivingSessionUpdateWithoutPutawayTaskInput>, ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput>
   }
 
   export type WorkTaskCreateNestedOneWithoutTaskItemsInput = {
@@ -36117,10 +42326,12 @@ export namespace Prisma {
     update?: XOR<XOR<WorkTaskUpdateToOneWithWhereWithoutTaskItemsInput, WorkTaskUpdateWithoutTaskItemsInput>, WorkTaskUncheckedUpdateWithoutTaskItemsInput>
   }
 
-  export type OrderUpdateOneRequiredWithoutTaskItemsNestedInput = {
+  export type OrderUpdateOneWithoutTaskItemsNestedInput = {
     create?: XOR<OrderCreateWithoutTaskItemsInput, OrderUncheckedCreateWithoutTaskItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutTaskItemsInput
     upsert?: OrderUpsertWithoutTaskItemsInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
     connect?: OrderWhereUniqueInput
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutTaskItemsInput, OrderUpdateWithoutTaskItemsInput>, OrderUncheckedUpdateWithoutTaskItemsInput>
   }
@@ -36247,6 +42458,266 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutNotificationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type ReceivingLineCreateNestedManyWithoutSessionInput = {
+    create?: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput> | ReceivingLineCreateWithoutSessionInput[] | ReceivingLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutSessionInput | ReceivingLineCreateOrConnectWithoutSessionInput[]
+    createMany?: ReceivingLineCreateManySessionInputEnvelope
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionCreateNestedManyWithoutSessionInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput> | ReceivingExceptionCreateWithoutSessionInput[] | ReceivingExceptionUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutSessionInput | ReceivingExceptionCreateOrConnectWithoutSessionInput[]
+    createMany?: ReceivingExceptionCreateManySessionInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutReceivingSessionsCountedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsCountedInput, UserUncheckedCreateWithoutReceivingSessionsCountedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsCountedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReceivingSessionsLockedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsLockedInput, UserUncheckedCreateWithoutReceivingSessionsLockedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsLockedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReceivingSessionsAssignedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsAssignedInput, UserUncheckedCreateWithoutReceivingSessionsAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsAssignedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReceivingSessionsApprovedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsApprovedInput, UserUncheckedCreateWithoutReceivingSessionsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsApprovedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LocationCreateNestedOneWithoutReceivingSessionsInput = {
+    create?: XOR<LocationCreateWithoutReceivingSessionsInput, LocationUncheckedCreateWithoutReceivingSessionsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutReceivingSessionsInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type WorkTaskCreateNestedOneWithoutReceivingSessionInput = {
+    create?: XOR<WorkTaskCreateWithoutReceivingSessionInput, WorkTaskUncheckedCreateWithoutReceivingSessionInput>
+    connectOrCreate?: WorkTaskCreateOrConnectWithoutReceivingSessionInput
+    connect?: WorkTaskWhereUniqueInput
+  }
+
+  export type ReceivingLineUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput> | ReceivingLineCreateWithoutSessionInput[] | ReceivingLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutSessionInput | ReceivingLineCreateOrConnectWithoutSessionInput[]
+    createMany?: ReceivingLineCreateManySessionInputEnvelope
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+  }
+
+  export type ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput> | ReceivingExceptionCreateWithoutSessionInput[] | ReceivingExceptionUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutSessionInput | ReceivingExceptionCreateOrConnectWithoutSessionInput[]
+    createMany?: ReceivingExceptionCreateManySessionInputEnvelope
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+  }
+
+  export type EnumReceivingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ReceivingStatus
+  }
+
+  export type ReceivingLineUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput> | ReceivingLineCreateWithoutSessionInput[] | ReceivingLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutSessionInput | ReceivingLineCreateOrConnectWithoutSessionInput[]
+    upsert?: ReceivingLineUpsertWithWhereUniqueWithoutSessionInput | ReceivingLineUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: ReceivingLineCreateManySessionInputEnvelope
+    set?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    disconnect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    delete?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    update?: ReceivingLineUpdateWithWhereUniqueWithoutSessionInput | ReceivingLineUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: ReceivingLineUpdateManyWithWhereWithoutSessionInput | ReceivingLineUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput> | ReceivingExceptionCreateWithoutSessionInput[] | ReceivingExceptionUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutSessionInput | ReceivingExceptionCreateOrConnectWithoutSessionInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutSessionInput | ReceivingExceptionUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: ReceivingExceptionCreateManySessionInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutSessionInput | ReceivingExceptionUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutSessionInput | ReceivingExceptionUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsCountedInput, UserUncheckedCreateWithoutReceivingSessionsCountedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsCountedInput
+    upsert?: UserUpsertWithoutReceivingSessionsCountedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivingSessionsCountedInput, UserUpdateWithoutReceivingSessionsCountedInput>, UserUncheckedUpdateWithoutReceivingSessionsCountedInput>
+  }
+
+  export type UserUpdateOneWithoutReceivingSessionsLockedNestedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsLockedInput, UserUncheckedCreateWithoutReceivingSessionsLockedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsLockedInput
+    upsert?: UserUpsertWithoutReceivingSessionsLockedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivingSessionsLockedInput, UserUpdateWithoutReceivingSessionsLockedInput>, UserUncheckedUpdateWithoutReceivingSessionsLockedInput>
+  }
+
+  export type UserUpdateOneWithoutReceivingSessionsAssignedNestedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsAssignedInput, UserUncheckedCreateWithoutReceivingSessionsAssignedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsAssignedInput
+    upsert?: UserUpsertWithoutReceivingSessionsAssignedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivingSessionsAssignedInput, UserUpdateWithoutReceivingSessionsAssignedInput>, UserUncheckedUpdateWithoutReceivingSessionsAssignedInput>
+  }
+
+  export type UserUpdateOneWithoutReceivingSessionsApprovedNestedInput = {
+    create?: XOR<UserCreateWithoutReceivingSessionsApprovedInput, UserUncheckedCreateWithoutReceivingSessionsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivingSessionsApprovedInput
+    upsert?: UserUpsertWithoutReceivingSessionsApprovedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivingSessionsApprovedInput, UserUpdateWithoutReceivingSessionsApprovedInput>, UserUncheckedUpdateWithoutReceivingSessionsApprovedInput>
+  }
+
+  export type LocationUpdateOneWithoutReceivingSessionsNestedInput = {
+    create?: XOR<LocationCreateWithoutReceivingSessionsInput, LocationUncheckedCreateWithoutReceivingSessionsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutReceivingSessionsInput
+    upsert?: LocationUpsertWithoutReceivingSessionsInput
+    disconnect?: LocationWhereInput | boolean
+    delete?: LocationWhereInput | boolean
+    connect?: LocationWhereUniqueInput
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutReceivingSessionsInput, LocationUpdateWithoutReceivingSessionsInput>, LocationUncheckedUpdateWithoutReceivingSessionsInput>
+  }
+
+  export type WorkTaskUpdateOneWithoutReceivingSessionNestedInput = {
+    create?: XOR<WorkTaskCreateWithoutReceivingSessionInput, WorkTaskUncheckedCreateWithoutReceivingSessionInput>
+    connectOrCreate?: WorkTaskCreateOrConnectWithoutReceivingSessionInput
+    upsert?: WorkTaskUpsertWithoutReceivingSessionInput
+    disconnect?: WorkTaskWhereInput | boolean
+    delete?: WorkTaskWhereInput | boolean
+    connect?: WorkTaskWhereUniqueInput
+    update?: XOR<XOR<WorkTaskUpdateToOneWithWhereWithoutReceivingSessionInput, WorkTaskUpdateWithoutReceivingSessionInput>, WorkTaskUncheckedUpdateWithoutReceivingSessionInput>
+  }
+
+  export type ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput> | ReceivingLineCreateWithoutSessionInput[] | ReceivingLineUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingLineCreateOrConnectWithoutSessionInput | ReceivingLineCreateOrConnectWithoutSessionInput[]
+    upsert?: ReceivingLineUpsertWithWhereUniqueWithoutSessionInput | ReceivingLineUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: ReceivingLineCreateManySessionInputEnvelope
+    set?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    disconnect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    delete?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    connect?: ReceivingLineWhereUniqueInput | ReceivingLineWhereUniqueInput[]
+    update?: ReceivingLineUpdateWithWhereUniqueWithoutSessionInput | ReceivingLineUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: ReceivingLineUpdateManyWithWhereWithoutSessionInput | ReceivingLineUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput> | ReceivingExceptionCreateWithoutSessionInput[] | ReceivingExceptionUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: ReceivingExceptionCreateOrConnectWithoutSessionInput | ReceivingExceptionCreateOrConnectWithoutSessionInput[]
+    upsert?: ReceivingExceptionUpsertWithWhereUniqueWithoutSessionInput | ReceivingExceptionUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: ReceivingExceptionCreateManySessionInputEnvelope
+    set?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    disconnect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    delete?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    connect?: ReceivingExceptionWhereUniqueInput | ReceivingExceptionWhereUniqueInput[]
+    update?: ReceivingExceptionUpdateWithWhereUniqueWithoutSessionInput | ReceivingExceptionUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: ReceivingExceptionUpdateManyWithWhereWithoutSessionInput | ReceivingExceptionUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+  }
+
+  export type ReceivingSessionCreateNestedOneWithoutLineItemsInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLineItemsInput, ReceivingSessionUncheckedCreateWithoutLineItemsInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLineItemsInput
+    connect?: ReceivingSessionWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutReceivingLinesInput = {
+    create?: XOR<ProductVariantCreateWithoutReceivingLinesInput, ProductVariantUncheckedCreateWithoutReceivingLinesInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutReceivingLinesInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type ReceivingSessionUpdateOneRequiredWithoutLineItemsNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutLineItemsInput, ReceivingSessionUncheckedCreateWithoutLineItemsInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutLineItemsInput
+    upsert?: ReceivingSessionUpsertWithoutLineItemsInput
+    connect?: ReceivingSessionWhereUniqueInput
+    update?: XOR<XOR<ReceivingSessionUpdateToOneWithWhereWithoutLineItemsInput, ReceivingSessionUpdateWithoutLineItemsInput>, ReceivingSessionUncheckedUpdateWithoutLineItemsInput>
+  }
+
+  export type ProductVariantUpdateOneWithoutReceivingLinesNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutReceivingLinesInput, ProductVariantUncheckedCreateWithoutReceivingLinesInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutReceivingLinesInput
+    upsert?: ProductVariantUpsertWithoutReceivingLinesInput
+    disconnect?: ProductVariantWhereInput | boolean
+    delete?: ProductVariantWhereInput | boolean
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutReceivingLinesInput, ProductVariantUpdateWithoutReceivingLinesInput>, ProductVariantUncheckedUpdateWithoutReceivingLinesInput>
+  }
+
+  export type ReceivingSessionCreateNestedOneWithoutExceptionsInput = {
+    create?: XOR<ReceivingSessionCreateWithoutExceptionsInput, ReceivingSessionUncheckedCreateWithoutExceptionsInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutExceptionsInput
+    connect?: ReceivingSessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutExceptionsReportedInput = {
+    create?: XOR<UserCreateWithoutExceptionsReportedInput, UserUncheckedCreateWithoutExceptionsReportedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExceptionsReportedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutExceptionsResolvedInput = {
+    create?: XOR<UserCreateWithoutExceptionsResolvedInput, UserUncheckedCreateWithoutExceptionsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExceptionsResolvedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumReceivingExceptionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ReceivingExceptionType
+  }
+
+  export type ReceivingSessionUpdateOneRequiredWithoutExceptionsNestedInput = {
+    create?: XOR<ReceivingSessionCreateWithoutExceptionsInput, ReceivingSessionUncheckedCreateWithoutExceptionsInput>
+    connectOrCreate?: ReceivingSessionCreateOrConnectWithoutExceptionsInput
+    upsert?: ReceivingSessionUpsertWithoutExceptionsInput
+    connect?: ReceivingSessionWhereUniqueInput
+    update?: XOR<XOR<ReceivingSessionUpdateToOneWithWhereWithoutExceptionsInput, ReceivingSessionUpdateWithoutExceptionsInput>, ReceivingSessionUncheckedUpdateWithoutExceptionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutExceptionsReportedNestedInput = {
+    create?: XOR<UserCreateWithoutExceptionsReportedInput, UserUncheckedCreateWithoutExceptionsReportedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExceptionsReportedInput
+    upsert?: UserUpsertWithoutExceptionsReportedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExceptionsReportedInput, UserUpdateWithoutExceptionsReportedInput>, UserUncheckedUpdateWithoutExceptionsReportedInput>
+  }
+
+  export type UserUpdateOneWithoutExceptionsResolvedNestedInput = {
+    create?: XOR<UserCreateWithoutExceptionsResolvedInput, UserUncheckedCreateWithoutExceptionsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExceptionsResolvedInput
+    upsert?: UserUpsertWithoutExceptionsResolvedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExceptionsResolvedInput, UserUpdateWithoutExceptionsResolvedInput>, UserUncheckedUpdateWithoutExceptionsResolvedInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -36771,6 +43242,40 @@ export namespace Prisma {
     _max?: NestedEnumWorkTaskEventTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumReceivingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingStatus | EnumReceivingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingStatusFilter<$PrismaModel> | $Enums.ReceivingStatus
+  }
+
+  export type NestedEnumReceivingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingStatus | EnumReceivingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingStatusWithAggregatesFilter<$PrismaModel> | $Enums.ReceivingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReceivingStatusFilter<$PrismaModel>
+    _max?: NestedEnumReceivingStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumReceivingExceptionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingExceptionType | EnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel> | $Enums.ReceivingExceptionType
+  }
+
+  export type NestedEnumReceivingExceptionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReceivingExceptionType | EnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReceivingExceptionType[] | ListEnumReceivingExceptionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumReceivingExceptionTypeWithAggregatesFilter<$PrismaModel> | $Enums.ReceivingExceptionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
+    _max?: NestedEnumReceivingExceptionTypeFilter<$PrismaModel>
+  }
+
   export type RefreshTokenCreateWithoutUserInput = {
     id?: string
     token: string
@@ -36850,6 +43355,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskUncheckedCreateWithoutAssignedUserInput = {
@@ -36881,6 +43387,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskCreateOrConnectWithoutAssignedUserInput = {
@@ -36935,7 +43442,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
@@ -36945,7 +43452,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateWithoutCompletedByUserInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -37028,6 +43535,310 @@ export namespace Prisma {
 
   export type NotificationCreateManyUserInputEnvelope = {
     data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingSessionCreateWithoutCountedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutCountedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutCountedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput>
+  }
+
+  export type ReceivingSessionCreateManyCountedByUserInputEnvelope = {
+    data: ReceivingSessionCreateManyCountedByUserInput | ReceivingSessionCreateManyCountedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingSessionCreateWithoutLockedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutLockedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutLockedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput>
+  }
+
+  export type ReceivingSessionCreateManyLockedByUserInputEnvelope = {
+    data: ReceivingSessionCreateManyLockedByUserInput | ReceivingSessionCreateManyLockedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingSessionCreateWithoutAssignedToUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutAssignedToUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutAssignedToUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput>
+  }
+
+  export type ReceivingSessionCreateManyAssignedToUserInputEnvelope = {
+    data: ReceivingSessionCreateManyAssignedToUserInput | ReceivingSessionCreateManyAssignedToUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingSessionCreateWithoutApprovedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutApprovedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutApprovedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput>
+  }
+
+  export type ReceivingSessionCreateManyApprovedByUserInputEnvelope = {
+    data: ReceivingSessionCreateManyApprovedByUserInput | ReceivingSessionCreateManyApprovedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingExceptionCreateWithoutReporterInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    session: ReceivingSessionCreateNestedOneWithoutExceptionsInput
+    resolver?: UserCreateNestedOneWithoutExceptionsResolvedInput
+  }
+
+  export type ReceivingExceptionUncheckedCreateWithoutReporterInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateOrConnectWithoutReporterInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    create: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput>
+  }
+
+  export type ReceivingExceptionCreateManyReporterInputEnvelope = {
+    data: ReceivingExceptionCreateManyReporterInput | ReceivingExceptionCreateManyReporterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingExceptionCreateWithoutResolverInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    session: ReceivingSessionCreateNestedOneWithoutExceptionsInput
+    reporter: UserCreateNestedOneWithoutExceptionsReportedInput
+  }
+
+  export type ReceivingExceptionUncheckedCreateWithoutResolverInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateOrConnectWithoutResolverInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    create: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput>
+  }
+
+  export type ReceivingExceptionCreateManyResolverInputEnvelope = {
+    data: ReceivingExceptionCreateManyResolverInput | ReceivingExceptionCreateManyResolverInput[]
     skipDuplicates?: boolean
   }
 
@@ -37186,7 +43997,7 @@ export namespace Prisma {
     NOT?: TaskItemScalarWhereInput | TaskItemScalarWhereInput[]
     id?: StringFilter<"TaskItem"> | string
     taskId?: StringFilter<"TaskItem"> | string
-    orderId?: StringFilter<"TaskItem"> | string
+    orderId?: StringNullableFilter<"TaskItem"> | string | null
     orderItemId?: StringNullableFilter<"TaskItem"> | string | null
     productVariantId?: StringNullableFilter<"TaskItem"> | string | null
     locationId?: StringNullableFilter<"TaskItem"> | string | null
@@ -37263,6 +44074,145 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Notification"> | Date | string
   }
 
+  export type ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    update: XOR<ReceivingSessionUpdateWithoutCountedByUserInput, ReceivingSessionUncheckedUpdateWithoutCountedByUserInput>
+    create: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateWithWhereUniqueWithoutCountedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    data: XOR<ReceivingSessionUpdateWithoutCountedByUserInput, ReceivingSessionUncheckedUpdateWithoutCountedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateManyWithWhereWithoutCountedByUserInput = {
+    where: ReceivingSessionScalarWhereInput
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutCountedByUserInput>
+  }
+
+  export type ReceivingSessionScalarWhereInput = {
+    AND?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+    OR?: ReceivingSessionScalarWhereInput[]
+    NOT?: ReceivingSessionScalarWhereInput | ReceivingSessionScalarWhereInput[]
+    id?: StringFilter<"ReceivingSession"> | string
+    poId?: StringFilter<"ReceivingSession"> | string
+    poReference?: StringFilter<"ReceivingSession"> | string
+    vendor?: StringNullableFilter<"ReceivingSession"> | string | null
+    status?: EnumReceivingStatusFilter<"ReceivingSession"> | $Enums.ReceivingStatus
+    version?: IntFilter<"ReceivingSession"> | number
+    lockedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    lockedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    countedBy?: StringFilter<"ReceivingSession"> | string
+    countedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    submittedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    assignedTo?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedBy?: StringNullableFilter<"ReceivingSession"> | string | null
+    approvedAt?: DateTimeNullableFilter<"ReceivingSession"> | Date | string | null
+    rejectionReason?: StringNullableFilter<"ReceivingSession"> | string | null
+    receivingLocationId?: StringNullableFilter<"ReceivingSession"> | string | null
+    putawayTaskId?: StringNullableFilter<"ReceivingSession"> | string | null
+    idempotencyKey?: StringNullableFilter<"ReceivingSession"> | string | null
+    createdAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingSession"> | Date | string
+  }
+
+  export type ReceivingSessionUpsertWithWhereUniqueWithoutLockedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    update: XOR<ReceivingSessionUpdateWithoutLockedByUserInput, ReceivingSessionUncheckedUpdateWithoutLockedByUserInput>
+    create: XOR<ReceivingSessionCreateWithoutLockedByUserInput, ReceivingSessionUncheckedCreateWithoutLockedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateWithWhereUniqueWithoutLockedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    data: XOR<ReceivingSessionUpdateWithoutLockedByUserInput, ReceivingSessionUncheckedUpdateWithoutLockedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateManyWithWhereWithoutLockedByUserInput = {
+    where: ReceivingSessionScalarWhereInput
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutLockedByUserInput>
+  }
+
+  export type ReceivingSessionUpsertWithWhereUniqueWithoutAssignedToUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    update: XOR<ReceivingSessionUpdateWithoutAssignedToUserInput, ReceivingSessionUncheckedUpdateWithoutAssignedToUserInput>
+    create: XOR<ReceivingSessionCreateWithoutAssignedToUserInput, ReceivingSessionUncheckedCreateWithoutAssignedToUserInput>
+  }
+
+  export type ReceivingSessionUpdateWithWhereUniqueWithoutAssignedToUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    data: XOR<ReceivingSessionUpdateWithoutAssignedToUserInput, ReceivingSessionUncheckedUpdateWithoutAssignedToUserInput>
+  }
+
+  export type ReceivingSessionUpdateManyWithWhereWithoutAssignedToUserInput = {
+    where: ReceivingSessionScalarWhereInput
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserInput>
+  }
+
+  export type ReceivingSessionUpsertWithWhereUniqueWithoutApprovedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    update: XOR<ReceivingSessionUpdateWithoutApprovedByUserInput, ReceivingSessionUncheckedUpdateWithoutApprovedByUserInput>
+    create: XOR<ReceivingSessionCreateWithoutApprovedByUserInput, ReceivingSessionUncheckedCreateWithoutApprovedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateWithWhereUniqueWithoutApprovedByUserInput = {
+    where: ReceivingSessionWhereUniqueInput
+    data: XOR<ReceivingSessionUpdateWithoutApprovedByUserInput, ReceivingSessionUncheckedUpdateWithoutApprovedByUserInput>
+  }
+
+  export type ReceivingSessionUpdateManyWithWhereWithoutApprovedByUserInput = {
+    where: ReceivingSessionScalarWhereInput
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserInput>
+  }
+
+  export type ReceivingExceptionUpsertWithWhereUniqueWithoutReporterInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    update: XOR<ReceivingExceptionUpdateWithoutReporterInput, ReceivingExceptionUncheckedUpdateWithoutReporterInput>
+    create: XOR<ReceivingExceptionCreateWithoutReporterInput, ReceivingExceptionUncheckedCreateWithoutReporterInput>
+  }
+
+  export type ReceivingExceptionUpdateWithWhereUniqueWithoutReporterInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    data: XOR<ReceivingExceptionUpdateWithoutReporterInput, ReceivingExceptionUncheckedUpdateWithoutReporterInput>
+  }
+
+  export type ReceivingExceptionUpdateManyWithWhereWithoutReporterInput = {
+    where: ReceivingExceptionScalarWhereInput
+    data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyWithoutReporterInput>
+  }
+
+  export type ReceivingExceptionScalarWhereInput = {
+    AND?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+    OR?: ReceivingExceptionScalarWhereInput[]
+    NOT?: ReceivingExceptionScalarWhereInput | ReceivingExceptionScalarWhereInput[]
+    id?: StringFilter<"ReceivingException"> | string
+    sessionId?: StringFilter<"ReceivingException"> | string
+    lineId?: StringNullableFilter<"ReceivingException"> | string | null
+    type?: EnumReceivingExceptionTypeFilter<"ReceivingException"> | $Enums.ReceivingExceptionType
+    quantity?: IntFilter<"ReceivingException"> | number
+    notes?: StringNullableFilter<"ReceivingException"> | string | null
+    imageUrl?: StringNullableFilter<"ReceivingException"> | string | null
+    reportedBy?: StringFilter<"ReceivingException"> | string
+    resolvedBy?: StringNullableFilter<"ReceivingException"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ReceivingException"> | Date | string | null
+    createdAt?: DateTimeFilter<"ReceivingException"> | Date | string
+  }
+
+  export type ReceivingExceptionUpsertWithWhereUniqueWithoutResolverInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    update: XOR<ReceivingExceptionUpdateWithoutResolverInput, ReceivingExceptionUncheckedUpdateWithoutResolverInput>
+    create: XOR<ReceivingExceptionCreateWithoutResolverInput, ReceivingExceptionUncheckedCreateWithoutResolverInput>
+  }
+
+  export type ReceivingExceptionUpdateWithWhereUniqueWithoutResolverInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    data: XOR<ReceivingExceptionUpdateWithoutResolverInput, ReceivingExceptionUncheckedUpdateWithoutResolverInput>
+  }
+
+  export type ReceivingExceptionUpdateManyWithWhereWithoutResolverInput = {
+    where: ReceivingExceptionScalarWhereInput
+    data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyWithoutResolverInput>
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -37280,6 +44230,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -37299,6 +44255,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -37334,6 +44296,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -37353,6 +44321,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -37372,6 +44346,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -37391,6 +44371,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -37426,6 +44412,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -37445,6 +44437,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type ProductVariantCreateWithoutProductInput = {
@@ -37467,6 +44465,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
@@ -37489,6 +44488,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutProductInput = {
@@ -37695,7 +44695,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
@@ -37705,7 +44705,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateWithoutProductVariantInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     locationId?: string | null
     allocationId?: string | null
@@ -37770,6 +44770,52 @@ export namespace Prisma {
 
   export type AllocationCreateManyProductVariantInputEnvelope = {
     data: AllocationCreateManyProductVariantInput | AllocationCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingLineCreateWithoutProductVariantInput = {
+    id?: string
+    sku: string
+    productName: string
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: ReceivingSessionCreateNestedOneWithoutLineItemsInput
+  }
+
+  export type ReceivingLineUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingLineCreateOrConnectWithoutProductVariantInput = {
+    where: ReceivingLineWhereUniqueInput
+    create: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type ReceivingLineCreateManyProductVariantInputEnvelope = {
+    data: ReceivingLineCreateManyProductVariantInput | ReceivingLineCreateManyProductVariantInput[]
     skipDuplicates?: boolean
   }
 
@@ -37959,6 +45005,44 @@ export namespace Prisma {
     taskItemId?: StringNullableFilter<"Allocation"> | string | null
   }
 
+  export type ReceivingLineUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: ReceivingLineWhereUniqueInput
+    update: XOR<ReceivingLineUpdateWithoutProductVariantInput, ReceivingLineUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<ReceivingLineCreateWithoutProductVariantInput, ReceivingLineUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type ReceivingLineUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: ReceivingLineWhereUniqueInput
+    data: XOR<ReceivingLineUpdateWithoutProductVariantInput, ReceivingLineUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type ReceivingLineUpdateManyWithWhereWithoutProductVariantInput = {
+    where: ReceivingLineScalarWhereInput
+    data: XOR<ReceivingLineUpdateManyMutationInput, ReceivingLineUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type ReceivingLineScalarWhereInput = {
+    AND?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+    OR?: ReceivingLineScalarWhereInput[]
+    NOT?: ReceivingLineScalarWhereInput | ReceivingLineScalarWhereInput[]
+    id?: StringFilter<"ReceivingLine"> | string
+    sessionId?: StringFilter<"ReceivingLine"> | string
+    sku?: StringFilter<"ReceivingLine"> | string
+    productName?: StringFilter<"ReceivingLine"> | string
+    productVariantId?: StringNullableFilter<"ReceivingLine"> | string | null
+    quantityExpected?: IntFilter<"ReceivingLine"> | number
+    quantityCounted?: IntFilter<"ReceivingLine"> | number
+    quantityDamaged?: IntFilter<"ReceivingLine"> | number
+    variance?: IntNullableFilter<"ReceivingLine"> | number | null
+    lotNumber?: StringNullableFilter<"ReceivingLine"> | string | null
+    expiryDate?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    generatedBarcode?: StringNullableFilter<"ReceivingLine"> | string | null
+    lastScannedAt?: DateTimeNullableFilter<"ReceivingLine"> | Date | string | null
+    scanCount?: IntFilter<"ReceivingLine"> | number
+    createdAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+    updatedAt?: DateTimeFilter<"ReceivingLine"> | Date | string
+  }
+
   export type InventoryUnitCreateWithoutLocationInput = {
     id?: string
     quantity?: number
@@ -38013,7 +45097,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
@@ -38023,7 +45107,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateWithoutLocationInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     allocationId?: string | null
@@ -38091,6 +45175,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ReceivingSessionCreateWithoutReceivingLocationInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutReceivingLocationInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutReceivingLocationInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput>
+  }
+
+  export type ReceivingSessionCreateManyReceivingLocationInputEnvelope = {
+    data: ReceivingSessionCreateManyReceivingLocationInput | ReceivingSessionCreateManyReceivingLocationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type InventoryUnitUpsertWithWhereUniqueWithoutLocationInput = {
     where: InventoryUnitWhereUniqueInput
     update: XOR<InventoryUnitUpdateWithoutLocationInput, InventoryUnitUncheckedUpdateWithoutLocationInput>
@@ -38139,6 +45281,22 @@ export namespace Prisma {
     data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutLocationInput>
   }
 
+  export type ReceivingSessionUpsertWithWhereUniqueWithoutReceivingLocationInput = {
+    where: ReceivingSessionWhereUniqueInput
+    update: XOR<ReceivingSessionUpdateWithoutReceivingLocationInput, ReceivingSessionUncheckedUpdateWithoutReceivingLocationInput>
+    create: XOR<ReceivingSessionCreateWithoutReceivingLocationInput, ReceivingSessionUncheckedCreateWithoutReceivingLocationInput>
+  }
+
+  export type ReceivingSessionUpdateWithWhereUniqueWithoutReceivingLocationInput = {
+    where: ReceivingSessionWhereUniqueInput
+    data: XOR<ReceivingSessionUpdateWithoutReceivingLocationInput, ReceivingSessionUncheckedUpdateWithoutReceivingLocationInput>
+  }
+
+  export type ReceivingSessionUpdateManyWithWhereWithoutReceivingLocationInput = {
+    where: ReceivingSessionScalarWhereInput
+    data: XOR<ReceivingSessionUpdateManyMutationInput, ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationInput>
+  }
+
   export type ProductVariantCreateWithoutInventoryUnitsInput = {
     id?: string
     sku: string
@@ -38159,6 +45317,7 @@ export namespace Prisma {
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutInventoryUnitsInput = {
@@ -38181,6 +45340,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutInventoryUnitsInput = {
@@ -38205,6 +45365,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationUncheckedCreateWithoutInventoryUnitsInput = {
@@ -38224,6 +45385,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationCreateOrConnectWithoutInventoryUnitsInput = {
@@ -38302,6 +45464,7 @@ export namespace Prisma {
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -38324,6 +45487,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutInventoryUnitsInput = {
@@ -38354,6 +45518,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -38373,6 +45538,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput = {
@@ -38548,6 +45714,7 @@ export namespace Prisma {
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutAllocationsInput = {
@@ -38570,6 +45737,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutAllocationsInput = {
@@ -38594,6 +45762,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationUncheckedCreateWithoutAllocationsInput = {
@@ -38613,6 +45782,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationCreateOrConnectWithoutAllocationsInput = {
@@ -38634,7 +45804,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
@@ -38644,7 +45814,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateWithoutAllocationInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -38853,6 +46023,7 @@ export namespace Prisma {
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutAllocationsInput = {
@@ -38875,6 +46046,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutAllocationsInput = {
@@ -38905,6 +46077,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutAllocationsInput = {
@@ -38924,6 +46097,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type TaskItemUpsertWithoutAllocationInput = {
@@ -38951,7 +46125,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
@@ -38961,7 +46135,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateWithoutAllocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39434,6 +46608,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutOrderItemsInput = {
@@ -39456,6 +46631,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutOrderItemsInput = {
@@ -39477,7 +46653,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     task: WorkTaskCreateNestedOneWithoutTaskItemsInput
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
     completedByUser?: UserCreateNestedOneWithoutCompletedTaskItemsInput
@@ -39487,7 +46663,7 @@ export namespace Prisma {
   export type TaskItemUncheckedCreateWithoutOrderItemInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     productVariantId?: string | null
     locationId?: string | null
     allocationId?: string | null
@@ -39655,6 +46831,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutOrderItemsInput = {
@@ -39677,6 +46854,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderItemInput = {
@@ -40082,6 +47260,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutShippingPackageItemsInput = {
@@ -40104,6 +47283,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutShippingPackageItemsInput = {
@@ -40191,6 +47371,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput = {
@@ -40213,6 +47394,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type UserCreateWithoutAssignedTasksInput = {
@@ -40232,6 +47414,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -40251,6 +47439,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -40271,7 +47465,7 @@ export namespace Prisma {
     itemScanned?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    order: OrderCreateNestedOneWithoutTaskItemsInput
+    order?: OrderCreateNestedOneWithoutTaskItemsInput
     orderItem?: OrderItemCreateNestedOneWithoutTaskItemsInput
     productVariant?: ProductVariantCreateNestedOneWithoutTaskItemsInput
     location?: LocationCreateNestedOneWithoutTaskItemsInput
@@ -40281,7 +47475,7 @@ export namespace Prisma {
 
   export type TaskItemUncheckedCreateWithoutTaskInput = {
     id?: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -40338,6 +47532,59 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ReceivingSessionCreateWithoutPutawayTaskInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutPutawayTaskInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutPutawayTaskInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+  }
+
   export type UserUpsertWithoutAssignedTasksInput = {
     update: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
     create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
@@ -40366,6 +47613,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -40385,6 +47638,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutTaskInput = {
@@ -40419,6 +47678,65 @@ export namespace Prisma {
     data: XOR<TaskEventUpdateManyMutationInput, TaskEventUncheckedUpdateManyWithoutTaskInput>
   }
 
+  export type ReceivingSessionUpsertWithoutPutawayTaskInput = {
+    update: XOR<ReceivingSessionUpdateWithoutPutawayTaskInput, ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput>
+    create: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
+    where?: ReceivingSessionWhereInput
+  }
+
+  export type ReceivingSessionUpdateToOneWithWhereWithoutPutawayTaskInput = {
+    where?: ReceivingSessionWhereInput
+    data: XOR<ReceivingSessionUpdateWithoutPutawayTaskInput, ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput>
+  }
+
+  export type ReceivingSessionUpdateWithoutPutawayTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
   export type WorkTaskCreateWithoutTaskItemsInput = {
     id?: string
     taskNumber: string
@@ -40448,6 +47766,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskUncheckedCreateWithoutTaskItemsInput = {
@@ -40479,6 +47798,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskCreateOrConnectWithoutTaskItemsInput = {
@@ -40608,6 +47928,7 @@ export namespace Prisma {
     orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutTaskItemsInput = {
@@ -40630,6 +47951,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutTaskItemsInput = {
@@ -40654,6 +47976,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
     allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationUncheckedCreateWithoutTaskItemsInput = {
@@ -40673,6 +47996,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
   }
 
   export type LocationCreateOrConnectWithoutTaskItemsInput = {
@@ -40697,6 +48021,12 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutCompletedTaskItemsInput = {
@@ -40716,6 +48046,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutCompletedTaskItemsInput = {
@@ -40798,6 +48134,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskUncheckedUpdateWithoutTaskItemsInput = {
@@ -40829,6 +48166,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type OrderUpsertWithoutTaskItemsInput = {
@@ -40976,6 +48314,7 @@ export namespace Prisma {
     orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutTaskItemsInput = {
@@ -40998,6 +48337,7 @@ export namespace Prisma {
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutTaskItemsInput = {
@@ -41028,6 +48368,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutTaskItemsInput = {
@@ -41047,6 +48388,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
   }
 
   export type UserUpsertWithoutCompletedTaskItemsInput = {
@@ -41077,6 +48419,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedTaskItemsInput = {
@@ -41096,6 +48444,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type AllocationUpsertWithoutTaskItemInput = {
@@ -41168,6 +48522,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskUncheckedCreateWithoutEventsInput = {
@@ -41199,6 +48554,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
 
   export type WorkTaskCreateOrConnectWithoutEventsInput = {
@@ -41223,6 +48579,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutTaskEventsInput = {
@@ -41242,6 +48604,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutTaskEventsInput = {
@@ -41289,6 +48657,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskUncheckedUpdateWithoutEventsInput = {
@@ -41320,6 +48689,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type UserUpsertWithoutTaskEventsInput = {
@@ -41350,6 +48720,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTaskEventsInput = {
@@ -41369,6 +48745,12 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -41388,6 +48770,12 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -41407,6 +48795,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -41442,6 +48836,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -41461,6 +48861,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -41480,6 +48886,12 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -41499,6 +48911,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -41534,6 +48952,12 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -41553,6 +48977,1394 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type ReceivingLineCreateWithoutSessionInput = {
+    id?: string
+    sku: string
+    productName: string
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant?: ProductVariantCreateNestedOneWithoutReceivingLinesInput
+  }
+
+  export type ReceivingLineUncheckedCreateWithoutSessionInput = {
+    id?: string
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingLineCreateOrConnectWithoutSessionInput = {
+    where: ReceivingLineWhereUniqueInput
+    create: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput>
+  }
+
+  export type ReceivingLineCreateManySessionInputEnvelope = {
+    data: ReceivingLineCreateManySessionInput | ReceivingLineCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceivingExceptionCreateWithoutSessionInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    reporter: UserCreateNestedOneWithoutExceptionsReportedInput
+    resolver?: UserCreateNestedOneWithoutExceptionsResolvedInput
+  }
+
+  export type ReceivingExceptionUncheckedCreateWithoutSessionInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateOrConnectWithoutSessionInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    create: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput>
+  }
+
+  export type ReceivingExceptionCreateManySessionInputEnvelope = {
+    data: ReceivingExceptionCreateManySessionInput | ReceivingExceptionCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutReceivingSessionsCountedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivingSessionsCountedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivingSessionsCountedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivingSessionsCountedInput, UserUncheckedCreateWithoutReceivingSessionsCountedInput>
+  }
+
+  export type UserCreateWithoutReceivingSessionsLockedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivingSessionsLockedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivingSessionsLockedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivingSessionsLockedInput, UserUncheckedCreateWithoutReceivingSessionsLockedInput>
+  }
+
+  export type UserCreateWithoutReceivingSessionsAssignedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivingSessionsAssignedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivingSessionsAssignedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivingSessionsAssignedInput, UserUncheckedCreateWithoutReceivingSessionsAssignedInput>
+  }
+
+  export type UserCreateWithoutReceivingSessionsApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivingSessionsApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivingSessionsApprovedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivingSessionsApprovedInput, UserUncheckedCreateWithoutReceivingSessionsApprovedInput>
+  }
+
+  export type LocationCreateWithoutReceivingSessionsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationUncheckedCreateWithoutReceivingSessionsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationCreateOrConnectWithoutReceivingSessionsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutReceivingSessionsInput, LocationUncheckedCreateWithoutReceivingSessionsInput>
+  }
+
+  export type WorkTaskCreateWithoutReceivingSessionInput = {
+    id?: string
+    taskNumber: string
+    type: $Enums.WorkTaskType
+    status?: $Enums.WorkTaskStatus
+    priority?: number
+    idempotencyKey?: string | null
+    assignedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
+    orderIds?: WorkTaskCreateorderIdsInput | string[]
+    totalOrders: number
+    completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    totalItems: number
+    completedItems?: number
+    shortItems?: number
+    skippedItems?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
+    taskItems?: TaskItemCreateNestedManyWithoutTaskInput
+    events?: TaskEventCreateNestedManyWithoutTaskInput
+  }
+
+  export type WorkTaskUncheckedCreateWithoutReceivingSessionInput = {
+    id?: string
+    taskNumber: string
+    type: $Enums.WorkTaskType
+    status?: $Enums.WorkTaskStatus
+    priority?: number
+    idempotencyKey?: string | null
+    assignedTo?: string | null
+    assignedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
+    orderIds?: WorkTaskCreateorderIdsInput | string[]
+    totalOrders: number
+    completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    totalItems: number
+    completedItems?: number
+    shortItems?: number
+    skippedItems?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
+    events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type WorkTaskCreateOrConnectWithoutReceivingSessionInput = {
+    where: WorkTaskWhereUniqueInput
+    create: XOR<WorkTaskCreateWithoutReceivingSessionInput, WorkTaskUncheckedCreateWithoutReceivingSessionInput>
+  }
+
+  export type ReceivingLineUpsertWithWhereUniqueWithoutSessionInput = {
+    where: ReceivingLineWhereUniqueInput
+    update: XOR<ReceivingLineUpdateWithoutSessionInput, ReceivingLineUncheckedUpdateWithoutSessionInput>
+    create: XOR<ReceivingLineCreateWithoutSessionInput, ReceivingLineUncheckedCreateWithoutSessionInput>
+  }
+
+  export type ReceivingLineUpdateWithWhereUniqueWithoutSessionInput = {
+    where: ReceivingLineWhereUniqueInput
+    data: XOR<ReceivingLineUpdateWithoutSessionInput, ReceivingLineUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type ReceivingLineUpdateManyWithWhereWithoutSessionInput = {
+    where: ReceivingLineScalarWhereInput
+    data: XOR<ReceivingLineUpdateManyMutationInput, ReceivingLineUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type ReceivingExceptionUpsertWithWhereUniqueWithoutSessionInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    update: XOR<ReceivingExceptionUpdateWithoutSessionInput, ReceivingExceptionUncheckedUpdateWithoutSessionInput>
+    create: XOR<ReceivingExceptionCreateWithoutSessionInput, ReceivingExceptionUncheckedCreateWithoutSessionInput>
+  }
+
+  export type ReceivingExceptionUpdateWithWhereUniqueWithoutSessionInput = {
+    where: ReceivingExceptionWhereUniqueInput
+    data: XOR<ReceivingExceptionUpdateWithoutSessionInput, ReceivingExceptionUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type ReceivingExceptionUpdateManyWithWhereWithoutSessionInput = {
+    where: ReceivingExceptionScalarWhereInput
+    data: XOR<ReceivingExceptionUpdateManyMutationInput, ReceivingExceptionUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type UserUpsertWithoutReceivingSessionsCountedInput = {
+    update: XOR<UserUpdateWithoutReceivingSessionsCountedInput, UserUncheckedUpdateWithoutReceivingSessionsCountedInput>
+    create: XOR<UserCreateWithoutReceivingSessionsCountedInput, UserUncheckedCreateWithoutReceivingSessionsCountedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivingSessionsCountedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivingSessionsCountedInput, UserUncheckedUpdateWithoutReceivingSessionsCountedInput>
+  }
+
+  export type UserUpdateWithoutReceivingSessionsCountedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivingSessionsCountedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUpsertWithoutReceivingSessionsLockedInput = {
+    update: XOR<UserUpdateWithoutReceivingSessionsLockedInput, UserUncheckedUpdateWithoutReceivingSessionsLockedInput>
+    create: XOR<UserCreateWithoutReceivingSessionsLockedInput, UserUncheckedCreateWithoutReceivingSessionsLockedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivingSessionsLockedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivingSessionsLockedInput, UserUncheckedUpdateWithoutReceivingSessionsLockedInput>
+  }
+
+  export type UserUpdateWithoutReceivingSessionsLockedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivingSessionsLockedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUpsertWithoutReceivingSessionsAssignedInput = {
+    update: XOR<UserUpdateWithoutReceivingSessionsAssignedInput, UserUncheckedUpdateWithoutReceivingSessionsAssignedInput>
+    create: XOR<UserCreateWithoutReceivingSessionsAssignedInput, UserUncheckedCreateWithoutReceivingSessionsAssignedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivingSessionsAssignedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivingSessionsAssignedInput, UserUncheckedUpdateWithoutReceivingSessionsAssignedInput>
+  }
+
+  export type UserUpdateWithoutReceivingSessionsAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivingSessionsAssignedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUpsertWithoutReceivingSessionsApprovedInput = {
+    update: XOR<UserUpdateWithoutReceivingSessionsApprovedInput, UserUncheckedUpdateWithoutReceivingSessionsApprovedInput>
+    create: XOR<UserCreateWithoutReceivingSessionsApprovedInput, UserUncheckedCreateWithoutReceivingSessionsApprovedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivingSessionsApprovedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivingSessionsApprovedInput, UserUncheckedUpdateWithoutReceivingSessionsApprovedInput>
+  }
+
+  export type UserUpdateWithoutReceivingSessionsApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivingSessionsApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type LocationUpsertWithoutReceivingSessionsInput = {
+    update: XOR<LocationUpdateWithoutReceivingSessionsInput, LocationUncheckedUpdateWithoutReceivingSessionsInput>
+    create: XOR<LocationCreateWithoutReceivingSessionsInput, LocationUncheckedCreateWithoutReceivingSessionsInput>
+    where?: LocationWhereInput
+  }
+
+  export type LocationUpdateToOneWithWhereWithoutReceivingSessionsInput = {
+    where?: LocationWhereInput
+    data: XOR<LocationUpdateWithoutReceivingSessionsInput, LocationUncheckedUpdateWithoutReceivingSessionsInput>
+  }
+
+  export type LocationUpdateWithoutReceivingSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutReceivingSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type WorkTaskUpsertWithoutReceivingSessionInput = {
+    update: XOR<WorkTaskUpdateWithoutReceivingSessionInput, WorkTaskUncheckedUpdateWithoutReceivingSessionInput>
+    create: XOR<WorkTaskCreateWithoutReceivingSessionInput, WorkTaskUncheckedCreateWithoutReceivingSessionInput>
+    where?: WorkTaskWhereInput
+  }
+
+  export type WorkTaskUpdateToOneWithWhereWithoutReceivingSessionInput = {
+    where?: WorkTaskWhereInput
+    data: XOR<WorkTaskUpdateWithoutReceivingSessionInput, WorkTaskUncheckedUpdateWithoutReceivingSessionInput>
+  }
+
+  export type WorkTaskUpdateWithoutReceivingSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkTaskTypeFieldUpdateOperationsInput | $Enums.WorkTaskType
+    status?: EnumWorkTaskStatusFieldUpdateOperationsInput | $Enums.WorkTaskStatus
+    priority?: IntFieldUpdateOperationsInput | number
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    orderIds?: WorkTaskUpdateorderIdsInput | string[]
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
+    taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
+    events?: TaskEventUpdateManyWithoutTaskNestedInput
+  }
+
+  export type WorkTaskUncheckedUpdateWithoutReceivingSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkTaskTypeFieldUpdateOperationsInput | $Enums.WorkTaskType
+    status?: EnumWorkTaskStatusFieldUpdateOperationsInput | $Enums.WorkTaskStatus
+    priority?: IntFieldUpdateOperationsInput | number
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    orderIds?: WorkTaskUpdateorderIdsInput | string[]
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
+    events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type ReceivingSessionCreateWithoutLineItemsInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exceptions?: ReceivingExceptionCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutLineItemsInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exceptions?: ReceivingExceptionUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutLineItemsInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutLineItemsInput, ReceivingSessionUncheckedCreateWithoutLineItemsInput>
+  }
+
+  export type ProductVariantCreateWithoutReceivingLinesInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
+    product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutReceivingLinesInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutReceivingLinesInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutReceivingLinesInput, ProductVariantUncheckedCreateWithoutReceivingLinesInput>
+  }
+
+  export type ReceivingSessionUpsertWithoutLineItemsInput = {
+    update: XOR<ReceivingSessionUpdateWithoutLineItemsInput, ReceivingSessionUncheckedUpdateWithoutLineItemsInput>
+    create: XOR<ReceivingSessionCreateWithoutLineItemsInput, ReceivingSessionUncheckedCreateWithoutLineItemsInput>
+    where?: ReceivingSessionWhereInput
+  }
+
+  export type ReceivingSessionUpdateToOneWithWhereWithoutLineItemsInput = {
+    where?: ReceivingSessionWhereInput
+    data: XOR<ReceivingSessionUpdateWithoutLineItemsInput, ReceivingSessionUncheckedUpdateWithoutLineItemsInput>
+  }
+
+  export type ReceivingSessionUpdateWithoutLineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutLineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ProductVariantUpsertWithoutReceivingLinesInput = {
+    update: XOR<ProductVariantUpdateWithoutReceivingLinesInput, ProductVariantUncheckedUpdateWithoutReceivingLinesInput>
+    create: XOR<ProductVariantCreateWithoutReceivingLinesInput, ProductVariantUncheckedCreateWithoutReceivingLinesInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutReceivingLinesInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutReceivingLinesInput, ProductVariantUncheckedUpdateWithoutReceivingLinesInput>
+  }
+
+  export type ProductVariantUpdateWithoutReceivingLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutReceivingLinesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ReceivingSessionCreateWithoutExceptionsInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineCreateNestedManyWithoutSessionInput
+    countedByUser: UserCreateNestedOneWithoutReceivingSessionsCountedInput
+    lockedByUser?: UserCreateNestedOneWithoutReceivingSessionsLockedInput
+    assignedToUser?: UserCreateNestedOneWithoutReceivingSessionsAssignedInput
+    approvedByUser?: UserCreateNestedOneWithoutReceivingSessionsApprovedInput
+    receivingLocation?: LocationCreateNestedOneWithoutReceivingSessionsInput
+    putawayTask?: WorkTaskCreateNestedOneWithoutReceivingSessionInput
+  }
+
+  export type ReceivingSessionUncheckedCreateWithoutExceptionsInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lineItems?: ReceivingLineUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type ReceivingSessionCreateOrConnectWithoutExceptionsInput = {
+    where: ReceivingSessionWhereUniqueInput
+    create: XOR<ReceivingSessionCreateWithoutExceptionsInput, ReceivingSessionUncheckedCreateWithoutExceptionsInput>
+  }
+
+  export type UserCreateWithoutExceptionsReportedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserUncheckedCreateWithoutExceptionsReportedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+  }
+
+  export type UserCreateOrConnectWithoutExceptionsReportedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExceptionsReportedInput, UserUncheckedCreateWithoutExceptionsReportedInput>
+  }
+
+  export type UserCreateWithoutExceptionsResolvedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+  }
+
+  export type UserUncheckedCreateWithoutExceptionsResolvedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+  }
+
+  export type UserCreateOrConnectWithoutExceptionsResolvedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExceptionsResolvedInput, UserUncheckedCreateWithoutExceptionsResolvedInput>
+  }
+
+  export type ReceivingSessionUpsertWithoutExceptionsInput = {
+    update: XOR<ReceivingSessionUpdateWithoutExceptionsInput, ReceivingSessionUncheckedUpdateWithoutExceptionsInput>
+    create: XOR<ReceivingSessionCreateWithoutExceptionsInput, ReceivingSessionUncheckedCreateWithoutExceptionsInput>
+    where?: ReceivingSessionWhereInput
+  }
+
+  export type ReceivingSessionUpdateToOneWithWhereWithoutExceptionsInput = {
+    where?: ReceivingSessionWhereInput
+    data: XOR<ReceivingSessionUpdateWithoutExceptionsInput, ReceivingSessionUncheckedUpdateWithoutExceptionsInput>
+  }
+
+  export type ReceivingSessionUpdateWithoutExceptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutExceptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type UserUpsertWithoutExceptionsReportedInput = {
+    update: XOR<UserUpdateWithoutExceptionsReportedInput, UserUncheckedUpdateWithoutExceptionsReportedInput>
+    create: XOR<UserCreateWithoutExceptionsReportedInput, UserUncheckedCreateWithoutExceptionsReportedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExceptionsReportedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExceptionsReportedInput, UserUncheckedUpdateWithoutExceptionsReportedInput>
+  }
+
+  export type UserUpdateWithoutExceptionsReportedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExceptionsReportedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+  }
+
+  export type UserUpsertWithoutExceptionsResolvedInput = {
+    update: XOR<UserUpdateWithoutExceptionsResolvedInput, UserUncheckedUpdateWithoutExceptionsResolvedInput>
+    create: XOR<UserCreateWithoutExceptionsResolvedInput, UserUncheckedCreateWithoutExceptionsResolvedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExceptionsResolvedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExceptionsResolvedInput, UserUncheckedUpdateWithoutExceptionsResolvedInput>
+  }
+
+  export type UserUpdateWithoutExceptionsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExceptionsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
   }
 
   export type RefreshTokenCreateManyUserInput = {
@@ -41611,7 +50423,7 @@ export namespace Prisma {
   export type TaskItemCreateManyCompletedByUserInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -41644,6 +50456,120 @@ export namespace Prisma {
     title: string
     message: string
     read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ReceivingSessionCreateManyCountedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingSessionCreateManyLockedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingSessionCreateManyAssignedToUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingSessionCreateManyApprovedByUserInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    receivingLocationId?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateManyReporterInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateManyResolverInput = {
+    id?: string
+    sessionId: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -41721,6 +50647,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskUncheckedUpdateWithoutAssignedUserInput = {
@@ -41752,6 +50679,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
 
   export type WorkTaskUncheckedUpdateManyWithoutAssignedUserInput = {
@@ -41824,7 +50752,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
@@ -41834,7 +50762,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateWithoutCompletedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41855,7 +50783,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateManyWithoutCompletedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41929,6 +50857,364 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReceivingSessionUpdateWithoutCountedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutCountedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutCountedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingSessionUpdateWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutLockedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingSessionUpdateWithoutAssignedToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutAssignedToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingSessionUpdateWithoutApprovedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    receivingLocation?: LocationUpdateOneWithoutReceivingSessionsNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutApprovedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    receivingLocationId?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: ReceivingSessionUpdateOneRequiredWithoutExceptionsNestedInput
+    resolver?: UserUpdateOneWithoutExceptionsResolvedNestedInput
+  }
+
+  export type ReceivingExceptionUncheckedUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUpdateWithoutResolverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: ReceivingSessionUpdateOneRequiredWithoutExceptionsNestedInput
+    reporter?: UserUpdateOneRequiredWithoutExceptionsReportedNestedInput
+  }
+
+  export type ReceivingExceptionUncheckedUpdateWithoutResolverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutResolverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductVariantCreateManyProductInput = {
     id?: string
     sku: string
@@ -41966,6 +51252,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
@@ -41988,6 +51275,7 @@ export namespace Prisma {
     inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
@@ -42048,7 +51336,7 @@ export namespace Prisma {
   export type TaskItemCreateManyProductVariantInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     locationId?: string | null
     allocationId?: string | null
@@ -42078,6 +51366,24 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type ReceivingLineCreateManyProductVariantInput = {
+    id?: string
+    sessionId: string
+    sku: string
+    productName: string
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ShippingPackageItemUpdateWithoutProductVariantInput = {
@@ -42214,7 +51520,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
@@ -42224,7 +51530,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42245,7 +51551,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateManyWithoutProductVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42307,6 +51613,60 @@ export namespace Prisma {
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ReceivingLineUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: ReceivingSessionUpdateOneRequiredWithoutLineItemsNestedInput
+  }
+
+  export type ReceivingLineUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InventoryUnitCreateManyLocationInput = {
     id?: string
     productVariantId: string
@@ -42324,7 +51684,7 @@ export namespace Prisma {
   export type TaskItemCreateManyLocationInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     allocationId?: string | null
@@ -42354,6 +51714,28 @@ export namespace Prisma {
     releasedAt?: Date | string | null
     pickedAt?: Date | string | null
     taskItemId?: string | null
+  }
+
+  export type ReceivingSessionCreateManyReceivingLocationInput = {
+    id?: string
+    poId: string
+    poReference: string
+    vendor?: string | null
+    status?: $Enums.ReceivingStatus
+    version?: number
+    lockedBy?: string | null
+    lockedAt?: Date | string | null
+    countedBy: string
+    countedAt?: Date | string
+    submittedAt?: Date | string | null
+    assignedTo?: string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    rejectionReason?: string | null
+    putawayTaskId?: string | null
+    idempotencyKey?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type InventoryUnitUpdateWithoutLocationInput = {
@@ -42414,7 +51796,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
@@ -42424,7 +51806,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42445,7 +51827,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateManyWithoutLocationInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42505,6 +51887,76 @@ export namespace Prisma {
     releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ReceivingSessionUpdateWithoutReceivingLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUpdateManyWithoutSessionNestedInput
+    countedByUser?: UserUpdateOneRequiredWithoutReceivingSessionsCountedNestedInput
+    lockedByUser?: UserUpdateOneWithoutReceivingSessionsLockedNestedInput
+    assignedToUser?: UserUpdateOneWithoutReceivingSessionsAssignedNestedInput
+    approvedByUser?: UserUpdateOneWithoutReceivingSessionsApprovedNestedInput
+    putawayTask?: WorkTaskUpdateOneWithoutReceivingSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateWithoutReceivingLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lineItems?: ReceivingLineUncheckedUpdateManyWithoutSessionNestedInput
+    exceptions?: ReceivingExceptionUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poId?: StringFieldUpdateOperationsInput | string
+    poReference?: StringFieldUpdateOperationsInput | string
+    vendor?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReceivingStatusFieldUpdateOperationsInput | $Enums.ReceivingStatus
+    version?: IntFieldUpdateOperationsInput | number
+    lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    countedBy?: StringFieldUpdateOperationsInput | string
+    countedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    putawayTaskId?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AllocationCreateManyInventoryUnitInput = {
@@ -42946,7 +52398,7 @@ export namespace Prisma {
   export type TaskItemCreateManyOrderItemInput = {
     id?: string
     taskId: string
-    orderId: string
+    orderId?: string | null
     productVariantId?: string | null
     locationId?: string | null
     allocationId?: string | null
@@ -42992,7 +52444,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     task?: WorkTaskUpdateOneRequiredWithoutTaskItemsNestedInput
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
     completedByUser?: UserUpdateOneWithoutCompletedTaskItemsNestedInput
@@ -43002,7 +52454,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateWithoutOrderItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43023,7 +52475,7 @@ export namespace Prisma {
   export type TaskItemUncheckedUpdateManyWithoutOrderItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     taskId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
     allocationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43123,7 +52575,7 @@ export namespace Prisma {
 
   export type TaskItemCreateManyTaskInput = {
     id?: string
-    orderId: string
+    orderId?: string | null
     orderItemId?: string | null
     productVariantId?: string | null
     locationId?: string | null
@@ -43163,7 +52615,7 @@ export namespace Prisma {
     itemScanned?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    order?: OrderUpdateOneRequiredWithoutTaskItemsNestedInput
+    order?: OrderUpdateOneWithoutTaskItemsNestedInput
     orderItem?: OrderItemUpdateOneWithoutTaskItemsNestedInput
     productVariant?: ProductVariantUpdateOneWithoutTaskItemsNestedInput
     location?: LocationUpdateOneWithoutTaskItemsNestedInput
@@ -43173,7 +52625,7 @@ export namespace Prisma {
 
   export type TaskItemUncheckedUpdateWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43194,7 +52646,7 @@ export namespace Prisma {
 
   export type TaskItemUncheckedUpdateManyWithoutTaskInput = {
     id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
     orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     locationId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43236,6 +52688,130 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     taskItemId?: NullableStringFieldUpdateOperationsInput | string | null
     data?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineCreateManySessionInput = {
+    id?: string
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    quantityExpected?: number
+    quantityCounted?: number
+    quantityDamaged?: number
+    variance?: number | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    generatedBarcode?: string | null
+    lastScannedAt?: Date | string | null
+    scanCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceivingExceptionCreateManySessionInput = {
+    id?: string
+    lineId?: string | null
+    type: $Enums.ReceivingExceptionType
+    quantity: number
+    notes?: string | null
+    imageUrl?: string | null
+    reportedBy: string
+    resolvedBy?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ReceivingLineUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneWithoutReceivingLinesNestedInput
+  }
+
+  export type ReceivingLineUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingLineUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityExpected?: IntFieldUpdateOperationsInput | number
+    quantityCounted?: IntFieldUpdateOperationsInput | number
+    quantityDamaged?: IntFieldUpdateOperationsInput | number
+    variance?: NullableIntFieldUpdateOperationsInput | number | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    generatedBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    lastScannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reporter?: UserUpdateOneRequiredWithoutExceptionsReportedNestedInput
+    resolver?: UserUpdateOneWithoutExceptionsResolvedNestedInput
+  }
+
+  export type ReceivingExceptionUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceivingExceptionUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lineId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumReceivingExceptionTypeFieldUpdateOperationsInput | $Enums.ReceivingExceptionType
+    quantity?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedBy?: StringFieldUpdateOperationsInput | string
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

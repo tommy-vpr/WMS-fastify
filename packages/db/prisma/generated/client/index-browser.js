@@ -432,6 +432,62 @@ exports.Prisma.NotificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ReceivingSessionScalarFieldEnum = {
+  id: 'id',
+  poId: 'poId',
+  poReference: 'poReference',
+  vendor: 'vendor',
+  status: 'status',
+  version: 'version',
+  lockedBy: 'lockedBy',
+  lockedAt: 'lockedAt',
+  countedBy: 'countedBy',
+  countedAt: 'countedAt',
+  submittedAt: 'submittedAt',
+  assignedTo: 'assignedTo',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  rejectionReason: 'rejectionReason',
+  receivingLocationId: 'receivingLocationId',
+  putawayTaskId: 'putawayTaskId',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReceivingLineScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  sku: 'sku',
+  productName: 'productName',
+  productVariantId: 'productVariantId',
+  quantityExpected: 'quantityExpected',
+  quantityCounted: 'quantityCounted',
+  quantityDamaged: 'quantityDamaged',
+  variance: 'variance',
+  lotNumber: 'lotNumber',
+  expiryDate: 'expiryDate',
+  generatedBarcode: 'generatedBarcode',
+  lastScannedAt: 'lastScannedAt',
+  scanCount: 'scanCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReceivingExceptionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  lineId: 'lineId',
+  type: 'type',
+  quantity: 'quantity',
+  notes: 'notes',
+  imageUrl: 'imageUrl',
+  reportedBy: 'reportedBy',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -592,6 +648,23 @@ exports.WorkTaskEventType = exports.$Enums.WorkTaskEventType = {
   LOCATION_VERIFIED: 'LOCATION_VERIFIED'
 };
 
+exports.ReceivingStatus = exports.$Enums.ReceivingStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ReceivingExceptionType = exports.$Enums.ReceivingExceptionType = {
+  DAMAGED: 'DAMAGED',
+  WRONG_ITEM: 'WRONG_ITEM',
+  MISSING: 'MISSING',
+  OVERAGE: 'OVERAGE',
+  QUALITY_ISSUE: 'QUALITY_ISSUE',
+  OTHER: 'OTHER'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
@@ -612,7 +685,10 @@ exports.Prisma.ModelName = {
   TaskEvent: 'TaskEvent',
   JobRecord: 'JobRecord',
   AuditLog: 'AuditLog',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  ReceivingSession: 'ReceivingSession',
+  ReceivingLine: 'ReceivingLine',
+  ReceivingException: 'ReceivingException'
 };
 
 /**

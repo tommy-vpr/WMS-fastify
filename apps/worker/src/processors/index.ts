@@ -4,4 +4,5 @@ export { processProductJob } from "./product.processor.js";
 export { processOrderJob } from "./order.processor.js";
 export { processInventoryPlannerJob } from "./inventory-planner.processor.js";
 export { processShippingJob } from "./shipping.processor.js";
+export { ReceivingService } from "./receiving.processor.js";
 export * from "./product.processor.js";

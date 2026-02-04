@@ -152,7 +152,7 @@ export default function LocationDetailPage() {
         {/* Location Details */}
         <div className="lg:col-span-1 space-y-6">
           {/* Properties */}
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <h2 className="font-semibold mb-4">Location Details</h2>
             <dl className="space-y-3 text-sm">
               {location.barcode && (
@@ -213,7 +213,7 @@ export default function LocationDetailPage() {
           </div>
 
           {/* Stats */}
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <h2 className="font-semibold mb-4">Inventory Summary</h2>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-3 bg-gray-50 rounded-lg">
@@ -234,8 +234,8 @@ export default function LocationDetailPage() {
 
         {/* Inventory at Location */}
         <div className="lg:col-span-2">
-          <div className="bg-white border rounded-lg">
-            <div className="px-4 py-3 border-b flex items-center justify-between">
+          <div className="bg-white border border-border rounded-lg">
+            <div className="px-4 py-3 border-b border-border flex items-center justify-between">
               <h2 className="font-semibold flex items-center gap-2">
                 <Package className="w-4 h-4" />
                 Inventory at this Location

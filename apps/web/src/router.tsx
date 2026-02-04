@@ -1,12 +1,12 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { AuthProvider } from "./lib/auth";
 import { AppLayout, AuthLayout } from "./layouts";
+import { Loader2 } from "lucide-react";
 
 // Auth Pages
 import { LoginPage } from "./pages/auth/Login";
 import { SignupPage } from "./pages/auth/Signup";
-
-// import ForgotPasswordPage from "./pages/auth/forgot-password";
 
 // Dashboard
 import { DashboardPage } from "./pages/dashboard";
@@ -17,13 +17,10 @@ import FulfillmentDetailPage from "./pages/fulfillment/[id]";
 
 // Tasks
 import { TasksPage } from "./pages/tasks";
-// import TaskDetailPage from "./pages/tasks/[id]";
 
 // Work Functions
 import { PickPage } from "./pages/pick";
-// import PickTaskPage from "./pages/pick/[taskId]";
 import { PackPage } from "./pages/pack";
-// import PackTaskPage from "./pages/pack/[taskId]";
 import { ReceivePage } from "./pages/receive";
 import { ScanPage } from "./pages/scan";
 
@@ -48,17 +45,37 @@ import { ReportsPage } from "./pages/reports";
 
 // Users
 import { UsersPage } from "./pages/users";
-// import UserDetailPage from "./pages/users/[id]";
 
 // Settings
 import { SettingsPage } from "./pages/settings";
 import LocationsPage from "./pages/locations";
 import LocationDetailPage from "./pages/locations/[id]";
 
-// Profile
-// import ProfilePage from "./pages/profile";
+// ─────────────────────────────────────────────────────────────────────────────
+// Receiving (lazy loaded)
+// ─────────────────────────────────────────────────────────────────────────────
+const ReceivingDashboard = lazy(() => import("./pages/receiving/index"));
+const ReceivingPurchaseOrders = lazy(
+  () => import("./pages/receiving/purchase-orders"),
+);
+const ReceivingStart = lazy(() => import("./pages/receiving/start"));
+const ReceivingSession = lazy(() => import("./pages/receiving/session"));
+const ReceivingApprove = lazy(() => import("./pages/receiving/approve"));
 
-// Add this wrapper component
+const PageLoader = () => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+  </div>
+);
+
+const withSuspense = (Component: React.LazyExoticComponent<React.FC>) => (
+  <Suspense fallback={<PageLoader />}>
+    <Component />
+  </Suspense>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function AuthProviderLayout() {
   return (
     <AuthProvider>
@@ -69,10 +86,8 @@ function AuthProviderLayout() {
 
 export const router = createBrowserRouter([
   {
-    // Wrap ALL routes with AuthProvider
     element: <AuthProviderLayout />,
     children: [
-      // Redirect root to dashboard
       {
         path: "/",
         element: <Navigate to="/dashboard" replace />,
@@ -97,25 +112,49 @@ export const router = createBrowserRouter([
           { path: "/pack", element: <PackPage /> },
           { path: "/receive", element: <ReceivePage /> },
           { path: "/scan", element: <ScanPage /> },
+
           // Orders
           { path: "/orders", element: <OrdersPage /> },
           { path: "/orders/:id", element: <OrderDetailPage /> },
-          // Fulfilment
+
+          // Fulfillment
           { path: "/fulfillment", element: <FulfillmentListPage /> },
           { path: "/fulfillment/:orderId", element: <FulfillmentDetailPage /> },
+
           // Products
           { path: "/products", element: <ProductsPage /> },
           { path: "/products/import", element: <ProductImportPage /> },
           { path: "/products/:id", element: <ProductDetailPage /> },
-          { path: "/shipping", element: <ShippingPage /> },
+
           // Locations
           { path: "/locations", element: <LocationsPage /> },
           { path: "/locations/:id", element: <LocationDetailPage /> },
 
+          // Shipping
           { path: "/shipping", element: <ShippingPage /> },
+
           // Inventory
           { path: "/inventory", element: <InventoryPage /> },
           { path: "/inventory/:id", element: <InventoryDetailPage /> },
+
+          // Receiving (new)
+          { path: "/receiving", element: withSuspense(ReceivingDashboard) },
+          {
+            path: "/receiving/purchase-orders",
+            element: withSuspense(ReceivingPurchaseOrders),
+          },
+          {
+            path: "/receiving/start/:poId",
+            element: withSuspense(ReceivingStart),
+          },
+          {
+            path: "/receiving/session/:sessionId",
+            element: withSuspense(ReceivingSession),
+          },
+          {
+            path: "/receiving/approve/:sessionId",
+            element: withSuspense(ReceivingApprove),
+          },
 
           { path: "/reports", element: <ReportsPage /> },
           { path: "/users", element: <UsersPage /> },

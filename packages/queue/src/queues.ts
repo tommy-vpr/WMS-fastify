@@ -12,6 +12,7 @@ import {
   ORDER_JOBS,
   PRODUCT_JOBS,
   SHIPPING_JOBS,
+  RECEIVING_JOBS,
   type CreateLabelJobData,
   type SyncShopifyFulfillmentJobData,
   type VoidLabelJobData,
@@ -32,6 +33,11 @@ import {
   FULFILLMENT_JOBS,
   CreateShippingLabelJobData,
   ShopifyFulfillJobData,
+  type SyncPurchaseOrdersJobData,
+  type ProcessApprovalJobData,
+  type NotifyApproversJobData,
+  type AutoApproveSessionJobData,
+  type GenerateBarcodeLabelsJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -45,6 +51,7 @@ let productsQueue: Queue | null = null;
 let inventoryPlannerQueue: Queue | null = null;
 let fulfillmentQueue: Queue | null = null;
 let shippingQueue: Queue | null = null;
+let receivingQueue: Queue | null = null;
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -178,6 +185,24 @@ export function getInventoryPlannerQueue(): Queue {
     });
   }
   return inventoryPlannerQueue;
+}
+
+export function getReceivingQueue(): Queue {
+  if (!receivingQueue) {
+    receivingQueue = new Queue(QUEUES.RECEIVING, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+        removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+        removeOnFail: { count: 2000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return receivingQueue;
 }
 
 // ============================================================================
@@ -369,6 +394,67 @@ export async function enqueueSyncInventoryPlanner(
   });
 }
 
+export async function enqueueSyncPurchaseOrders(
+  data: SyncPurchaseOrdersJobData,
+  options?: JobsOptions,
+) {
+  const queue = getReceivingQueue();
+  return queue.add(RECEIVING_JOBS.SYNC_PURCHASE_ORDERS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `sync-po-${Date.now()}`,
+  });
+}
+
+export async function enqueueProcessApproval(
+  data: ProcessApprovalJobData,
+  options?: JobsOptions,
+) {
+  const queue = getReceivingQueue();
+  return queue.add(RECEIVING_JOBS.PROCESS_APPROVAL, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `approve-${data.sessionId}`,
+    attempts: 1, // Don't retry approvals
+  });
+}
+
+export async function enqueueNotifyApprovers(
+  data: NotifyApproversJobData,
+  options?: JobsOptions,
+) {
+  const queue = getReceivingQueue();
+  return queue.add(RECEIVING_JOBS.NOTIFY_APPROVERS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: `notify-${data.sessionId}`,
+  });
+}
+
+export async function enqueueAutoApproveSession(
+  data: AutoApproveSessionJobData,
+  options?: JobsOptions,
+) {
+  const queue = getReceivingQueue();
+  return queue.add(RECEIVING_JOBS.AUTO_APPROVE_SESSION, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: data.idempotencyKey || `auto-approve-${data.sessionId}`,
+  });
+}
+
+export async function enqueueGenerateBarcodeLabels(
+  data: GenerateBarcodeLabelsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getReceivingQueue();
+  return queue.add(RECEIVING_JOBS.GENERATE_BARCODE_LABELS, data, {
+    ...DEFAULT_JOB_OPTIONS,
+    ...options,
+    jobId: `labels-${data.sessionId}`,
+  });
+}
+
 // ============================================================================
 // Queue Management
 // ============================================================================
@@ -402,6 +488,20 @@ export async function getInventoryPlannerQueueStats() {
   ]);
   return { waiting, active, completed, failed };
 }
+/**
+ * Receiving queue stats
+ */
+export async function getReceivingQueueStats() {
+  const queue = getReceivingQueue();
+  const [waiting, active, completed, failed, delayed] = await Promise.all([
+    queue.getWaitingCount(),
+    queue.getActiveCount(),
+    queue.getCompletedCount(),
+    queue.getFailedCount(),
+    queue.getDelayedCount(),
+  ]);
+  return { waiting, active, completed, failed, delayed };
+}
 
 /**
  * Close all queues
@@ -432,6 +532,11 @@ export async function closeQueues() {
   if (shippingQueue) {
     await shippingQueue.close();
     shippingQueue = null;
+  }
+
+  if (receivingQueue) {
+    await receivingQueue.close();
+    receivingQueue = null;
   }
 }
 

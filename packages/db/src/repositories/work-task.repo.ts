@@ -49,7 +49,7 @@ export interface WorkTask {
 export interface TaskItem {
   id: string;
   taskId: string;
-  orderId: string;
+  orderId: string | null; // ← CHANGED: Now optional for putaway tasks
   orderItemId: string | null;
   productVariantId: string | null;
   locationId: string | null;
@@ -81,9 +81,10 @@ export interface TaskItemWithDetails extends TaskItem {
     zone: string | null;
   } | null;
   order: {
+    // ← CHANGED: Now optional for putaway tasks
     id: string;
     orderNumber: string;
-  };
+  } | null;
 }
 
 export interface TaskEvent {

@@ -94,7 +94,7 @@ const allNavItems: NavItem[] = [
   { to: "/tasks", label: "My Tasks", icon: ClipboardList },
   { to: "/pick", label: "Pick", icon: PackageCheck },
   { to: "/pack", label: "Pack", icon: Package },
-  { to: "/receive", label: "Receive", icon: PackagePlus },
+  { to: "/receiving", label: "Receive", icon: PackagePlus },
   { to: "/scan", label: "Scan", icon: ScanBarcode },
   {
     to: "/orders",
@@ -227,7 +227,7 @@ export function AppLayout() {
             <div className="flex items-center gap-3">
               {/* <Warehouse className="w-6 h-6" /> */}
               {/* <span className="font-bold text-lg">WMS</span> */}
-              <img src={logo} alt="HQ wms" />
+              <img src={logo} alt="HQ wms" className="h-8 invert" />
             </div>
 
             <div className="flex items-center gap-2">
@@ -281,14 +281,14 @@ export function AppLayout() {
           </header>
 
           {/* Status Bar */}
-          <div className="bg-blue-500 text-white px-4 py-2 text-sm flex justify-between">
+          {/* <div className="bg-blue-500 text-white px-4 py-2 text-sm flex justify-between">
             <span>
               {user.name} • {user.role}
             </span>
             <span className="flex items-center gap-1">
               <ClipboardList className="w-4 h-4" /> Active Tasks: 3
             </span>
-          </div>
+          </div> */}
 
           {/* Content */}
           <main className="flex-1 overflow-auto">
@@ -365,7 +365,7 @@ export function AppLayout() {
                   "/tasks",
                   "/pick",
                   "/pack",
-                  "/receive",
+                  "/receiving",
                   "/scan",
                 ].includes(i.to),
               )

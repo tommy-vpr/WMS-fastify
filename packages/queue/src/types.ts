@@ -15,6 +15,7 @@ export const QUEUES = {
   INVENTORY_PLANNER: "inventory-planner",
   FULFILLMENT: "fulfillment",
   SHIPPING: "shipping",
+  RECEIVING: "receiving",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
@@ -29,6 +30,14 @@ export const WORK_TASK_JOBS = {
   START_TASK: "start-task",
   COMPLETE_TASK: "complete-task",
   CANCEL_TASK: "cancel-task",
+} as const;
+
+export const RECEIVING_JOBS = {
+  SYNC_PURCHASE_ORDERS: "sync_purchase_orders",
+  PROCESS_APPROVAL: "process_approval",
+  NOTIFY_APPROVERS: "notify_approvers",
+  AUTO_APPROVE_SESSION: "auto_approve_session",
+  GENERATE_BARCODE_LABELS: "generate_barcode_labels",
 } as const;
 
 export const SHIPPING_JOBS = {
@@ -101,6 +110,44 @@ export type WorkTaskJobName =
 // ============================================================================
 // Job Data Types
 // ============================================================================
+
+export interface SyncPurchaseOrdersJobData {
+  source: "inventory_planner" | "manual";
+  accountId?: string;
+  idempotencyKey?: string;
+}
+
+export interface ProcessApprovalJobData {
+  sessionId: string;
+  approverId: string;
+  idempotencyKey?: string;
+}
+
+export interface NotifyApproversJobData {
+  sessionId: string;
+  poReference: string;
+  submittedBy: string;
+  totalItems: number;
+  totalCounted: number;
+  assignedTo?: string;
+}
+
+export interface AutoApproveSessionJobData {
+  sessionId: string;
+  maxVariancePercent: number;
+  idempotencyKey?: string;
+}
+
+export interface GenerateBarcodeLabelsJobData {
+  sessionId: string;
+  items: Array<{
+    sku: string;
+    barcode: string;
+    productName: string;
+    quantity: number;
+  }>;
+  printerId?: string;
+}
 
 export interface CreatePickingTaskJobData {
   orderIds: string[];

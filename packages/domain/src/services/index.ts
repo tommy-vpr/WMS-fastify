@@ -35,3 +35,6 @@ export * from "./product.service.js";
 
 // Work tasks
 export * from "./work-task.service.js";
+
+// Receiving management
+export * from "./receiving.service.js";

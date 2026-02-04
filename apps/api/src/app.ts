@@ -18,6 +18,7 @@ import { fulfillmentRoutes } from "./routes/fulfillment.routes.js";
 // Server Sent Event
 import { ssePlugin } from "./plugins/sse.plugin.js";
 import { shippingRoutes } from "./routes/shipping.routes.js";
+import { receivingRoutes } from "./routes/receiving.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -64,29 +65,31 @@ export async function buildApp() {
     // Add auth hook to all routes in this scope
     // protectedRoutes.addHook("onRequest", authenticate); ******* FALLBACK ******
     protectedRoutes.addHook("preHandler", authenticate);
-
     // Register protected routes
     await protectedRoutes.register(productRoutes, { prefix: "/products" });
-
+    // Location
     await protectedRoutes.register(locationRoutes, { prefix: "/locations" });
-
     // Fulfillment
     await protectedRoutes.register(fulfillmentRoutes, {
       prefix: "/fulfillment",
     });
-
     // Shipping Label
     await protectedRoutes.register(shippingRoutes, {
       prefix: "/shipping",
     });
-
     // Import location
     await protectedRoutes.register(locationImportRoutes, {
       prefix: "/locations",
     });
-
+    // Receiving
+    await protectedRoutes.register(receivingRoutes, {
+      prefix: "/receiving",
+    });
+    // Orders
     await protectedRoutes.register(orderRoutes, { prefix: "/orders" });
+    // Inventory
     await protectedRoutes.register(inventoryRoutes, { prefix: "/inventory" });
+    // Inventory planner
     await protectedRoutes.register(inventoryPlannerRoutes, {
       prefix: "/inventory-planner",
     });

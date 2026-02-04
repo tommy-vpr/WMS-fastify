@@ -611,7 +611,7 @@ export class FulfillmentService {
 
         // Update order status
         await tx.order.update({
-          where: { id: taskItem.orderId },
+          where: { id: taskItem.orderId ?? undefined },
           data: { status: "PICKED" },
         });
 
@@ -633,7 +633,7 @@ export class FulfillmentService {
       this.prisma,
       createEventPayload(
         EVENT_TYPES.PICKLIST_ITEM_PICKED,
-        taskItem.orderId,
+        taskItem.orderId ?? undefined,
         {
           taskId: taskItem.taskId,
           taskItemId,
@@ -652,7 +652,7 @@ export class FulfillmentService {
         this.prisma,
         createEventPayload(
           EVENT_TYPES.PICKLIST_COMPLETED,
-          taskItem.orderId,
+          taskItem.orderId ?? undefined,
           {
             taskId: taskItem.taskId,
             taskNumber: taskItem.task.taskNumber,
@@ -667,7 +667,7 @@ export class FulfillmentService {
         this.prisma,
         createEventPayload(
           EVENT_TYPES.ORDER_PICKED,
-          taskItem.orderId,
+          taskItem.orderId ?? undefined,
           { orderNumber: taskItem.order?.orderNumber },
           { correlationId, userId: opts?.userId },
         ),
@@ -913,7 +913,7 @@ export class FulfillmentService {
       this.prisma,
       createEventPayload(
         EVENT_TYPES.PACKING_ITEM_VERIFIED,
-        taskItem.orderId,
+        taskItem.orderId ?? undefined,
         {
           taskId: taskItem.taskId,
           taskItemId,

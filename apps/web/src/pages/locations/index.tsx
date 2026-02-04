@@ -141,23 +141,23 @@ export default function LocationsPage() {
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <div className="text-sm text-gray-500">Total Locations</div>
             <div className="text-2xl font-bold">{stats.total}</div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <div className="text-sm text-gray-500">Active</div>
             <div className="text-2xl font-bold text-green-600">
               {stats.active}
             </div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <div className="text-sm text-gray-500">Zones</div>
             <div className="text-2xl font-bold">
               {Object.keys(stats.byZone).length}
             </div>
           </div>
-          <div className="bg-white border rounded-lg p-4">
+          <div className="bg-white border border-border rounded-lg p-4">
             <div className="text-sm text-gray-500">With Inventory</div>
             <div className="text-2xl font-bold text-blue-600">
               {stats.withInventory}
@@ -168,7 +168,7 @@ export default function LocationsPage() {
 
       {/* Zone breakdown */}
       {stats && Object.keys(stats.byZone).length > 0 && (
-        <div className="bg-white border rounded-lg p-4 mb-6">
+        <div className="bg-white border border-border rounded-lg p-4 mb-6">
           <h3 className="font-medium mb-3 flex items-center gap-2">
             <Grid3X3 className="w-4 h-4" />
             Locations by Zone
@@ -194,7 +194,7 @@ export default function LocationsPage() {
       )}
 
       {/* Search and Filters */}
-      <div className="bg-white border rounded-lg p-4 mb-6">
+      <div className="bg-white border border-border rounded-lg p-4 mb-6">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -203,14 +203,14 @@ export default function LocationsPage() {
               placeholder="Search locations..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-9 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex items-center gap-2">
             <select
               value={zoneFilter}
               onChange={(e) => setZoneFilter(e.target.value)}
-              className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Zones</option>
               {zones.map((zone) => (
@@ -219,7 +219,7 @@ export default function LocationsPage() {
                 </option>
               ))}
             </select>
-            <div className="flex border rounded-lg overflow-hidden">
+            <div className="flex border border-border rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-2 ${
@@ -253,9 +253,9 @@ export default function LocationsPage() {
 
       {/* Locations List/Grid */}
       {viewMode === "list" ? (
-        <div className="bg-white border rounded-lg overflow-hidden">
+        <div className="bg-white border border-border rounded-lg overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-gray-50 border-b border-border">
               <tr>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">
                   Location
@@ -278,9 +278,12 @@ export default function LocationsPage() {
                 <th className="w-10"></th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y border-border">
               {filteredLocations.map((location) => (
-                <tr key={location.id} className="hover:bg-gray-50">
+                <tr
+                  key={location.id}
+                  className="hover:bg-gray-50 border-border"
+                >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-gray-400" />
@@ -349,7 +352,7 @@ export default function LocationsPage() {
             <Link
               key={location.id}
               to={`/locations/${location.id}`}
-              className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"
+              className="bg-white border border-border rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -367,7 +370,7 @@ export default function LocationsPage() {
                 {location.rack && <div>Rack: {location.rack}</div>}
                 {location.shelf && <div>Shelf: {location.shelf}</div>}
               </div>
-              <div className="mt-3 pt-2 border-t flex items-center justify-between">
+              <div className="mt-3 pt-2 border-t border-border flex items-center justify-between">
                 <span
                   className={`text-xs ${
                     location.active ? "text-green-600" : "text-gray-400"

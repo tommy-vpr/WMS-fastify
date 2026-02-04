@@ -31,6 +31,14 @@ model User {
   auditLogs           AuditLog[]
   notifications       Notification[]
 
+  // Receiving relations
+  receivingSessionsCounted  ReceivingSession[]   @relation("ReceivingCountedBy")
+  receivingSessionsLocked   ReceivingSession[]   @relation("ReceivingLockedBy")
+  receivingSessionsAssigned ReceivingSession[]   @relation("ReceivingAssignedTo")
+  receivingSessionsApproved ReceivingSession[]   @relation("ReceivingApprovedBy")
+  exceptionsReported        ReceivingException[] @relation("ExceptionReporter")
+  exceptionsResolved        ReceivingException[] @relation("ExceptionResolver")
+
   @@map("users")
 }
 
@@ -111,6 +119,8 @@ model ProductVariant {
   taskItems      TaskItem[]
   allocations    Allocation[]
 
+  receivingLines ReceivingLine[]
+
   @@index([upc])
   @@index([barcode])
   @@index([shopifyVariantId])
@@ -137,6 +147,8 @@ model Location {
   inventoryUnits InventoryUnit[]
   taskItems      TaskItem[]
   allocations    Allocation[]
+
+  receivingSessions ReceivingSession[]
 
   @@index([barcode])
   @@index([type])
@@ -443,6 +455,8 @@ model WorkTask {
   taskItems    TaskItem[]
   events       TaskEvent[]
 
+  receivingSession ReceivingSession? @relation("ReceivingPutaway")
+
   @@index([type, status])
   @@index([assignedTo])
   @@index([status, priority])
@@ -452,7 +466,7 @@ model WorkTask {
 model TaskItem {
   id                String             @id @default(cuid())
   taskId            String
-  orderId           String
+  orderId           String?
   orderItemId       String?
   productVariantId  String?
   locationId        String?
@@ -477,7 +491,7 @@ model TaskItem {
   updatedAt         DateTime           @updatedAt
 
   task            WorkTask        @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  order           Order           @relation(fields: [orderId], references: [id])
+  order           Order?          @relation(fields: [orderId], references: [id])
   orderItem       OrderItem?      @relation(fields: [orderItemId], references: [id])
   productVariant  ProductVariant? @relation(fields: [productVariantId], references: [id])
   location        Location?       @relation(fields: [locationId], references: [id])
@@ -689,4 +703,135 @@ enum WorkTaskEventType {
   ITEM_SKIPPED
   ITEM_SHORT
   LOCATION_VERIFIED
+}
+
+// =============================================================================
+// RECEIVING
+// =============================================================================
+
+model ReceivingSession {
+  id          String  @id @default(cuid())
+  poId        String // External PO ID (Inventory Planner)
+  poReference String // Human readable: PO-2024-001
+  vendor      String?
+
+  status  ReceivingStatus @default(IN_PROGRESS)
+  version Int             @default(1) // Optimistic locking
+
+  // Session locking (prevent concurrent edits)
+  lockedBy String?
+  lockedAt DateTime?
+
+  // Workflow tracking
+  countedBy   String
+  countedAt   DateTime  @default(now())
+  submittedAt DateTime?
+
+  // Approval
+  assignedTo      String?
+  approvedBy      String?
+  approvedAt      DateTime?
+  rejectionReason String?
+
+  // Location
+  receivingLocationId String?
+
+  // Results
+  putawayTaskId String? @unique
+
+  // Idempotency
+  idempotencyKey String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lineItems         ReceivingLine[]
+  exceptions        ReceivingException[]
+  countedByUser     User                 @relation("ReceivingCountedBy", fields: [countedBy], references: [id])
+  lockedByUser      User?                @relation("ReceivingLockedBy", fields: [lockedBy], references: [id])
+  assignedToUser    User?                @relation("ReceivingAssignedTo", fields: [assignedTo], references: [id])
+  approvedByUser    User?                @relation("ReceivingApprovedBy", fields: [approvedBy], references: [id])
+  receivingLocation Location?            @relation(fields: [receivingLocationId], references: [id])
+  putawayTask       WorkTask?            @relation("ReceivingPutaway", fields: [putawayTaskId], references: [id])
+
+  @@index([poId])
+  @@index([status])
+  @@index([countedBy])
+  @@index([submittedAt])
+  @@index([lockedBy, lockedAt])
+  @@map("receiving_sessions")
+}
+
+model ReceivingLine {
+  id               String  @id @default(cuid())
+  sessionId        String
+  sku              String
+  productName      String
+  productVariantId String?
+
+  // Quantities
+  quantityExpected Int  @default(0)
+  quantityCounted  Int  @default(0)
+  quantityDamaged  Int  @default(0)
+  variance         Int?
+
+  // Lot/batch tracking
+  lotNumber  String?
+  expiryDate DateTime?
+
+  // Generated barcode (for products without UPC)
+  generatedBarcode String?
+
+  // Scan tracking
+  lastScannedAt DateTime?
+  scanCount     Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  session        ReceivingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  productVariant ProductVariant?  @relation(fields: [productVariantId], references: [id])
+
+  @@unique([sessionId, sku])
+  @@index([productVariantId])
+  @@map("receiving_lines")
+}
+
+model ReceivingException {
+  id         String                 @id @default(cuid())
+  sessionId  String
+  lineId     String?
+  type       ReceivingExceptionType
+  quantity   Int
+  notes      String?
+  imageUrl   String? // Photo evidence
+  reportedBy String
+  resolvedBy String?
+  resolvedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  session  ReceivingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  reporter User             @relation("ExceptionReporter", fields: [reportedBy], references: [id])
+  resolver User?            @relation("ExceptionResolver", fields: [resolvedBy], references: [id])
+
+  @@index([sessionId])
+  @@map("receiving_exceptions")
+}
+
+enum ReceivingStatus {
+  IN_PROGRESS
+  SUBMITTED
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ReceivingExceptionType {
+  DAMAGED
+  WRONG_ITEM
+  MISSING
+  OVERAGE
+  QUALITY_ISSUE
+  OTHER
 }

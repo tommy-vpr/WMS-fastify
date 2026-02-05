@@ -1132,6 +1132,19 @@ export class FulfillmentService {
         });
       }
 
+      // 2.5 Update quantityShipped on order items
+      const orderItems = await tx.orderItem.findMany({
+        where: { orderId },
+      });
+      await Promise.all(
+        orderItems.map((item) =>
+          tx.orderItem.update({
+            where: { id: item.id },
+            data: { quantityShipped: item.quantityPicked || item.quantity },
+          }),
+        ),
+      );
+
       // 3. Update order
       const updatedOrder = await tx.order.update({
         where: { id: orderId },

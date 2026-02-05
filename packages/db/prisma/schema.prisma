@@ -304,6 +304,8 @@ model OrderItem {
   quantity                          Int
   quantityAllocated                 Int      @default(0)
   quantityPicked                    Int      @default(0)
+  quantityShipped                   Int      @default(0)
+  
   unitPrice                         Decimal  @db.Decimal(10, 2)
   totalPrice                        Decimal? @db.Decimal(10, 2)
   // Matching status

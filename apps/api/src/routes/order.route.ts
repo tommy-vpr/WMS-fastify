@@ -141,7 +141,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantity: item.quantity,
         quantityAllocated: item.quantityAllocated,
         quantityPicked: item.quantityPicked,
-        quantityShipped: 0,
+        quantityShipped: item.quantityShipped ?? 0,
         unitPrice: Number(item.unitPrice),
         matched: item.matched,
       })),
@@ -357,7 +357,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantity: item.quantity,
         quantityAllocated: item.quantityAllocated,
         quantityPicked: item.quantityPicked,
-        quantityShipped: 0,
+        quantityShipped: item.quantityShipped ?? 0,
         unitPrice: Number(item.unitPrice),
         productVariantId: item.productVariantId,
         allocationStatus: getAllocationStatus(item, order.status), // ← Pass order.status

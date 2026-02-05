@@ -16336,6 +16336,7 @@ export namespace Prisma {
     quantity: number | null
     quantityAllocated: number | null
     quantityPicked: number | null
+    quantityShipped: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
   }
@@ -16344,6 +16345,7 @@ export namespace Prisma {
     quantity: number | null
     quantityAllocated: number | null
     quantityPicked: number | null
+    quantityShipped: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
   }
@@ -16356,6 +16358,7 @@ export namespace Prisma {
     quantity: number | null
     quantityAllocated: number | null
     quantityPicked: number | null
+    quantityShipped: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
     matched: boolean | null
@@ -16372,6 +16375,7 @@ export namespace Prisma {
     quantity: number | null
     quantityAllocated: number | null
     quantityPicked: number | null
+    quantityShipped: number | null
     unitPrice: Decimal | null
     totalPrice: Decimal | null
     matched: boolean | null
@@ -16388,6 +16392,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated: number
     quantityPicked: number
+    quantityShipped: number
     unitPrice: number
     totalPrice: number
     matched: number
@@ -16402,6 +16407,7 @@ export namespace Prisma {
     quantity?: true
     quantityAllocated?: true
     quantityPicked?: true
+    quantityShipped?: true
     unitPrice?: true
     totalPrice?: true
   }
@@ -16410,6 +16416,7 @@ export namespace Prisma {
     quantity?: true
     quantityAllocated?: true
     quantityPicked?: true
+    quantityShipped?: true
     unitPrice?: true
     totalPrice?: true
   }
@@ -16422,6 +16429,7 @@ export namespace Prisma {
     quantity?: true
     quantityAllocated?: true
     quantityPicked?: true
+    quantityShipped?: true
     unitPrice?: true
     totalPrice?: true
     matched?: true
@@ -16438,6 +16446,7 @@ export namespace Prisma {
     quantity?: true
     quantityAllocated?: true
     quantityPicked?: true
+    quantityShipped?: true
     unitPrice?: true
     totalPrice?: true
     matched?: true
@@ -16454,6 +16463,7 @@ export namespace Prisma {
     quantity?: true
     quantityAllocated?: true
     quantityPicked?: true
+    quantityShipped?: true
     unitPrice?: true
     totalPrice?: true
     matched?: true
@@ -16557,6 +16567,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated: number
     quantityPicked: number
+    quantityShipped: number
     unitPrice: Decimal
     totalPrice: Decimal | null
     matched: boolean
@@ -16592,6 +16603,7 @@ export namespace Prisma {
     quantity?: boolean
     quantityAllocated?: boolean
     quantityPicked?: boolean
+    quantityShipped?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
     matched?: boolean
@@ -16613,6 +16625,7 @@ export namespace Prisma {
     quantity?: boolean
     quantityAllocated?: boolean
     quantityPicked?: boolean
+    quantityShipped?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
     matched?: boolean
@@ -16631,6 +16644,7 @@ export namespace Prisma {
     quantity?: boolean
     quantityAllocated?: boolean
     quantityPicked?: boolean
+    quantityShipped?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
     matched?: boolean
@@ -16649,6 +16663,7 @@ export namespace Prisma {
     quantity?: boolean
     quantityAllocated?: boolean
     quantityPicked?: boolean
+    quantityShipped?: boolean
     unitPrice?: boolean
     totalPrice?: boolean
     matched?: boolean
@@ -16657,7 +16672,7 @@ export namespace Prisma {
     shopifyFulfillmentOrderLineItemId?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "unitPrice" | "totalPrice" | "matched" | "matchError" | "shopifyLineItemId" | "shopifyFulfillmentOrderLineItemId", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "productVariantId" | "sku" | "quantity" | "quantityAllocated" | "quantityPicked" | "quantityShipped" | "unitPrice" | "totalPrice" | "matched" | "matchError" | "shopifyLineItemId" | "shopifyFulfillmentOrderLineItemId", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
     productVariant?: boolean | OrderItem$productVariantArgs<ExtArgs>
@@ -16690,6 +16705,7 @@ export namespace Prisma {
       quantity: number
       quantityAllocated: number
       quantityPicked: number
+      quantityShipped: number
       unitPrice: Prisma.Decimal
       totalPrice: Prisma.Decimal | null
       matched: boolean
@@ -17130,6 +17146,7 @@ export namespace Prisma {
     readonly quantity: FieldRef<"OrderItem", 'Int'>
     readonly quantityAllocated: FieldRef<"OrderItem", 'Int'>
     readonly quantityPicked: FieldRef<"OrderItem", 'Int'>
+    readonly quantityShipped: FieldRef<"OrderItem", 'Int'>
     readonly unitPrice: FieldRef<"OrderItem", 'Decimal'>
     readonly totalPrice: FieldRef<"OrderItem", 'Decimal'>
     readonly matched: FieldRef<"OrderItem", 'Boolean'>
@@ -41599,6 +41616,7 @@ export namespace Prisma {
     quantity: 'quantity',
     quantityAllocated: 'quantityAllocated',
     quantityPicked: 'quantityPicked',
+    quantityShipped: 'quantityShipped',
     unitPrice: 'unitPrice',
     totalPrice: 'totalPrice',
     matched: 'matched',
@@ -43402,6 +43420,7 @@ export namespace Prisma {
     quantity?: IntFilter<"OrderItem"> | number
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
+    quantityShipped?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFilter<"OrderItem"> | boolean
@@ -43422,6 +43441,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrderInput | SortOrder
     matched?: SortOrder
@@ -43445,6 +43465,7 @@ export namespace Prisma {
     quantity?: IntFilter<"OrderItem"> | number
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
+    quantityShipped?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFilter<"OrderItem"> | boolean
@@ -43465,6 +43486,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrderInput | SortOrder
     matched?: SortOrder
@@ -43489,6 +43511,7 @@ export namespace Prisma {
     quantity?: IntWithAggregatesFilter<"OrderItem"> | number
     quantityAllocated?: IntWithAggregatesFilter<"OrderItem"> | number
     quantityPicked?: IntWithAggregatesFilter<"OrderItem"> | number
+    quantityShipped?: IntWithAggregatesFilter<"OrderItem"> | number
     unitPrice?: DecimalWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
     matched?: BoolWithAggregatesFilter<"OrderItem"> | boolean
@@ -46677,6 +46700,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -46697,6 +46721,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -46713,6 +46738,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -46733,6 +46759,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -46751,6 +46778,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -46765,6 +46793,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -46781,6 +46810,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -50266,6 +50296,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
     matched?: SortOrder
@@ -50278,6 +50309,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
   }
@@ -50290,6 +50322,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
     matched?: SortOrder
@@ -50306,6 +50339,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
     matched?: SortOrder
@@ -50318,6 +50352,7 @@ export namespace Prisma {
     quantity?: SortOrder
     quantityAllocated?: SortOrder
     quantityPicked?: SortOrder
+    quantityShipped?: SortOrder
     unitPrice?: SortOrder
     totalPrice?: SortOrder
   }
@@ -58015,6 +58050,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -58033,6 +58069,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -58424,6 +58461,7 @@ export namespace Prisma {
     quantity?: IntFilter<"OrderItem"> | number
     quantityAllocated?: IntFilter<"OrderItem"> | number
     quantityPicked?: IntFilter<"OrderItem"> | number
+    quantityShipped?: IntFilter<"OrderItem"> | number
     unitPrice?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
     totalPrice?: DecimalNullableFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFilter<"OrderItem"> | boolean
@@ -59453,6 +59491,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -59472,6 +59511,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -59768,6 +59808,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -59787,6 +59828,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -60055,6 +60097,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -60073,6 +60116,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -62295,6 +62339,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -62314,6 +62359,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -62705,6 +62751,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -62724,6 +62771,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -69263,6 +69311,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -69410,6 +69459,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -69428,6 +69478,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -69445,6 +69496,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -70415,6 +70467,7 @@ export namespace Prisma {
     quantity: number
     quantityAllocated?: number
     quantityPicked?: number
+    quantityShipped?: number
     unitPrice: Decimal | DecimalJsLike | number | string
     totalPrice?: Decimal | DecimalJsLike | number | string | null
     matched?: boolean
@@ -70583,6 +70636,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -70601,6 +70655,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean
@@ -70618,6 +70673,7 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     quantityAllocated?: IntFieldUpdateOperationsInput | number
     quantityPicked?: IntFieldUpdateOperationsInput | number
+    quantityShipped?: IntFieldUpdateOperationsInput | number
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     matched?: BoolFieldUpdateOperationsInput | boolean

@@ -262,6 +262,7 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   quantity: 'quantity',
   quantityAllocated: 'quantityAllocated',
   quantityPicked: 'quantityPicked',
+  quantityShipped: 'quantityShipped',
   unitPrice: 'unitPrice',
   totalPrice: 'totalPrice',
   matched: 'matched',

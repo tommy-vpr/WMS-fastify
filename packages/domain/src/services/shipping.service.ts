@@ -853,6 +853,19 @@ export class ShippingService {
         .filter(Boolean)
         .join(", ");
 
+      // ── Update quantityShipped on order items ──────────────────────────
+      const orderItems = await tx.orderItem.findMany({
+        where: { orderId: order.id },
+      });
+      await Promise.all(
+        orderItems.map((item) =>
+          tx.orderItem.update({
+            where: { id: item.id },
+            data: { quantityShipped: item.quantityPicked || item.quantity },
+          }),
+        ),
+      );
+
       await tx.order.update({
         where: { id: order.id },
         data: {

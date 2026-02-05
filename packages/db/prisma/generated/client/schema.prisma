@@ -297,13 +297,15 @@ model Order {
 }
 
 model OrderItem {
-  id                                String   @id @default(cuid())
-  orderId                           String
-  productVariantId                  String? // Nullable - may not match a variant
-  sku                               String
-  quantity                          Int
-  quantityAllocated                 Int      @default(0)
-  quantityPicked                    Int      @default(0)
+  id                String  @id @default(cuid())
+  orderId           String
+  productVariantId  String? // Nullable - may not match a variant
+  sku               String
+  quantity          Int
+  quantityAllocated Int     @default(0)
+  quantityPicked    Int     @default(0)
+  quantityShipped   Int     @default(0)
+
   unitPrice                         Decimal  @db.Decimal(10, 2)
   totalPrice                        Decimal? @db.Decimal(10, 2)
   // Matching status

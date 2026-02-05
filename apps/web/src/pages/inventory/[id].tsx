@@ -483,7 +483,7 @@ export default function InventoryDetailPage() {
         <div className="bg-white border border-border rounded-lg p-6 mt-6">
           <h2 className="font-semibold mb-4">Active Allocations</h2>
           <table className="w-full">
-            <thead className="border-b">
+            <thead className="border-b border-border">
               <tr>
                 <th className="text-left py-2 text-sm font-medium text-gray-500">
                   Order
@@ -498,7 +498,7 @@ export default function InventoryDetailPage() {
             </thead>
             <tbody className="divide-y">
               {unit.allocations.map((alloc) => (
-                <tr key={alloc.id}>
+                <tr key={alloc.id} className="border-border">
                   <td className="py-2">
                     {alloc.order ? (
                       <>

@@ -41,3 +41,19 @@ export * from "./receiving.service.js";
 
 // Cycle Count
 export * from "./cycle-count.service.js";
+
+// GCP
+export {
+  PackingImageService,
+  PACKING_IMAGE_EVENTS,
+  type PackingImage,
+  type UploadPackingImageInput,
+  type PackingImageWithUploader,
+} from "./packing-image.service.js";
+
+export {
+  StorageService,
+  getStorageService,
+  type UploadResult,
+  type StorageConfig,
+} from "./storage.service.js";

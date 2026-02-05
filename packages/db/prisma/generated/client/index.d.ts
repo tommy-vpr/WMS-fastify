@@ -64,6 +64,11 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  */
 export type OrderItem = $Result.DefaultSelection<Prisma.$OrderItemPayload>
 /**
+ * Model PackingImage
+ * 
+ */
+export type PackingImage = $Result.DefaultSelection<Prisma.$PackingImagePayload>
+/**
  * Model ShippingLabel
  * 
  */
@@ -718,6 +723,16 @@ export class PrismaClient<
   get orderItem(): Prisma.OrderItemDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.packingImage`: Exposes CRUD operations for the **PackingImage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PackingImages
+    * const packingImages = await prisma.packingImage.findMany()
+    * ```
+    */
+  get packingImage(): Prisma.PackingImageDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.shippingLabel`: Exposes CRUD operations for the **ShippingLabel** model.
     * Example usage:
     * ```ts
@@ -1340,6 +1355,7 @@ export namespace Prisma {
     Allocation: 'Allocation',
     Order: 'Order',
     OrderItem: 'OrderItem',
+    PackingImage: 'PackingImage',
     ShippingLabel: 'ShippingLabel',
     ShippingPackage: 'ShippingPackage',
     ShippingPackageItem: 'ShippingPackageItem',
@@ -1373,7 +1389,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException" | "cycleCountTask" | "cycleCountSession" | "cycleCountLine" | "cycleCountAudit" | "inventoryAdjustment"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "packingImage" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException" | "cycleCountTask" | "cycleCountSession" | "cycleCountLine" | "cycleCountAudit" | "inventoryAdjustment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2114,6 +2130,80 @@ export namespace Prisma {
           count: {
             args: Prisma.OrderItemCountArgs<ExtArgs>
             result: $Utils.Optional<OrderItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      PackingImage: {
+        payload: Prisma.$PackingImagePayload<ExtArgs>
+        fields: Prisma.PackingImageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackingImageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackingImageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          findFirst: {
+            args: Prisma.PackingImageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackingImageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          findMany: {
+            args: Prisma.PackingImageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>[]
+          }
+          create: {
+            args: Prisma.PackingImageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          createMany: {
+            args: Prisma.PackingImageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackingImageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>[]
+          }
+          delete: {
+            args: Prisma.PackingImageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          update: {
+            args: Prisma.PackingImageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          deleteMany: {
+            args: Prisma.PackingImageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackingImageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackingImageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>[]
+          }
+          upsert: {
+            args: Prisma.PackingImageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackingImagePayload>
+          }
+          aggregate: {
+            args: Prisma.PackingImageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackingImage>
+          }
+          groupBy: {
+            args: Prisma.PackingImageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackingImageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackingImageCountArgs<ExtArgs>
+            result: $Utils.Optional<PackingImageCountAggregateOutputType> | number
           }
         }
       }
@@ -3567,6 +3657,7 @@ export namespace Prisma {
     allocation?: AllocationOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
+    packingImage?: PackingImageOmit
     shippingLabel?: ShippingLabelOmit
     shippingPackage?: ShippingPackageOmit
     shippingPackageItem?: ShippingPackageItemOmit
@@ -3672,6 +3763,7 @@ export namespace Prisma {
     completedTaskItems: number
     auditLogs: number
     notifications: number
+    packingImagesUploaded: number
     receivingSessionsCounted: number
     receivingSessionsLocked: number
     receivingSessionsAssigned: number
@@ -3696,6 +3788,7 @@ export namespace Prisma {
     completedTaskItems?: boolean | UserCountOutputTypeCountCompletedTaskItemsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    packingImagesUploaded?: boolean | UserCountOutputTypeCountPackingImagesUploadedArgs
     receivingSessionsCounted?: boolean | UserCountOutputTypeCountReceivingSessionsCountedArgs
     receivingSessionsLocked?: boolean | UserCountOutputTypeCountReceivingSessionsLockedArgs
     receivingSessionsAssigned?: boolean | UserCountOutputTypeCountReceivingSessionsAssignedArgs
@@ -3770,6 +3863,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPackingImagesUploadedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingImageWhereInput
   }
 
   /**
@@ -4118,6 +4218,7 @@ export namespace Prisma {
 
   export type OrderCountOutputType = {
     shippingPackages: number
+    packingImages: number
     items: number
     taskItems: number
     allocations: number
@@ -4126,6 +4227,7 @@ export namespace Prisma {
 
   export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shippingPackages?: boolean | OrderCountOutputTypeCountShippingPackagesArgs
+    packingImages?: boolean | OrderCountOutputTypeCountPackingImagesArgs
     items?: boolean | OrderCountOutputTypeCountItemsArgs
     taskItems?: boolean | OrderCountOutputTypeCountTaskItemsArgs
     allocations?: boolean | OrderCountOutputTypeCountAllocationsArgs
@@ -4148,6 +4250,13 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountShippingPackagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ShippingPackageWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountPackingImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingImageWhereInput
   }
 
   /**
@@ -4255,11 +4364,13 @@ export namespace Prisma {
    */
 
   export type WorkTaskCountOutputType = {
+    packingImages: number
     taskItems: number
     events: number
   }
 
   export type WorkTaskCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingImages?: boolean | WorkTaskCountOutputTypeCountPackingImagesArgs
     taskItems?: boolean | WorkTaskCountOutputTypeCountTaskItemsArgs
     events?: boolean | WorkTaskCountOutputTypeCountEventsArgs
   }
@@ -4273,6 +4384,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the WorkTaskCountOutputType
      */
     select?: WorkTaskCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WorkTaskCountOutputType without action
+   */
+  export type WorkTaskCountOutputTypeCountPackingImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingImageWhereInput
   }
 
   /**
@@ -4625,6 +4743,7 @@ export namespace Prisma {
     completedTaskItems?: boolean | User$completedTaskItemsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    packingImagesUploaded?: boolean | User$packingImagesUploadedArgs<ExtArgs>
     receivingSessionsCounted?: boolean | User$receivingSessionsCountedArgs<ExtArgs>
     receivingSessionsLocked?: boolean | User$receivingSessionsLockedArgs<ExtArgs>
     receivingSessionsAssigned?: boolean | User$receivingSessionsAssignedArgs<ExtArgs>
@@ -4690,6 +4809,7 @@ export namespace Prisma {
     completedTaskItems?: boolean | User$completedTaskItemsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    packingImagesUploaded?: boolean | User$packingImagesUploadedArgs<ExtArgs>
     receivingSessionsCounted?: boolean | User$receivingSessionsCountedArgs<ExtArgs>
     receivingSessionsLocked?: boolean | User$receivingSessionsLockedArgs<ExtArgs>
     receivingSessionsAssigned?: boolean | User$receivingSessionsAssignedArgs<ExtArgs>
@@ -4719,6 +4839,7 @@ export namespace Prisma {
       completedTaskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      packingImagesUploaded: Prisma.$PackingImagePayload<ExtArgs>[]
       receivingSessionsCounted: Prisma.$ReceivingSessionPayload<ExtArgs>[]
       receivingSessionsLocked: Prisma.$ReceivingSessionPayload<ExtArgs>[]
       receivingSessionsAssigned: Prisma.$ReceivingSessionPayload<ExtArgs>[]
@@ -5146,6 +5267,7 @@ export namespace Prisma {
     completedTaskItems<T extends User$completedTaskItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$completedTaskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packingImagesUploaded<T extends User$packingImagesUploadedArgs<ExtArgs> = {}>(args?: Subset<T, User$packingImagesUploadedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivingSessionsCounted<T extends User$receivingSessionsCountedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsCountedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivingSessionsLocked<T extends User$receivingSessionsLockedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsLockedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivingSessionsAssigned<T extends User$receivingSessionsAssignedArgs<ExtArgs> = {}>(args?: Subset<T, User$receivingSessionsAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceivingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5752,6 +5874,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.packingImagesUploaded
+   */
+  export type User$packingImagesUploadedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    where?: PackingImageWhereInput
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    cursor?: PackingImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
   }
 
   /**
@@ -15044,6 +15190,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     shippingPackages?: boolean | Order$shippingPackagesArgs<ExtArgs>
+    packingImages?: boolean | Order$packingImagesArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
     allocations?: boolean | Order$allocationsArgs<ExtArgs>
@@ -15129,6 +15276,7 @@ export namespace Prisma {
   export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "shopifyOrderId" | "customerId" | "customerName" | "customerEmail" | "shippingAddress" | "billingAddress" | "shopifyLineItems" | "status" | "paymentStatus" | "priority" | "holdReason" | "holdAt" | "holdBy" | "unmatchedItems" | "totalAmount" | "warehouseId" | "trackingNumber" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shippingPackages?: boolean | Order$shippingPackagesArgs<ExtArgs>
+    packingImages?: boolean | Order$packingImagesArgs<ExtArgs>
     items?: boolean | Order$itemsArgs<ExtArgs>
     taskItems?: boolean | Order$taskItemsArgs<ExtArgs>
     allocations?: boolean | Order$allocationsArgs<ExtArgs>
@@ -15142,6 +15290,7 @@ export namespace Prisma {
     name: "Order"
     objects: {
       shippingPackages: Prisma.$ShippingPackagePayload<ExtArgs>[]
+      packingImages: Prisma.$PackingImagePayload<ExtArgs>[]
       items: Prisma.$OrderItemPayload<ExtArgs>[]
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       allocations: Prisma.$AllocationPayload<ExtArgs>[]
@@ -15565,6 +15714,7 @@ export namespace Prisma {
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     shippingPackages<T extends Order$shippingPackagesArgs<ExtArgs> = {}>(args?: Subset<T, Order$shippingPackagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShippingPackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packingImages<T extends Order$packingImagesArgs<ExtArgs> = {}>(args?: Subset<T, Order$packingImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     items<T extends Order$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     taskItems<T extends Order$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     allocations<T extends Order$allocationsArgs<ExtArgs> = {}>(args?: Subset<T, Order$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -16029,6 +16179,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ShippingPackageScalarFieldEnum | ShippingPackageScalarFieldEnum[]
+  }
+
+  /**
+   * Order.packingImages
+   */
+  export type Order$packingImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    where?: PackingImageWhereInput
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    cursor?: PackingImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
   }
 
   /**
@@ -17440,6 +17614,1211 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrderItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PackingImage
+   */
+
+  export type AggregatePackingImage = {
+    _count: PackingImageCountAggregateOutputType | null
+    _avg: PackingImageAvgAggregateOutputType | null
+    _sum: PackingImageSumAggregateOutputType | null
+    _min: PackingImageMinAggregateOutputType | null
+    _max: PackingImageMaxAggregateOutputType | null
+  }
+
+  export type PackingImageAvgAggregateOutputType = {
+    size: number | null
+  }
+
+  export type PackingImageSumAggregateOutputType = {
+    size: number | null
+  }
+
+  export type PackingImageMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    taskId: string | null
+    url: string | null
+    filename: string | null
+    size: number | null
+    contentType: string | null
+    uploadedBy: string | null
+    reference: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type PackingImageMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    taskId: string | null
+    url: string | null
+    filename: string | null
+    size: number | null
+    contentType: string | null
+    uploadedBy: string | null
+    reference: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type PackingImageCountAggregateOutputType = {
+    id: number
+    orderId: number
+    taskId: number
+    url: number
+    filename: number
+    size: number
+    contentType: number
+    uploadedBy: number
+    reference: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PackingImageAvgAggregateInputType = {
+    size?: true
+  }
+
+  export type PackingImageSumAggregateInputType = {
+    size?: true
+  }
+
+  export type PackingImageMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    taskId?: true
+    url?: true
+    filename?: true
+    size?: true
+    contentType?: true
+    uploadedBy?: true
+    reference?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type PackingImageMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    taskId?: true
+    url?: true
+    filename?: true
+    size?: true
+    contentType?: true
+    uploadedBy?: true
+    reference?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type PackingImageCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    taskId?: true
+    url?: true
+    filename?: true
+    size?: true
+    contentType?: true
+    uploadedBy?: true
+    reference?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PackingImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingImage to aggregate.
+     */
+    where?: PackingImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingImages to fetch.
+     */
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackingImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PackingImages
+    **/
+    _count?: true | PackingImageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PackingImageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PackingImageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackingImageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackingImageMaxAggregateInputType
+  }
+
+  export type GetPackingImageAggregateType<T extends PackingImageAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackingImage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackingImage[P]>
+      : GetScalarType<T[P], AggregatePackingImage[P]>
+  }
+
+
+
+
+  export type PackingImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackingImageWhereInput
+    orderBy?: PackingImageOrderByWithAggregationInput | PackingImageOrderByWithAggregationInput[]
+    by: PackingImageScalarFieldEnum[] | PackingImageScalarFieldEnum
+    having?: PackingImageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackingImageCountAggregateInputType | true
+    _avg?: PackingImageAvgAggregateInputType
+    _sum?: PackingImageSumAggregateInputType
+    _min?: PackingImageMinAggregateInputType
+    _max?: PackingImageMaxAggregateInputType
+  }
+
+  export type PackingImageGroupByOutputType = {
+    id: string
+    orderId: string
+    taskId: string | null
+    url: string
+    filename: string
+    size: number
+    contentType: string
+    uploadedBy: string
+    reference: string | null
+    notes: string | null
+    createdAt: Date
+    _count: PackingImageCountAggregateOutputType | null
+    _avg: PackingImageAvgAggregateOutputType | null
+    _sum: PackingImageSumAggregateOutputType | null
+    _min: PackingImageMinAggregateOutputType | null
+    _max: PackingImageMaxAggregateOutputType | null
+  }
+
+  type GetPackingImageGroupByPayload<T extends PackingImageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackingImageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackingImageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackingImageGroupByOutputType[P]>
+            : GetScalarType<T[P], PackingImageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackingImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    taskId?: boolean
+    url?: boolean
+    filename?: boolean
+    size?: boolean
+    contentType?: boolean
+    uploadedBy?: boolean
+    reference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingImage"]>
+
+  export type PackingImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    taskId?: boolean
+    url?: boolean
+    filename?: boolean
+    size?: boolean
+    contentType?: boolean
+    uploadedBy?: boolean
+    reference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingImage"]>
+
+  export type PackingImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    taskId?: boolean
+    url?: boolean
+    filename?: boolean
+    size?: boolean
+    contentType?: boolean
+    uploadedBy?: boolean
+    reference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packingImage"]>
+
+  export type PackingImageSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    taskId?: boolean
+    url?: boolean
+    filename?: boolean
+    size?: boolean
+    contentType?: boolean
+    uploadedBy?: boolean
+    reference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+  export type PackingImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "taskId" | "url" | "filename" | "size" | "contentType" | "uploadedBy" | "reference" | "notes" | "createdAt", ExtArgs["result"]["packingImage"]>
+  export type PackingImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PackingImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PackingImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    task?: boolean | PackingImage$taskArgs<ExtArgs>
+    uploader?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PackingImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PackingImage"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+      task: Prisma.$WorkTaskPayload<ExtArgs> | null
+      uploader: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      taskId: string | null
+      url: string
+      filename: string
+      size: number
+      contentType: string
+      uploadedBy: string
+      reference: string | null
+      notes: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["packingImage"]>
+    composites: {}
+  }
+
+  type PackingImageGetPayload<S extends boolean | null | undefined | PackingImageDefaultArgs> = $Result.GetResult<Prisma.$PackingImagePayload, S>
+
+  type PackingImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackingImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackingImageCountAggregateInputType | true
+    }
+
+  export interface PackingImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PackingImage'], meta: { name: 'PackingImage' } }
+    /**
+     * Find zero or one PackingImage that matches the filter.
+     * @param {PackingImageFindUniqueArgs} args - Arguments to find a PackingImage
+     * @example
+     * // Get one PackingImage
+     * const packingImage = await prisma.packingImage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackingImageFindUniqueArgs>(args: SelectSubset<T, PackingImageFindUniqueArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PackingImage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackingImageFindUniqueOrThrowArgs} args - Arguments to find a PackingImage
+     * @example
+     * // Get one PackingImage
+     * const packingImage = await prisma.packingImage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackingImageFindUniqueOrThrowArgs>(args: SelectSubset<T, PackingImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingImage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageFindFirstArgs} args - Arguments to find a PackingImage
+     * @example
+     * // Get one PackingImage
+     * const packingImage = await prisma.packingImage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackingImageFindFirstArgs>(args?: SelectSubset<T, PackingImageFindFirstArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackingImage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageFindFirstOrThrowArgs} args - Arguments to find a PackingImage
+     * @example
+     * // Get one PackingImage
+     * const packingImage = await prisma.packingImage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackingImageFindFirstOrThrowArgs>(args?: SelectSubset<T, PackingImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PackingImages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PackingImages
+     * const packingImages = await prisma.packingImage.findMany()
+     * 
+     * // Get first 10 PackingImages
+     * const packingImages = await prisma.packingImage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packingImageWithIdOnly = await prisma.packingImage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackingImageFindManyArgs>(args?: SelectSubset<T, PackingImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PackingImage.
+     * @param {PackingImageCreateArgs} args - Arguments to create a PackingImage.
+     * @example
+     * // Create one PackingImage
+     * const PackingImage = await prisma.packingImage.create({
+     *   data: {
+     *     // ... data to create a PackingImage
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackingImageCreateArgs>(args: SelectSubset<T, PackingImageCreateArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PackingImages.
+     * @param {PackingImageCreateManyArgs} args - Arguments to create many PackingImages.
+     * @example
+     * // Create many PackingImages
+     * const packingImage = await prisma.packingImage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackingImageCreateManyArgs>(args?: SelectSubset<T, PackingImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PackingImages and returns the data saved in the database.
+     * @param {PackingImageCreateManyAndReturnArgs} args - Arguments to create many PackingImages.
+     * @example
+     * // Create many PackingImages
+     * const packingImage = await prisma.packingImage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PackingImages and only return the `id`
+     * const packingImageWithIdOnly = await prisma.packingImage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackingImageCreateManyAndReturnArgs>(args?: SelectSubset<T, PackingImageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PackingImage.
+     * @param {PackingImageDeleteArgs} args - Arguments to delete one PackingImage.
+     * @example
+     * // Delete one PackingImage
+     * const PackingImage = await prisma.packingImage.delete({
+     *   where: {
+     *     // ... filter to delete one PackingImage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackingImageDeleteArgs>(args: SelectSubset<T, PackingImageDeleteArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PackingImage.
+     * @param {PackingImageUpdateArgs} args - Arguments to update one PackingImage.
+     * @example
+     * // Update one PackingImage
+     * const packingImage = await prisma.packingImage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackingImageUpdateArgs>(args: SelectSubset<T, PackingImageUpdateArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PackingImages.
+     * @param {PackingImageDeleteManyArgs} args - Arguments to filter PackingImages to delete.
+     * @example
+     * // Delete a few PackingImages
+     * const { count } = await prisma.packingImage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackingImageDeleteManyArgs>(args?: SelectSubset<T, PackingImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PackingImages
+     * const packingImage = await prisma.packingImage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackingImageUpdateManyArgs>(args: SelectSubset<T, PackingImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackingImages and returns the data updated in the database.
+     * @param {PackingImageUpdateManyAndReturnArgs} args - Arguments to update many PackingImages.
+     * @example
+     * // Update many PackingImages
+     * const packingImage = await prisma.packingImage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PackingImages and only return the `id`
+     * const packingImageWithIdOnly = await prisma.packingImage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackingImageUpdateManyAndReturnArgs>(args: SelectSubset<T, PackingImageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PackingImage.
+     * @param {PackingImageUpsertArgs} args - Arguments to update or create a PackingImage.
+     * @example
+     * // Update or create a PackingImage
+     * const packingImage = await prisma.packingImage.upsert({
+     *   create: {
+     *     // ... data to create a PackingImage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PackingImage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackingImageUpsertArgs>(args: SelectSubset<T, PackingImageUpsertArgs<ExtArgs>>): Prisma__PackingImageClient<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PackingImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageCountArgs} args - Arguments to filter PackingImages to count.
+     * @example
+     * // Count the number of PackingImages
+     * const count = await prisma.packingImage.count({
+     *   where: {
+     *     // ... the filter for the PackingImages we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackingImageCountArgs>(
+      args?: Subset<T, PackingImageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackingImageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PackingImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackingImageAggregateArgs>(args: Subset<T, PackingImageAggregateArgs>): Prisma.PrismaPromise<GetPackingImageAggregateType<T>>
+
+    /**
+     * Group by PackingImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackingImageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackingImageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackingImageGroupByArgs['orderBy'] }
+        : { orderBy?: PackingImageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackingImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackingImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PackingImage model
+   */
+  readonly fields: PackingImageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PackingImage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackingImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    task<T extends PackingImage$taskArgs<ExtArgs> = {}>(args?: Subset<T, PackingImage$taskArgs<ExtArgs>>): Prisma__WorkTaskClient<$Result.GetResult<Prisma.$WorkTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    uploader<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PackingImage model
+   */
+  interface PackingImageFieldRefs {
+    readonly id: FieldRef<"PackingImage", 'String'>
+    readonly orderId: FieldRef<"PackingImage", 'String'>
+    readonly taskId: FieldRef<"PackingImage", 'String'>
+    readonly url: FieldRef<"PackingImage", 'String'>
+    readonly filename: FieldRef<"PackingImage", 'String'>
+    readonly size: FieldRef<"PackingImage", 'Int'>
+    readonly contentType: FieldRef<"PackingImage", 'String'>
+    readonly uploadedBy: FieldRef<"PackingImage", 'String'>
+    readonly reference: FieldRef<"PackingImage", 'String'>
+    readonly notes: FieldRef<"PackingImage", 'String'>
+    readonly createdAt: FieldRef<"PackingImage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PackingImage findUnique
+   */
+  export type PackingImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingImage to fetch.
+     */
+    where: PackingImageWhereUniqueInput
+  }
+
+  /**
+   * PackingImage findUniqueOrThrow
+   */
+  export type PackingImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingImage to fetch.
+     */
+    where: PackingImageWhereUniqueInput
+  }
+
+  /**
+   * PackingImage findFirst
+   */
+  export type PackingImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingImage to fetch.
+     */
+    where?: PackingImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingImages to fetch.
+     */
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingImages.
+     */
+    cursor?: PackingImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingImages.
+     */
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
+  }
+
+  /**
+   * PackingImage findFirstOrThrow
+   */
+  export type PackingImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingImage to fetch.
+     */
+    where?: PackingImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingImages to fetch.
+     */
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackingImages.
+     */
+    cursor?: PackingImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackingImages.
+     */
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
+  }
+
+  /**
+   * PackingImage findMany
+   */
+  export type PackingImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter, which PackingImages to fetch.
+     */
+    where?: PackingImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackingImages to fetch.
+     */
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PackingImages.
+     */
+    cursor?: PackingImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackingImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackingImages.
+     */
+    skip?: number
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
+  }
+
+  /**
+   * PackingImage create
+   */
+  export type PackingImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PackingImage.
+     */
+    data: XOR<PackingImageCreateInput, PackingImageUncheckedCreateInput>
+  }
+
+  /**
+   * PackingImage createMany
+   */
+  export type PackingImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PackingImages.
+     */
+    data: PackingImageCreateManyInput | PackingImageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PackingImage createManyAndReturn
+   */
+  export type PackingImageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * The data used to create many PackingImages.
+     */
+    data: PackingImageCreateManyInput | PackingImageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingImage update
+   */
+  export type PackingImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PackingImage.
+     */
+    data: XOR<PackingImageUpdateInput, PackingImageUncheckedUpdateInput>
+    /**
+     * Choose, which PackingImage to update.
+     */
+    where: PackingImageWhereUniqueInput
+  }
+
+  /**
+   * PackingImage updateMany
+   */
+  export type PackingImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PackingImages.
+     */
+    data: XOR<PackingImageUpdateManyMutationInput, PackingImageUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingImages to update
+     */
+    where?: PackingImageWhereInput
+    /**
+     * Limit how many PackingImages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingImage updateManyAndReturn
+   */
+  export type PackingImageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * The data used to update PackingImages.
+     */
+    data: XOR<PackingImageUpdateManyMutationInput, PackingImageUncheckedUpdateManyInput>
+    /**
+     * Filter which PackingImages to update
+     */
+    where?: PackingImageWhereInput
+    /**
+     * Limit how many PackingImages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackingImage upsert
+   */
+  export type PackingImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PackingImage to update in case it exists.
+     */
+    where: PackingImageWhereUniqueInput
+    /**
+     * In case the PackingImage found by the `where` argument doesn't exist, create a new PackingImage with this data.
+     */
+    create: XOR<PackingImageCreateInput, PackingImageUncheckedCreateInput>
+    /**
+     * In case the PackingImage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackingImageUpdateInput, PackingImageUncheckedUpdateInput>
+  }
+
+  /**
+   * PackingImage delete
+   */
+  export type PackingImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    /**
+     * Filter which PackingImage to delete.
+     */
+    where: PackingImageWhereUniqueInput
+  }
+
+  /**
+   * PackingImage deleteMany
+   */
+  export type PackingImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackingImages to delete
+     */
+    where?: PackingImageWhereInput
+    /**
+     * Limit how many PackingImages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackingImage.task
+   */
+  export type PackingImage$taskArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkTask
+     */
+    select?: WorkTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkTask
+     */
+    omit?: WorkTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkTaskInclude<ExtArgs> | null
+    where?: WorkTaskWhereInput
+  }
+
+  /**
+   * PackingImage without action
+   */
+  export type PackingImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
   }
 
 
@@ -22594,6 +23973,7 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    packingImages?: boolean | WorkTask$packingImagesArgs<ExtArgs>
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
     events?: boolean | WorkTask$eventsArgs<ExtArgs>
@@ -22695,6 +24075,7 @@ export namespace Prisma {
 
   export type WorkTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taskNumber" | "type" | "status" | "priority" | "idempotencyKey" | "assignedTo" | "assignedAt" | "startedAt" | "completedAt" | "blockReason" | "blockedAt" | "orderIds" | "totalOrders" | "completedOrders" | "packedWeight" | "packedWeightUnit" | "packedDimensions" | "verifiedAt" | "verifiedBy" | "totalItems" | "completedItems" | "shortItems" | "skippedItems" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workTask"]>
   export type WorkTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    packingImages?: boolean | WorkTask$packingImagesArgs<ExtArgs>
     assignedUser?: boolean | WorkTask$assignedUserArgs<ExtArgs>
     taskItems?: boolean | WorkTask$taskItemsArgs<ExtArgs>
     events?: boolean | WorkTask$eventsArgs<ExtArgs>
@@ -22711,6 +24092,7 @@ export namespace Prisma {
   export type $WorkTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WorkTask"
     objects: {
+      packingImages: Prisma.$PackingImagePayload<ExtArgs>[]
       assignedUser: Prisma.$UserPayload<ExtArgs> | null
       taskItems: Prisma.$TaskItemPayload<ExtArgs>[]
       events: Prisma.$TaskEventPayload<ExtArgs>[]
@@ -23138,6 +24520,7 @@ export namespace Prisma {
    */
   export interface Prisma__WorkTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    packingImages<T extends WorkTask$packingImagesArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$packingImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackingImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedUser<T extends WorkTask$assignedUserArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$assignedUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     taskItems<T extends WorkTask$taskItemsArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$taskItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     events<T extends WorkTask$eventsArgs<ExtArgs> = {}>(args?: Subset<T, WorkTask$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -23591,6 +24974,30 @@ export namespace Prisma {
      * Limit how many WorkTasks to delete.
      */
     limit?: number
+  }
+
+  /**
+   * WorkTask.packingImages
+   */
+  export type WorkTask$packingImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackingImage
+     */
+    select?: PackingImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackingImage
+     */
+    omit?: PackingImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackingImageInclude<ExtArgs> | null
+    where?: PackingImageWhereInput
+    orderBy?: PackingImageOrderByWithRelationInput | PackingImageOrderByWithRelationInput[]
+    cursor?: PackingImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackingImageScalarFieldEnum | PackingImageScalarFieldEnum[]
   }
 
   /**
@@ -40203,6 +41610,23 @@ export namespace Prisma {
   export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
+  export const PackingImageScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    taskId: 'taskId',
+    url: 'url',
+    filename: 'filename',
+    size: 'size',
+    contentType: 'contentType',
+    uploadedBy: 'uploadedBy',
+    reference: 'reference',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type PackingImageScalarFieldEnum = (typeof PackingImageScalarFieldEnum)[keyof typeof PackingImageScalarFieldEnum]
+
+
   export const ShippingLabelScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
@@ -41032,6 +42456,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
+    packingImagesUploaded?: PackingImageListRelationFilter
     receivingSessionsCounted?: ReceivingSessionListRelationFilter
     receivingSessionsLocked?: ReceivingSessionListRelationFilter
     receivingSessionsAssigned?: ReceivingSessionListRelationFilter
@@ -41066,6 +42491,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    packingImagesUploaded?: PackingImageOrderByRelationAggregateInput
     receivingSessionsCounted?: ReceivingSessionOrderByRelationAggregateInput
     receivingSessionsLocked?: ReceivingSessionOrderByRelationAggregateInput
     receivingSessionsAssigned?: ReceivingSessionOrderByRelationAggregateInput
@@ -41103,6 +42529,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
+    packingImagesUploaded?: PackingImageListRelationFilter
     receivingSessionsCounted?: ReceivingSessionListRelationFilter
     receivingSessionsLocked?: ReceivingSessionListRelationFilter
     receivingSessionsAssigned?: ReceivingSessionListRelationFilter
@@ -41834,6 +43261,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     shippingPackages?: ShippingPackageListRelationFilter
+    packingImages?: PackingImageListRelationFilter
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -41864,6 +43292,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     shippingPackages?: ShippingPackageOrderByRelationAggregateInput
+    packingImages?: PackingImageOrderByRelationAggregateInput
     items?: OrderItemOrderByRelationAggregateInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     allocations?: AllocationOrderByRelationAggregateInput
@@ -41897,6 +43326,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     shippingPackages?: ShippingPackageListRelationFilter
+    packingImages?: PackingImageListRelationFilter
     items?: OrderItemListRelationFilter
     taskItems?: TaskItemListRelationFilter
     allocations?: AllocationListRelationFilter
@@ -42065,6 +43495,99 @@ export namespace Prisma {
     matchError?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     shopifyLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     shopifyFulfillmentOrderLineItemId?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
+  }
+
+  export type PackingImageWhereInput = {
+    AND?: PackingImageWhereInput | PackingImageWhereInput[]
+    OR?: PackingImageWhereInput[]
+    NOT?: PackingImageWhereInput | PackingImageWhereInput[]
+    id?: StringFilter<"PackingImage"> | string
+    orderId?: StringFilter<"PackingImage"> | string
+    taskId?: StringNullableFilter<"PackingImage"> | string | null
+    url?: StringFilter<"PackingImage"> | string
+    filename?: StringFilter<"PackingImage"> | string
+    size?: IntFilter<"PackingImage"> | number
+    contentType?: StringFilter<"PackingImage"> | string
+    uploadedBy?: StringFilter<"PackingImage"> | string
+    reference?: StringNullableFilter<"PackingImage"> | string | null
+    notes?: StringNullableFilter<"PackingImage"> | string | null
+    createdAt?: DateTimeFilter<"PackingImage"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    task?: XOR<WorkTaskNullableScalarRelationFilter, WorkTaskWhereInput> | null
+    uploader?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PackingImageOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    size?: SortOrder
+    contentType?: SortOrder
+    uploadedBy?: SortOrder
+    reference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+    task?: WorkTaskOrderByWithRelationInput
+    uploader?: UserOrderByWithRelationInput
+  }
+
+  export type PackingImageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PackingImageWhereInput | PackingImageWhereInput[]
+    OR?: PackingImageWhereInput[]
+    NOT?: PackingImageWhereInput | PackingImageWhereInput[]
+    orderId?: StringFilter<"PackingImage"> | string
+    taskId?: StringNullableFilter<"PackingImage"> | string | null
+    url?: StringFilter<"PackingImage"> | string
+    filename?: StringFilter<"PackingImage"> | string
+    size?: IntFilter<"PackingImage"> | number
+    contentType?: StringFilter<"PackingImage"> | string
+    uploadedBy?: StringFilter<"PackingImage"> | string
+    reference?: StringNullableFilter<"PackingImage"> | string | null
+    notes?: StringNullableFilter<"PackingImage"> | string | null
+    createdAt?: DateTimeFilter<"PackingImage"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    task?: XOR<WorkTaskNullableScalarRelationFilter, WorkTaskWhereInput> | null
+    uploader?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type PackingImageOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    taskId?: SortOrderInput | SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    size?: SortOrder
+    contentType?: SortOrder
+    uploadedBy?: SortOrder
+    reference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PackingImageCountOrderByAggregateInput
+    _avg?: PackingImageAvgOrderByAggregateInput
+    _max?: PackingImageMaxOrderByAggregateInput
+    _min?: PackingImageMinOrderByAggregateInput
+    _sum?: PackingImageSumOrderByAggregateInput
+  }
+
+  export type PackingImageScalarWhereWithAggregatesInput = {
+    AND?: PackingImageScalarWhereWithAggregatesInput | PackingImageScalarWhereWithAggregatesInput[]
+    OR?: PackingImageScalarWhereWithAggregatesInput[]
+    NOT?: PackingImageScalarWhereWithAggregatesInput | PackingImageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PackingImage"> | string
+    orderId?: StringWithAggregatesFilter<"PackingImage"> | string
+    taskId?: StringNullableWithAggregatesFilter<"PackingImage"> | string | null
+    url?: StringWithAggregatesFilter<"PackingImage"> | string
+    filename?: StringWithAggregatesFilter<"PackingImage"> | string
+    size?: IntWithAggregatesFilter<"PackingImage"> | number
+    contentType?: StringWithAggregatesFilter<"PackingImage"> | string
+    uploadedBy?: StringWithAggregatesFilter<"PackingImage"> | string
+    reference?: StringNullableWithAggregatesFilter<"PackingImage"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PackingImage"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PackingImage"> | Date | string
   }
 
   export type ShippingLabelWhereInput = {
@@ -42492,6 +44015,7 @@ export namespace Prisma {
     notes?: StringNullableFilter<"WorkTask"> | string | null
     createdAt?: DateTimeFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeFilter<"WorkTask"> | Date | string
+    packingImages?: PackingImageListRelationFilter
     assignedUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     events?: TaskEventListRelationFilter
@@ -42526,6 +44050,7 @@ export namespace Prisma {
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    packingImages?: PackingImageOrderByRelationAggregateInput
     assignedUser?: UserOrderByWithRelationInput
     taskItems?: TaskItemOrderByRelationAggregateInput
     events?: TaskEventOrderByRelationAggregateInput
@@ -42563,6 +44088,7 @@ export namespace Prisma {
     notes?: StringNullableFilter<"WorkTask"> | string | null
     createdAt?: DateTimeFilter<"WorkTask"> | Date | string
     updatedAt?: DateTimeFilter<"WorkTask"> | Date | string
+    packingImages?: PackingImageListRelationFilter
     assignedUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     taskItems?: TaskItemListRelationFilter
     events?: TaskEventListRelationFilter
@@ -44056,6 +45582,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -44090,6 +45617,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -44124,6 +45652,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -44158,6 +45687,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -44966,6 +46496,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
@@ -44996,6 +46527,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
@@ -45026,6 +46558,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
@@ -45056,6 +46589,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
@@ -45253,6 +46787,101 @@ export namespace Prisma {
     matchError?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
     shopifyFulfillmentOrderLineItemId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PackingImageCreateInput = {
+    id?: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutPackingImagesInput
+    task?: WorkTaskCreateNestedOneWithoutPackingImagesInput
+    uploader: UserCreateNestedOneWithoutPackingImagesUploadedInput
+  }
+
+  export type PackingImageUncheckedCreateInput = {
+    id?: string
+    orderId: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PackingImageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutPackingImagesNestedInput
+    task?: WorkTaskUpdateOneWithoutPackingImagesNestedInput
+    uploader?: UserUpdateOneRequiredWithoutPackingImagesUploadedNestedInput
+  }
+
+  export type PackingImageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageCreateManyInput = {
+    id?: string
+    orderId: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PackingImageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ShippingLabelCreateInput = {
@@ -45737,6 +47366,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutTaskInput
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
@@ -45771,6 +47401,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutTaskInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
@@ -45803,6 +47434,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutTaskNestedInput
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
@@ -45837,6 +47469,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutTaskNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
@@ -47553,6 +49186,12 @@ export namespace Prisma {
     none?: NotificationWhereInput
   }
 
+  export type PackingImageListRelationFilter = {
+    every?: PackingImageWhereInput
+    some?: PackingImageWhereInput
+    none?: PackingImageWhereInput
+  }
+
   export type ReceivingSessionListRelationFilter = {
     every?: ReceivingSessionWhereInput
     some?: ReceivingSessionWhereInput
@@ -47619,6 +49258,10 @@ export namespace Prisma {
   }
 
   export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackingImageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -48679,6 +50322,61 @@ export namespace Prisma {
     totalPrice?: SortOrder
   }
 
+  export type WorkTaskNullableScalarRelationFilter = {
+    is?: WorkTaskWhereInput | null
+    isNot?: WorkTaskWhereInput | null
+  }
+
+  export type PackingImageCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    taskId?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    size?: SortOrder
+    contentType?: SortOrder
+    uploadedBy?: SortOrder
+    reference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PackingImageAvgOrderByAggregateInput = {
+    size?: SortOrder
+  }
+
+  export type PackingImageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    taskId?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    size?: SortOrder
+    contentType?: SortOrder
+    uploadedBy?: SortOrder
+    reference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PackingImageMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    taskId?: SortOrder
+    url?: SortOrder
+    filename?: SortOrder
+    size?: SortOrder
+    contentType?: SortOrder
+    uploadedBy?: SortOrder
+    reference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PackingImageSumOrderByAggregateInput = {
+    size?: SortOrder
+  }
+
   export type EnumShippingLabelStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ShippingLabelStatus | EnumShippingLabelStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ShippingLabelStatus[] | ListEnumShippingLabelStatusFieldRefInput<$PrismaModel>
@@ -49369,11 +51067,6 @@ export namespace Prisma {
     in?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ReceivingStatus[] | ListEnumReceivingStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumReceivingStatusFilter<$PrismaModel> | $Enums.ReceivingStatus
-  }
-
-  export type WorkTaskNullableScalarRelationFilter = {
-    is?: WorkTaskWhereInput | null
-    isNot?: WorkTaskWhereInput | null
   }
 
   export type ReceivingSessionCountOrderByAggregateInput = {
@@ -50117,6 +51810,13 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type PackingImageCreateNestedManyWithoutUploaderInput = {
+    create?: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput> | PackingImageCreateWithoutUploaderInput[] | PackingImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutUploaderInput | PackingImageCreateOrConnectWithoutUploaderInput[]
+    createMany?: PackingImageCreateManyUploaderInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+  }
+
   export type ReceivingSessionCreateNestedManyWithoutCountedByUserInput = {
     create?: XOR<ReceivingSessionCreateWithoutCountedByUserInput, ReceivingSessionUncheckedCreateWithoutCountedByUserInput> | ReceivingSessionCreateWithoutCountedByUserInput[] | ReceivingSessionUncheckedCreateWithoutCountedByUserInput[]
     connectOrCreate?: ReceivingSessionCreateOrConnectWithoutCountedByUserInput | ReceivingSessionCreateOrConnectWithoutCountedByUserInput[]
@@ -50262,6 +51962,13 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type PackingImageUncheckedCreateNestedManyWithoutUploaderInput = {
+    create?: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput> | PackingImageCreateWithoutUploaderInput[] | PackingImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutUploaderInput | PackingImageCreateOrConnectWithoutUploaderInput[]
+    createMany?: PackingImageCreateManyUploaderInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
   }
 
   export type ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput = {
@@ -50482,6 +52189,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PackingImageUpdateManyWithoutUploaderNestedInput = {
+    create?: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput> | PackingImageCreateWithoutUploaderInput[] | PackingImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutUploaderInput | PackingImageCreateOrConnectWithoutUploaderInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutUploaderInput | PackingImageUpsertWithWhereUniqueWithoutUploaderInput[]
+    createMany?: PackingImageCreateManyUploaderInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutUploaderInput | PackingImageUpdateWithWhereUniqueWithoutUploaderInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutUploaderInput | PackingImageUpdateManyWithWhereWithoutUploaderInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type ReceivingSessionUpdateManyWithoutCountedByUserNestedInput = {
@@ -50776,6 +52497,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutUploaderNestedInput = {
+    create?: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput> | PackingImageCreateWithoutUploaderInput[] | PackingImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutUploaderInput | PackingImageCreateOrConnectWithoutUploaderInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutUploaderInput | PackingImageUpsertWithWhereUniqueWithoutUploaderInput[]
+    createMany?: PackingImageCreateManyUploaderInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutUploaderInput | PackingImageUpdateWithWhereUniqueWithoutUploaderInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutUploaderInput | PackingImageUpdateManyWithWhereWithoutUploaderInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput = {
@@ -51889,6 +53624,13 @@ export namespace Prisma {
     connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
   }
 
+  export type PackingImageCreateNestedManyWithoutOrderInput = {
+    create?: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput> | PackingImageCreateWithoutOrderInput[] | PackingImageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutOrderInput | PackingImageCreateOrConnectWithoutOrderInput[]
+    createMany?: PackingImageCreateManyOrderInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+  }
+
   export type OrderItemCreateNestedManyWithoutOrderInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -51922,6 +53664,13 @@ export namespace Prisma {
     connectOrCreate?: ShippingPackageCreateOrConnectWithoutOrderInput | ShippingPackageCreateOrConnectWithoutOrderInput[]
     createMany?: ShippingPackageCreateManyOrderInputEnvelope
     connect?: ShippingPackageWhereUniqueInput | ShippingPackageWhereUniqueInput[]
+  }
+
+  export type PackingImageUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput> | PackingImageCreateWithoutOrderInput[] | PackingImageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutOrderInput | PackingImageCreateOrConnectWithoutOrderInput[]
+    createMany?: PackingImageCreateManyOrderInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
   }
 
   export type OrderItemUncheckedCreateNestedManyWithoutOrderInput = {
@@ -51984,6 +53733,20 @@ export namespace Prisma {
     update?: ShippingPackageUpdateWithWhereUniqueWithoutOrderInput | ShippingPackageUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: ShippingPackageUpdateManyWithWhereWithoutOrderInput | ShippingPackageUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
+  }
+
+  export type PackingImageUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput> | PackingImageCreateWithoutOrderInput[] | PackingImageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutOrderInput | PackingImageCreateOrConnectWithoutOrderInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutOrderInput | PackingImageUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: PackingImageCreateManyOrderInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutOrderInput | PackingImageUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutOrderInput | PackingImageUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type OrderItemUpdateManyWithoutOrderNestedInput = {
@@ -52054,6 +53817,20 @@ export namespace Prisma {
     update?: ShippingPackageUpdateWithWhereUniqueWithoutOrderInput | ShippingPackageUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: ShippingPackageUpdateManyWithWhereWithoutOrderInput | ShippingPackageUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: ShippingPackageScalarWhereInput | ShippingPackageScalarWhereInput[]
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput> | PackingImageCreateWithoutOrderInput[] | PackingImageUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutOrderInput | PackingImageCreateOrConnectWithoutOrderInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutOrderInput | PackingImageUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: PackingImageCreateManyOrderInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutOrderInput | PackingImageUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutOrderInput | PackingImageUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
@@ -52226,6 +54003,50 @@ export namespace Prisma {
     deleteMany?: AllocationScalarWhereInput | AllocationScalarWhereInput[]
   }
 
+  export type OrderCreateNestedOneWithoutPackingImagesInput = {
+    create?: XOR<OrderCreateWithoutPackingImagesInput, OrderUncheckedCreateWithoutPackingImagesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutPackingImagesInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type WorkTaskCreateNestedOneWithoutPackingImagesInput = {
+    create?: XOR<WorkTaskCreateWithoutPackingImagesInput, WorkTaskUncheckedCreateWithoutPackingImagesInput>
+    connectOrCreate?: WorkTaskCreateOrConnectWithoutPackingImagesInput
+    connect?: WorkTaskWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPackingImagesUploadedInput = {
+    create?: XOR<UserCreateWithoutPackingImagesUploadedInput, UserUncheckedCreateWithoutPackingImagesUploadedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPackingImagesUploadedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type OrderUpdateOneRequiredWithoutPackingImagesNestedInput = {
+    create?: XOR<OrderCreateWithoutPackingImagesInput, OrderUncheckedCreateWithoutPackingImagesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutPackingImagesInput
+    upsert?: OrderUpsertWithoutPackingImagesInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutPackingImagesInput, OrderUpdateWithoutPackingImagesInput>, OrderUncheckedUpdateWithoutPackingImagesInput>
+  }
+
+  export type WorkTaskUpdateOneWithoutPackingImagesNestedInput = {
+    create?: XOR<WorkTaskCreateWithoutPackingImagesInput, WorkTaskUncheckedCreateWithoutPackingImagesInput>
+    connectOrCreate?: WorkTaskCreateOrConnectWithoutPackingImagesInput
+    upsert?: WorkTaskUpsertWithoutPackingImagesInput
+    disconnect?: WorkTaskWhereInput | boolean
+    delete?: WorkTaskWhereInput | boolean
+    connect?: WorkTaskWhereUniqueInput
+    update?: XOR<XOR<WorkTaskUpdateToOneWithWhereWithoutPackingImagesInput, WorkTaskUpdateWithoutPackingImagesInput>, WorkTaskUncheckedUpdateWithoutPackingImagesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPackingImagesUploadedNestedInput = {
+    create?: XOR<UserCreateWithoutPackingImagesUploadedInput, UserUncheckedCreateWithoutPackingImagesUploadedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPackingImagesUploadedInput
+    upsert?: UserUpsertWithoutPackingImagesUploadedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPackingImagesUploadedInput, UserUpdateWithoutPackingImagesUploadedInput>, UserUncheckedUpdateWithoutPackingImagesUploadedInput>
+  }
+
   export type OrderCreateNestedOneWithoutShippingLabelsInput = {
     create?: XOR<OrderCreateWithoutShippingLabelsInput, OrderUncheckedCreateWithoutShippingLabelsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutShippingLabelsInput
@@ -52334,6 +54155,13 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type PackingImageCreateNestedManyWithoutTaskInput = {
+    create?: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput> | PackingImageCreateWithoutTaskInput[] | PackingImageUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutTaskInput | PackingImageCreateOrConnectWithoutTaskInput[]
+    createMany?: PackingImageCreateManyTaskInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutAssignedTasksInput = {
     create?: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
     connectOrCreate?: UserCreateOrConnectWithoutAssignedTasksInput
@@ -52358,6 +54186,13 @@ export namespace Prisma {
     create?: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
     connectOrCreate?: ReceivingSessionCreateOrConnectWithoutPutawayTaskInput
     connect?: ReceivingSessionWhereUniqueInput
+  }
+
+  export type PackingImageUncheckedCreateNestedManyWithoutTaskInput = {
+    create?: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput> | PackingImageCreateWithoutTaskInput[] | PackingImageUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutTaskInput | PackingImageCreateOrConnectWithoutTaskInput[]
+    createMany?: PackingImageCreateManyTaskInputEnvelope
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
   }
 
   export type TaskItemUncheckedCreateNestedManyWithoutTaskInput = {
@@ -52395,6 +54230,20 @@ export namespace Prisma {
   export type WorkTaskUpdateorderIdsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type PackingImageUpdateManyWithoutTaskNestedInput = {
+    create?: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput> | PackingImageCreateWithoutTaskInput[] | PackingImageUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutTaskInput | PackingImageCreateOrConnectWithoutTaskInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutTaskInput | PackingImageUpsertWithWhereUniqueWithoutTaskInput[]
+    createMany?: PackingImageCreateManyTaskInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutTaskInput | PackingImageUpdateWithWhereUniqueWithoutTaskInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutTaskInput | PackingImageUpdateManyWithWhereWithoutTaskInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type UserUpdateOneWithoutAssignedTasksNestedInput = {
@@ -52443,6 +54292,20 @@ export namespace Prisma {
     delete?: ReceivingSessionWhereInput | boolean
     connect?: ReceivingSessionWhereUniqueInput
     update?: XOR<XOR<ReceivingSessionUpdateToOneWithWhereWithoutPutawayTaskInput, ReceivingSessionUpdateWithoutPutawayTaskInput>, ReceivingSessionUncheckedUpdateWithoutPutawayTaskInput>
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutTaskNestedInput = {
+    create?: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput> | PackingImageCreateWithoutTaskInput[] | PackingImageUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: PackingImageCreateOrConnectWithoutTaskInput | PackingImageCreateOrConnectWithoutTaskInput[]
+    upsert?: PackingImageUpsertWithWhereUniqueWithoutTaskInput | PackingImageUpsertWithWhereUniqueWithoutTaskInput[]
+    createMany?: PackingImageCreateManyTaskInputEnvelope
+    set?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    disconnect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    delete?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    connect?: PackingImageWhereUniqueInput | PackingImageWhereUniqueInput[]
+    update?: PackingImageUpdateWithWhereUniqueWithoutTaskInput | PackingImageUpdateWithWhereUniqueWithoutTaskInput[]
+    updateMany?: PackingImageUpdateManyWithWhereWithoutTaskInput | PackingImageUpdateManyWithWhereWithoutTaskInput[]
+    deleteMany?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
   }
 
   export type TaskItemUncheckedUpdateManyWithoutTaskNestedInput = {
@@ -54125,6 +55988,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutTaskInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
@@ -54157,6 +56021,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutTaskInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
@@ -54307,6 +56172,42 @@ export namespace Prisma {
 
   export type NotificationCreateManyUserInputEnvelope = {
     data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackingImageCreateWithoutUploaderInput = {
+    id?: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutPackingImagesInput
+    task?: WorkTaskCreateNestedOneWithoutPackingImagesInput
+  }
+
+  export type PackingImageUncheckedCreateWithoutUploaderInput = {
+    id?: string
+    orderId: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PackingImageCreateOrConnectWithoutUploaderInput = {
+    where: PackingImageWhereUniqueInput
+    create: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput>
+  }
+
+  export type PackingImageCreateManyUploaderInputEnvelope = {
+    data: PackingImageCreateManyUploaderInput | PackingImageCreateManyUploaderInput[]
     skipDuplicates?: boolean
   }
 
@@ -55260,6 +57161,39 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Notification"> | Date | string
   }
 
+  export type PackingImageUpsertWithWhereUniqueWithoutUploaderInput = {
+    where: PackingImageWhereUniqueInput
+    update: XOR<PackingImageUpdateWithoutUploaderInput, PackingImageUncheckedUpdateWithoutUploaderInput>
+    create: XOR<PackingImageCreateWithoutUploaderInput, PackingImageUncheckedCreateWithoutUploaderInput>
+  }
+
+  export type PackingImageUpdateWithWhereUniqueWithoutUploaderInput = {
+    where: PackingImageWhereUniqueInput
+    data: XOR<PackingImageUpdateWithoutUploaderInput, PackingImageUncheckedUpdateWithoutUploaderInput>
+  }
+
+  export type PackingImageUpdateManyWithWhereWithoutUploaderInput = {
+    where: PackingImageScalarWhereInput
+    data: XOR<PackingImageUpdateManyMutationInput, PackingImageUncheckedUpdateManyWithoutUploaderInput>
+  }
+
+  export type PackingImageScalarWhereInput = {
+    AND?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
+    OR?: PackingImageScalarWhereInput[]
+    NOT?: PackingImageScalarWhereInput | PackingImageScalarWhereInput[]
+    id?: StringFilter<"PackingImage"> | string
+    orderId?: StringFilter<"PackingImage"> | string
+    taskId?: StringNullableFilter<"PackingImage"> | string | null
+    url?: StringFilter<"PackingImage"> | string
+    filename?: StringFilter<"PackingImage"> | string
+    size?: IntFilter<"PackingImage"> | number
+    contentType?: StringFilter<"PackingImage"> | string
+    uploadedBy?: StringFilter<"PackingImage"> | string
+    reference?: StringNullableFilter<"PackingImage"> | string | null
+    notes?: StringNullableFilter<"PackingImage"> | string | null
+    createdAt?: DateTimeFilter<"PackingImage"> | Date | string
+  }
+
   export type ReceivingSessionUpsertWithWhereUniqueWithoutCountedByUserInput = {
     where: ReceivingSessionWhereUniqueInput
     update: XOR<ReceivingSessionUpdateWithoutCountedByUserInput, ReceivingSessionUncheckedUpdateWithoutCountedByUserInput>
@@ -55632,6 +57566,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -55665,6 +57600,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -55714,6 +57650,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -55747,6 +57684,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -55780,6 +57718,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -55813,6 +57752,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -55862,6 +57802,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -55895,6 +57836,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -57464,6 +59406,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
@@ -57493,6 +59436,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
@@ -57771,6 +59715,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
@@ -57800,6 +59745,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
@@ -58067,6 +60013,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PackingImageCreateWithoutOrderInput = {
+    id?: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    task?: WorkTaskCreateNestedOneWithoutPackingImagesInput
+    uploader: UserCreateNestedOneWithoutPackingImagesUploadedInput
+  }
+
+  export type PackingImageUncheckedCreateWithoutOrderInput = {
+    id?: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PackingImageCreateOrConnectWithoutOrderInput = {
+    where: PackingImageWhereUniqueInput
+    create: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput>
+  }
+
+  export type PackingImageCreateManyOrderInputEnvelope = {
+    data: PackingImageCreateManyOrderInput | PackingImageCreateManyOrderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrderItemCreateWithoutOrderInput = {
     id?: string
     sku: string
@@ -58299,6 +60281,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ShippingPackage"> | Date | string
   }
 
+  export type PackingImageUpsertWithWhereUniqueWithoutOrderInput = {
+    where: PackingImageWhereUniqueInput
+    update: XOR<PackingImageUpdateWithoutOrderInput, PackingImageUncheckedUpdateWithoutOrderInput>
+    create: XOR<PackingImageCreateWithoutOrderInput, PackingImageUncheckedCreateWithoutOrderInput>
+  }
+
+  export type PackingImageUpdateWithWhereUniqueWithoutOrderInput = {
+    where: PackingImageWhereUniqueInput
+    data: XOR<PackingImageUpdateWithoutOrderInput, PackingImageUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type PackingImageUpdateManyWithWhereWithoutOrderInput = {
+    where: PackingImageScalarWhereInput
+    data: XOR<PackingImageUpdateManyMutationInput, PackingImageUncheckedUpdateManyWithoutOrderInput>
+  }
+
   export type OrderItemUpsertWithWhereUniqueWithoutOrderInput = {
     where: OrderItemWhereUniqueInput
     update: XOR<OrderItemUpdateWithoutOrderInput, OrderItemUncheckedUpdateWithoutOrderInput>
@@ -58415,6 +60413,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
@@ -58444,6 +60443,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
@@ -58636,6 +60636,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
@@ -58665,6 +60666,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
@@ -58763,6 +60765,442 @@ export namespace Prisma {
     data: XOR<AllocationUpdateManyMutationInput, AllocationUncheckedUpdateManyWithoutOrderItemInput>
   }
 
+  export type OrderCreateWithoutPackingImagesInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    items?: OrderItemCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemCreateNestedManyWithoutOrderInput
+    allocations?: AllocationCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutPackingImagesInput = {
+    id?: string
+    orderNumber: string
+    shopifyOrderId?: string | null
+    customerId?: string | null
+    customerName: string
+    customerEmail?: string | null
+    shippingAddress: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.OrderStatus
+    paymentStatus?: $Enums.PaymentStatus
+    priority?: $Enums.Priority
+    holdReason?: string | null
+    holdAt?: Date | string | null
+    holdBy?: string | null
+    unmatchedItems?: number
+    totalAmount: Decimal | DecimalJsLike | number | string
+    warehouseId?: string | null
+    trackingNumber?: string | null
+    shippedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
+    shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutPackingImagesInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutPackingImagesInput, OrderUncheckedCreateWithoutPackingImagesInput>
+  }
+
+  export type WorkTaskCreateWithoutPackingImagesInput = {
+    id?: string
+    taskNumber: string
+    type: $Enums.WorkTaskType
+    status?: $Enums.WorkTaskStatus
+    priority?: number
+    idempotencyKey?: string | null
+    assignedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
+    orderIds?: WorkTaskCreateorderIdsInput | string[]
+    totalOrders: number
+    completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    totalItems: number
+    completedItems?: number
+    shortItems?: number
+    skippedItems?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
+    taskItems?: TaskItemCreateNestedManyWithoutTaskInput
+    events?: TaskEventCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
+  }
+
+  export type WorkTaskUncheckedCreateWithoutPackingImagesInput = {
+    id?: string
+    taskNumber: string
+    type: $Enums.WorkTaskType
+    status?: $Enums.WorkTaskStatus
+    priority?: number
+    idempotencyKey?: string | null
+    assignedTo?: string | null
+    assignedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    blockReason?: $Enums.WorkTaskBlockReason | null
+    blockedAt?: Date | string | null
+    orderIds?: WorkTaskCreateorderIdsInput | string[]
+    totalOrders: number
+    completedOrders?: number
+    packedWeight?: Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    totalItems: number
+    completedItems?: number
+    shortItems?: number
+    skippedItems?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
+    events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
+    receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
+  }
+
+  export type WorkTaskCreateOrConnectWithoutPackingImagesInput = {
+    where: WorkTaskWhereUniqueInput
+    create: XOR<WorkTaskCreateWithoutPackingImagesInput, WorkTaskUncheckedCreateWithoutPackingImagesInput>
+  }
+
+  export type UserCreateWithoutPackingImagesUploadedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutPackingImagesUploadedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutPackingImagesUploadedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPackingImagesUploadedInput, UserUncheckedCreateWithoutPackingImagesUploadedInput>
+  }
+
+  export type OrderUpsertWithoutPackingImagesInput = {
+    update: XOR<OrderUpdateWithoutPackingImagesInput, OrderUncheckedUpdateWithoutPackingImagesInput>
+    create: XOR<OrderCreateWithoutPackingImagesInput, OrderUncheckedCreateWithoutPackingImagesInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutPackingImagesInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutPackingImagesInput, OrderUncheckedUpdateWithoutPackingImagesInput>
+  }
+
+  export type OrderUpdateWithoutPackingImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    items?: OrderItemUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutPackingImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    shopifyOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    customerName?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    shippingAddress?: JsonNullValueInput | InputJsonValue
+    billingAddress?: NullableJsonNullValueInput | InputJsonValue
+    shopifyLineItems?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+    holdReason?: NullableStringFieldUpdateOperationsInput | string | null
+    holdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    holdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    unmatchedItems?: IntFieldUpdateOperationsInput | number
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    warehouseId?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
+    shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type WorkTaskUpsertWithoutPackingImagesInput = {
+    update: XOR<WorkTaskUpdateWithoutPackingImagesInput, WorkTaskUncheckedUpdateWithoutPackingImagesInput>
+    create: XOR<WorkTaskCreateWithoutPackingImagesInput, WorkTaskUncheckedCreateWithoutPackingImagesInput>
+    where?: WorkTaskWhereInput
+  }
+
+  export type WorkTaskUpdateToOneWithWhereWithoutPackingImagesInput = {
+    where?: WorkTaskWhereInput
+    data: XOR<WorkTaskUpdateWithoutPackingImagesInput, WorkTaskUncheckedUpdateWithoutPackingImagesInput>
+  }
+
+  export type WorkTaskUpdateWithoutPackingImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkTaskTypeFieldUpdateOperationsInput | $Enums.WorkTaskType
+    status?: EnumWorkTaskStatusFieldUpdateOperationsInput | $Enums.WorkTaskStatus
+    priority?: IntFieldUpdateOperationsInput | number
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    orderIds?: WorkTaskUpdateorderIdsInput | string[]
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
+    taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
+    events?: TaskEventUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
+  }
+
+  export type WorkTaskUncheckedUpdateWithoutPackingImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkTaskTypeFieldUpdateOperationsInput | $Enums.WorkTaskType
+    status?: EnumWorkTaskStatusFieldUpdateOperationsInput | $Enums.WorkTaskStatus
+    priority?: IntFieldUpdateOperationsInput | number
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockReason?: NullableEnumWorkTaskBlockReasonFieldUpdateOperationsInput | $Enums.WorkTaskBlockReason | null
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    orderIds?: WorkTaskUpdateorderIdsInput | string[]
+    totalOrders?: IntFieldUpdateOperationsInput | number
+    completedOrders?: IntFieldUpdateOperationsInput | number
+    packedWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    packedWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    packedDimensions?: NullableJsonNullValueInput | InputJsonValue
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    completedItems?: IntFieldUpdateOperationsInput | number
+    shortItems?: IntFieldUpdateOperationsInput | number
+    skippedItems?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
+    events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
+    receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
+  }
+
+  export type UserUpsertWithoutPackingImagesUploadedInput = {
+    update: XOR<UserUpdateWithoutPackingImagesUploadedInput, UserUncheckedUpdateWithoutPackingImagesUploadedInput>
+    create: XOR<UserCreateWithoutPackingImagesUploadedInput, UserUncheckedCreateWithoutPackingImagesUploadedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPackingImagesUploadedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPackingImagesUploadedInput, UserUncheckedUpdateWithoutPackingImagesUploadedInput>
+  }
+
+  export type UserUpdateWithoutPackingImagesUploadedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPackingImagesUploadedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
   export type OrderCreateWithoutShippingLabelsInput = {
     id?: string
     orderNumber: string
@@ -58787,6 +61225,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
@@ -58816,6 +61255,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
@@ -58861,6 +61301,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
@@ -58890,6 +61331,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
@@ -58918,6 +61360,7 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
@@ -58947,6 +61390,7 @@ export namespace Prisma {
     shippedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
@@ -59020,6 +61464,7 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
@@ -59049,6 +61494,7 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
@@ -59279,6 +61725,42 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
+  export type PackingImageCreateWithoutTaskInput = {
+    id?: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutPackingImagesInput
+    uploader: UserCreateNestedOneWithoutPackingImagesUploadedInput
+  }
+
+  export type PackingImageUncheckedCreateWithoutTaskInput = {
+    id?: string
+    orderId: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PackingImageCreateOrConnectWithoutTaskInput = {
+    where: PackingImageWhereUniqueInput
+    create: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput>
+  }
+
+  export type PackingImageCreateManyTaskInputEnvelope = {
+    data: PackingImageCreateManyTaskInput | PackingImageCreateManyTaskInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutAssignedTasksInput = {
     id?: string
     email: string
@@ -59296,6 +61778,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -59329,6 +61812,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -59483,6 +61967,22 @@ export namespace Prisma {
     create: XOR<ReceivingSessionCreateWithoutPutawayTaskInput, ReceivingSessionUncheckedCreateWithoutPutawayTaskInput>
   }
 
+  export type PackingImageUpsertWithWhereUniqueWithoutTaskInput = {
+    where: PackingImageWhereUniqueInput
+    update: XOR<PackingImageUpdateWithoutTaskInput, PackingImageUncheckedUpdateWithoutTaskInput>
+    create: XOR<PackingImageCreateWithoutTaskInput, PackingImageUncheckedCreateWithoutTaskInput>
+  }
+
+  export type PackingImageUpdateWithWhereUniqueWithoutTaskInput = {
+    where: PackingImageWhereUniqueInput
+    data: XOR<PackingImageUpdateWithoutTaskInput, PackingImageUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type PackingImageUpdateManyWithWhereWithoutTaskInput = {
+    where: PackingImageScalarWhereInput
+    data: XOR<PackingImageUpdateManyMutationInput, PackingImageUncheckedUpdateManyWithoutTaskInput>
+  }
+
   export type UserUpsertWithoutAssignedTasksInput = {
     update: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
     create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
@@ -59511,6 +62011,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -59544,6 +62045,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -59678,6 +62180,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutTaskInput
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
@@ -59711,6 +62214,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
@@ -59744,6 +62248,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageCreateNestedManyWithoutOrderInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
     allocations?: AllocationCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelCreateNestedManyWithoutOrderInput
@@ -59773,6 +62278,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     shippingPackages?: ShippingPackageUncheckedCreateNestedManyWithoutOrderInput
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutOrderInput
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     allocations?: AllocationUncheckedCreateNestedManyWithoutOrderInput
     shippingLabels?: ShippingLabelUncheckedCreateNestedManyWithoutOrderInput
@@ -59943,6 +62449,7 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -59976,6 +62483,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -60070,6 +62578,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutTaskNestedInput
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
@@ -60103,6 +62612,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
@@ -60142,6 +62652,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUpdateManyWithoutOrderNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUpdateManyWithoutOrderNestedInput
@@ -60171,6 +62682,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shippingPackages?: ShippingPackageUncheckedUpdateManyWithoutOrderNestedInput
+    packingImages?: PackingImageUncheckedUpdateManyWithoutOrderNestedInput
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     allocations?: AllocationUncheckedUpdateManyWithoutOrderNestedInput
     shippingLabels?: ShippingLabelUncheckedUpdateManyWithoutOrderNestedInput
@@ -60365,6 +62877,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -60398,6 +62911,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -60482,6 +62996,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutTaskInput
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionCreateNestedOneWithoutPutawayTaskInput
@@ -60515,6 +63030,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutTaskInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     receivingSession?: ReceivingSessionUncheckedCreateNestedOneWithoutPutawayTaskInput
   }
@@ -60541,6 +63057,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -60574,6 +63091,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -60633,6 +63151,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutTaskNestedInput
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
@@ -60666,6 +63185,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutTaskNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
   }
@@ -60698,6 +63218,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -60731,6 +63252,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -60764,6 +63286,7 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -60797,6 +63320,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -60846,6 +63370,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -60879,6 +63404,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -60912,6 +63438,7 @@ export namespace Prisma {
     taskEvents?: TaskEventCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -60945,6 +63472,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -60994,6 +63522,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -61027,6 +63556,7 @@ export namespace Prisma {
     taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -61143,6 +63673,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
@@ -61176,6 +63707,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
@@ -61214,6 +63746,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
@@ -61247,6 +63780,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
@@ -61285,6 +63819,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
@@ -61318,6 +63853,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
@@ -61356,6 +63892,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -61389,6 +63926,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -61485,6 +64023,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageCreateNestedManyWithoutTaskInput
     assignedUser?: UserCreateNestedOneWithoutAssignedTasksInput
     taskItems?: TaskItemCreateNestedManyWithoutTaskInput
     events?: TaskEventCreateNestedManyWithoutTaskInput
@@ -61518,6 +64057,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packingImages?: PackingImageUncheckedCreateNestedManyWithoutTaskInput
     taskItems?: TaskItemUncheckedCreateNestedManyWithoutTaskInput
     events?: TaskEventUncheckedCreateNestedManyWithoutTaskInput
   }
@@ -61588,6 +64128,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
@@ -61621,6 +64162,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
@@ -61665,6 +64207,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
@@ -61698,6 +64241,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
@@ -61742,6 +64286,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
@@ -61775,6 +64320,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
@@ -61819,6 +64365,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -61852,6 +64399,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -61960,6 +64508,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutTaskNestedInput
     assignedUser?: UserUpdateOneWithoutAssignedTasksNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
@@ -61993,6 +64542,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutTaskNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
   }
@@ -62296,6 +64846,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -62329,6 +64880,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -62367,6 +64919,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -62400,6 +64953,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -62508,6 +65062,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -62541,6 +65096,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -62585,6 +65141,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -62618,6 +65175,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -62651,6 +65209,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -62684,6 +65243,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -62722,6 +65282,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -62755,6 +65316,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -62862,6 +65424,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -62895,6 +65458,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -62939,6 +65503,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -62972,6 +65537,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -63119,6 +65685,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -63152,6 +65719,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -63190,6 +65758,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -63223,6 +65792,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -63261,6 +65831,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -63294,6 +65865,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -63579,6 +66151,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -63612,6 +66185,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -63656,6 +66230,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -63689,6 +66264,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -63733,6 +66309,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -63766,6 +66343,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -64208,6 +66786,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -64241,6 +66820,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -64349,6 +66929,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -64382,6 +66963,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -64572,6 +67154,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -64605,6 +67188,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -64643,6 +67227,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
@@ -64676,6 +67261,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
     receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
     receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
@@ -64900,6 +67486,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -64933,6 +67520,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -64977,6 +67565,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
@@ -65010,6 +67599,7 @@ export namespace Prisma {
     completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
     receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
     receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
     receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
@@ -65114,6 +67704,19 @@ export namespace Prisma {
     title: string
     message: string
     read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PackingImageCreateManyUploaderInput = {
+    id?: string
+    orderId: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    reference?: string | null
+    notes?: string | null
     createdAt?: Date | string
   }
 
@@ -65459,6 +68062,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUpdateManyWithoutTaskNestedInput
     taskItems?: TaskItemUpdateManyWithoutTaskNestedInput
     events?: TaskEventUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUpdateOneWithoutPutawayTaskNestedInput
@@ -65491,6 +68095,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packingImages?: PackingImageUncheckedUpdateManyWithoutTaskNestedInput
     taskItems?: TaskItemUncheckedUpdateManyWithoutTaskNestedInput
     events?: TaskEventUncheckedUpdateManyWithoutTaskNestedInput
     receivingSession?: ReceivingSessionUncheckedUpdateOneWithoutPutawayTaskNestedInput
@@ -65668,6 +68273,45 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUpdateWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutPackingImagesNestedInput
+    task?: WorkTaskUpdateOneWithoutPackingImagesNestedInput
+  }
+
+  export type PackingImageUncheckedUpdateWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -67751,6 +70395,19 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PackingImageCreateManyOrderInput = {
+    id?: string
+    taskId?: string | null
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
   export type OrderItemCreateManyOrderInput = {
     id?: string
     productVariantId?: string | null
@@ -67879,6 +70536,45 @@ export namespace Prisma {
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    task?: WorkTaskUpdateOneWithoutPackingImagesNestedInput
+    uploader?: UserUpdateOneRequiredWithoutPackingImagesUploadedNestedInput
+  }
+
+  export type PackingImageUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderItemUpdateWithoutOrderInput = {
@@ -68287,6 +70983,19 @@ export namespace Prisma {
     productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type PackingImageCreateManyTaskInput = {
+    id?: string
+    orderId: string
+    url: string
+    filename: string
+    size: number
+    contentType?: string
+    uploadedBy: string
+    reference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
   export type TaskItemCreateManyTaskInput = {
     id?: string
     orderId?: string | null
@@ -68314,6 +71023,45 @@ export namespace Prisma {
     taskItemId?: string | null
     data?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+  }
+
+  export type PackingImageUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutPackingImagesNestedInput
+    uploader?: UserUpdateOneRequiredWithoutPackingImagesUploadedNestedInput
+  }
+
+  export type PackingImageUncheckedUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackingImageUncheckedUpdateManyWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    contentType?: StringFieldUpdateOperationsInput | string
+    uploadedBy?: StringFieldUpdateOperationsInput | string
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskItemUpdateWithoutTaskInput = {

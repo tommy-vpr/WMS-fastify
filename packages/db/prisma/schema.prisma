@@ -30,6 +30,7 @@ model User {
   completedTaskItems  TaskItem[]
   auditLogs           AuditLog[]
   notifications       Notification[]
+  packingImagesUploaded  PackingImage[]
 
   // Receiving relations
   receivingSessionsCounted   ReceivingSession[]     @relation("ReceivingCountedBy")
@@ -278,6 +279,7 @@ model Order {
   trackingNumber  String?
   shippedAt       DateTime?
   shippingPackages  ShippingPackage[]
+  packingImages   PackingImage[]
   // Timestamps
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -320,6 +322,29 @@ model OrderItem {
   @@index([matched])
   @@index([shopifyLineItemId])
   @@map("order_items")
+}
+
+model PackingImage {
+  id          String   @id @default(cuid())
+  orderId     String
+  taskId      String?
+  url         String
+  filename    String
+  size        Int
+  contentType String   @default("image/jpeg")
+  uploadedBy  String
+  reference   String?  // Order number or custom reference
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  task        WorkTask? @relation(fields: [taskId], references: [id])
+  uploader    User     @relation(fields: [uploadedBy], references: [id])
+
+  @@index([orderId])
+  @@index([taskId])
+  @@index([uploadedBy])
+  @@map("packing_images")
 }
 
 // =============================================================================
@@ -459,6 +484,7 @@ model WorkTask {
   totalOrders    Int
   completedOrders Int            @default(0)
   // Packing fields (for PACKING tasks)
+  packingImages   PackingImage[]
   packedWeight     Decimal?  @db.Decimal(8, 2)
   packedWeightUnit String?   @default("ounce")
   packedDimensions Json?

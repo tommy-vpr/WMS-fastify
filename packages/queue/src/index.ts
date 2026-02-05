@@ -1,3 +1,5 @@
+// Update packages/queue/src/index.ts
+
 // Connection
 export { getConnection } from "./connection.js";
 
@@ -40,6 +42,22 @@ export {
   enqueueCreateLabel,
   enqueueSyncShopifyFulfillment,
   enqueueVoidLabel,
+  // Receiving
+  getReceivingQueue,
+  enqueueSyncPurchaseOrders,
+  enqueueProcessApproval,
+  enqueueNotifyApprovers,
+  // Cycle Count
+  getCycleCountQueue,
+  enqueueProcessCycleCountApproval,
+  enqueueGenerateCycleCountTasks,
+  // Packing Images
+  getPackingImagesQueue,
+  enqueueProcessPackingImage,
+  enqueueDeletePackingImage,
+  enqueueGenerateThumbnail,
+  enqueueCleanupOrphanedImages,
+  getPackingImagesQueueStats,
   // Management
   closeQueues,
 } from "./queues.js";

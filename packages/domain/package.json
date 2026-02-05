@@ -17,9 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.18.0",
     "@wms/db": "workspace:*",
+    "@wms/pubsub": "workspace:*",
     "@wms/types": "workspace:*",
-    "@wms/pubsub": "workspace:*"
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

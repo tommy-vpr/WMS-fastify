@@ -33,6 +33,10 @@ import { apiClient } from "@/lib/api";
 import { useBarcodeScanner } from "@/hooks/useBarcodeScanner";
 import { useFulfillmentStream } from "@/hooks/useFulfillmentStream";
 import ShippingLabelForm from "@/components/shipping/ShippingLabelForm";
+import {
+  PackingImageUpload,
+  type PackingImage,
+} from "@/components/packing/PackingImageUpload";
 
 // ============================================================================
 // Types
@@ -231,6 +235,10 @@ export default function FulfillmentDetailPage() {
   const [packWidth, setPackWidth] = useState("");
   const [packHeight, setPackHeight] = useState("");
 
+  // Packing images state
+  const [packingImages, setPackingImages] = useState<PackingImage[]>([]);
+  const [loadingImages, setLoadingImages] = useState(false);
+
   // ── SSE for live events ─────────────────────────────────────────────────
   const { events: sseEvents, connected } = useFulfillmentStream({
     orderId,
@@ -276,6 +284,30 @@ export default function FulfillmentDetailPage() {
   useEffect(() => {
     fetchStatus();
   }, [fetchStatus]);
+
+  // Fetch packing images when packing task exists
+  useEffect(() => {
+    const fetchPackingImages = async () => {
+      if (!status?.packing?.id) {
+        setPackingImages([]);
+        return;
+      }
+
+      setLoadingImages(true);
+      try {
+        const data = await apiClient.get<{ images: PackingImage[] }>(
+          `/packing-images/task/${status.packing.id}`,
+        );
+        setPackingImages(data.images || []);
+      } catch (err) {
+        console.error("Failed to load packing images:", err);
+      } finally {
+        setLoadingImages(false);
+      }
+    };
+
+    fetchPackingImages();
+  }, [status?.packing?.id]);
 
   // ── Scan Feedback Helper ────────────────────────────────────────────────
   const showFeedback = (type: "success" | "error", message: string) => {
@@ -862,7 +894,7 @@ export default function FulfillmentDetailPage() {
           {currentStep === "packing" && packing && (
             <StepCard
               title={`Packing (${packing.completedItems}/${packing.totalItems})`}
-              description="Scan each item to verify, then enter weight and dimensions."
+              description="Scan each item to verify, then add photos and enter weight."
               icon={<BoxIcon className="w-5 h-5 text-purple-500" />}
             >
               {/* Progress bar */}
@@ -924,83 +956,112 @@ export default function FulfillmentDetailPage() {
                   })}
               </div>
 
-              {/* Weight & Dimensions form — show when all items verified */}
+              {/* Weight & Dimensions form + Images — show when all items verified */}
               {packing.completedItems === packing.totalItems &&
                 packing.totalItems > 0 && (
-                  <div className="border-t pt-4 mt-4">
-                    <div className="text-sm font-semibold text-gray-700 mb-3">
-                      Package Details
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-1">
-                          Weight
-                        </label>
-                        <div className="flex gap-1">
-                          <input
-                            type="number"
-                            step="0.1"
-                            value={packWeight}
-                            onChange={(e) => setPackWeight(e.target.value)}
-                            placeholder="0.0"
-                            className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                          />
-                          <select
-                            value={packWeightUnit}
-                            onChange={(e) => setPackWeightUnit(e.target.value)}
-                            className="px-2 py-2 border border-border rounded-lg text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                          >
-                            <option value="ounce">oz</option>
-                            <option value="pound">lb</option>
-                            <option value="gram">g</option>
-                            <option value="kilogram">kg</option>
-                          </select>
+                  <div className="border-t pt-4 mt-4 space-y-4">
+                    {/* Packing Images */}
+                    <PackingImageUpload
+                      orderId={order.id}
+                      taskId={packing.id}
+                      orderNumber={order.orderNumber}
+                      images={packingImages}
+                      onUploadSuccess={(image) => {
+                        setPackingImages((prev) => [...prev, image]);
+                      }}
+                      onDeleteSuccess={(imageId) => {
+                        setPackingImages((prev) =>
+                          prev.filter((i) => i.id !== imageId),
+                        );
+                      }}
+                      required={true}
+                      maxImages={5}
+                    />
+
+                    {/* Package Details */}
+                    <div>
+                      <div className="text-sm font-semibold text-gray-700 mb-3">
+                        Package Details
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-1">
+                            Weight
+                          </label>
+                          <div className="flex gap-1">
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={packWeight}
+                              onChange={(e) => setPackWeight(e.target.value)}
+                              placeholder="0.0"
+                              className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                            />
+                            <select
+                              value={packWeightUnit}
+                              onChange={(e) =>
+                                setPackWeightUnit(e.target.value)
+                              }
+                              className="px-2 py-2 border border-border rounded-lg text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                            >
+                              <option value="ounce">oz</option>
+                              <option value="pound">lb</option>
+                              <option value="gram">g</option>
+                              <option value="kilogram">kg</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="grid grid-cols-3 gap-2 mb-4">
-                      {[
-                        {
-                          label: "Length",
-                          val: packLength,
-                          set: setPackLength,
-                        },
-                        { label: "Width", val: packWidth, set: setPackWidth },
-                        {
-                          label: "Height",
-                          val: packHeight,
-                          set: setPackHeight,
-                        },
-                      ].map(({ label, val, set }) => (
-                        <div key={label}>
-                          <label className="block text-xs text-gray-500 mb-1">
-                            {label} (in)
-                          </label>
-                          <input
-                            type="number"
-                            step="0.1"
-                            value={val}
-                            onChange={(e) => set(e.target.value)}
-                            placeholder="0"
-                            className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                          />
-                        </div>
-                      ))}
-                    </div>
+                      <div className="grid grid-cols-3 gap-2 mb-4">
+                        {[
+                          {
+                            label: "Length",
+                            val: packLength,
+                            set: setPackLength,
+                          },
+                          { label: "Width", val: packWidth, set: setPackWidth },
+                          {
+                            label: "Height",
+                            val: packHeight,
+                            set: setPackHeight,
+                          },
+                        ].map(({ label, val, set }) => (
+                          <div key={label}>
+                            <label className="block text-xs text-gray-500 mb-1">
+                              {label} (in)
+                            </label>
+                            <input
+                              type="number"
+                              step="0.1"
+                              value={val}
+                              onChange={(e) => set(e.target.value)}
+                              placeholder="0"
+                              className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                            />
+                          </div>
+                        ))}
+                      </div>
 
-                    <button
-                      onClick={completePacking}
-                      disabled={actionLoading}
-                      className="cursor-pointer w-full py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 flex items-center justify-center gap-2 transition"
-                    >
-                      {actionLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <CheckCircle2 className="w-4 h-4" />
+                      <button
+                        onClick={completePacking}
+                        disabled={actionLoading || packingImages.length === 0}
+                        className="cursor-pointer w-full py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 flex items-center justify-center gap-2 transition"
+                      >
+                        {actionLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <CheckCircle2 className="w-4 h-4" />
+                        )}
+                        Complete Packing
+                      </button>
+
+                      {packingImages.length === 0 && (
+                        <p className="text-xs text-amber-600 text-center mt-2">
+                          Add at least one photo to complete packing
+                        </p>
                       )}
-                      Complete Packing
-                    </button>
+                    </div>
                   </div>
                 )}
             </StepCard>

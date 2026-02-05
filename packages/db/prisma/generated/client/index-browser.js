@@ -270,6 +270,20 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
 };
 
+exports.Prisma.PackingImageScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  taskId: 'taskId',
+  url: 'url',
+  filename: 'filename',
+  size: 'size',
+  contentType: 'contentType',
+  uploadedBy: 'uploadedBy',
+  reference: 'reference',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ShippingLabelScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
@@ -817,6 +831,7 @@ exports.Prisma.ModelName = {
   Allocation: 'Allocation',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  PackingImage: 'PackingImage',
   ShippingLabel: 'ShippingLabel',
   ShippingPackage: 'ShippingPackage',
   ShippingPackageItem: 'ShippingPackageItem',

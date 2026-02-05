@@ -38,6 +38,8 @@ export const EVENT_TYPES = {
   PACKING_STARTED: "packing:started",
   PACKING_ITEM_VERIFIED: "packing:item_verified",
   PACKING_COMPLETED: "packing:completed",
+  PACKING_IMAGE_UPLOADED: "packing:image_uploaded",
+  PACKING_IMAGE_DELETED: "packing:image_deleted",
   // Shipping
   SHIPPING_LABEL_CREATED: "shipping:label_created",
   // Inventory

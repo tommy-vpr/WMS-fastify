@@ -17,9 +17,51 @@ export const QUEUES = {
   SHIPPING: "shipping",
   RECEIVING: "receiving",
   CYCLE_COUNT: "cycle-count",
+  PACKING_IMAGES: "packing-images",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
+
+// ============================================================================
+// Packing Image Jobs - Add this section
+// ============================================================================
+
+export const PACKING_IMAGE_JOBS = {
+  PROCESS_IMAGE: "process-image",
+  DELETE_IMAGE: "delete-image",
+  GENERATE_THUMBNAIL: "generate-thumbnail",
+  CLEANUP_ORPHANED: "cleanup-orphaned",
+} as const;
+
+export interface ProcessPackingImageJobData {
+  orderId: string;
+  taskId?: string;
+  buffer: string; // Base64 encoded
+  filename: string;
+  userId: string;
+  reference?: string;
+  notes?: string;
+}
+
+export interface DeletePackingImageJobData {
+  imageId: string;
+  userId: string;
+}
+
+export interface GenerateThumbnailJobData {
+  imageId: string;
+  sizes: Array<{ width: number; height: number; suffix: string }>;
+}
+
+export interface CleanupOrphanedImagesJobData {
+  olderThanDays?: number;
+}
+
+export type PackingImageJobData =
+  | { type: "PROCESS_IMAGE"; data: ProcessPackingImageJobData }
+  | { type: "DELETE_IMAGE"; data: DeletePackingImageJobData }
+  | { type: "GENERATE_THUMBNAIL"; data: GenerateThumbnailJobData }
+  | { type: "CLEANUP_ORPHANED"; data: CleanupOrphanedImagesJobData };
 
 // ============================================================================
 // Work Task Jobs

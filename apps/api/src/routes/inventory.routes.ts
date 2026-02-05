@@ -71,8 +71,12 @@ const inventoryRepoAdapter: InventoryRepository = {
     productVariantId,
   ): Promise<InventoryUnitWithDetails[]> {
     const units = await prisma.inventoryUnit.findMany({
-      where: { productVariantId, status: "AVAILABLE", quantity: { gt: 0 } },
+      where: { productVariantId },
       include: {
+        allocations: {
+          where: { status: { in: ["ALLOCATED", "PICKED"] } },
+          select: { quantity: true },
+        },
         productVariant: {
           select: { id: true, sku: true, name: true, barcode: true },
         },
@@ -82,17 +86,29 @@ const inventoryRepoAdapter: InventoryRepository = {
       },
       orderBy: { receivedAt: "asc" },
     });
-    return units.map(mapToInventoryUnitWithDetails);
+
+    return units
+      .map((u) => {
+        const reserved = u.allocations.reduce((s, a) => s + a.quantity, 0);
+        return {
+          ...mapToInventoryUnitWithDetails(u),
+          availableQuantity: u.quantity - reserved,
+        };
+      })
+      .filter((u) => u.availableQuantity > 0);
   },
 
   async findAvailableBySku(sku): Promise<InventoryUnitWithDetails[]> {
     const units = await prisma.inventoryUnit.findMany({
       where: {
         productVariant: { sku },
-        status: "AVAILABLE",
         quantity: { gt: 0 },
       },
       include: {
+        allocations: {
+          where: { status: { in: ["ALLOCATED", "PICKED"] } },
+          select: { quantity: true },
+        },
         productVariant: {
           select: { id: true, sku: true, name: true, barcode: true },
         },
@@ -100,9 +116,19 @@ const inventoryRepoAdapter: InventoryRepository = {
           select: { id: true, name: true, zone: true, pickSequence: true },
         },
       },
+
       orderBy: { receivedAt: "asc" },
     });
-    return units.map(mapToInventoryUnitWithDetails);
+
+    return units
+      .map((u) => {
+        const reserved = u.allocations.reduce((s, a) => s + a.quantity, 0);
+        return {
+          ...mapToInventoryUnitWithDetails(u),
+          availableQuantity: u.quantity - reserved,
+        };
+      })
+      .filter((u) => u.availableQuantity > 0);
   },
 
   async findByLocation(locationId): Promise<InventoryUnit[]> {
@@ -138,9 +164,9 @@ const inventoryRepoAdapter: InventoryRepository = {
 
     const units = await prisma.inventoryUnit.findMany({
       where: {
-        status: "AVAILABLE",
         expiryDate: { lte: expiryDate, not: null },
       },
+
       include: {
         productVariant: {
           select: { id: true, sku: true, name: true, barcode: true },
@@ -155,56 +181,57 @@ const inventoryRepoAdapter: InventoryRepository = {
   },
 
   async getTotalAvailableByProductVariant(productVariantId): Promise<number> {
-    const result = await prisma.inventoryUnit.aggregate({
-      where: { productVariantId, status: "AVAILABLE" },
-      _sum: { quantity: true },
+    const units = await prisma.inventoryUnit.findMany({
+      where: { productVariantId },
+      include: {
+        allocations: {
+          where: { status: { in: ["ALLOCATED", "PICKED"] } },
+          select: { quantity: true },
+        },
+      },
     });
-    return result._sum.quantity ?? 0;
+
+    return units.reduce((sum, u) => {
+      const reserved = u.allocations.reduce((s, a) => s + a.quantity, 0);
+      return sum + Math.max(0, u.quantity - reserved);
+    }, 0);
   },
 
   async getStats() {
-    const [
-      totalUnits,
-      totalQty,
-      availableQty,
-      reservedQty,
-      byStatus,
-      lowStock,
-      expiring,
-    ] = await Promise.all([
-      prisma.inventoryUnit.count(),
-      prisma.inventoryUnit.aggregate({ _sum: { quantity: true } }),
-      prisma.inventoryUnit.aggregate({
-        where: { status: "AVAILABLE" },
-        _sum: { quantity: true },
-      }),
-      prisma.inventoryUnit.aggregate({
-        where: { status: "RESERVED" },
-        _sum: { quantity: true },
-      }),
-      prisma.inventoryUnit.groupBy({
-        by: ["status"],
-        _count: true,
-        _sum: { quantity: true },
-      }),
-      prisma.inventoryUnit.count({
-        where: { status: "AVAILABLE", quantity: { lte: 5 } },
-      }),
-      prisma.inventoryUnit.count({
-        where: {
-          expiryDate: {
-            lte: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-            not: null,
+    const [totalUnits, totalQty, allocationSums, byStatus, lowStock, expiring] =
+      await Promise.all([
+        prisma.inventoryUnit.count(),
+        prisma.inventoryUnit.aggregate({ _sum: { quantity: true } }),
+        prisma.allocation.aggregate({
+          where: { status: { in: ["ALLOCATED", "PICKED"] } },
+          _sum: { quantity: true },
+        }),
+        prisma.inventoryUnit.groupBy({
+          by: ["status"],
+          _count: true,
+          _sum: { quantity: true },
+        }),
+        prisma.inventoryUnit.count({
+          where: { quantity: { lte: 5 } },
+        }),
+        prisma.inventoryUnit.count({
+          where: {
+            expiryDate: {
+              lte: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+              not: null,
+            },
           },
-        },
-      }),
-    ]);
+        }),
+      ]);
+
+    const reservedQuantity = allocationSums._sum.quantity ?? 0;
+    const totalQuantity = totalQty._sum.quantity ?? 0;
 
     return {
       totalUnits,
-      totalQuantity: totalQty._sum.quantity ?? 0,
-      availableQuantity: availableQty._sum.quantity ?? 0,
-      reservedQuantity: reservedQty._sum.quantity ?? 0,
+      totalQuantity,
+      reservedQuantity,
+      availableQuantity: Math.max(0, totalQuantity - reservedQuantity),
       byStatus: byStatus.map((s) => ({
         status: s.status,
         count: s._count,
@@ -504,6 +531,10 @@ export const inventoryRoutes: FastifyPluginAsync = async (app) => {
           location: {
             select: { id: true, name: true, zone: true, pickSequence: true },
           },
+          allocations: {
+            where: { status: { in: ["ALLOCATED", "PICKED"] } },
+            select: { quantity: true },
+          },
         },
         orderBy: [{ location: { pickSequence: "asc" } }, { receivedAt: "asc" }],
         skip: Number(skip),
@@ -512,7 +543,20 @@ export const inventoryRoutes: FastifyPluginAsync = async (app) => {
       prisma.inventoryUnit.count({ where }),
     ]);
 
-    return reply.send({ inventory, total });
+    const inventoryWithDerived = inventory.map((unit) => {
+      const reservedQuantity = unit.allocations.reduce(
+        (sum, a) => sum + a.quantity,
+        0,
+      );
+
+      return {
+        ...unit,
+        reservedQuantity,
+        availableQuantity: Math.max(0, unit.quantity - reservedQuantity),
+      };
+    });
+
+    return reply.send({ inventory: inventoryWithDerived, total });
   });
 
   /**
@@ -532,7 +576,11 @@ export const inventoryRoutes: FastifyPluginAsync = async (app) => {
       const units = await inventoryService.getAvailableBySku(
         request.params.sku,
       );
-      const totalAvailable = units.reduce((sum, u) => sum + u.quantity, 0);
+      const totalAvailable = units.reduce(
+        (sum, u) => sum + u.availableQuantity,
+        0,
+      );
+
       return reply.send({ sku: request.params.sku, totalAvailable, units });
     },
   );
@@ -643,6 +691,11 @@ export const inventoryRoutes: FastifyPluginAsync = async (app) => {
       include: {
         order: { select: { id: true, orderNumber: true, status: true } },
       },
+      orderBy: {
+        order: {
+          orderNumber: "desc", // Sorts the allocations by the order number
+        },
+      },
     });
 
     return reply.send({ ...inventory, allocations });
@@ -683,36 +736,6 @@ export const inventoryRoutes: FastifyPluginAsync = async (app) => {
       return handleError(error, reply);
     }
   });
-
-  /**
-   * POST /inventory/:id/reserve
-   */
-  app.post<{ Params: { id: string } }>(
-    "/:id/reserve",
-    async (request, reply) => {
-      try {
-        await inventoryService.reserve(request.params.id);
-        return reply.send({ success: true });
-      } catch (error) {
-        return handleError(error, reply);
-      }
-    },
-  );
-
-  /**
-   * POST /inventory/:id/release
-   */
-  app.post<{ Params: { id: string } }>(
-    "/:id/release",
-    async (request, reply) => {
-      try {
-        await inventoryService.release(request.params.id);
-        return reply.send({ success: true });
-      } catch (error) {
-        return handleError(error, reply);
-      }
-    },
-  );
 
   /**
    * POST /inventory/:id/move

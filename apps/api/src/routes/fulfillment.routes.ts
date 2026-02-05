@@ -235,73 +235,73 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
   // service inline. See the comment below.
   // ─────────────────────────────────────────────────────────────────────────
 
-  app.post(
-    "/:orderId/ship",
-    async (
-      request: FastifyRequest<{
-        Params: { orderId: string };
-        Body: {
-          // If you're calling ShipEngine from the frontend / existing flow,
-          // pass the label data directly:
-          carrier: string;
-          service: string;
-          trackingNumber: string;
-          trackingUrl?: string;
-          rate: number;
-          estimatedDays?: number;
-          labelUrl?: string;
-          labelFormat?: string;
-          weight?: number;
-          weightUnit?: string;
-          dimensions?: {
-            length: number;
-            width: number;
-            height: number;
-            unit: string;
-          };
-          shipEngineId?: string;
-          shipmentId?: string;
-          rawResponse?: Record<string, unknown>;
-        };
-      }>,
-      reply: FastifyReply,
-    ) => {
-      const { orderId } = request.params;
-      const body = request.body as any;
-      const userId = (request as any).user?.id;
+  // app.post(
+  //   "/:orderId/ship",
+  //   async (
+  //     request: FastifyRequest<{
+  //       Params: { orderId: string };
+  //       Body: {
+  //         // If you're calling ShipEngine from the frontend / existing flow,
+  //         // pass the label data directly:
+  //         carrier: string;
+  //         service: string;
+  //         trackingNumber: string;
+  //         trackingUrl?: string;
+  //         rate: number;
+  //         estimatedDays?: number;
+  //         labelUrl?: string;
+  //         labelFormat?: string;
+  //         weight?: number;
+  //         weightUnit?: string;
+  //         dimensions?: {
+  //           length: number;
+  //           width: number;
+  //           height: number;
+  //           unit: string;
+  //         };
+  //         shipEngineId?: string;
+  //         shipmentId?: string;
+  //         rawResponse?: Record<string, unknown>;
+  //       };
+  //     }>,
+  //     reply: FastifyReply,
+  //   ) => {
+  //     const { orderId } = request.params;
+  //     const body = request.body as any;
+  //     const userId = (request as any).user?.id;
 
-      if (
-        !body.carrier ||
-        !body.service ||
-        !body.trackingNumber ||
-        body.rate == null
-      ) {
-        return reply.status(400).send({
-          error: "carrier, service, trackingNumber, and rate are required",
-        });
-      }
+  //     if (
+  //       !body.carrier ||
+  //       !body.service ||
+  //       !body.trackingNumber ||
+  //       body.rate == null
+  //     ) {
+  //       return reply.status(400).send({
+  //         error: "carrier, service, trackingNumber, and rate are required",
+  //       });
+  //     }
 
-      try {
-        // ─── OPTION: Call ShipEngine here instead of expecting pre-built data ───
-        // If you want to call ShipEngine from THIS endpoint:
-        //
-        // const labelData = await shipEngineService.createLabel(orderId, {
-        //   carrier: body.carrier,
-        //   service: body.service,
-        //   weight: body.weight,
-        //   dimensions: body.dimensions,
-        //   shippingAddress: order.shippingAddress,
-        // });
-        //
-        // Then pass labelData to createShippingLabel instead of body.
-        // ────────────────────────────────────────────────────────────────────────
+  //     try {
+  //       // ─── OPTION: Call ShipEngine here instead of expecting pre-built data ───
+  //       // If you want to call ShipEngine from THIS endpoint:
+  //       //
+  //       // const labelData = await shipEngineService.createLabel(orderId, {
+  //       //   carrier: body.carrier,
+  //       //   service: body.service,
+  //       //   weight: body.weight,
+  //       //   dimensions: body.dimensions,
+  //       //   shippingAddress: order.shippingAddress,
+  //       // });
+  //       //
+  //       // Then pass labelData to createShippingLabel instead of body.
+  //       // ────────────────────────────────────────────────────────────────────────
 
-        const result = await service.createShippingLabel(orderId, body, userId);
-        return reply.status(201).send(result);
-      } catch (err: any) {
-        const status = err.message.includes("not found") ? 404 : 400;
-        return reply.status(status).send({ error: err.message });
-      }
-    },
-  );
+  //       const result = await service.createShippingLabel(orderId, body, userId);
+  //       return reply.status(201).send(result);
+  //     } catch (err: any) {
+  //       const status = err.message.includes("not found") ? 404 : 400;
+  //       return reply.status(status).send({ error: err.message });
+  //     }
+  //   },
+  // );
 };

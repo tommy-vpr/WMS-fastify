@@ -19,6 +19,18 @@ import { randomUUID } from "crypto";
 // Types
 // =============================================================================
 
+export interface PackingImageDetail {
+  id: string;
+  url: string;
+  filename: string;
+  notes: string | null;
+  uploadedAt: Date;
+  uploadedBy: {
+    id: string;
+    name: string | null;
+  };
+}
+
 interface PickListResult {
   task: WorkTaskWithItems;
   order: { id: string; orderNumber: string; status: string };
@@ -211,6 +223,8 @@ export interface FulfillmentStatusResult {
       } | null;
     }>;
   };
+  packingImages: PackingImageDetail[];
+
   currentStep: string;
   picking: WorkTaskWithRelations | null;
   packing: WorkTaskWithRelations | null;
@@ -1068,157 +1082,12 @@ export class FulfillmentService {
     labelData: CreateLabelInput,
     userId?: string,
   ): Promise<ShipResult> {
-    const order = await this.prisma.order.findUnique({
-      where: { id: orderId },
-      include: {
-        allocations: {
-          where: { status: "PICKED" },
-          include: { inventoryUnit: true },
-        },
-      },
-    });
+    // 🚨 FulfillmentService DOES NOT mutate inventory or allocations
+    // It delegates shipping to ShippingService
 
-    if (!order) throw new Error(`Order ${orderId} not found`);
-    if (order.status !== "PACKED") {
-      throw new Error(`Cannot ship: order is ${order.status}, expected PACKED`);
-    }
-
-    const correlationId = randomUUID();
-
-    const result = await this.prisma.$transaction(async (tx) => {
-      // 1. Create shipping label record
-      const label = await tx.shippingLabel.create({
-        data: {
-          orderId,
-          shipEngineId: labelData.shipEngineId,
-          shipmentId: labelData.shipmentId,
-          carrier: labelData.carrier,
-          service: labelData.service,
-          trackingNumber: labelData.trackingNumber,
-          trackingUrl: labelData.trackingUrl,
-          rate: labelData.rate,
-          estimatedDays: labelData.estimatedDays,
-          estimatedDelivery: labelData.estimatedDelivery,
-          labelUrl: labelData.labelUrl,
-          labelFormat: labelData.labelFormat,
-          weight: labelData.weight,
-          weightUnit: labelData.weightUnit ?? "ounce",
-          dimensions:
-            (labelData.dimensions as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-          status: "PURCHASED",
-          rawResponse:
-            (labelData.rawResponse as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-        },
-      });
-
-      // 2. Release allocations and decrement inventory
-      for (const allocation of order.allocations) {
-        // Release allocation
-        await tx.allocation.update({
-          where: { id: allocation.id },
-          data: {
-            status: "RELEASED",
-            releasedAt: new Date(),
-          },
-        });
-
-        // Decrement inventory
-        await tx.inventoryUnit.update({
-          where: { id: allocation.inventoryUnitId },
-          data: {
-            quantity: { decrement: allocation.quantity },
-            status: "AVAILABLE", // Back to available (with reduced qty)
-          },
-        });
-      }
-
-      // 2.5 Update quantityShipped on order items
-      const orderItems = await tx.orderItem.findMany({
-        where: { orderId },
-      });
-      await Promise.all(
-        orderItems.map((item) =>
-          tx.orderItem.update({
-            where: { id: item.id },
-            data: { quantityShipped: item.quantityPicked || item.quantity },
-          }),
-        ),
-      );
-
-      // 3. Update order
-      const updatedOrder = await tx.order.update({
-        where: { id: orderId },
-        data: {
-          status: "SHIPPED",
-          trackingNumber: labelData.trackingNumber,
-          shippedAt: new Date(),
-        },
-      });
-
-      return { label, order: updatedOrder };
-    });
-
-    // Emit events
-    await emitEvent(
-      this.prisma,
-      createEventPayload(
-        EVENT_TYPES.SHIPPING_LABEL_CREATED,
-        orderId,
-        {
-          labelId: result.label.id,
-          carrier: labelData.carrier,
-          service: labelData.service,
-          trackingNumber: labelData.trackingNumber,
-          trackingUrl: labelData.trackingUrl,
-          rate: Number(labelData.rate),
-          estimatedDays: labelData.estimatedDays,
-          labelUrl: labelData.labelUrl,
-        },
-        { correlationId, userId },
-      ),
+    throw new Error(
+      "Shipping is handled by ShippingService. Use shipping.service.ts for label creation.",
     );
-
-    await emitEvent(
-      this.prisma,
-      createEventPayload(
-        EVENT_TYPES.ORDER_SHIPPED,
-        orderId,
-        {
-          orderNumber: order.orderNumber,
-          trackingNumber: labelData.trackingNumber,
-          carrier: labelData.carrier,
-        },
-        { correlationId, userId },
-      ),
-    );
-
-    await emitEvent(
-      this.prisma,
-      createEventPayload(
-        EVENT_TYPES.INVENTORY_UPDATED,
-        orderId,
-        {
-          reason: "shipped",
-          allocationsReleased: order.allocations.length,
-        },
-        { correlationId, userId },
-      ),
-    );
-
-    return {
-      label: {
-        id: result.label.id,
-        trackingNumber: result.label.trackingNumber,
-        carrier: result.label.carrier,
-        service: result.label.service,
-        labelUrl: result.label.labelUrl,
-      },
-      order: {
-        id: result.order.id,
-        status: result.order.status,
-        trackingNumber: result.order.trackingNumber,
-      },
-    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -1241,6 +1110,24 @@ export class FulfillmentService {
           customerName: true,
           shippingAddress: true,
           priority: true,
+
+          packingImages: {
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              url: true,
+              filename: true,
+              notes: true,
+              createdAt: true,
+              uploader: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+
           items: {
             select: {
               id: true,
@@ -1494,6 +1381,17 @@ export class FulfillmentService {
 
     return {
       order,
+      packingImages: order.packingImages.map((img) => ({
+        id: img.id,
+        url: img.url,
+        filename: img.filename,
+        notes: img.notes,
+        uploadedAt: img.createdAt,
+        uploadedBy: {
+          id: img.uploader.id,
+          name: img.uploader.name,
+        },
+      })),
       currentStep,
       picking: activePickTask ?? null,
       packing: activePackTask ?? null,

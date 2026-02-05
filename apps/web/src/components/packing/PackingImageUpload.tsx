@@ -42,6 +42,7 @@ interface PackingImageUploadProps {
   required?: boolean;
   maxImages?: number;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export function PackingImageUpload({
@@ -54,6 +55,7 @@ export function PackingImageUpload({
   required = false,
   maxImages = 5,
   disabled = false,
+  readOnly = false,
 }: PackingImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +64,8 @@ export function PackingImageUpload({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const canUpload = images.length < maxImages && !disabled;
+  const isReadOnly = readOnly || disabled;
+  const canUpload = !isReadOnly && images.length < maxImages;
 
   const getAccessToken = (): string | null => {
     try {
@@ -221,7 +224,7 @@ export function PackingImageUpload({
                 className="w-full h-full object-cover cursor-pointer"
                 onClick={() => setPreviewImage(image.url)}
               />
-              {!disabled && (
+              {!isReadOnly && (
                 <button
                   onClick={() => handleDelete(image.id)}
                   disabled={deletingId === image.id}
@@ -292,7 +295,7 @@ export function PackingImageUpload({
       )}
 
       {/* Required warning */}
-      {required && images.length === 0 && !disabled && (
+      {required && images.length === 0 && !isReadOnly && (
         <p className="text-xs text-amber-600 flex items-center gap-1">
           <ImageIcon className="w-3 h-3" />
           At least one photo required
@@ -306,7 +309,7 @@ export function PackingImageUpload({
           onClick={() => setPreviewImage(null)}
         >
           <button
-            className="absolute top-4 right-4 p-2 bg-white/20 rounded-full text-white hover:bg-white/30"
+            className="cursor-pointer absolute top-4 right-4 text-white hover:bg-text-white/30"
             onClick={() => setPreviewImage(null)}
           >
             <X className="w-6 h-6" />

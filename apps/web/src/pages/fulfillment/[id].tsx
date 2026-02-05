@@ -152,6 +152,7 @@ interface FulfillmentStatus {
       } | null;
     }>;
   };
+  packingImages: PackingImage[];
   currentStep: string;
   picking: WorkTask | null;
   packing: {
@@ -236,8 +237,7 @@ export default function FulfillmentDetailPage() {
   const [packHeight, setPackHeight] = useState("");
 
   // Packing images state
-  const [packingImages, setPackingImages] = useState<PackingImage[]>([]);
-  const [loadingImages, setLoadingImages] = useState(false);
+  const packingImages = status?.packingImages ?? [];
 
   // ── SSE for live events ─────────────────────────────────────────────────
   const { events: sseEvents, connected } = useFulfillmentStream({
@@ -284,30 +284,6 @@ export default function FulfillmentDetailPage() {
   useEffect(() => {
     fetchStatus();
   }, [fetchStatus]);
-
-  // Fetch packing images when packing task exists
-  useEffect(() => {
-    const fetchPackingImages = async () => {
-      if (!status?.packing?.id) {
-        setPackingImages([]);
-        return;
-      }
-
-      setLoadingImages(true);
-      try {
-        const data = await apiClient.get<{ images: PackingImage[] }>(
-          `/packing-images/task/${status.packing.id}`,
-        );
-        setPackingImages(data.images || []);
-      } catch (err) {
-        console.error("Failed to load packing images:", err);
-      } finally {
-        setLoadingImages(false);
-      }
-    };
-
-    fetchPackingImages();
-  }, [status?.packing?.id]);
 
   // ── Scan Feedback Helper ────────────────────────────────────────────────
   const showFeedback = (type: "success" | "error", message: string) => {
@@ -966,15 +942,9 @@ export default function FulfillmentDetailPage() {
                       taskId={packing.id}
                       orderNumber={order.orderNumber}
                       images={packingImages}
-                      onUploadSuccess={(image) => {
-                        setPackingImages((prev) => [...prev, image]);
-                      }}
-                      onDeleteSuccess={(imageId) => {
-                        setPackingImages((prev) =>
-                          prev.filter((i) => i.id !== imageId),
-                        );
-                      }}
-                      required={true}
+                      onUploadSuccess={() => fetchStatus()}
+                      onDeleteSuccess={() => fetchStatus()}
+                      required
                       maxImages={5}
                     />
 
@@ -1125,6 +1095,20 @@ export default function FulfillmentDetailPage() {
                 description={`Label created on ${new Date(shipping.createdAt).toLocaleDateString()}`}
                 icon={<FileText className="w-5 h-5" />}
               >
+                {packingImages.length > 0 && (
+                  <div className="mb-4">
+                    <PackingImageUpload
+                      orderId={order.id}
+                      taskId={packing?.id}
+                      orderNumber={order.orderNumber}
+                      images={packingImages}
+                      readOnly
+                      onUploadSuccess={() => {}}
+                      onDeleteSuccess={() => {}}
+                    />
+                  </div>
+                )}
+
                 <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-5">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-lg font-bold uppercase">

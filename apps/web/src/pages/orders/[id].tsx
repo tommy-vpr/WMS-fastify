@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { Loading } from "@/components/ui/loading";
+import { PackingImage, PackingImages } from "@/components/orders/PackingImages";
 
 // ============================================================================
 // Types
@@ -134,6 +135,7 @@ interface Order {
   allocations: OrderAllocation[];
   workTasks: WorkTask[];
   shippingPackages?: ShippingPackage[];
+  packingImages: PackingImage[];
   createdAt: string;
   updatedAt: string;
 }
@@ -836,6 +838,9 @@ export function OrderDetailPage() {
               </div>
             </div>
           )}
+
+          {/* Packing Images */}
+          <PackingImages images={order.packingImages} />
         </div>
 
         {/* Sidebar */}

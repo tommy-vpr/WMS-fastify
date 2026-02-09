@@ -1,6 +1,6 @@
 /**
  * Order Detail Page
- * View order details, line items, allocation status, and actions
+ * View order details, line items, allocation status, shipping, and actions
  *
  * Save to: apps/web/src/pages/orders/[id].tsx
  */
@@ -21,14 +21,22 @@ import {
   User,
   Calendar,
   RefreshCw,
-  Play,
   Loader2,
   ClipboardList,
   PackageCheck,
   Ban,
+  ExternalLink,
+  DollarSign,
+  Zap,
+  CircleDot,
+  Archive,
+  PauseCircle,
+  Tag,
+  Unlink,
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { Loading } from "@/components/ui/loading";
+import { PackingImage, PackingImages } from "@/components/orders/PackingImages";
 
 // ============================================================================
 // Types
@@ -44,7 +52,58 @@ interface OrderLineItem {
   quantityShipped: number;
   unitPrice: number;
   productVariantId: string | null;
-  allocationStatus: "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED";
+  allocationStatus:
+    | "ALLOCATED"
+    | "PARTIAL"
+    | "UNALLOCATED"
+    | "BACKORDERED"
+    | "UNMATCHED";
+  matched: boolean;
+  matchError: string | null;
+}
+
+interface OrderAllocation {
+  id: string;
+  quantity: number;
+  status: string;
+  location: { id: string; name: string } | null;
+  lotNumber: string | null;
+}
+
+interface ShippingPackage {
+  id: string;
+  carrierCode: string;
+  serviceCode: string;
+  packageCode: string;
+  trackingNumber: string | null;
+  labelUrl: string | null;
+  cost: number;
+  weight: number | null;
+  dimensions: {
+    length: number;
+    width: number;
+    height: number;
+    unit: string;
+  } | null;
+  voidedAt: string | null;
+  shippedAt: string | null;
+  items: Array<{
+    id: string;
+    productName: string;
+    sku: string;
+    quantity: number;
+    unitPrice: number;
+  }>;
+  createdAt: string;
+}
+
+interface WorkTask {
+  id: string;
+  taskNumber: string;
+  type: string;
+  status: string;
+  assignedTo: { name: string } | null;
+  createdAt: string;
 }
 
 interface Order {
@@ -53,6 +112,8 @@ interface Order {
   externalId: string | null;
   source: string;
   status: OrderStatus;
+  priority: Priority;
+  paymentStatus: string;
   customerName: string | null;
   customerEmail: string | null;
   shippingName: string | null;
@@ -63,32 +124,39 @@ interface Order {
   shippingZip: string | null;
   shippingCountry: string | null;
   shippingPhone: string | null;
+  holdReason: string | null;
+  holdAt: string | null;
+  trackingNumber: string | null;
+  shippedAt: string | null;
+  totalAmount: number;
+  unmatchedItems: number;
   notes: string | null;
   lineItems: OrderLineItem[];
+  allocations: OrderAllocation[];
   workTasks: WorkTask[];
+  shippingPackages?: ShippingPackage[];
+  packingImages: PackingImage[];
   createdAt: string;
   updatedAt: string;
 }
 
-interface WorkTask {
-  id: string;
-  type: string;
-  status: string;
-  assignedTo: { name: string } | null;
-  createdAt: string;
-}
-
 type OrderStatus =
   | "PENDING"
+  | "CONFIRMED"
+  | "READY_TO_PICK"
   | "ALLOCATED"
   | "PARTIALLY_ALLOCATED"
+  | "BACKORDERED"
   | "PICKING"
   | "PICKED"
   | "PACKING"
   | "PACKED"
   | "SHIPPED"
+  | "DELIVERED"
   | "CANCELLED"
   | "ON_HOLD";
+
+type Priority = "STANDARD" | "RUSH" | "EXPRESS";
 
 // ============================================================================
 // Status Config
@@ -104,6 +172,18 @@ const statusConfig: Record<
     bgColor: "bg-yellow-100",
     icon: Clock,
   },
+  CONFIRMED: {
+    label: "Confirmed",
+    color: "text-blue-700",
+    bgColor: "bg-blue-100",
+    icon: CheckCircle,
+  },
+  READY_TO_PICK: {
+    label: "Ready to Pick",
+    color: "text-teal-700",
+    bgColor: "bg-teal-100",
+    icon: ClipboardList,
+  },
   ALLOCATED: {
     label: "Allocated",
     color: "text-blue-700",
@@ -116,10 +196,16 @@ const statusConfig: Record<
     bgColor: "bg-orange-100",
     icon: AlertCircle,
   },
+  BACKORDERED: {
+    label: "Backordered",
+    color: "text-red-700",
+    bgColor: "bg-red-100",
+    icon: PauseCircle,
+  },
   PICKING: {
     label: "Picking",
-    color: "text-purple-700",
-    bgColor: "bg-purple-100",
+    color: "text-amber-700",
+    bgColor: "bg-amber-100",
     icon: PackageCheck,
   },
   PICKED: {
@@ -146,6 +232,12 @@ const statusConfig: Record<
     bgColor: "bg-green-100",
     icon: Truck,
   },
+  DELIVERED: {
+    label: "Delivered",
+    color: "text-green-700",
+    bgColor: "bg-green-100",
+    icon: Archive,
+  },
   CANCELLED: {
     label: "Cancelled",
     color: "text-red-700",
@@ -159,6 +251,69 @@ const statusConfig: Record<
     icon: AlertCircle,
   },
 };
+
+const priorityConfig: Record<
+  Priority,
+  { label: string; color: string; bgColor: string; icon: typeof Tag }
+> = {
+  STANDARD: {
+    label: "Standard",
+    color: "text-gray-600",
+    bgColor: "bg-gray-100",
+    icon: Tag,
+  },
+  RUSH: {
+    label: "Rush",
+    color: "text-orange-700",
+    bgColor: "bg-orange-100",
+    icon: Zap,
+  },
+  EXPRESS: {
+    label: "Express",
+    color: "text-red-700",
+    bgColor: "bg-red-100",
+    icon: Zap,
+  },
+};
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+function getCarrierDisplayName(carrierCode: string): string {
+  switch (carrierCode?.toLowerCase()) {
+    case "stamps_com":
+    case "usps":
+      return "USPS";
+    case "ups":
+      return "UPS";
+    case "fedex":
+      return "FedEx";
+    default:
+      return carrierCode?.toUpperCase() || "Unknown";
+  }
+}
+
+function getTrackingUrl(carrierCode: string, trackingNumber: string): string {
+  switch (carrierCode?.toLowerCase()) {
+    case "stamps_com":
+    case "usps":
+      return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;
+    case "ups":
+      return `https://www.ups.com/track?tracknum=${trackingNumber}`;
+    case "fedex":
+      return `https://www.fedex.com/fedextrack/?trknbr=${trackingNumber}`;
+    default:
+      return "";
+  }
+}
+
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+}
 
 // ============================================================================
 // Main Component
@@ -183,7 +338,6 @@ export function OrderDetailPage() {
 
   const fetchOrder = async () => {
     if (!id) return;
-
     setLoading(true);
     setError("");
 
@@ -201,22 +355,25 @@ export function OrderDetailPage() {
     fetchOrder();
   }, [id]);
 
+  console.log(order);
+
   // ============================================================================
   // Actions
   // ============================================================================
 
-  const handleAllocate = async () => {
+  const handleAction = async (
+    action: string,
+    endpoint: string,
+    successMsg: string,
+    body?: Record<string, unknown>,
+  ) => {
     if (!order) return;
-
-    setActionLoading("allocate");
+    setActionLoading(action);
     setActionMessage(null);
 
     try {
-      await apiClient.post(`/orders/${order.id}/allocate`);
-      setActionMessage({
-        type: "success",
-        text: "Inventory allocated successfully",
-      });
+      await apiClient.post(endpoint, body);
+      setActionMessage({ type: "success", text: successMsg });
       fetchOrder();
     } catch (err: any) {
       setActionMessage({ type: "error", text: err.message });
@@ -225,69 +382,41 @@ export function OrderDetailPage() {
     }
   };
 
-  const handleCreatePickTask = async () => {
-    if (!order) return;
+  const handleAllocate = () =>
+    handleAction(
+      "allocate",
+      `/orders/${order!.id}/allocate`,
+      "Inventory allocated successfully",
+    );
 
-    setActionLoading("pick");
-    setActionMessage(null);
+  const handleCreatePickTask = () =>
+    handleAction(
+      "pick",
+      `/orders/${order!.id}/tasks/pick`,
+      "Pick task created successfully",
+    );
 
-    try {
-      await apiClient.post(`/orders/${order.id}/tasks/pick`);
-      setActionMessage({
-        type: "success",
-        text: "Pick task created successfully",
-      });
-      fetchOrder();
-    } catch (err: any) {
-      setActionMessage({ type: "error", text: err.message });
-    } finally {
-      setActionLoading(null);
-    }
-  };
+  const handleHold = () =>
+    handleAction("hold", `/orders/${order!.id}/hold`, "Order placed on hold");
+
+  const handleRelease = () =>
+    handleAction(
+      "release",
+      `/orders/${order!.id}/release`,
+      "Order released from hold",
+    );
 
   const handleCancel = async () => {
     if (!order) return;
-
     if (!confirm("Are you sure you want to cancel this order?")) return;
-
-    setActionLoading("cancel");
-    setActionMessage(null);
-
-    try {
-      await apiClient.post(`/orders/${order.id}/cancel`);
-      setActionMessage({ type: "success", text: "Order cancelled" });
-      fetchOrder();
-    } catch (err: any) {
-      setActionMessage({ type: "error", text: err.message });
-    } finally {
-      setActionLoading(null);
-    }
-  };
-
-  const handleHold = async () => {
-    if (!order) return;
-
-    setActionLoading("hold");
-    setActionMessage(null);
-
-    try {
-      await apiClient.post(`/orders/${order.id}/hold`);
-      setActionMessage({ type: "success", text: "Order placed on hold" });
-      fetchOrder();
-    } catch (err: any) {
-      setActionMessage({ type: "error", text: err.message });
-    } finally {
-      setActionLoading(null);
-    }
+    handleAction("cancel", `/orders/${order.id}/cancel`, "Order cancelled");
   };
 
   // ============================================================================
   // Render
   // ============================================================================
 
-  if (loading) {
-    return <Loading />;
-  }
+  if (loading) return <Loading />;
 
   if (error) {
     return (
@@ -320,6 +449,8 @@ export function OrderDetailPage() {
 
   const status = statusConfig[order.status] || statusConfig.PENDING;
   const StatusIcon = status.icon;
+  const priority = priorityConfig[order.priority] || priorityConfig.STANDARD;
+  const showPriority = order.priority !== "STANDARD";
 
   const totalItems = order.lineItems.reduce((sum, li) => sum + li.quantity, 0);
   const allocatedItems = order.lineItems.reduce(
@@ -330,6 +461,15 @@ export function OrderDetailPage() {
     (sum, li) => sum + li.quantityPicked,
     0,
   );
+  const shippedItems = order.lineItems.reduce(
+    (sum, li) => sum + li.quantityShipped,
+    0,
+  );
+
+  const isTerminal = ["SHIPPED", "DELIVERED", "CANCELLED"].includes(
+    order.status,
+  );
+  const hasUnmatched = order.unmatchedItems > 0;
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -344,7 +484,7 @@ export function OrderDetailPage() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-2xl font-bold">Order {order.orderNumber}</h1>
               <span
                 className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${status.bgColor} ${status.color}`}
@@ -352,23 +492,67 @@ export function OrderDetailPage() {
                 <StatusIcon className="w-4 h-4" />
                 {status.label}
               </span>
+              {showPriority && (
+                <span
+                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${priority.bgColor} ${priority.color}`}
+                >
+                  <priority.icon className="w-3 h-3" />
+                  {priority.label}
+                </span>
+              )}
             </div>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-sm mt-0.5">
               Created {new Date(order.createdAt).toLocaleString()}
+              {order.totalAmount > 0 && (
+                <span className="ml-3">
+                  {formatCurrency(order.totalAmount)}
+                </span>
+              )}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={fetchOrder}
-            className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg"
-            title="Refresh"
-          >
-            <RefreshCw className="w-5 h-5" />
-          </button>
-        </div>
+        <button
+          onClick={fetchOrder}
+          className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg"
+          title="Refresh"
+        >
+          <RefreshCw className="w-5 h-5" />
+        </button>
       </div>
+
+      {/* Hold Reason Banner */}
+      {order.status === "ON_HOLD" && order.holdReason && (
+        <div className="mb-6 p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
+          <div>
+            <div className="font-medium">Order is on hold</div>
+            <div className="text-sm mt-0.5">{order.holdReason}</div>
+            {order.holdAt && (
+              <div className="text-xs text-amber-600 mt-1">
+                Since {new Date(order.holdAt).toLocaleString()}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Unmatched Items Warning */}
+      {hasUnmatched && (
+        <div className="mb-6 p-4 rounded-lg bg-orange-50 border border-orange-200 text-orange-800 flex items-start gap-3">
+          <Unlink className="w-5 h-5 mt-0.5 shrink-0" />
+          <div>
+            <div className="font-medium">
+              {order.unmatchedItems} unmatched item
+              {order.unmatchedItems !== 1 ? "s" : ""}
+            </div>
+            <div className="text-sm mt-0.5">
+              Some SKUs couldn't be matched to products. These items cannot be
+              allocated or picked until matched.
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Action Message */}
       {actionMessage && (
@@ -389,68 +573,69 @@ export function OrderDetailPage() {
       )}
 
       {/* Actions */}
-      {!["SHIPPED", "CANCELLED"].includes(order.status) && (
+      {!isTerminal && (
         <div className="bg-white border border-border rounded-lg p-4 mb-6">
           <h2 className="font-semibold mb-3">Actions</h2>
           <div className="flex flex-wrap gap-2">
-            {order.status === "PENDING" && (
-              <button
+            {["PENDING", "CONFIRMED"].includes(order.status) && (
+              <ActionButton
                 onClick={handleAllocate}
+                loading={actionLoading === "allocate"}
                 disabled={!!actionLoading}
-                className="cursor-pointer transition inline-flex items-center gap-2 px-4 py-2 
-                bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                icon={Package}
+                className="bg-blue-600 text-white hover:bg-blue-700"
               >
-                {actionLoading === "allocate" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Package className="w-4 h-4" />
-                )}
                 Allocate Inventory
-              </button>
+              </ActionButton>
             )}
 
-            {["ALLOCATED", "PARTIALLY_ALLOCATED"].includes(order.status) && (
-              <button
+            {["ALLOCATED", "PARTIALLY_ALLOCATED", "READY_TO_PICK"].includes(
+              order.status,
+            ) && (
+              <ActionButton
                 onClick={handleCreatePickTask}
+                loading={actionLoading === "pick"}
                 disabled={!!actionLoading}
-                className="cursor-pointer transition inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+                icon={ClipboardList}
+                className="bg-amber-600 text-white hover:bg-amber-700"
               >
-                {actionLoading === "pick" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <ClipboardList className="w-4 h-4" />
-                )}
                 Create Pick Task
-              </button>
+              </ActionButton>
+            )}
+
+            {order.status === "ON_HOLD" && (
+              <ActionButton
+                onClick={handleRelease}
+                loading={actionLoading === "release"}
+                disabled={!!actionLoading}
+                icon={CheckCircle}
+                className="bg-green-600 text-white hover:bg-green-700"
+              >
+                Release Hold
+              </ActionButton>
             )}
 
             {order.status !== "ON_HOLD" && (
-              <button
+              <ActionButton
                 onClick={handleHold}
+                loading={actionLoading === "hold"}
                 disabled={!!actionLoading}
-                className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 border text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+                icon={AlertCircle}
+                className="border text-gray-700 hover:bg-gray-50"
               >
-                {actionLoading === "hold" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <AlertCircle className="w-4 h-4" />
-                )}
                 Put On Hold
-              </button>
+              </ActionButton>
             )}
 
-            <button
+            <ActionButton
               onClick={handleCancel}
+              loading={actionLoading === "cancel"}
               disabled={!!actionLoading}
-              className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 disabled:opacity-50"
+              icon={Ban}
+              className="border border-red-200 text-red-600 hover:bg-red-50"
             >
-              {actionLoading === "cancel" ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Ban className="w-4 h-4" />
-              )}
               Cancel Order
-            </button>
+            </ActionButton>
           </div>
         </div>
       )}
@@ -472,14 +657,11 @@ export function OrderDetailPage() {
                 label="Picked"
                 current={pickedItems}
                 total={totalItems}
-                color="purple"
+                color="amber"
               />
               <ProgressCard
                 label="Shipped"
-                current={order.lineItems.reduce(
-                  (sum, li) => sum + li.quantityShipped,
-                  0,
-                )}
+                current={shippedItems}
                 total={totalItems}
                 color="green"
               />
@@ -493,104 +675,172 @@ export function OrderDetailPage() {
                 Line Items ({order.lineItems.length})
               </h2>
             </div>
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-border">
-                <tr>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Product
-                  </th>
-                  <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
-                    Qty
-                  </th>
-                  <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
-                    Allocated
-                  </th>
-                  <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
-                    Picked
-                  </th>
-                  <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {order.lineItems.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50 border-border">
-                    <td className="px-4 py-3">
-                      <div className="font-medium">{item.name}</div>
-                      <div className="text-sm text-gray-500">{item.sku}</div>
-                    </td>
-                    <td className="px-4 py-3 text-center">{item.quantity}</td>
-                    <td className="px-4 py-3 text-center">
-                      <span
-                        className={
-                          item.quantityAllocated >= item.quantity
-                            ? "text-green-600"
-                            : item.quantityAllocated > 0
-                              ? "text-yellow-600"
-                              : "text-gray-400"
-                        }
-                      >
-                        {item.quantityAllocated}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <span
-                        className={
-                          item.quantityPicked >= item.quantity
-                            ? "text-green-600"
-                            : item.quantityPicked > 0
-                              ? "text-yellow-600"
-                              : "text-gray-400"
-                        }
-                      >
-                        {item.quantityPicked}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <AllocationBadge status={item.allocationStatus} />
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-border">
+                  <tr>
+                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                      Product
+                    </th>
+                    <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
+                      Qty
+                    </th>
+                    <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
+                      Allocated
+                    </th>
+                    <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
+                      Picked
+                    </th>
+                    <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                      Status
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {order.lineItems.map((item) => (
+                    <tr key={item.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-sm text-gray-500">{item.sku}</div>
+                        {item.matchError && (
+                          <div className="text-xs text-red-500 mt-0.5">
+                            {item.matchError}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-center">{item.quantity}</td>
+                      <td className="px-4 py-3 text-center">
+                        <QtyIndicator
+                          current={item.quantityAllocated}
+                          total={item.quantity}
+                        />
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <QtyIndicator
+                          current={item.quantityPicked}
+                          total={item.quantity}
+                        />
+                      </td>
+                      <td className="px-4 py-3">
+                        <AllocationBadge status={item.allocationStatus} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
+
+          {/* Shipping Packages */}
+          {order.shippingPackages && order.shippingPackages.length > 0 && (
+            <div className="bg-white border border-border rounded-lg overflow-hidden">
+              <div className="px-4 py-3 border-b border-border">
+                <h2 className="font-semibold">
+                  Shipping Packages ({order.shippingPackages.length})
+                </h2>
+              </div>
+              <div className="divide-y divide-border">
+                {order.shippingPackages.map((pkg) => (
+                  <ShippingPackageCard key={pkg.id} pkg={pkg} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Work Tasks */}
           {order.workTasks && order.workTasks.length > 0 && (
-            <div className="bg-white border rounded-lg overflow-hidden">
-              <div className="px-4 py-3 border-b">
+            <div className="bg-white border border-border rounded-lg overflow-hidden">
+              <div className="px-4 py-3 border-b border-border">
                 <h2 className="font-semibold">Work Tasks</h2>
               </div>
-              <div className="divide-y">
+              <div className="divide-y divide-border">
                 {order.workTasks.map((task) => (
                   <div
                     key={task.id}
                     className="px-4 py-3 flex items-center justify-between"
                   >
                     <div>
-                      <div className="font-medium">{task.type}</div>
+                      <div className="font-medium flex items-center gap-2">
+                        {task.taskNumber || task.type}
+                        <span className="text-xs text-gray-400">
+                          {task.type}
+                        </span>
+                      </div>
                       <div className="text-sm text-gray-500">
                         {task.assignedTo?.name || "Unassigned"} •{" "}
                         {new Date(task.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        task.status === "COMPLETED"
-                          ? "bg-green-100 text-green-700"
-                          : task.status === "IN_PROGRESS"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {task.status}
-                    </span>
+                    <TaskStatusBadge status={task.status} />
                   </div>
                 ))}
               </div>
             </div>
           )}
+
+          {/* Allocations Detail */}
+          {order.allocations && order.allocations.length > 0 && (
+            <div className="bg-white border border-border rounded-lg overflow-hidden">
+              <div className="px-4 py-3 border-b border-border">
+                <h2 className="font-semibold">
+                  Allocations ({order.allocations.length})
+                </h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-border">
+                    <tr>
+                      <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                        Location
+                      </th>
+                      <th className="text-center px-4 py-2 text-sm font-medium text-gray-500">
+                        Qty
+                      </th>
+                      <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                        Lot
+                      </th>
+                      <th className="text-left px-4 py-2 text-sm font-medium text-gray-500">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {order.allocations.map((alloc) => (
+                      <tr key={alloc.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-2 text-sm">
+                          {alloc.location?.name || "—"}
+                        </td>
+                        <td className="px-4 py-2 text-sm text-center">
+                          {alloc.quantity}
+                        </td>
+                        <td className="px-4 py-2 text-sm font-mono text-gray-500">
+                          {alloc.lotNumber || "—"}
+                        </td>
+                        <td className="px-4 py-2">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                              alloc.status === "PICKED"
+                                ? "bg-green-100 text-green-700"
+                                : alloc.status === "ALLOCATED"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : alloc.status === "RELEASED"
+                                    ? "bg-red-100 text-red-500"
+                                    : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {alloc.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Packing Images */}
+          <PackingImages images={order.packingImages} />
         </div>
 
         {/* Sidebar */}
@@ -599,28 +849,24 @@ export function OrderDetailPage() {
           <div className="bg-white border border-border rounded-lg p-4">
             <h2 className="font-semibold mb-3">Order Info</h2>
             <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
-                <div>
-                  <div className="text-gray-500">Created</div>
-                  <div>{new Date(order.createdAt).toLocaleString()}</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Package className="w-4 h-4 text-gray-400 mt-0.5" />
-                <div>
-                  <div className="text-gray-500">Source</div>
-                  <div>{order.source}</div>
-                </div>
-              </div>
+              <SidebarRow icon={Calendar} label="Created">
+                {new Date(order.createdAt).toLocaleString()}
+              </SidebarRow>
+              <SidebarRow icon={Package} label="Source">
+                {order.source}
+              </SidebarRow>
               {order.externalId && (
-                <div className="flex items-start gap-3">
-                  <ShoppingCart className="w-4 h-4 text-gray-400 mt-0.5" />
-                  <div>
-                    <div className="text-gray-500">External ID</div>
-                    <div className="font-mono text-xs">{order.externalId}</div>
-                  </div>
-                </div>
+                <SidebarRow icon={ShoppingCart} label="External ID">
+                  <span className="font-mono text-xs">{order.externalId}</span>
+                </SidebarRow>
+              )}
+              <SidebarRow icon={CircleDot} label="Payment">
+                <PaymentBadge status={order.paymentStatus} />
+              </SidebarRow>
+              {order.totalAmount > 0 && (
+                <SidebarRow icon={DollarSign} label="Total">
+                  {formatCurrency(order.totalAmount)}
+                </SidebarRow>
               )}
             </div>
           </div>
@@ -630,16 +876,13 @@ export function OrderDetailPage() {
             <h2 className="font-semibold mb-3">Customer</h2>
             <div className="space-y-3 text-sm">
               {order.customerName && (
-                <div className="flex items-start gap-3">
-                  <User className="w-4 h-4 text-gray-400 mt-0.5" />
-                  <div>{order.customerName}</div>
-                </div>
+                <SidebarRow icon={User}>{order.customerName}</SidebarRow>
               )}
               {order.customerEmail && (
-                <div className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-gray-400 mt-0.5" />
-                  <div>{order.customerEmail}</div>
-                </div>
+                <SidebarRow icon={Mail}>{order.customerEmail}</SidebarRow>
+              )}
+              {!order.customerName && !order.customerEmail && (
+                <p className="text-gray-400 text-sm">No customer info</p>
               )}
             </div>
           </div>
@@ -649,7 +892,7 @@ export function OrderDetailPage() {
             <div className="bg-white border border-border rounded-lg p-4">
               <h2 className="font-semibold mb-3">Shipping Address</h2>
               <div className="flex items-start gap-3 text-sm">
-                <MapPin className="w-4 h-4 text-gray-400 mt-0.5" />
+                <MapPin className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
                 <div>
                   {order.shippingName && <div>{order.shippingName}</div>}
                   <div>{order.shippingAddress1}</div>
@@ -671,9 +914,51 @@ export function OrderDetailPage() {
             </div>
           )}
 
+          {/* Tracking (quick summary in sidebar) */}
+          {order.trackingNumber && (
+            <div className="bg-white border border-border rounded-lg p-4">
+              <h2 className="font-semibold mb-3">Tracking</h2>
+              <div className="space-y-2 text-sm">
+                {order.trackingNumber.split(",").map((tn, i) => {
+                  const trimmed = tn.trim();
+                  // Try to determine carrier from shipping packages
+                  const pkg = order.shippingPackages?.find(
+                    (p) => p.trackingNumber === trimmed,
+                  );
+                  const carrier = pkg?.carrierCode || "";
+                  const url = getTrackingUrl(carrier, trimmed);
+
+                  return (
+                    <div key={i} className="flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-gray-400 shrink-0" />
+                      {url ? (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline font-mono text-xs flex items-center gap-1"
+                        >
+                          {trimmed}
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      ) : (
+                        <span className="font-mono text-xs">{trimmed}</span>
+                      )}
+                    </div>
+                  );
+                })}
+                {order.shippedAt && (
+                  <div className="text-xs text-gray-500 mt-1">
+                    Shipped {new Date(order.shippedAt).toLocaleString()}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Notes */}
           {order.notes && (
-            <div className="bg-white border rounded-lg p-4">
+            <div className="bg-white border border-border rounded-lg p-4">
               <h2 className="font-semibold mb-3">Notes</h2>
               <p className="text-sm text-gray-600 whitespace-pre-wrap">
                 {order.notes}
@@ -690,6 +975,37 @@ export function OrderDetailPage() {
 // Helper Components
 // ============================================================================
 
+function ActionButton({
+  onClick,
+  loading,
+  disabled,
+  icon: Icon,
+  className = "",
+  children,
+}: {
+  onClick: () => void;
+  loading: boolean;
+  disabled: boolean;
+  icon: typeof Package;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`cursor-pointer transition inline-flex items-center gap-2 px-4 py-2 rounded-lg disabled:opacity-50 ${className}`}
+    >
+      {loading ? (
+        <Loader2 className="w-4 h-4 animate-spin" />
+      ) : (
+        <Icon className="w-4 h-4" />
+      )}
+      {children}
+    </button>
+  );
+}
+
 function ProgressCard({
   label,
   current,
@@ -705,7 +1021,7 @@ function ProgressCard({
 
   const colors: Record<string, { bar: string; text: string }> = {
     blue: { bar: "bg-blue-500", text: "text-blue-600" },
-    purple: { bar: "bg-purple-500", text: "text-purple-600" },
+    amber: { bar: "bg-amber-500", text: "text-amber-600" },
     green: { bar: "bg-green-500", text: "text-green-600" },
   };
 
@@ -727,16 +1043,42 @@ function ProgressCard({
   );
 }
 
+function QtyIndicator({ current, total }: { current: number; total: number }) {
+  return (
+    <span
+      className={
+        current >= total
+          ? "text-green-600"
+          : current > 0
+            ? "text-yellow-600"
+            : "text-gray-400"
+      }
+    >
+      {current}
+    </span>
+  );
+}
+
 function AllocationBadge({
   status,
 }: {
-  status: "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED";
+  status: "ALLOCATED" | "PARTIAL" | "UNALLOCATED" | "BACKORDERED" | "UNMATCHED";
 }) {
   const config: Record<string, { label: string; color: string }> = {
     ALLOCATED: { label: "Allocated", color: "bg-green-100 text-green-700" },
     PARTIAL: { label: "Partial", color: "bg-yellow-100 text-yellow-700" },
-    UNALLOCATED: { label: "Unallocated", color: "bg-gray-100 text-gray-700" },
-    BACKORDERED: { label: "Backordered", color: "bg-red-100 text-red-700" },
+    UNALLOCATED: {
+      label: "Unallocated",
+      color: "bg-gray-100 text-gray-700",
+    },
+    BACKORDERED: {
+      label: "Backordered",
+      color: "bg-red-100 text-red-700",
+    },
+    UNMATCHED: {
+      label: "Unmatched",
+      color: "bg-orange-100 text-orange-700",
+    },
   };
 
   const c = config[status] || config.UNALLOCATED;
@@ -745,5 +1087,146 @@ function AllocationBadge({
     <span className={`px-2 py-1 rounded-full text-xs font-medium ${c.color}`}>
       {c.label}
     </span>
+  );
+}
+
+function TaskStatusBadge({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    COMPLETED: "bg-green-100 text-green-700",
+    IN_PROGRESS: "bg-blue-100 text-blue-700",
+    ASSIGNED: "bg-amber-100 text-amber-700",
+    BLOCKED: "bg-red-100 text-red-700",
+    CANCELLED: "bg-gray-100 text-gray-500",
+    PENDING: "bg-gray-100 text-gray-700",
+  };
+
+  return (
+    <span
+      className={`px-2 py-1 rounded-full font-semibold text-[10px] ${
+        colors[status] || colors.PENDING
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+
+function PaymentBadge({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    PAID: "text-green-600",
+    AUTHORIZED: "text-blue-600",
+    PENDING: "text-yellow-600",
+    REFUNDED: "text-gray-500",
+    PARTIALLY_REFUNDED: "text-orange-600",
+    FAILED: "text-red-600",
+  };
+
+  return (
+    <span className={`font-medium ${colors[status] || "text-gray-600"}`}>
+      {status.replace(/_/g, " ")}
+    </span>
+  );
+}
+
+function SidebarRow({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon?: typeof Calendar;
+  label?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      {Icon && <Icon className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />}
+      <div>
+        {label && <div className="text-gray-500">{label}</div>}
+        <div>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function ShippingPackageCard({ pkg }: { pkg: ShippingPackage }) {
+  const carrier = getCarrierDisplayName(pkg.carrierCode);
+  const isVoided = !!pkg.voidedAt;
+  const trackingUrl = pkg.trackingNumber
+    ? getTrackingUrl(pkg.carrierCode, pkg.trackingNumber)
+    : "";
+
+  return (
+    <div className={`px-4 py-3 ${isVoided ? "opacity-50" : ""}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-medium text-sm">
+              {carrier} — {pkg.serviceCode.replace(/_/g, " ")}
+            </span>
+            {isVoided && (
+              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600">
+                Voided
+              </span>
+            )}
+          </div>
+
+          {pkg.trackingNumber && (
+            <div className="mt-1">
+              {trackingUrl ? (
+                <a
+                  href={trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline text-sm font-mono flex items-center gap-1"
+                >
+                  {pkg.trackingNumber}
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              ) : (
+                <span className="text-sm font-mono text-gray-600">
+                  {pkg.trackingNumber}
+                </span>
+              )}
+            </div>
+          )}
+
+          {pkg.items && pkg.items.length > 0 && (
+            <div className="mt-1.5 text-xs text-gray-500">
+              {pkg.items.map((item) => (
+                <span key={item.id} className="mr-3">
+                  {item.sku} ×{item.quantity}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-1 text-xs text-gray-400">
+            {new Date(pkg.createdAt).toLocaleString()}
+            {pkg.weight && <span className="ml-2">{pkg.weight} oz</span>}
+            {pkg.dimensions && (
+              <span className="ml-2">
+                {pkg.dimensions.length}×{pkg.dimensions.width}×
+                {pkg.dimensions.height} in
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="text-right shrink-0">
+          <div className="text-sm font-medium">{formatCurrency(pkg.cost)}</div>
+          {pkg.labelUrl && !isVoided && (
+            <a
+              href={pkg.labelUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-blue-600 hover:underline inline-flex items-center gap-1 mt-1"
+            >
+              Label PDF
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

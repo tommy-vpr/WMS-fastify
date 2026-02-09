@@ -194,6 +194,10 @@ exports.Prisma.LocationScalarFieldEnum = {
   pickSequence: 'pickSequence',
   isPickable: 'isPickable',
   active: 'active',
+  needsCycleCount: 'needsCycleCount',
+  cycleCountPriority: 'cycleCountPriority',
+  cycleCountReason: 'cycleCountReason',
+  lastCountedAt: 'lastCountedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -262,12 +266,28 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   quantity: 'quantity',
   quantityAllocated: 'quantityAllocated',
   quantityPicked: 'quantityPicked',
+  quantityShipped: 'quantityShipped',
   unitPrice: 'unitPrice',
   totalPrice: 'totalPrice',
   matched: 'matched',
   matchError: 'matchError',
   shopifyLineItemId: 'shopifyLineItemId',
   shopifyFulfillmentOrderLineItemId: 'shopifyFulfillmentOrderLineItemId'
+};
+
+exports.Prisma.PackingImageScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  taskId: 'taskId',
+  url: 'url',
+  filename: 'filename',
+  size: 'size',
+  contentType: 'contentType',
+  uploadedBy: 'uploadedBy',
+  reference: 'reference',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  pickBinId: 'pickBinId'
 };
 
 exports.Prisma.ShippingLabelScalarFieldEnum = {
@@ -583,6 +603,83 @@ exports.Prisma.InventoryAdjustmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PickBinScalarFieldEnum = {
+  id: 'id',
+  binNumber: 'binNumber',
+  barcode: 'barcode',
+  orderId: 'orderId',
+  pickTaskId: 'pickTaskId',
+  status: 'status',
+  labelZpl: 'labelZpl',
+  labelPrintedAt: 'labelPrintedAt',
+  pickedBy: 'pickedBy',
+  pickedAt: 'pickedAt',
+  packedBy: 'packedBy',
+  packedAt: 'packedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PickBinItemScalarFieldEnum = {
+  id: 'id',
+  pickBinId: 'pickBinId',
+  productVariantId: 'productVariantId',
+  sku: 'sku',
+  quantity: 'quantity',
+  verifiedQty: 'verifiedQty',
+  verifiedAt: 'verifiedAt',
+  verifiedBy: 'verifiedBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.InventoryDiscrepancyScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  productVariantId: 'productVariantId',
+  locationId: 'locationId',
+  expectedQty: 'expectedQty',
+  actualQty: 'actualQty',
+  variance: 'variance',
+  orderId: 'orderId',
+  taskItemId: 'taskItemId',
+  reportedBy: 'reportedBy',
+  status: 'status',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FulfillmentMetricScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  taskId: 'taskId',
+  taskNumber: 'taskNumber',
+  orderId: 'orderId',
+  orderNumber: 'orderNumber',
+  userId: 'userId',
+  itemCount: 'itemCount',
+  shortCount: 'shortCount',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationSeconds: 'durationSeconds',
+  itemsPerMinute: 'itemsPerMinute',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserPerformanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  metricType: 'metricType',
+  avgItemsPerMinute: 'avgItemsPerMinute',
+  totalItems: 'totalItems',
+  totalShorts: 'totalShorts',
+  taskCount: 'taskCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -806,6 +903,14 @@ exports.AdjustmentStatus = exports.$Enums.AdjustmentStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.PickBinStatus = exports.$Enums.PickBinStatus = {
+  PICKING: 'PICKING',
+  STAGED: 'STAGED',
+  PACKING: 'PACKING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
@@ -817,6 +922,7 @@ exports.Prisma.ModelName = {
   Allocation: 'Allocation',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  PackingImage: 'PackingImage',
   ShippingLabel: 'ShippingLabel',
   ShippingPackage: 'ShippingPackage',
   ShippingPackageItem: 'ShippingPackageItem',
@@ -834,7 +940,12 @@ exports.Prisma.ModelName = {
   CycleCountSession: 'CycleCountSession',
   CycleCountLine: 'CycleCountLine',
   CycleCountAudit: 'CycleCountAudit',
-  InventoryAdjustment: 'InventoryAdjustment'
+  InventoryAdjustment: 'InventoryAdjustment',
+  PickBin: 'PickBin',
+  PickBinItem: 'PickBinItem',
+  InventoryDiscrepancy: 'InventoryDiscrepancy',
+  FulfillmentMetric: 'FulfillmentMetric',
+  UserPerformance: 'UserPerformance'
 };
 
 /**

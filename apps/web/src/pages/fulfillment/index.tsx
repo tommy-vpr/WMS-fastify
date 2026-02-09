@@ -83,7 +83,7 @@ const STATUS_CONFIG: Record<
   },
   PICKED: {
     label: "Picked",
-    color: "bg-green-100 text-green-700",
+    color: "bg-cyan-100 text-cyan-700",
     icon: CheckCircle2,
   },
   PACKING: {
@@ -98,7 +98,7 @@ const STATUS_CONFIG: Record<
   },
   SHIPPED: {
     label: "Shipped",
-    color: "bg-cyan-100 text-cyan-700",
+    color: "bg-green-100 text-green-700",
     icon: Truck,
   },
 };
@@ -152,7 +152,7 @@ function MiniProgress({ status }: { status: string }) {
           key={step}
           className={`h-1.5 flex-1 rounded-full ${
             i < currentIndex
-              ? "bg-green-400"
+              ? "bg-green-500"
               : i === currentIndex
                 ? "bg-blue-500"
                 : "bg-gray-200"

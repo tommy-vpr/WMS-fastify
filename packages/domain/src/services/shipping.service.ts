@@ -102,6 +102,13 @@ export interface CreateLabelsResult {
   orderId: string;
   orderNumber: string;
   shippingPackageIds: string[];
+  packingImages: {
+    id: string;
+    url: string;
+    filename: string;
+    uploadedAt: Date;
+    uploadedBy: string;
+  }[];
 }
 
 // =============================================================================
@@ -526,6 +533,7 @@ export class ShippingService {
             productVariant: true,
           },
         },
+        packingImages: true,
       },
     });
 
@@ -535,6 +543,13 @@ export class ShippingService {
 
     if (!["PACKED", "SHIPPED", "PARTIALLY_SHIPPED"].includes(order.status)) {
       throw new Error("Order must be packed before shipping");
+    }
+
+    // ✅ HARD GATE: packing images required
+    if (order.packingImages.length === 0) {
+      throw new Error(
+        `Order ${order.orderNumber} cannot be shipped without packing images`,
+      );
     }
 
     // Build addresses
@@ -748,15 +763,14 @@ export class ShippingService {
       `[ShippingService] Created ${allLabelPackages.length} label(s), total cost: $${totalShipmentCost.toFixed(2)}`,
     );
 
-    // ─── Database Transaction ─────────────────────────────────────────────────
+    const allTrackingNumbers = allLabelPackages
+      .map((lp) => lp.tracking_number)
+      .filter(Boolean)
+      .join(", ");
 
+    // ─── Database Transaction ──────────────────────────────────────────────
     const result = await this.prisma.$transaction(async (tx) => {
-      const costPerPackage =
-        allLabelPackages.length > 0
-          ? totalShipmentCost / allLabelPackages.length
-          : totalShipmentCost;
-
-      // Create ShippingPackage records
+      // 1️⃣ Create ShippingPackage records
       const shippingPackages = await Promise.all(
         allLabelPackages.map((lp, idx) => {
           const originalPkg = lp.pkg || packages[idx] || packages[0];
@@ -768,7 +782,7 @@ export class ShippingService {
               packageCode: originalPkg.packageCode || "package",
               trackingNumber: lp.tracking_number,
               labelUrl: lp.label_download?.pdf || lp.label_download?.href,
-              cost: new Prisma.Decimal(costPerPackage),
+              cost: new Prisma.Decimal(lp.cost),
               currency: "USD",
               weight: new Prisma.Decimal(originalPkg.weight || 1),
               dimensions: {
@@ -790,81 +804,79 @@ export class ShippingService {
         }),
       );
 
-      // Release inventory allocations for shipped items
-      const itemsToRelease = items || [];
-      for (const item of itemsToRelease) {
+      // 2️⃣ Consume inventory via PICKED allocations (only place decrement happens)
+      for (const shippedItem of items || []) {
         const orderItem = order.items.find(
-          (oi) => oi.productVariant?.sku === item.sku,
+          (oi) => oi.productVariant?.sku === shippedItem.sku,
         );
         if (!orderItem) continue;
 
-        // Find allocations that are PICKED (ready to ship)
+        let remaining = shippedItem.quantity;
+
         const allocations = await tx.allocation.findMany({
           where: {
             orderItemId: orderItem.id,
-            status: { in: ["ALLOCATED", "PICKED"] },
+            status: "PICKED",
+          },
+          orderBy: { allocatedAt: "asc" },
+        });
+
+        for (const alloc of allocations) {
+          if (remaining <= 0) break;
+
+          const consumeQty = Math.min(alloc.quantity, remaining);
+
+          await tx.inventoryUnit.update({
+            where: { id: alloc.inventoryUnitId },
+            data: { quantity: { decrement: consumeQty } },
+          });
+
+          remaining -= consumeQty;
+        }
+
+        // ✅ Hard fail if you tried to ship more than was picked
+        if (remaining > 0) {
+          throw new Error(
+            `Cannot ship ${shippedItem.quantity} of ${shippedItem.sku}: only ${
+              shippedItem.quantity - remaining
+            } PICKED`,
+          );
+        }
+
+        // ✅ Track shipped qty on the order item
+        await tx.orderItem.update({
+          where: { id: orderItem.id },
+          data: {
+            quantityShipped: { increment: shippedItem.quantity },
           },
         });
 
-        let remainingToRelease = item.quantity;
-
-        // Release inventory allocations for shipped items
-        for (const allocation of allocations) {
-          if (remainingToRelease <= 0) break;
-
-          const releaseQty = Math.min(allocation.quantity, remainingToRelease);
-
-          // DON'T decrement quantity - it was already decremented at allocation
-          // Just reset status to AVAILABLE if there's remaining quantity
-          const unit = await tx.inventoryUnit.findUnique({
-            where: { id: allocation.inventoryUnitId },
-          });
-
-          if (unit && unit.quantity > 0) {
-            await tx.inventoryUnit.update({
-              where: { id: allocation.inventoryUnitId },
-              data: { status: "AVAILABLE" },
-            });
-          }
-
-          // Mark allocation as released (keep this part)
-          if (releaseQty >= allocation.quantity) {
-            await tx.allocation.update({
-              where: { id: allocation.id },
-              data: {
-                status: "RELEASED",
-                releasedAt: new Date(),
-              },
-            });
-          } else {
-            await tx.allocation.update({
-              where: { id: allocation.id },
-              data: { quantity: { decrement: releaseQty } },
-            });
-          }
-
-          remainingToRelease -= releaseQty;
-        }
+        // 2️⃣b Close all PICKED allocations for this order
+        await tx.allocation.updateMany({
+          where: {
+            orderItem: {
+              orderId: order.id,
+            },
+            status: "PICKED",
+          },
+          data: {
+            status: "RELEASED",
+            releasedAt: new Date(),
+          },
+        });
       }
 
-      // Update order
-      const allTrackingNumbers = allLabelPackages
-        .map((lp) => lp.tracking_number)
-        .filter(Boolean)
-        .join(", ");
-
-      await tx.order.update({
+      // 3️⃣ Update order
+      const updatedOrder = await tx.order.update({
         where: { id: order.id },
         data: {
           status: "SHIPPED",
-          trackingNumber: order.trackingNumber
-            ? `${order.trackingNumber}, ${allTrackingNumbers}`
-            : allTrackingNumbers,
-          shippedAt: order.shippedAt || new Date(),
+          trackingNumber: joinDedup(order.trackingNumber, allTrackingNumbers),
+          shippedAt: new Date(),
         },
       });
 
-      // Create fulfillment event
+      // 4️⃣ Persist fulfillment event (DB source of truth)
       await tx.fulfillmentEvent.create({
         data: {
           orderId: order.id,
@@ -872,7 +884,7 @@ export class ShippingService {
           payload: {
             carrier: carrierCode,
             service: serviceCode,
-            trackingNumbers: allTrackingNumbers.split(", "),
+            trackingNumbers: allTrackingNumbers.split(", ").filter(Boolean),
             totalCost: totalShipmentCost,
             packageCount: allLabelPackages.length,
           },
@@ -881,7 +893,7 @@ export class ShippingService {
         },
       });
 
-      return { shippingPackages, allTrackingNumbers };
+      return { shippingPackages, updatedOrder };
     });
 
     // Publish real-time event (optional - won't fail if pubsub not configured)
@@ -893,7 +905,7 @@ export class ShippingService {
         payload: {
           carrier: carrierCode,
           service: serviceCode,
-          trackingNumbers: result.allTrackingNumbers.split(", "),
+          trackingNumbers: allTrackingNumbers.split(", ").filter(Boolean),
           totalCost: totalShipmentCost,
           packageCount: allLabelPackages.length,
           labels: allLabelPackages.map((lp) => ({
@@ -924,6 +936,15 @@ export class ShippingService {
       totalCost: totalShipmentCost,
       orderId: order.id,
       orderNumber: order.orderNumber,
+
+      packingImages: order.packingImages.map((img) => ({
+        id: img.id,
+        url: img.url,
+        filename: img.filename,
+        uploadedAt: img.createdAt,
+        uploadedBy: img.uploadedBy,
+      })),
+
       shippingPackageIds: result.shippingPackages.map((sp) => sp.id),
     };
   }

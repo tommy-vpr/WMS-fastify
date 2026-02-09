@@ -23,13 +23,14 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  refreshTokens       RefreshToken[]
-  passwordResetTokens PasswordResetToken[]
-  assignedTasks       WorkTask[]
-  taskEvents          TaskEvent[]
-  completedTaskItems  TaskItem[]
-  auditLogs           AuditLog[]
-  notifications       Notification[]
+  refreshTokens         RefreshToken[]
+  passwordResetTokens   PasswordResetToken[]
+  assignedTasks         WorkTask[]
+  taskEvents            TaskEvent[]
+  completedTaskItems    TaskItem[]
+  auditLogs             AuditLog[]
+  notifications         Notification[]
+  packingImagesUploaded PackingImage[]
 
   // Receiving relations
   receivingSessionsCounted  ReceivingSession[]   @relation("ReceivingCountedBy")
@@ -137,6 +138,12 @@ model ProductVariant {
   cycleCountLines      CycleCountLine[]
   inventoryAdjustments InventoryAdjustment[]
 
+  // Discrepancy
+  inventoryDiscrepancies InventoryDiscrepancy[]
+
+  // Bin 
+  pickBinItems PickBinItem[]
+
   @@index([upc])
   @@index([barcode])
   @@index([shopifyVariantId])
@@ -157,8 +164,15 @@ model Location {
   pickSequence Int?
   isPickable   Boolean      @default(true)
   active       Boolean      @default(true)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+
+  // Cycle count flags (ADD THESE 4 FIELDS)
+  needsCycleCount    Boolean   @default(false)
+  cycleCountPriority String? // HIGH, MEDIUM, LOW
+  cycleCountReason   String?
+  lastCountedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   inventoryUnits InventoryUnit[]
   taskItems      TaskItem[]
@@ -170,9 +184,12 @@ model Location {
   cycleCountSessions   CycleCountSession[]
   inventoryAdjustments InventoryAdjustment[]
 
+  inventoryDiscrepancies InventoryDiscrepancy[]
+
   @@index([barcode])
   @@index([type])
   @@index([zone, pickSequence])
+  @@index([needsCycleCount]) // ADD INDEX for queries
   @@map("locations")
 }
 
@@ -278,9 +295,12 @@ model Order {
   trackingNumber   String?
   shippedAt        DateTime?
   shippingPackages ShippingPackage[]
+  packingImages    PackingImage[]
   // Timestamps
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+  // Bin
+  pickBins         PickBin[]
 
   items          OrderItem[]
   taskItems      TaskItem[]
@@ -295,13 +315,15 @@ model Order {
 }
 
 model OrderItem {
-  id                                String   @id @default(cuid())
-  orderId                           String
-  productVariantId                  String? // Nullable - may not match a variant
-  sku                               String
-  quantity                          Int
-  quantityAllocated                 Int      @default(0)
-  quantityPicked                    Int      @default(0)
+  id                String  @id @default(cuid())
+  orderId           String
+  productVariantId  String? // Nullable - may not match a variant
+  sku               String
+  quantity          Int
+  quantityAllocated Int     @default(0)
+  quantityPicked    Int     @default(0)
+  quantityShipped   Int     @default(0)
+
   unitPrice                         Decimal  @db.Decimal(10, 2)
   totalPrice                        Decimal? @db.Decimal(10, 2)
   // Matching status
@@ -320,6 +342,33 @@ model OrderItem {
   @@index([matched])
   @@index([shopifyLineItemId])
   @@map("order_items")
+}
+
+model PackingImage {
+  id          String   @id @default(cuid())
+  orderId     String
+  taskId      String?
+  url         String
+  filename    String
+  size        Int
+  contentType String   @default("image/jpeg")
+  uploadedBy  String
+  reference   String?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  order     Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  task      WorkTask? @relation(fields: [taskId], references: [id])
+  pickBinId String?
+  pickBin   PickBin?  @relation(fields: [pickBinId], references: [id])
+
+  uploader User @relation(fields: [uploadedBy], references: [id])
+
+  @@index([orderId])
+  @@index([taskId])
+  @@index([pickBinId]) // ← ADD
+  @@index([uploadedBy])
+  @@map("packing_images")
 }
 
 // =============================================================================
@@ -459,6 +508,7 @@ model WorkTask {
   totalOrders      Int
   completedOrders  Int                  @default(0)
   // Packing fields (for PACKING tasks)
+  packingImages    PackingImage[]
   packedWeight     Decimal?             @db.Decimal(8, 2)
   packedWeightUnit String?              @default("ounce")
   packedDimensions Json?
@@ -473,6 +523,8 @@ model WorkTask {
   notes            String?
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @updatedAt
+  // Bin 
+  pickBins         PickBin[]
 
   assignedUser User?       @relation(fields: [assignedTo], references: [id])
   taskItems    TaskItem[]
@@ -1110,4 +1162,144 @@ enum AdjustmentStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+// =============================================================================
+// PICK/PACK BIN
+// =============================================================================
+
+model PickBin {
+  id        String @id @default(cuid())
+  binNumber String @unique
+  barcode   String @unique
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  pickTaskId String?
+  pickTask   WorkTask? @relation(fields: [pickTaskId], references: [id])
+
+  status PickBinStatus @default(PICKING)
+
+  items PickBinItem[]
+
+  // Label
+  labelZpl       String?   @db.Text
+  labelPrintedAt DateTime?
+
+  // Tracking
+  pickedBy String?
+  pickedAt DateTime?
+  packedBy String?
+  packedAt DateTime?
+
+  packingImages PackingImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([barcode])
+  @@index([status])
+}
+
+model PickBinItem {
+  id        String  @id @default(cuid())
+  pickBinId String
+  pickBin   PickBin @relation(fields: [pickBinId], references: [id], onDelete: Cascade)
+
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  sku      String
+  quantity Int
+
+  verifiedQty Int       @default(0)
+  verifiedAt  DateTime?
+  verifiedBy  String?
+
+  createdAt DateTime @default(now())
+
+  @@index([pickBinId])
+}
+
+model InventoryDiscrepancy {
+  id   String @id @default(cuid())
+  type String // SHORT_PICK, CYCLE_COUNT, ADJUSTMENT
+
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  expectedQty Int
+  actualQty   Int
+  variance    Int
+
+  orderId    String?
+  taskItemId String?
+
+  reportedBy String?
+  status     String    @default("PENDING_REVIEW") // PENDING_REVIEW, RESOLVED, DISMISSED
+  resolvedBy String?
+  resolvedAt DateTime?
+  notes      String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([locationId])
+  @@index([productVariantId])
+  @@index([status])
+}
+
+model FulfillmentMetric {
+  id   String @id @default(cuid())
+  type String // PICKING, PACKING, SHIPPING
+
+  taskId      String?
+  taskNumber  String?
+  orderId     String?
+  orderNumber String?
+  userId      String?
+
+  itemCount  Int
+  shortCount Int @default(0)
+
+  startedAt       DateTime
+  completedAt     DateTime
+  durationSeconds Int
+  itemsPerMinute  Float
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model UserPerformance {
+  id         String @id @default(cuid())
+  userId     String
+  metricType String // PICKING, PACKING
+
+  avgItemsPerMinute Float @default(0)
+  totalItems        Int   @default(0)
+  totalShorts       Int   @default(0)
+  taskCount         Int   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, metricType])
+  @@index([userId])
+}
+
+enum PickBinStatus {
+  PICKING
+  STAGED
+  PACKING
+  COMPLETED
+  CANCELLED
 }

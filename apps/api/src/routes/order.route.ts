@@ -141,7 +141,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantity: item.quantity,
         quantityAllocated: item.quantityAllocated,
         quantityPicked: item.quantityPicked,
-        quantityShipped: 0,
+        quantityShipped: item.quantityShipped ?? 0,
         unitPrice: Number(item.unitPrice),
         matched: item.matched,
       })),
@@ -266,6 +266,12 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
     const order = await prisma.order.findUnique({
       where: { id },
       include: {
+        packingImages: {
+          include: {
+            uploader: { select: { id: true, name: true } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
         items: {
           include: {
             productVariant: {
@@ -349,6 +355,21 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
       // Totals
       totalAmount: Number(order.totalAmount),
       unmatchedItems: order.unmatchedItems,
+      // Packing images
+      packingImages: order.packingImages.map((img) => ({
+        id: img.id,
+        url: img.url,
+        filename: img.filename,
+        size: img.size,
+        contentType: img.contentType,
+        notes: img.notes,
+        reference: img.reference,
+        uploadedAt: img.createdAt,
+        uploadedBy: {
+          id: img.uploader.id,
+          name: img.uploader.name,
+        },
+      })),
       // Line items with allocation status
       lineItems: order.items.map((item) => ({
         id: item.id,
@@ -357,7 +378,7 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         quantity: item.quantity,
         quantityAllocated: item.quantityAllocated,
         quantityPicked: item.quantityPicked,
-        quantityShipped: 0,
+        quantityShipped: item.quantityShipped ?? 0,
         unitPrice: Number(item.unitPrice),
         productVariantId: item.productVariantId,
         allocationStatus: getAllocationStatus(item, order.status), // ← Pass order.status

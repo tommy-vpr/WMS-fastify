@@ -21,6 +21,7 @@ import { shippingRoutes } from "./routes/shipping.routes.js";
 import { receivingRoutes } from "./routes/receiving.routes.js";
 import cycleCountRoutes from "./routes/cycle-count.routes.js";
 import scanRoutes from "./routes/scan.routes.js";
+import packingImageRoutes from "./routes/packing-images.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -74,6 +75,10 @@ export async function buildApp() {
     // Fulfillment
     await protectedRoutes.register(fulfillmentRoutes, {
       prefix: "/fulfillment",
+    });
+    //Packing Image
+    await protectedRoutes.register(packingImageRoutes, {
+      prefix: "/packing-images",
     });
     // Shipping Label
     await protectedRoutes.register(shippingRoutes, {

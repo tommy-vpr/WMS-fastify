@@ -38,6 +38,8 @@ export const EVENT_TYPES = {
   PACKING_STARTED: "packing:started",
   PACKING_ITEM_VERIFIED: "packing:item_verified",
   PACKING_COMPLETED: "packing:completed",
+  PACKING_IMAGE_UPLOADED: "packing:image_uploaded",
+  PACKING_IMAGE_DELETED: "packing:image_deleted",
   // Shipping
   SHIPPING_LABEL_CREATED: "shipping:label_created",
   // Inventory
@@ -47,6 +49,20 @@ export const EVENT_TYPES = {
   CYCLE_COUNT_SUBMITTED: "cycle_count:submitted",
   CYCLE_COUNT_APPROVED: "cycle_count:approved",
   CYCLE_COUNT_REJECTED: "cycle_count:rejected",
+  // Pick Bin lifecycle
+  PICKBIN_CREATED: "pickbin:created",
+  PICKBIN_LABEL_PRINTED: "pickbin:label_printed",
+  PICKBIN_STAGED: "pickbin:staged",
+  PICKBIN_SCANNING: "pickbin:scanning",
+  PICKBIN_ITEM_VERIFIED: "pickbin:item_verified",
+  PICKBIN_COMPLETED: "pickbin:completed",
+
+  // Pack Station notifications
+  PACKSTATION_BIN_READY: "packstation:bin_ready",
+
+  // Short pick
+  SHORT_PICK_DETECTED: "short_pick:detected",
+  SHORT_PICK_RESOLVED: "short_pick:resolved",
 } as const;
 
 export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];

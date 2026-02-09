@@ -10,14 +10,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.18.0",
+    "@wms/config": "workspace:*",
     "@wms/db": "workspace:*",
     "@wms/domain": "workspace:*",
-    "@wms/queue": "workspace:*",
-    "@wms/config": "workspace:*",
     "@wms/pubsub": "workspace:*",
+    "@wms/queue": "workspace:*",
     "bullmq": "^5.52.0",
     "dotenv": "^17.2.3",
-    "ioredis": "^5.9.1"
+    "ioredis": "^5.9.1",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@types/node": "^22.15.29",

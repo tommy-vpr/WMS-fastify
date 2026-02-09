@@ -1,9 +1,4 @@
-/**
- * WMS Worker - UPDATED with Inventory Planner
- * BullMQ worker that processes background jobs
- *
- * Save to: apps/worker/src/index.ts
- */
+// apps/worker/src/index.ts
 
 import "dotenv/config";
 import { Worker, type Job } from "bullmq";
@@ -16,6 +11,8 @@ import {
   PRODUCT_JOBS,
   INVENTORY_PLANNER_JOBS,
   CYCLE_COUNT_JOBS,
+  PACKING_IMAGE_JOBS,
+  PICK_BIN_JOBS, // ← Add this import
 } from "@wms/queue";
 import {
   processWorkTaskJob,
@@ -24,6 +21,9 @@ import {
   processProductJob,
   processInventoryPlannerJob,
   processCycleCountJob,
+  processShippingJob,
+  processPackingImageJob,
+  processPickBinJob,
 } from "./processors/index.js";
 
 // ============================================================================
@@ -35,6 +35,33 @@ const WORKER_CONCURRENCY = parseInt(process.env.WORKER_CONCURRENCY || "5", 10);
 // ============================================================================
 // Worker Setup
 // ============================================================================
+
+function createPickBinWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.PICK_BIN,
+    async (job: Job) => processPickBinJob(job),
+    {
+      connection,
+      concurrency: 5,
+      removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+      removeOnFail: { count: 1000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.PICK_BIN} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[PickBin] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[PickBin] Job failed: ${job?.name}`, err.message);
+  });
+
+  return worker;
+}
 
 function createWorkTaskWorker() {
   const connection = getConnection();
@@ -199,7 +226,7 @@ function createInventoryPlannerWorker() {
     async (job: Job) => processInventoryPlannerJob(job),
     {
       connection,
-      concurrency: 1, // Only one sync at a time
+      concurrency: 1,
       removeOnComplete: { count: 100, age: 24 * 60 * 60 },
       removeOnFail: { count: 500, age: 7 * 24 * 60 * 60 },
     },
@@ -216,6 +243,36 @@ function createInventoryPlannerWorker() {
   });
   worker.on("progress", (job, progress) => {
     console.log(`[IP Sync] Job progress: ${job.name} - ${progress}%`);
+  });
+
+  return worker;
+}
+
+function createPackingImageWorker() {
+  const connection = getConnection();
+
+  const worker = new Worker(
+    QUEUES.PACKING_IMAGES,
+    async (job: Job) => processPackingImageJob(job),
+    {
+      connection,
+      concurrency: 3,
+      removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+      removeOnFail: { count: 1000, age: 7 * 24 * 60 * 60 },
+    },
+  );
+
+  worker.on("ready", () =>
+    console.log(`[Worker] ${QUEUES.PACKING_IMAGES} worker ready`),
+  );
+  worker.on("completed", (job, result) => {
+    console.log(`[PackingImage] Job completed: ${job.name}`, result);
+  });
+  worker.on("failed", (job, err) => {
+    console.error(`[PackingImage] Job failed: ${job?.name}`, err.message);
+  });
+  worker.on("progress", (job, progress) => {
+    console.log(`[PackingImage] Job progress: ${job.name} - ${progress}%`);
   });
 
   return worker;
@@ -275,6 +332,14 @@ async function main() {
   const cycleCountWorker = createCycleCountWorker();
   workers.push(cycleCountWorker);
 
+  // Packing Image Worker
+  const packingImageWorker = createPackingImageWorker();
+  workers.push(packingImageWorker);
+
+  // Pick Bin Worker
+  const pickBinWorker = createPickBinWorker();
+  workers.push(pickBinWorker);
+
   // Register shutdown handlers
   process.on("SIGTERM", () => shutdown(workers));
   process.on("SIGINT", () => shutdown(workers));
@@ -297,9 +362,14 @@ async function main() {
   Object.values(INVENTORY_PLANNER_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.INVENTORY_PLANNER}:${job}`);
   });
-
   Object.values(CYCLE_COUNT_JOBS).forEach((job) => {
     console.log(`  - ${QUEUES.CYCLE_COUNT}:${job}`);
+  });
+  Object.values(PACKING_IMAGE_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.PACKING_IMAGES}:${job}`);
+  });
+  Object.values(PICK_BIN_JOBS).forEach((job) => {
+    console.log(`  - ${QUEUES.PICK_BIN}:${job}`);
   });
   console.log("");
 }

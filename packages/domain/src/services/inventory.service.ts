@@ -46,6 +46,10 @@ export interface InventoryUnitWithDetails extends InventoryUnit {
   };
 }
 
+export interface InventoryUnitWithAvailability extends InventoryUnitWithDetails {
+  availableQuantity: number;
+}
+
 export interface Location {
   id: string;
   name: string;
@@ -106,11 +110,16 @@ export interface InventoryStats {
 export interface InventoryRepository {
   findById(id: string): Promise<InventoryUnit | null>;
   findByIdWithDetails(id: string): Promise<InventoryUnitWithDetails | null>;
+  findAvailableByProductVariant(
+    productVariantId: string,
+  ): Promise<InventoryUnitWithAvailability[]>;
+
   findByProductVariant(productVariantId: string): Promise<InventoryUnit[]>;
+
   findAvailableByProductVariant(
     productVariantId: string,
   ): Promise<InventoryUnitWithDetails[]>;
-  findAvailableBySku(sku: string): Promise<InventoryUnitWithDetails[]>;
+  findAvailableBySku(sku: string): Promise<InventoryUnitWithAvailability[]>;
   findByLocation(locationId: string): Promise<InventoryUnit[]>;
   findByLocationWithDetails(
     locationId: string,
@@ -182,19 +191,21 @@ export class InventoryService {
     return this.inventoryRepo.findByIdWithDetails(id);
   }
 
-  async getAvailableBySku(sku: string): Promise<InventoryUnitWithDetails[]> {
+  async getAvailableBySku(
+    sku: string,
+  ): Promise<InventoryUnitWithAvailability[]> {
     return this.inventoryRepo.findAvailableBySku(sku);
   }
 
   async getAvailableByProductVariant(
     productVariantId: string,
-  ): Promise<InventoryUnitWithDetails[]> {
+  ): Promise<InventoryUnitWithAvailability[]> {
     return this.inventoryRepo.findAvailableByProductVariant(productVariantId);
   }
 
   async getAvailableQuantityBySku(sku: string): Promise<number> {
     const units = await this.inventoryRepo.findAvailableBySku(sku);
-    return units.reduce((sum, unit) => sum + unit.quantity, 0);
+    return units.reduce((sum, unit) => sum + unit.availableQuantity, 0);
   }
 
   async getAvailableQuantityByProductVariant(

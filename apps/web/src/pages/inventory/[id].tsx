@@ -28,6 +28,16 @@ import {
 import { apiClient } from "@/lib/api";
 import { Loading } from "@/components/ui/loading";
 
+// Allocation status helper
+function getAllocationDisplayStatus(allocStatus: string, orderStatus?: string) {
+  if (allocStatus === "RELEASED") return "RELEASED";
+
+  if (orderStatus === "SHIPPED") return "SHIPPED";
+  if (orderStatus === "PACKED") return "PACKED";
+
+  return allocStatus; // ALLOCATED / PICKED
+}
+
 // ============================================================================
 // Types
 // ============================================================================
@@ -483,7 +493,7 @@ export default function InventoryDetailPage() {
         <div className="bg-white border border-border rounded-lg p-6 mt-6">
           <h2 className="font-semibold mb-4">Active Allocations</h2>
           <table className="w-full">
-            <thead className="border-b">
+            <thead className="border-b border-border">
               <tr>
                 <th className="text-left py-2 text-sm font-medium text-gray-500">
                   Order
@@ -497,35 +507,44 @@ export default function InventoryDetailPage() {
               </tr>
             </thead>
             <tbody className="divide-y">
-              {unit.allocations.map((alloc) => (
-                <tr key={alloc.id}>
-                  <td className="py-2">
-                    {alloc.order ? (
-                      <>
-                        <Link
-                          to={`/orders/${alloc.order?.id}`}
-                          className="text-blue-600 hover:underline"
-                        >
-                          {alloc.order.orderNumber}
-                        </Link>
-                        <div className="text-xs text-gray-400">
-                          {alloc.order.status}
-                        </div>
-                      </>
-                    ) : (
-                      <span className="text-gray-400">-</span>
-                    )}
-                  </td>
-                  <td className="py-2 text-center font-medium">
-                    {alloc.quantity}
-                  </td>
-                  <td className="py-2">
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {alloc.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {unit.allocations.map((alloc) => {
+                const displayStatus = getAllocationDisplayStatus(
+                  alloc.status,
+                  alloc.order?.status,
+                );
+
+                return (
+                  <tr key={alloc.id} className="border-border">
+                    <td className="py-2">
+                      {alloc.order ? (
+                        <>
+                          <Link
+                            to={`/orders/${alloc.order?.id}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            {alloc.order.orderNumber}
+                          </Link>
+                          <div className="text-xs text-gray-400">
+                            {alloc.order.status}
+                          </div>
+                        </>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </td>
+                    <td className="py-2 text-center font-medium">
+                      {alloc.quantity}
+                    </td>
+                    <td className="py-2">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700`}
+                      >
+                        {displayStatus}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

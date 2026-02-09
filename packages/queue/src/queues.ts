@@ -13,6 +13,8 @@ import {
   PRODUCT_JOBS,
   SHIPPING_JOBS,
   RECEIVING_JOBS,
+  CYCLE_COUNT_JOBS,
+  PACKING_IMAGE_JOBS, // Add this
   type CreateLabelJobData,
   type SyncShopifyFulfillmentJobData,
   type VoidLabelJobData,
@@ -28,21 +30,30 @@ import {
   type ImportProductsJobData,
   type ImportSingleProductJobData,
   type SyncShopifyProductsJobData,
-  SyncInventoryPlannerJobData,
+  type SyncInventoryPlannerJobData,
   INVENTORY_PLANNER_JOBS,
   FULFILLMENT_JOBS,
-  CreateShippingLabelJobData,
-  ShopifyFulfillJobData,
+  type CreateShippingLabelJobData,
+  type ShopifyFulfillJobData,
   type SyncPurchaseOrdersJobData,
   type ProcessApprovalJobData,
   type NotifyApproversJobData,
   type AutoApproveSessionJobData,
   type GenerateBarcodeLabelsJobData,
-  CYCLE_COUNT_JOBS,
   type ProcessCycleCountApprovalJobData,
   type GenerateCycleCountTasksJobData,
   type NotifyCycleCountReviewersJobData,
   type GenerateVarianceReportJobData,
+  // Packing Images - Add these
+  type ProcessPackingImageJobData,
+  type DeletePackingImageJobData,
+  type GenerateThumbnailJobData,
+  type CleanupOrphanedImagesJobData,
+  PICK_BIN_JOBS,
+  type PrintBinLabelJobData,
+  type NotifyPackStationJobData,
+  type HandleShortPickJobData,
+  type RecordPickMetricsJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -58,6 +69,67 @@ let fulfillmentQueue: Queue | null = null;
 let shippingQueue: Queue | null = null;
 let receivingQueue: Queue | null = null;
 let cycleCountQueue: Queue | null = null;
+let packingImagesQueue: Queue | null = null;
+let pickBinQueue: Queue | null = null;
+
+export function getPickBinQueue(): Queue {
+  if (!pickBinQueue) {
+    pickBinQueue = new Queue(QUEUES.PICK_BIN, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: { type: "exponential", delay: 1000 },
+        removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+        removeOnFail: { count: 1000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return pickBinQueue;
+}
+
+export async function enqueuePrintBinLabel(
+  data: PrintBinLabelJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.PRINT_LABEL, data, {
+    priority: 1, // High - picker waiting
+    ...options,
+  });
+}
+
+export async function enqueueNotifyPackStation(
+  data: NotifyPackStationJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.NOTIFY_PACK_STATION, data, {
+    priority: 2,
+    ...options,
+  });
+}
+
+export async function enqueueHandleShortPick(
+  data: HandleShortPickJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.HANDLE_SHORT_PICK, data, {
+    priority: 5,
+    ...options,
+  });
+}
+
+export async function enqueueRecordPickMetrics(
+  data: RecordPickMetricsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.RECORD_METRICS, data, {
+    priority: 10, // Lowest - analytics
+    ...options,
+  });
+}
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -227,6 +299,80 @@ export function getCycleCountQueue(): Queue {
     });
   }
   return cycleCountQueue;
+}
+
+// ============================================================================
+// Packing Images Queue - Add this section
+// ============================================================================
+
+export function getPackingImagesQueue(): Queue {
+  if (!packingImagesQueue) {
+    packingImagesQueue = new Queue(QUEUES.PACKING_IMAGES, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: { type: "exponential", delay: 1000 },
+        removeOnComplete: 100,
+        removeOnFail: 50,
+      },
+    });
+  }
+  return packingImagesQueue;
+}
+
+export async function enqueueProcessPackingImage(
+  data: ProcessPackingImageJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPackingImagesQueue();
+  return queue.add(PACKING_IMAGE_JOBS.PROCESS_IMAGE, data, {
+    priority: 5,
+    ...options,
+  });
+}
+
+export async function enqueueDeletePackingImage(
+  data: DeletePackingImageJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPackingImagesQueue();
+  return queue.add(PACKING_IMAGE_JOBS.DELETE_IMAGE, data, {
+    priority: 10,
+    ...options,
+  });
+}
+
+export async function enqueueGenerateThumbnail(
+  data: GenerateThumbnailJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPackingImagesQueue();
+  return queue.add(PACKING_IMAGE_JOBS.GENERATE_THUMBNAIL, data, {
+    priority: 15,
+    ...options,
+  });
+}
+
+export async function enqueueCleanupOrphanedImages(
+  data: CleanupOrphanedImagesJobData = {},
+  options?: JobsOptions,
+) {
+  const queue = getPackingImagesQueue();
+  return queue.add(PACKING_IMAGE_JOBS.CLEANUP_ORPHANED, data, {
+    priority: 20,
+    ...options,
+  });
+}
+
+export async function getPackingImagesQueueStats() {
+  const queue = getPackingImagesQueue();
+  const [waiting, active, completed, failed] = await Promise.all([
+    queue.getWaitingCount(),
+    queue.getActiveCount(),
+    queue.getCompletedCount(),
+    queue.getFailedCount(),
+  ]);
+  return { waiting, active, completed, failed };
 }
 
 // ============================================================================
@@ -627,6 +773,16 @@ export async function closeQueues() {
   if (cycleCountQueue) {
     await cycleCountQueue.close();
     cycleCountQueue = null;
+  }
+
+  if (packingImagesQueue) {
+    await packingImagesQueue.close();
+    packingImagesQueue = null;
+  }
+
+  if (pickBinQueue) {
+    await pickBinQueue.close();
+    pickBinQueue = null;
   }
 }
 

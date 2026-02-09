@@ -14,13 +14,88 @@ export type DomainEvent =
   | InventoryReleasedEvent
   | InventoryPickedEvent
   | OrderStatusChangedEvent
-  | PickStepCompletedEvent;
+  | PickStepCompletedEvent
+  | PickBinCreatedEvent
+  | PickBinStagedEvent
+  | PickBinItemVerifiedEvent
+  | PickBinCompletedEvent
+  | ShortPickDetectedEvent;
 
 // Base event interface
 interface BaseEvent {
   id: string;
   timestamp: Date;
   correlationId?: string;
+}
+
+// Pick Bin events
+export interface PickBinCreatedEvent extends BaseEvent {
+  type: "PICKBIN_CREATED";
+  payload: {
+    binId: string;
+    binNumber: string;
+    barcode: string;
+    orderId: string;
+    orderNumber: string;
+    pickTaskId: string;
+    itemCount: number;
+    totalQuantity: number;
+    pickedBy?: string;
+  };
+}
+
+export interface PickBinStagedEvent extends BaseEvent {
+  type: "PICKBIN_STAGED";
+  payload: {
+    binId: string;
+    binNumber: string;
+    orderId: string;
+    orderNumber: string;
+    priority: string;
+    itemCount: number;
+  };
+}
+
+export interface PickBinItemVerifiedEvent extends BaseEvent {
+  type: "PICKBIN_ITEM_VERIFIED";
+  payload: {
+    binId: string;
+    binItemId: string;
+    sku: string;
+    verifiedQty: number;
+    totalQty: number;
+    progress: string; // "3/5"
+    allVerified: boolean;
+    verifiedBy?: string;
+  };
+}
+
+export interface PickBinCompletedEvent extends BaseEvent {
+  type: "PICKBIN_COMPLETED";
+  payload: {
+    binId: string;
+    binNumber: string;
+    orderId: string;
+    orderNumber: string;
+    packedBy?: string;
+    itemCount: number;
+    verificationDurationSeconds?: number;
+  };
+}
+
+export interface ShortPickDetectedEvent extends BaseEvent {
+  type: "SHORT_PICK_DETECTED";
+  payload: {
+    taskItemId: string;
+    orderId: string;
+    orderNumber: string;
+    sku: string;
+    locationName: string;
+    expectedQty: number;
+    actualQty: number;
+    shortage: number;
+    pickerId?: string;
+  };
 }
 
 // Picklist events

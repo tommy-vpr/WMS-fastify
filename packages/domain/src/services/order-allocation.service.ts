@@ -1,7 +1,7 @@
 /**
  * Order Allocation Service
  * Handles inventory allocation for orders
- * Determines order status based on inventory availability
+ * Allocation is a logical reservation ONLY
  */
 
 import { prisma } from "@wms/db";
@@ -26,8 +26,6 @@ export interface OrderAllocationDetail {
   sku: string;
   quantityRequired: number;
   quantityAllocated: number;
-  inventoryUnitId?: string;
-  locationId?: string;
   status: "FULL" | "PARTIAL" | "NONE" | "UNMATCHED";
 }
 
@@ -45,13 +43,10 @@ export interface AllocateOrdersResult {
 }
 
 // ============================================================================
-// Main Service
+// Service
 // ============================================================================
 
 export class OrderAllocationService {
-  /**
-   * Allocate inventory for multiple orders
-   */
   async allocateOrders(
     request: AllocateOrdersRequest,
   ): Promise<AllocateOrdersResult> {
@@ -67,29 +62,26 @@ export class OrderAllocationService {
 
     for (const orderId of orderIds) {
       try {
-        const allocationResult = await this.allocateOrder(
-          orderId,
-          allowPartial,
-        );
+        const allocation = await this.allocateOrder(orderId, allowPartial);
 
-        switch (allocationResult.status) {
+        switch (allocation.status) {
           case "ALLOCATED":
-            result.fullyAllocated.push(allocationResult);
+            result.fullyAllocated.push(allocation);
             break;
           case "PARTIALLY_ALLOCATED":
-            result.partiallyAllocated.push(allocationResult);
+            result.partiallyAllocated.push(allocation);
             break;
           case "BACKORDERED":
-            result.backordered.push(allocationResult);
+            result.backordered.push(allocation);
             break;
           case "ON_HOLD":
-            result.onHold.push(allocationResult);
+            result.onHold.push(allocation);
             break;
         }
-      } catch (error) {
+      } catch (err) {
         result.errors.push({
           orderId,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: err instanceof Error ? err.message : "Unknown error",
         });
       }
     }
@@ -97,27 +89,25 @@ export class OrderAllocationService {
     return result;
   }
 
-  /**
-   * Allocate inventory for a single order
-   */
+  // ============================================================================
+  // Allocate single order
+  // ============================================================================
+
   async allocateOrder(
     orderId: string,
-    allowPartial: boolean = true,
+    allowPartial = true,
   ): Promise<OrderAllocationResult> {
-    return await prisma.$transaction(async (tx) => {
-      // 1. Get order with items
+    return prisma.$transaction(async (tx) => {
+      // 1. Load order
       const order = await tx.order.findUnique({
         where: { id: orderId },
-        include: {
-          items: true,
-        },
+        include: { items: true },
       });
 
       if (!order) {
         throw new Error(`Order not found: ${orderId}`);
       }
 
-      // 2. Check if order can be allocated
       if (
         ![
           "PENDING",
@@ -127,22 +117,22 @@ export class OrderAllocationService {
         ].includes(order.status)
       ) {
         throw new Error(
-          `Order ${order.orderNumber} cannot be allocated (status: ${order.status})`,
+          `Order ${order.orderNumber} cannot be allocated (status ${order.status})`,
         );
       }
 
-      // 3. Check for unmatched items first
-      const unmatchedItems = order.items.filter((item) => !item.matched);
+      // 2. Unmatched handling
+      const unmatchedItems = order.items.filter((i) => !i.matched);
+
       if (
         unmatchedItems.length > 0 &&
         unmatchedItems.length === order.items.length
       ) {
-        // All items unmatched - put on hold
         await tx.order.update({
           where: { id: orderId },
           data: {
             status: "ON_HOLD",
-            holdReason: `All ${unmatchedItems.length} item(s) could not be matched to products`,
+            holdReason: `All ${unmatchedItems.length} items unmatched`,
             holdAt: new Date(),
           },
         });
@@ -155,23 +145,22 @@ export class OrderAllocationService {
           allocatedItems: 0,
           backorderedItems: 0,
           unmatchedItems: unmatchedItems.length,
-          allocations: order.items.map((item) => ({
-            orderItemId: item.id,
-            sku: item.sku,
-            quantityRequired: item.quantity,
+          allocations: order.items.map((i) => ({
+            orderItemId: i.id,
+            sku: i.sku,
+            quantityRequired: i.quantity,
             quantityAllocated: 0,
-            status: "UNMATCHED" as const,
+            status: "UNMATCHED",
           })),
         };
       }
 
-      // 4. Allocate each matched item
+      // 3. Allocate items
       const allocations: OrderAllocationDetail[] = [];
       let totalAllocated = 0;
       let totalBackordered = 0;
 
       for (const item of order.items) {
-        // Skip unmatched items
         if (!item.matched || !item.productVariantId) {
           allocations.push({
             orderItemId: item.id,
@@ -183,124 +172,110 @@ export class OrderAllocationService {
           continue;
         }
 
-        const requiredQty = item.quantity - item.quantityAllocated;
-        if (requiredQty <= 0) {
-          // Already fully allocated
-          allocations.push({
-            orderItemId: item.id,
-            sku: item.sku,
-            quantityRequired: item.quantity,
-            quantityAllocated: item.quantityAllocated,
-            status: "FULL",
-          });
-          totalAllocated += item.quantityAllocated;
-          continue;
-        }
-
-        // Find available inventory (FIFO/FEFO - oldest/expiring first)
-        const availableInventory = await tx.inventoryUnit.findMany({
+        // 🔒 compute existing allocation from source of truth
+        const existing = await tx.allocation.aggregate({
           where: {
-            productVariantId: item.productVariantId,
-            status: "AVAILABLE",
-            quantity: { gt: 0 },
+            orderItemId: item.id,
+            status: { in: ["ALLOCATED", "PARTIALLY_PICKED", "PICKED"] },
           },
-          orderBy: [
-            { expiryDate: "asc" }, // FEFO - expiring first
-            { receivedAt: "asc" }, // FIFO - received first
-          ],
-          include: {
-            location: true,
-          },
+          _sum: { quantity: true },
         });
 
-        let remainingToAllocate = requiredQty;
-        let allocatedForItem = 0;
+        const alreadyAllocated = existing._sum.quantity ?? 0;
+        const requiredQty = Math.max(0, item.quantity - alreadyAllocated);
 
-        for (const inv of availableInventory) {
-          if (remainingToAllocate <= 0) break;
-          if (!inv.location?.isPickable) continue;
+        let remaining = requiredQty;
+        let newlyAllocated = 0;
 
-          const allocateQty = Math.min(inv.quantity, remainingToAllocate);
-
-          // Create allocation record
-          await tx.allocation.create({
-            data: {
-              inventoryUnitId: inv.id,
-              orderId: order.id,
-              orderItemId: item.id,
+        if (remaining > 0) {
+          const inventory = await tx.inventoryUnit.findMany({
+            where: {
               productVariantId: item.productVariantId,
-              locationId: inv.locationId,
-              quantity: allocateQty,
-              lotNumber: inv.lotNumber,
-              status: "ALLOCATED",
+              status: "AVAILABLE",
+            },
+            orderBy: [{ expiryDate: "asc" }, { receivedAt: "asc" }],
+            include: {
+              location: true,
+              allocations: {
+                where: {
+                  status: { in: ["ALLOCATED", "PARTIALLY_PICKED", "PICKED"] },
+                },
+              },
             },
           });
 
-          // Update inventory status
-          await tx.inventoryUnit.update({
-            where: { id: inv.id },
-            data: {
-              quantity: { decrement: allocateQty },
-              status:
-                inv.quantity - allocateQty === 0 ? "RESERVED" : "AVAILABLE",
-            },
-          });
+          for (const inv of inventory) {
+            if (remaining <= 0) break;
+            if (!inv.location?.isPickable) continue;
 
-          remainingToAllocate -= allocateQty;
-          allocatedForItem += allocateQty;
+            const reservedQty = inv.allocations.reduce(
+              (sum, a) => sum + a.quantity,
+              0,
+            );
 
-          // Track allocation detail
-          allocations.push({
-            orderItemId: item.id,
-            sku: item.sku,
-            quantityRequired: item.quantity,
-            quantityAllocated: allocateQty,
-            inventoryUnitId: inv.id,
-            locationId: inv.locationId,
-            status: allocateQty === requiredQty ? "FULL" : "PARTIAL",
-          });
+            const freeQty = inv.quantity - reservedQty;
+            if (freeQty <= 0) continue;
+
+            const allocateQty = Math.min(freeQty, remaining);
+
+            await tx.allocation.create({
+              data: {
+                inventoryUnitId: inv.id,
+                orderId: order.id,
+                orderItemId: item.id,
+                productVariantId: item.productVariantId,
+                locationId: inv.locationId,
+                quantity: allocateQty,
+                lotNumber: inv.lotNumber,
+                status: "ALLOCATED",
+              },
+            });
+
+            remaining -= allocateQty;
+            newlyAllocated += allocateQty;
+          }
         }
 
-        // Update order item allocated quantity
+        const finalAllocated = alreadyAllocated + newlyAllocated;
+        totalAllocated += finalAllocated;
+
+        if (remaining > 0) {
+          totalBackordered += remaining;
+        }
+
+        const itemStatus: OrderAllocationDetail["status"] =
+          finalAllocated >= item.quantity
+            ? "FULL"
+            : finalAllocated > 0
+              ? "PARTIAL"
+              : "NONE";
+
+        allocations.push({
+          orderItemId: item.id,
+          sku: item.sku,
+          quantityRequired: item.quantity,
+          quantityAllocated: finalAllocated,
+          status: itemStatus,
+        });
+
+        // overwrite cache
         await tx.orderItem.update({
           where: { id: item.id },
-          data: {
-            quantityAllocated: { increment: allocatedForItem },
-          },
+          data: { quantityAllocated: finalAllocated },
         });
-
-        totalAllocated += allocatedForItem;
-
-        if (remainingToAllocate > 0) {
-          totalBackordered += remainingToAllocate;
-          console.log(
-            `[Allocation] Insufficient inventory for ${item.sku}: need ${requiredQty}, allocated ${allocatedForItem}`,
-          );
-        }
       }
 
-      // 5. Determine final order status
+      // 4. Determine order status
       const matchedItems = order.items.filter((i) => i.matched);
       const totalRequired = matchedItems.reduce(
         (sum, i) => sum + i.quantity,
         0,
       );
 
-      let newStatus:
-        | "ALLOCATED"
-        | "PARTIALLY_ALLOCATED"
-        | "BACKORDERED"
-        | "ON_HOLD";
+      let newStatus: OrderAllocationResult["status"];
 
       if (unmatchedItems.length > 0) {
-        // Has some unmatched items
-        if (totalAllocated === 0) {
-          newStatus = "ON_HOLD";
-        } else if (totalAllocated < totalRequired) {
-          newStatus = "PARTIALLY_ALLOCATED";
-        } else {
-          newStatus = "PARTIALLY_ALLOCATED"; // Fully allocated matched items, but has unmatched
-        }
+        newStatus = totalAllocated === 0 ? "ON_HOLD" : "PARTIALLY_ALLOCATED";
       } else if (totalAllocated === 0) {
         newStatus = "BACKORDERED";
       } else if (totalAllocated < totalRequired) {
@@ -309,21 +284,16 @@ export class OrderAllocationService {
         newStatus = "ALLOCATED";
       }
 
-      // 6. Update order status
       await tx.order.update({
         where: { id: orderId },
         data: {
           status: newStatus,
           ...(newStatus === "ON_HOLD" && {
-            holdReason: `${unmatchedItems.length} unmatched item(s), ${totalBackordered} backordered`,
+            holdReason: `${unmatchedItems.length} unmatched, ${totalBackordered} backordered`,
             holdAt: new Date(),
           }),
         },
       });
-
-      console.log(
-        `[Allocation] Order ${order.orderNumber}: ${newStatus} (${totalAllocated}/${totalRequired} allocated, ${totalBackordered} backordered, ${unmatchedItems.length} unmatched)`,
-      );
 
       return {
         orderId,
@@ -338,29 +308,20 @@ export class OrderAllocationService {
     });
   }
 
-  /**
-   * Release allocations for an order (e.g., on cancellation)
-   */
+  // ============================================================================
+  // Release allocations
+  // ============================================================================
+
   async releaseAllocations(orderId: string): Promise<void> {
     await prisma.$transaction(async (tx) => {
       const allocations = await tx.allocation.findMany({
         where: {
           orderId,
-          status: { in: ["PENDING", "ALLOCATED"] },
+          status: { in: ["ALLOCATED", "PARTIALLY_PICKED", "PICKED"] },
         },
       });
 
       for (const alloc of allocations) {
-        // Return inventory
-        await tx.inventoryUnit.update({
-          where: { id: alloc.inventoryUnitId },
-          data: {
-            quantity: { increment: alloc.quantity },
-            status: "AVAILABLE",
-          },
-        });
-
-        // Update allocation status
         await tx.allocation.update({
           where: { id: alloc.id },
           data: {
@@ -369,52 +330,24 @@ export class OrderAllocationService {
           },
         });
 
-        // Update order item
         if (alloc.orderItemId) {
+          const sum = await tx.allocation.aggregate({
+            where: {
+              orderItemId: alloc.orderItemId,
+              status: { in: ["ALLOCATED", "PARTIALLY_PICKED", "PICKED"] },
+            },
+            _sum: { quantity: true },
+          });
+
           await tx.orderItem.update({
             where: { id: alloc.orderItemId },
-            data: {
-              quantityAllocated: { decrement: alloc.quantity },
-            },
+            data: { quantityAllocated: sum._sum.quantity ?? 0 },
           });
         }
       }
-
-      console.log(
-        `[Allocation] Released ${allocations.length} allocations for order ${orderId}`,
-      );
     });
-  }
-
-  /**
-   * Check for backordered orders when inventory is received
-   */
-  async checkBackorderedOrders(productVariantId: string): Promise<string[]> {
-    // Find orders waiting for this product
-    const waitingItems = await prisma.orderItem.findMany({
-      where: {
-        productVariantId,
-        matched: true,
-        order: {
-          status: { in: ["BACKORDERED", "PARTIALLY_ALLOCATED"] },
-        },
-      },
-      include: {
-        order: true,
-      },
-    });
-
-    const orderIds = [...new Set(waitingItems.map((i) => i.orderId))];
-
-    if (orderIds.length > 0) {
-      console.log(
-        `[Allocation] Found ${orderIds.length} orders waiting for product ${productVariantId}`,
-      );
-    }
-
-    return orderIds;
   }
 }
 
-// Singleton export
+// Singleton
 export const orderAllocationService = new OrderAllocationService();

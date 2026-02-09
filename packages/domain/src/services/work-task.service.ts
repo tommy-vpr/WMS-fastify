@@ -60,7 +60,7 @@ export interface WorkTask {
 export interface TaskItem {
   id: string;
   taskId: string;
-  orderId: string;
+  orderId: string | null;
   orderItemId: string | null;
   productVariantId: string | null;
   locationId: string | null;

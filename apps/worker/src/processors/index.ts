@@ -7,4 +7,5 @@ export { processShippingJob } from "./shipping.processor.js";
 export { ReceivingService } from "./receiving.processor.js";
 export { processCycleCountJob } from "./cycle-count.processor.js";
 export { processPackingImageJob } from "./packing-image.processor.js";
+export { processPickBinJob } from "./pick-bin.processor.js";
 export * from "./product.processor.js";

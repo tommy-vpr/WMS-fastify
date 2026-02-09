@@ -49,6 +49,11 @@ import {
   type DeletePackingImageJobData,
   type GenerateThumbnailJobData,
   type CleanupOrphanedImagesJobData,
+  PICK_BIN_JOBS,
+  type PrintBinLabelJobData,
+  type NotifyPackStationJobData,
+  type HandleShortPickJobData,
+  type RecordPickMetricsJobData,
 } from "./types.js";
 
 // ============================================================================
@@ -65,6 +70,66 @@ let shippingQueue: Queue | null = null;
 let receivingQueue: Queue | null = null;
 let cycleCountQueue: Queue | null = null;
 let packingImagesQueue: Queue | null = null;
+let pickBinQueue: Queue | null = null;
+
+export function getPickBinQueue(): Queue {
+  if (!pickBinQueue) {
+    pickBinQueue = new Queue(QUEUES.PICK_BIN, {
+      connection: getConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: { type: "exponential", delay: 1000 },
+        removeOnComplete: { count: 500, age: 24 * 60 * 60 },
+        removeOnFail: { count: 1000, age: 7 * 24 * 60 * 60 },
+      },
+    });
+  }
+  return pickBinQueue;
+}
+
+export async function enqueuePrintBinLabel(
+  data: PrintBinLabelJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.PRINT_LABEL, data, {
+    priority: 1, // High - picker waiting
+    ...options,
+  });
+}
+
+export async function enqueueNotifyPackStation(
+  data: NotifyPackStationJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.NOTIFY_PACK_STATION, data, {
+    priority: 2,
+    ...options,
+  });
+}
+
+export async function enqueueHandleShortPick(
+  data: HandleShortPickJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.HANDLE_SHORT_PICK, data, {
+    priority: 5,
+    ...options,
+  });
+}
+
+export async function enqueueRecordPickMetrics(
+  data: RecordPickMetricsJobData,
+  options?: JobsOptions,
+) {
+  const queue = getPickBinQueue();
+  return queue.add(PICK_BIN_JOBS.RECORD_METRICS, data, {
+    priority: 10, // Lowest - analytics
+    ...options,
+  });
+}
 
 export function getWorkTaskQueue(): Queue {
   if (!workTaskQueue) {
@@ -713,6 +778,11 @@ export async function closeQueues() {
   if (packingImagesQueue) {
     await packingImagesQueue.close();
     packingImagesQueue = null;
+  }
+
+  if (pickBinQueue) {
+    await pickBinQueue.close();
+    pickBinQueue = null;
   }
 }
 

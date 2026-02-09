@@ -129,6 +129,46 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     },
   );
 
+  // Complete packing from bin (called from pack station)
+  app.post(
+    "/:orderId/pack/complete-from-bin",
+    async (
+      request: FastifyRequest<{
+        Params: { orderId: string };
+        Body: {
+          binId: string;
+          weight: number;
+          weightUnit?: string;
+          dimensions?: {
+            length: number;
+            width: number;
+            height: number;
+            unit: string;
+          };
+        };
+      }>,
+      reply: FastifyReply,
+    ) => {
+      const { orderId } = request.params;
+      const { binId, weight, weightUnit, dimensions } = request.body as any;
+      const userId = (request as any).user?.id;
+
+      try {
+        // This creates the pack task and completes it in one step
+        // since bin verification already happened
+        const result = await service.completePackingFromBin(orderId, binId, {
+          weight,
+          weightUnit,
+          dimensions,
+          userId,
+        });
+        return reply.send(result);
+      } catch (err: any) {
+        return reply.status(400).send({ error: err.message });
+      }
+    },
+  );
+
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pack
   // Generate a packing verification list
@@ -226,82 +266,81 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     },
   );
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // POST /api/fulfillment/:orderId/ship
-  // Create shipping label via ShipEngine and mark as shipped
-  //
-  // NOTE: This expects you to call ShipEngine BEFORE this endpoint and
-  // pass the label data, OR you can integrate your existing ShipEngine
-  // service inline. See the comment below.
-  // ─────────────────────────────────────────────────────────────────────────
+  // Add to fulfillment.routes.ts
 
-  // app.post(
-  //   "/:orderId/ship",
-  //   async (
-  //     request: FastifyRequest<{
-  //       Params: { orderId: string };
-  //       Body: {
-  //         // If you're calling ShipEngine from the frontend / existing flow,
-  //         // pass the label data directly:
-  //         carrier: string;
-  //         service: string;
-  //         trackingNumber: string;
-  //         trackingUrl?: string;
-  //         rate: number;
-  //         estimatedDays?: number;
-  //         labelUrl?: string;
-  //         labelFormat?: string;
-  //         weight?: number;
-  //         weightUnit?: string;
-  //         dimensions?: {
-  //           length: number;
-  //           width: number;
-  //           height: number;
-  //           unit: string;
-  //         };
-  //         shipEngineId?: string;
-  //         shipmentId?: string;
-  //         rawResponse?: Record<string, unknown>;
-  //       };
-  //     }>,
-  //     reply: FastifyReply,
-  //   ) => {
-  //     const { orderId } = request.params;
-  //     const body = request.body as any;
-  //     const userId = (request as any).user?.id;
+  // ─────────────────────────────────────────────────────────────────────────────
+  // GET /api/fulfillment/bin/:barcode
+  // Lookup order by scanning bin barcode (for pack station)
+  // ─────────────────────────────────────────────────────────────────────────────
 
-  //     if (
-  //       !body.carrier ||
-  //       !body.service ||
-  //       !body.trackingNumber ||
-  //       body.rate == null
-  //     ) {
-  //       return reply.status(400).send({
-  //         error: "carrier, service, trackingNumber, and rate are required",
-  //       });
-  //     }
+  app.get(
+    "/bin/:barcode",
+    async (
+      request: FastifyRequest<{ Params: { barcode: string } }>,
+      reply: FastifyReply,
+    ) => {
+      const { barcode } = request.params;
 
-  //     try {
-  //       // ─── OPTION: Call ShipEngine here instead of expecting pre-built data ───
-  //       // If you want to call ShipEngine from THIS endpoint:
-  //       //
-  //       // const labelData = await shipEngineService.createLabel(orderId, {
-  //       //   carrier: body.carrier,
-  //       //   service: body.service,
-  //       //   weight: body.weight,
-  //       //   dimensions: body.dimensions,
-  //       //   shippingAddress: order.shippingAddress,
-  //       // });
-  //       //
-  //       // Then pass labelData to createShippingLabel instead of body.
-  //       // ────────────────────────────────────────────────────────────────────────
+      try {
+        const result = await service.getOrderByBinBarcode(barcode);
+        return reply.send(result);
+      } catch (err: any) {
+        return reply.status(404).send({ error: err.message });
+      }
+    },
+  );
 
-  //       const result = await service.createShippingLabel(orderId, body, userId);
-  //       return reply.status(201).send(result);
-  //     } catch (err: any) {
-  //       const status = err.message.includes("not found") ? 404 : 400;
-  //       return reply.status(status).send({ error: err.message });
-  //     }
-  //   },
-  // );
+  // ─────────────────────────────────────────────────────────────────────────────
+  // POST /api/fulfillment/bin/:binId/verify
+  // Verify an item in the bin by scanning its UPC
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  app.post(
+    "/bin/:binId/verify",
+    async (
+      request: FastifyRequest<{
+        Params: { binId: string };
+        Body: { barcode: string };
+      }>,
+      reply: FastifyReply,
+    ) => {
+      const { binId } = request.params;
+      const { barcode } = request.body as any;
+      const userId = (request as any).user?.id;
+
+      if (!barcode) {
+        return reply.status(400).send({ error: "barcode is required" });
+      }
+
+      try {
+        const result = await service.verifyBinItem(binId, barcode, userId);
+        return reply.send(result);
+      } catch (err: any) {
+        return reply.status(400).send({ error: err.message });
+      }
+    },
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // POST /api/fulfillment/bin/:binId/complete
+  // Mark bin as fully verified/packed
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  app.post(
+    "/bin/:binId/complete",
+    async (
+      request: FastifyRequest<{ Params: { binId: string } }>,
+      reply: FastifyReply,
+    ) => {
+      const { binId } = request.params;
+      const userId = (request as any).user?.id;
+
+      try {
+        await service.completeBin(binId, userId);
+        return reply.send({ success: true });
+      } catch (err: any) {
+        return reply.status(400).send({ error: err.message });
+      }
+    },
+  );
 };

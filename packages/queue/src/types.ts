@@ -18,9 +18,75 @@ export const QUEUES = {
   RECEIVING: "receiving",
   CYCLE_COUNT: "cycle-count",
   PACKING_IMAGES: "packing-images",
+  PICK_BIN: "pick-bin",
 } as const;
 
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
+
+// ===========================================================================
+// PICK BIN
+// ===========================================================================
+
+export const PICK_BIN_JOBS = {
+  PRINT_LABEL: "pickbin:print-label",
+  NOTIFY_PACK_STATION: "pickbin:notify-pack-station",
+  HANDLE_SHORT_PICK: "pickbin:handle-short-pick",
+  RECORD_METRICS: "pickbin:record-metrics",
+} as const;
+
+export interface PrintBinLabelJobData {
+  binId: string;
+  binNumber: string;
+  barcode: string;
+  orderId: string;
+  orderNumber: string;
+  itemCount: number;
+  totalQuantity: number;
+  printerId?: string;
+  copies?: number;
+}
+
+export interface NotifyPackStationJobData {
+  binId: string;
+  binNumber: string;
+  orderId: string;
+  orderNumber: string;
+  priority: string;
+  itemCount: number;
+  totalQuantity: number;
+}
+
+export interface HandleShortPickJobData {
+  taskItemId: string;
+  orderId: string;
+  orderNumber: string;
+  productVariantId: string;
+  sku: string;
+  locationId: string;
+  locationName: string;
+  expectedQty: number;
+  actualQty: number;
+  userId?: string;
+  reason?: string;
+}
+
+export interface RecordPickMetricsJobData {
+  taskId: string;
+  taskNumber: string;
+  orderId: string;
+  orderNumber: string;
+  userId?: string;
+  itemCount: number;
+  startedAt: string;
+  completedAt: string;
+  shortCount: number;
+}
+
+export type PickBinJobData =
+  | PrintBinLabelJobData
+  | NotifyPackStationJobData
+  | HandleShortPickJobData
+  | RecordPickMetricsJobData;
 
 // ============================================================================
 // Packing Image Jobs - Add this section

@@ -28,6 +28,10 @@ import {
   type InventoryStatus,
 } from "@wms/domain";
 
+type InventoryUnitWithAvailability = InventoryUnitWithDetails & {
+  availableQuantity: number;
+};
+
 // ============================================================================
 // Repository Adapters
 // ============================================================================
@@ -68,8 +72,8 @@ const inventoryRepoAdapter: InventoryRepository = {
   },
 
   async findAvailableByProductVariant(
-    productVariantId,
-  ): Promise<InventoryUnitWithDetails[]> {
+    productVariantId: string,
+  ): Promise<InventoryUnitWithAvailability[]> {
     const units = await prisma.inventoryUnit.findMany({
       where: { productVariantId },
       include: {
@@ -98,7 +102,9 @@ const inventoryRepoAdapter: InventoryRepository = {
       .filter((u) => u.availableQuantity > 0);
   },
 
-  async findAvailableBySku(sku): Promise<InventoryUnitWithDetails[]> {
+  async findAvailableBySku(
+    sku: string,
+  ): Promise<InventoryUnitWithAvailability[]> {
     const units = await prisma.inventoryUnit.findMany({
       where: {
         productVariant: { sku },

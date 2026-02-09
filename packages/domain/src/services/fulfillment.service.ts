@@ -231,6 +231,26 @@ export interface FulfillmentStatusResult {
   shipping: ShippingLabelDetail | null;
   events: FulfillmentEventDetail[];
   scanLookup: ScanLookup;
+  pickBin: {
+    id: string;
+    binNumber: string;
+    barcode: string;
+    status: string;
+    items: Array<{
+      id: string;
+      sku: string;
+      quantity: number;
+      verifiedQty: number;
+      productVariant: {
+        id: string;
+        sku: string;
+        upc: string | null;
+        barcode: string | null;
+        name: string;
+        imageUrl: string | null;
+      };
+    }>;
+  } | null;
 }
 
 // =============================================================================
@@ -686,6 +706,34 @@ export class FulfillmentService {
           { correlationId, userId: opts?.userId },
         ),
       );
+
+      // Create pick bin for staging
+      const bin = await this.createPickBin(
+        taskItem.orderId!,
+        taskItem.taskId,
+        opts?.userId,
+      );
+
+      // Include bin info in the completed event
+      await emitEvent(
+        this.prisma,
+        createEventPayload(
+          EVENT_TYPES.PICKLIST_COMPLETED,
+          taskItem.orderId ?? undefined,
+          {
+            taskId: taskItem.taskId,
+            taskNumber: taskItem.task.taskNumber,
+            completedItems: result.completedCount,
+            shortItems: result.shortCount,
+            bin: {
+              id: bin.id,
+              binNumber: bin.binNumber,
+              barcode: bin.barcode,
+            },
+          },
+          { correlationId, userId: opts?.userId },
+        ),
+      );
     }
 
     return {
@@ -840,6 +888,338 @@ export class FulfillmentService {
     );
 
     return { task: task as unknown as WorkTaskWithItems };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Create Pick Bin (called when picking completes)
+  // ─────────────────────────────────────────────────────────────────────────────
+  private generateBinBarcode(): string {
+    // Format: BIN-YYYYMMDD-XXXXX (easy to scan, includes date for sorting)
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const random = Math.random().toString(36).substring(2, 7).toUpperCase();
+    return `BIN-${date}-${random}`;
+  }
+
+  private async generateBinNumber(): Promise<string> {
+    const count = await this.prisma.pickBin.count();
+    return `BIN-${String(count + 1).padStart(6, "0")}`;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Create Pick Bin (called when picking completes)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async createPickBin(
+    orderId: string,
+    pickTaskId: string,
+    userId?: string,
+  ): Promise<{
+    id: string;
+    binNumber: string;
+    barcode: string;
+    items: Array<{ sku: string; quantity: number }>;
+  }> {
+    // Get completed pick task items
+    const pickTask = await this.prisma.workTask.findUnique({
+      where: { id: pickTaskId },
+      include: {
+        taskItems: {
+          where: { status: "COMPLETED" },
+          include: {
+            productVariant: {
+              select: { id: true, sku: true, name: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!pickTask) {
+      throw new Error(`Pick task ${pickTaskId} not found`);
+    }
+
+    const binNumber = await this.generateBinNumber();
+    const barcode = this.generateBinBarcode();
+
+    // Aggregate items by SKU (in case same product from multiple locations)
+    const itemMap = new Map<
+      string,
+      { productVariantId: string; sku: string; quantity: number }
+    >();
+
+    for (const ti of pickTask.taskItems) {
+      if (!ti.productVariantId || !ti.productVariant) continue;
+
+      const existing = itemMap.get(ti.productVariantId);
+      if (existing) {
+        existing.quantity += ti.quantityCompleted;
+      } else {
+        itemMap.set(ti.productVariantId, {
+          productVariantId: ti.productVariantId,
+          sku: ti.productVariant.sku,
+          quantity: ti.quantityCompleted,
+        });
+      }
+    }
+
+    const items = Array.from(itemMap.values());
+
+    // Create bin with items
+    const bin = await this.prisma.pickBin.create({
+      data: {
+        binNumber,
+        barcode,
+        orderId,
+        pickTaskId,
+        status: "STAGED",
+        pickedBy: userId,
+        pickedAt: new Date(),
+        items: {
+          create: items.map((item) => ({
+            productVariantId: item.productVariantId,
+            sku: item.sku,
+            quantity: item.quantity,
+          })),
+        },
+      },
+      include: {
+        items: true,
+      },
+    });
+
+    // Emit event
+    await emitEvent(
+      this.prisma,
+      createEventPayload(
+        "pickbin:created",
+        orderId,
+        {
+          binId: bin.id,
+          binNumber: bin.binNumber,
+          barcode: bin.barcode,
+          itemCount: items.length,
+          totalQuantity: items.reduce((sum, i) => sum + i.quantity, 0),
+        },
+        { userId },
+      ),
+    );
+
+    return {
+      id: bin.id,
+      binNumber: bin.binNumber,
+      barcode: bin.barcode,
+      items: items.map((i) => ({ sku: i.sku, quantity: i.quantity })),
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Lookup Order by Bin Barcode (for pack station)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async getOrderByBinBarcode(barcode: string): Promise<{
+    orderId: string;
+    orderNumber: string;
+    bin: {
+      id: string;
+      binNumber: string;
+      barcode: string;
+      status: string;
+      items: Array<{
+        id: string;
+        sku: string;
+        quantity: number;
+        verifiedQty: number;
+        productVariant: {
+          id: string;
+          sku: string;
+          upc: string | null;
+          barcode: string | null;
+          name: string;
+        };
+      }>;
+    };
+  }> {
+    const bin = await this.prisma.pickBin.findUnique({
+      where: { barcode },
+      include: {
+        order: {
+          select: { id: true, orderNumber: true, status: true },
+        },
+        items: {
+          include: {
+            productVariant: {
+              select: {
+                id: true,
+                sku: true,
+                upc: true,
+                barcode: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!bin) {
+      throw new Error(`Bin with barcode "${barcode}" not found`);
+    }
+
+    if (bin.status === "COMPLETED") {
+      throw new Error(`Bin ${bin.binNumber} has already been packed`);
+    }
+
+    if (bin.status === "CANCELLED") {
+      throw new Error(`Bin ${bin.binNumber} was cancelled`);
+    }
+
+    // Update bin status to PACKING if it was STAGED
+    if (bin.status === "STAGED") {
+      await this.prisma.pickBin.update({
+        where: { id: bin.id },
+        data: { status: "PACKING" },
+      });
+    }
+
+    return {
+      orderId: bin.order.id,
+      orderNumber: bin.order.orderNumber,
+      bin: {
+        id: bin.id,
+        binNumber: bin.binNumber,
+        barcode: bin.barcode,
+        status: bin.status,
+        items: bin.items.map((item) => ({
+          id: item.id,
+          sku: item.sku,
+          quantity: item.quantity,
+          verifiedQty: item.verifiedQty,
+          productVariant: item.productVariant,
+        })),
+      },
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Verify Bin Item (scan UPC at pack station)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async verifyBinItem(
+    binId: string,
+    barcode: string, // UPC/SKU scanned
+    userId?: string,
+  ): Promise<{
+    verified: boolean;
+    item: { sku: string; verifiedQty: number; quantity: number };
+    allVerified: boolean;
+  }> {
+    // Find the bin item matching this barcode
+    const bin = await this.prisma.pickBin.findUnique({
+      where: { id: binId },
+      include: {
+        items: {
+          include: {
+            productVariant: {
+              select: { id: true, sku: true, upc: true, barcode: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!bin) {
+      throw new Error(`Bin ${binId} not found`);
+    }
+
+    // Find matching item by UPC, barcode, or SKU
+    const matchingItem = bin.items.find((item) => {
+      const pv = item.productVariant;
+      return (
+        pv.upc === barcode ||
+        pv.barcode === barcode ||
+        pv.sku === barcode ||
+        pv.sku.toUpperCase() === barcode.toUpperCase()
+      );
+    });
+
+    if (!matchingItem) {
+      throw new Error(`Item with barcode "${barcode}" not in this bin`);
+    }
+
+    // Check if already fully verified
+    if (matchingItem.verifiedQty >= matchingItem.quantity) {
+      return {
+        verified: false,
+        item: {
+          sku: matchingItem.sku,
+          verifiedQty: matchingItem.verifiedQty,
+          quantity: matchingItem.quantity,
+        },
+        allVerified: bin.items.every((i) => i.verifiedQty >= i.quantity),
+      };
+    }
+
+    // Increment verified quantity
+    const updated = await this.prisma.pickBinItem.update({
+      where: { id: matchingItem.id },
+      data: {
+        verifiedQty: { increment: 1 },
+        verifiedAt: new Date(),
+        verifiedBy: userId,
+      },
+    });
+
+    // Check if all items verified
+    const allItems = await this.prisma.pickBinItem.findMany({
+      where: { pickBinId: binId },
+    });
+    const allVerified = allItems.every((i) =>
+      i.id === matchingItem.id
+        ? updated.verifiedQty >= i.quantity
+        : i.verifiedQty >= i.quantity,
+    );
+
+    return {
+      verified: true,
+      item: {
+        sku: matchingItem.sku,
+        verifiedQty: updated.verifiedQty,
+        quantity: matchingItem.quantity,
+      },
+      allVerified,
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Complete Bin (all items verified)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async completeBin(binId: string, userId?: string): Promise<void> {
+    const bin = await this.prisma.pickBin.findUnique({
+      where: { id: binId },
+      include: { items: true },
+    });
+
+    if (!bin) {
+      throw new Error(`Bin ${binId} not found`);
+    }
+
+    // Verify all items are verified
+    const unverified = bin.items.filter((i) => i.verifiedQty < i.quantity);
+    if (unverified.length > 0) {
+      throw new Error(
+        `${unverified.length} item(s) not fully verified: ${unverified.map((i) => i.sku).join(", ")}`,
+      );
+    }
+
+    await this.prisma.pickBin.update({
+      where: { id: binId },
+      data: {
+        status: "COMPLETED",
+        packedBy: userId,
+        packedAt: new Date(),
+      },
+    });
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -1097,121 +1477,142 @@ export class FulfillmentService {
   async getFulfillmentStatus(
     orderId: string,
   ): Promise<FulfillmentStatusResult> {
-    const [order, pickTasks, packTasks, labels, events] = await Promise.all([
-      this.prisma.order.findUnique({
-        where: { id: orderId },
-        select: {
-          id: true,
-          orderNumber: true,
-          status: true,
-          trackingNumber: true,
-          shippedAt: true,
-          createdAt: true,
-          customerName: true,
-          shippingAddress: true,
-          priority: true,
+    const [order, pickTasks, packTasks, labels, events, pickBin] =
+      await Promise.all([
+        this.prisma.order.findUnique({
+          where: { id: orderId },
+          select: {
+            id: true,
+            orderNumber: true,
+            status: true,
+            trackingNumber: true,
+            shippedAt: true,
+            createdAt: true,
+            customerName: true,
+            shippingAddress: true,
+            priority: true,
 
-          packingImages: {
-            orderBy: { createdAt: "asc" },
-            select: {
-              id: true,
-              url: true,
-              filename: true,
-              notes: true,
-              createdAt: true,
-              uploader: {
-                select: {
-                  id: true,
-                  name: true,
+            packingImages: {
+              orderBy: { createdAt: "asc" },
+              select: {
+                id: true,
+                url: true,
+                filename: true,
+                notes: true,
+                createdAt: true,
+                uploader: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
                 },
               },
             },
-          },
 
-          items: {
-            select: {
-              id: true,
-              sku: true,
-              quantity: true,
-              quantityPicked: true,
-              productVariant: {
-                select: {
-                  id: true,
-                  sku: true,
-                  upc: true,
-                  barcode: true,
-                  name: true,
-                  imageUrl: true,
+            items: {
+              select: {
+                id: true,
+                sku: true,
+                quantity: true,
+                quantityPicked: true,
+                productVariant: {
+                  select: {
+                    id: true,
+                    sku: true,
+                    upc: true,
+                    barcode: true,
+                    name: true,
+                    imageUrl: true,
+                  },
                 },
               },
             },
           },
-        },
-      }),
-      this.prisma.workTask.findMany({
-        where: { orderIds: { has: orderId }, type: "PICKING" },
-        include: {
-          taskItems: {
-            orderBy: { sequence: "asc" },
-            include: {
-              productVariant: {
-                select: {
-                  id: true,
-                  sku: true,
-                  upc: true,
-                  barcode: true,
-                  name: true,
-                  imageUrl: true,
+        }),
+        this.prisma.workTask.findMany({
+          where: { orderIds: { has: orderId }, type: "PICKING" },
+          include: {
+            taskItems: {
+              orderBy: { sequence: "asc" },
+              include: {
+                productVariant: {
+                  select: {
+                    id: true,
+                    sku: true,
+                    upc: true,
+                    barcode: true,
+                    name: true,
+                    imageUrl: true,
+                  },
                 },
-              },
-              location: {
-                select: {
-                  id: true,
-                  name: true,
-                  barcode: true,
-                  zone: true,
-                  aisle: true,
-                  rack: true,
-                  shelf: true,
-                  bin: true,
-                },
-              },
-            },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      }),
-      this.prisma.workTask.findMany({
-        where: { orderIds: { has: orderId }, type: "PACKING" },
-        include: {
-          taskItems: {
-            orderBy: { sequence: "asc" },
-            include: {
-              productVariant: {
-                select: {
-                  id: true,
-                  sku: true,
-                  upc: true,
-                  barcode: true,
-                  name: true,
-                  imageUrl: true,
+                location: {
+                  select: {
+                    id: true,
+                    name: true,
+                    barcode: true,
+                    zone: true,
+                    aisle: true,
+                    rack: true,
+                    shelf: true,
+                    bin: true,
+                  },
                 },
               },
             },
           },
-        },
-        orderBy: { createdAt: "desc" },
-      }),
-      this.prisma.shippingPackage.findMany({
-        where: { orderId },
-        orderBy: { createdAt: "desc" },
-      }),
-      this.prisma.fulfillmentEvent.findMany({
-        where: { orderId },
-        orderBy: { createdAt: "asc" },
-        take: 100,
-      }),
-    ]);
+          orderBy: { createdAt: "desc" },
+        }),
+        this.prisma.workTask.findMany({
+          where: { orderIds: { has: orderId }, type: "PACKING" },
+          include: {
+            taskItems: {
+              orderBy: { sequence: "asc" },
+              include: {
+                productVariant: {
+                  select: {
+                    id: true,
+                    sku: true,
+                    upc: true,
+                    barcode: true,
+                    name: true,
+                    imageUrl: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        }),
+        this.prisma.shippingPackage.findMany({
+          where: { orderId },
+          orderBy: { createdAt: "desc" },
+        }),
+        this.prisma.fulfillmentEvent.findMany({
+          where: { orderId },
+          orderBy: { createdAt: "asc" },
+          take: 100,
+        }),
+        this.prisma.pickBin.findFirst({
+          where: { orderId, status: { not: "CANCELLED" } },
+          include: {
+            items: {
+              include: {
+                productVariant: {
+                  select: {
+                    id: true,
+                    sku: true,
+                    upc: true,
+                    barcode: true,
+                    name: true,
+                    imageUrl: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        }),
+      ]);
 
     if (!order) throw new Error(`Order ${orderId} not found`);
 
@@ -1421,6 +1822,229 @@ export class FulfillmentService {
          */
         barcodeLookup,
       },
+      pickBin: pickBin
+        ? {
+            id: pickBin.id,
+            binNumber: pickBin.binNumber,
+            barcode: pickBin.barcode,
+            status: pickBin.status,
+            items: pickBin.items.map((item) => ({
+              id: item.id,
+              sku: item.sku,
+              quantity: item.quantity,
+              verifiedQty: item.verifiedQty,
+              productVariant: item.productVariant,
+            })),
+          }
+        : null,
+    };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Complete Packing from Bin (bin verification already done)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  async completePackingFromBin(
+    orderId: string,
+    binId: string,
+    data: {
+      weight: number;
+      weightUnit?: string;
+      dimensions?: {
+        length: number;
+        width: number;
+        height: number;
+        unit: string;
+      };
+      userId?: string;
+    },
+  ): Promise<{
+    order: { id: string; status: string };
+    bin: { id: string; status: string };
+  }> {
+    // 1. Validate bin and order
+    const bin = await this.prisma.pickBin.findUnique({
+      where: { id: binId },
+      include: {
+        items: {
+          include: {
+            productVariant: true,
+          },
+        },
+        order: {
+          include: {
+            items: {
+              include: {
+                productVariant: true,
+              },
+            },
+            allocations: {
+              where: { status: { in: ["ALLOCATED", "PICKED"] } },
+            },
+          },
+        },
+      },
+    });
+
+    if (!bin) {
+      throw new Error(`Bin ${binId} not found`);
+    }
+
+    if (bin.orderId !== orderId) {
+      throw new Error(`Bin ${bin.binNumber} does not belong to this order`);
+    }
+
+    if (bin.status === "COMPLETED") {
+      throw new Error(`Bin ${bin.binNumber} already completed`);
+    }
+
+    // 2. Verify all items are verified
+    const unverified = bin.items.filter((i) => i.verifiedQty < i.quantity);
+    if (unverified.length > 0) {
+      throw new Error(
+        `${unverified.length} item(s) not fully verified: ${unverified.map((i) => i.sku).join(", ")}`,
+      );
+    }
+
+    const correlationId = randomUUID();
+
+    // 3. Complete in transaction
+    await this.prisma.$transaction(async (tx) => {
+      // ══════════════════════════════════════════════════════════════════════
+      // FIX: Update allocations to PICKED status (required for shipping)
+      // ══════════════════════════════════════════════════════════════════════
+      await tx.allocation.updateMany({
+        where: {
+          orderItem: { orderId },
+          status: "ALLOCATED",
+        },
+        data: {
+          status: "PICKED",
+          pickedAt: new Date(),
+        },
+      });
+
+      // ══════════════════════════════════════════════════════════════════════
+      // FIX: Update OrderItem.quantityPicked for each bin item
+      // ══════════════════════════════════════════════════════════════════════
+      for (const binItem of bin.items) {
+        // Find the matching order item by productVariantId
+        const orderItem = bin.order.items.find(
+          (oi) => oi.productVariantId === binItem.productVariantId,
+        );
+
+        if (orderItem) {
+          await tx.orderItem.update({
+            where: { id: orderItem.id },
+            data: {
+              quantityPicked: binItem.quantity,
+            },
+          });
+        }
+      }
+
+      // Complete the bin
+      await tx.pickBin.update({
+        where: { id: binId },
+        data: {
+          status: "COMPLETED",
+          packedBy: data.userId,
+          packedAt: new Date(),
+        },
+      });
+
+      // Update order status to PACKED
+      await tx.order.update({
+        where: { id: orderId },
+        data: { status: "PACKED" },
+      });
+
+      // Create a packing task record (for metrics/audit trail)
+      const taskNumber = generateTaskNumber("PACK", bin.order.orderNumber);
+
+      await tx.workTask.create({
+        data: {
+          taskNumber,
+          type: "PACKING",
+          status: "COMPLETED",
+          orderIds: [orderId],
+          totalOrders: 1,
+          totalItems: bin.items.length,
+          completedItems: bin.items.length,
+          completedOrders: 1,
+          completedAt: new Date(),
+          startedAt: new Date(),
+          packedWeight: data.weight,
+          packedWeightUnit: data.weightUnit ?? "ounce",
+          packedDimensions:
+            (data.dimensions as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+          verifiedAt: new Date(),
+          verifiedBy: data.userId,
+          events: {
+            create: {
+              eventType: "TASK_COMPLETED",
+              userId: data.userId,
+              data: {
+                binId,
+                binNumber: bin.binNumber,
+                weight: data.weight,
+                weightUnit: data.weightUnit ?? "ounce",
+                dimensions: data.dimensions,
+                type: "PACKING_FROM_BIN",
+              },
+            },
+          },
+        },
+      });
+    });
+
+    // 4. Emit events
+    await emitEvent(
+      this.prisma,
+      createEventPayload(
+        EVENT_TYPES.PICKBIN_COMPLETED,
+        orderId,
+        {
+          binId,
+          binNumber: bin.binNumber,
+          orderNumber: bin.order.orderNumber,
+          packedBy: data.userId,
+          itemCount: bin.items.length,
+        },
+        { correlationId, userId: data.userId },
+      ),
+    );
+
+    await emitEvent(
+      this.prisma,
+      createEventPayload(
+        EVENT_TYPES.PACKING_COMPLETED,
+        orderId,
+        {
+          binId,
+          binNumber: bin.binNumber,
+          orderNumber: bin.order.orderNumber,
+          weight: data.weight,
+          weightUnit: data.weightUnit ?? "ounce",
+          dimensions: data.dimensions,
+        },
+        { correlationId, userId: data.userId },
+      ),
+    );
+
+    await emitEvent(
+      this.prisma,
+      createEventPayload(
+        EVENT_TYPES.ORDER_PACKED,
+        orderId,
+        { orderNumber: bin.order.orderNumber },
+        { correlationId, userId: data.userId },
+      ),
+    );
+
+    return {
+      order: { id: orderId, status: "PACKED" },
+      bin: { id: binId, status: "COMPLETED" },
     };
   }
 

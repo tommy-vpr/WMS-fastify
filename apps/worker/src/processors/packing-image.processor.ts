@@ -117,7 +117,7 @@ async function processImage(
     }
   }
 
-  job.updateProgress(10);
+  await job.updateProgress(10);
 
   // Decode base64 buffer
   const imageBuffer = Buffer.from(base64Buffer, "base64");
@@ -130,7 +130,7 @@ async function processImage(
     .jpeg({ quality: 80 })
     .toBuffer();
 
-  job.updateProgress(40);
+  await job.updateProgress(40);
 
   // Generate destination path
   const sanitizedFilename = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
@@ -148,7 +148,7 @@ async function processImage(
 
   const publicUrl = `https://storage.googleapis.com/${bucketName}/${destination}`;
 
-  job.updateProgress(70);
+  await job.updateProgress(70);
 
   // Create database record
   const packingImage = await prisma.packingImage.create({
@@ -165,7 +165,7 @@ async function processImage(
     },
   });
 
-  job.updateProgress(85);
+  await job.updateProgress(85);
 
   // Emit event
   await publish({
@@ -214,7 +214,7 @@ async function processImage(
     },
   });
 
-  job.updateProgress(100);
+  await job.updateProgress(100);
 
   console.log(`[PackingImage] Image processed: ${packingImage.id}`);
 
@@ -245,7 +245,7 @@ async function deleteImage(
     return { success: false };
   }
 
-  job.updateProgress(20);
+  await job.updateProgress(20);
 
   // Delete from GCS
   try {
@@ -257,14 +257,14 @@ async function deleteImage(
     // Continue anyway - DB record should still be deleted
   }
 
-  job.updateProgress(50);
+  await job.updateProgress(50);
 
   // Delete from database
   await prisma.packingImage.delete({
     where: { id: imageId },
   });
 
-  job.updateProgress(70);
+  await job.updateProgress(70);
 
   // Emit event
   await publish({
@@ -307,7 +307,7 @@ async function deleteImage(
     },
   });
 
-  job.updateProgress(100);
+  await job.updateProgress(100);
 
   console.log(`[PackingImage] Image deleted: ${imageId}`);
 
@@ -340,7 +340,7 @@ async function generateThumbnail(
   // Download original
   const [originalBuffer] = await bucket.file(image.filename).download();
 
-  job.updateProgress(20);
+  await job.updateProgress(20);
 
   const thumbnails: string[] = [];
   const progressPerSize = 60 / sizes.length;
@@ -369,16 +369,10 @@ async function generateThumbnail(
       `https://storage.googleapis.com/${bucketName}/${thumbnailPath}`,
     );
 
-    job.updateProgress(20 + (i + 1) * progressPerSize);
+    await job.updateProgress(20 + (i + 1) * progressPerSize);
   }
 
-  // Update database with thumbnail URLs (optional - could add thumbnailUrls field)
-  // await prisma.packingImage.update({
-  //   where: { id: imageId },
-  //   data: { thumbnailUrls: thumbnails },
-  // });
-
-  job.updateProgress(100);
+  await job.updateProgress(100);
 
   console.log(`[PackingImage] Generated ${thumbnails.length} thumbnails`);
 
@@ -386,7 +380,7 @@ async function generateThumbnail(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Cleanup Orphaned Images
+// Cleanup Orphaned Images (GCS files without DB records)
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function cleanupOrphanedImages(
@@ -396,56 +390,63 @@ async function cleanupOrphanedImages(
   const { olderThanDays = 30 } = data;
 
   console.log(
-    `[PackingImage] Cleaning up orphaned images older than ${olderThanDays} days`,
+    `[PackingImage] Cleaning up orphaned GCS files older than ${olderThanDays} days`,
   );
+
+  const { bucket } = await getStorage();
+
+  // List all files in packing/ prefix
+  const [files] = await bucket.getFiles({ prefix: "packing/" });
+
+  await job.updateProgress(10);
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
 
-  // Find images without associated orders (orphaned)
-  const orphanedImages = await prisma.packingImage.findMany({
-    where: {
-      createdAt: { lt: cutoffDate },
-      order: null, // Order was deleted
-    },
-    take: 100, // Process in batches
+  let deletedCount = 0;
+  const filesToCheck = files.filter((file) => {
+    const created = file.metadata.timeCreated
+      ? new Date(file.metadata.timeCreated)
+      : new Date();
+    return created < cutoffDate;
   });
 
-  if (orphanedImages.length === 0) {
-    console.log(`[PackingImage] No orphaned images found`);
+  if (filesToCheck.length === 0) {
+    console.log(`[PackingImage] No old GCS files found`);
     return { deleted: 0 };
   }
 
-  const { bucket } = await getStorage();
-  let deletedCount = 0;
-  const progressPerImage = 90 / orphanedImages.length;
+  const progressPerFile = 80 / filesToCheck.length;
 
-  for (let i = 0; i < orphanedImages.length; i++) {
-    const image = orphanedImages[i];
+  for (let i = 0; i < filesToCheck.length; i++) {
+    const file = filesToCheck[i];
 
     try {
-      // Delete from GCS
-      await bucket.file(image.filename).delete();
-
-      // Delete from database
-      await prisma.packingImage.delete({
-        where: { id: image.id },
+      // Check if DB record exists for this file
+      const dbRecord = await prisma.packingImage.findFirst({
+        where: { filename: file.name },
+        select: { id: true },
       });
 
-      deletedCount++;
+      // If no DB record, delete the GCS file (orphaned)
+      if (!dbRecord) {
+        await file.delete();
+        deletedCount++;
+        console.log(`[PackingImage] Deleted orphaned GCS file: ${file.name}`);
+      }
     } catch (err) {
       console.error(
-        `[PackingImage] Failed to delete orphaned image ${image.id}:`,
+        `[PackingImage] Failed to check/delete file ${file.name}:`,
         err,
       );
     }
 
-    job.updateProgress(10 + (i + 1) * progressPerImage);
+    await job.updateProgress(10 + (i + 1) * progressPerFile);
   }
 
-  job.updateProgress(100);
+  await job.updateProgress(100);
 
-  console.log(`[PackingImage] Cleaned up ${deletedCount} orphaned images`);
+  console.log(`[PackingImage] Cleaned up ${deletedCount} orphaned GCS files`);
 
   return { deleted: deletedCount };
 }

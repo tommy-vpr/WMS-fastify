@@ -1,4 +1,4 @@
-// Update packages/queue/src/index.ts
+// packages/queue/src/index.ts
 
 // Connection
 export { getConnection } from "./connection.js";
@@ -47,10 +47,16 @@ export {
   enqueueSyncPurchaseOrders,
   enqueueProcessApproval,
   enqueueNotifyApprovers,
+  enqueueAutoApproveSession,
+  enqueueGenerateBarcodeLabels,
+  getReceivingQueueStats,
   // Cycle Count
   getCycleCountQueue,
   enqueueProcessCycleCountApproval,
   enqueueGenerateCycleCountTasks,
+  enqueueNotifyCycleCountReviewers,
+  enqueueGenerateVarianceReport,
+  getCycleCountQueueStats,
   // Packing Images
   getPackingImagesQueue,
   enqueueProcessPackingImage,
@@ -58,6 +64,12 @@ export {
   enqueueGenerateThumbnail,
   enqueueCleanupOrphanedImages,
   getPackingImagesQueueStats,
+  // Pick Bin
+  getPickBinQueue,
+  enqueuePrintBinLabel,
+  enqueueNotifyPackStation,
+  enqueueHandleShortPick,
+  enqueueRecordPickMetrics,
   // Management
   closeQueues,
 } from "./queues.js";

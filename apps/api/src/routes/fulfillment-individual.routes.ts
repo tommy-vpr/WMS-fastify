@@ -24,7 +24,7 @@ import {
 // Route Plugin
 // =============================================================================
 
-export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
+export const fulfillmentIndividualRoutes: FastifyPluginAsync = async (app) => {
   const pickingService = new PickingService({ pickingRepo: pickingRepository });
   const packingService = new PackingService({ packingRepo: packingRepository });
   const fulfillmentService = new FulfillmentService({

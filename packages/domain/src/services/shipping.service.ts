@@ -733,21 +733,29 @@ export class ShippingService {
       totalShipmentCost = label.shipment_cost?.amount || 0;
 
       // Handle multi-package responses
+      // UPS/FedEx: parent has tracking_number + label_download,
+      // children may or may not have their own tracking numbers.
       const labelPackages = label.packages || label.children || [];
-      if (labelPackages.length === 0 && label.tracking_number) {
-        allLabelPackages = [
-          {
-            tracking_number: label.tracking_number,
-            label_download: label.label_download,
-            cost: totalShipmentCost,
-            pkg: packages[0],
-            items: packages[0]?.items || [],
-          },
-        ];
+      if (labelPackages.length === 0 || !labelPackages[0]?.tracking_number) {
+        // No child packages OR children lack tracking — use parent for all
+        // UPS multi-package returns one label PDF + one master tracking for all packages
+        allLabelPackages = packages.map((pkg, idx) => ({
+          tracking_number:
+            labelPackages[idx]?.tracking_number ||
+            (packages.length === 1
+              ? label.tracking_number
+              : `${label.tracking_number}-${idx + 1}`),
+          label_download:
+            labelPackages[idx]?.label_download || label.label_download,
+          cost: totalShipmentCost / packages.length,
+          pkg,
+          items: pkg.items || [],
+        }));
       } else {
+        // Children have their own tracking (some carriers)
         allLabelPackages = labelPackages.map((lp: any, idx: number) => ({
-          tracking_number: lp.tracking_number,
-          label_download: lp.label_download,
+          tracking_number: lp.tracking_number || label.tracking_number,
+          label_download: lp.label_download || label.label_download,
           cost: totalShipmentCost / labelPackages.length,
           pkg: packages[idx] || packages[0],
           items: packages[idx]?.items || [],
@@ -762,6 +770,12 @@ export class ShippingService {
     console.log(
       `[ShippingService] Created ${allLabelPackages.length} label(s), total cost: $${totalShipmentCost.toFixed(2)}`,
     );
+    // Debug: log what each package got mapped to
+    allLabelPackages.forEach((lp, idx) => {
+      console.log(
+        `[ShippingService]   Package ${idx + 1}: tracking=${lp.tracking_number || "NONE"}, labelUrl=${lp.label_download?.pdf ? "YES" : "NO"}`,
+      );
+    });
 
     const allTrackingNumbers = allLabelPackages
       .map((lp) => lp.tracking_number)
@@ -805,6 +819,20 @@ export class ShippingService {
       );
 
       // 2️⃣ Consume inventory via PICKED allocations (only place decrement happens)
+
+      // Safety net: promote any remaining ALLOCATED → PICKED
+      // (handles edge cases where pick confirmation didn't update allocation status)
+      await tx.allocation.updateMany({
+        where: {
+          orderItem: { orderId: order.id },
+          status: "ALLOCATED",
+        },
+        data: {
+          status: "PICKED",
+          pickedAt: new Date(),
+        },
+      });
+
       for (const shippedItem of items || []) {
         const orderItem = order.items.find(
           (oi) => oi.productVariant?.sku === shippedItem.sku,
@@ -850,21 +878,21 @@ export class ShippingService {
             quantityShipped: { increment: shippedItem.quantity },
           },
         });
-
-        // 2️⃣b Close all PICKED allocations for this order
-        await tx.allocation.updateMany({
-          where: {
-            orderItem: {
-              orderId: order.id,
-            },
-            status: "PICKED",
-          },
-          data: {
-            status: "RELEASED",
-            releasedAt: new Date(),
-          },
-        });
       }
+
+      // 2️⃣b Close all PICKED allocations for this order (AFTER all items consumed)
+      await tx.allocation.updateMany({
+        where: {
+          orderItem: {
+            orderId: order.id,
+          },
+          status: "PICKED",
+        },
+        data: {
+          status: "RELEASED",
+          releasedAt: new Date(),
+        },
+      });
 
       // 3️⃣ Update order
       const updatedOrder = await tx.order.update({

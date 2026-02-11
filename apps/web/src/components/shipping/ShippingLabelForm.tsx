@@ -21,6 +21,9 @@ import {
   X,
   Zap,
   ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Shuffle,
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 
@@ -124,6 +127,16 @@ interface LabelResult {
   trackingUrl?: string;
 }
 
+interface InitialPackageFromPacking {
+  label: string;
+  items: Array<{
+    sku: string;
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+  }>;
+}
+
 interface ShippingLabelFormProps {
   order: Order;
   onSuccess?: (results: LabelResult[]) => void;
@@ -131,6 +144,7 @@ interface ShippingLabelFormProps {
   embedded?: boolean;
   initialWeight?: number;
   initialDimensions?: { length: number; width: number; height: number };
+  initialPackages?: InitialPackageFromPacking[];
 }
 
 // ============================================================================
@@ -144,6 +158,7 @@ export default function ShippingLabelForm({
   embedded = false,
   initialWeight,
   initialDimensions,
+  initialPackages,
 }: ShippingLabelFormProps) {
   const [carriers, setCarriers] = useState<Carrier[]>([]);
   const [presets, setPresets] = useState<ShippingPreset[]>([]);
@@ -213,19 +228,40 @@ export default function ShippingLabelForm({
   }, [initialWeight, initialDimensions, shipments.length]);
 
   const initializeShipment = () => {
-    const initialShipment: Shipment = {
-      id: generateId(),
-      name: "Shipment 1",
-      items: order.lineItems.map((item) => ({
-        itemId: item.id,
-        productName: item.name,
-        sku: item.sku,
-        unitPrice: item.unitPrice || 0,
-        quantity: item.quantityPicked ?? item.quantity,
-      })),
-      carrierId: "",
-      serviceCode: "",
-      packages: [
+    const allItems: ShipmentItem[] = order.lineItems.map((item) => ({
+      itemId: item.id,
+      productName: item.name,
+      sku: item.sku,
+      unitPrice: item.unitPrice || 0,
+      quantity: item.quantityPicked ?? item.quantity,
+    }));
+
+    // Build packages from packing data if available
+    let packages: PackageConfig[];
+    if (initialPackages && initialPackages.length > 0) {
+      packages = initialPackages.map((pkgData) => ({
+        id: generateId(),
+        packageCode: "",
+        weight: initialWeight?.toString() || "",
+        dimensions: {
+          length: initialDimensions?.length?.toString() || "12",
+          width: initialDimensions?.width?.toString() || "10",
+          height: initialDimensions?.height?.toString() || "6",
+        },
+        items: pkgData.items.map((item) => {
+          // Match with order line items for full data
+          const orderItem = allItems.find((oi) => oi.sku === item.sku);
+          return {
+            itemId: orderItem?.itemId || "",
+            productName: item.productName || orderItem?.productName || item.sku,
+            sku: item.sku,
+            unitPrice: item.unitPrice || orderItem?.unitPrice || 0,
+            quantity: item.quantity,
+          };
+        }),
+      }));
+    } else {
+      packages = [
         {
           id: generateId(),
           packageCode: "",
@@ -237,7 +273,16 @@ export default function ShippingLabelForm({
           },
           items: [],
         },
-      ],
+      ];
+    }
+
+    const initialShipment: Shipment = {
+      id: generateId(),
+      name: "Shipment 1",
+      items: allItems,
+      carrierId: "",
+      serviceCode: "",
+      packages,
       notes: "",
     };
     setShipments([initialShipment]);
@@ -422,6 +467,146 @@ export default function ShippingLabelForm({
     );
   };
 
+  // ============================================================================
+  // Per-Package Item Assignment
+  // ============================================================================
+
+  const addItemToPackage = (
+    shipmentId: string,
+    packageId: string,
+    item: ShipmentItem,
+    quantity: number,
+  ) => {
+    setShipments((prev) =>
+      prev.map((shipment) => {
+        if (shipment.id !== shipmentId) return shipment;
+        return {
+          ...shipment,
+          packages: shipment.packages.map((pkg) => {
+            if (pkg.id !== packageId) return pkg;
+            const existing = pkg.items.find((i) => i.sku === item.sku);
+            if (existing) {
+              return {
+                ...pkg,
+                items: pkg.items.map((i) =>
+                  i.sku === item.sku
+                    ? { ...i, quantity: i.quantity + quantity }
+                    : i,
+                ),
+              };
+            }
+            return {
+              ...pkg,
+              items: [...pkg.items, { ...item, quantity }],
+            };
+          }),
+        };
+      }),
+    );
+  };
+
+  const removeItemFromPackage = (
+    shipmentId: string,
+    packageId: string,
+    sku: string,
+  ) => {
+    setShipments((prev) =>
+      prev.map((shipment) => {
+        if (shipment.id !== shipmentId) return shipment;
+        return {
+          ...shipment,
+          packages: shipment.packages.map((pkg) =>
+            pkg.id === packageId
+              ? { ...pkg, items: pkg.items.filter((i) => i.sku !== sku) }
+              : pkg,
+          ),
+        };
+      }),
+    );
+  };
+
+  const updateItemQtyInPackage = (
+    shipmentId: string,
+    packageId: string,
+    sku: string,
+    quantity: number,
+  ) => {
+    setShipments((prev) =>
+      prev.map((shipment) => {
+        if (shipment.id !== shipmentId) return shipment;
+        return {
+          ...shipment,
+          packages: shipment.packages.map((pkg) =>
+            pkg.id === packageId
+              ? {
+                  ...pkg,
+                  items: pkg.items.map((i) =>
+                    i.sku === sku ? { ...i, quantity } : i,
+                  ),
+                }
+              : pkg,
+          ),
+        };
+      }),
+    );
+  };
+
+  const getUnassignedItems = (shipment: Shipment) => {
+    const assigned: Record<string, number> = {};
+    for (const pkg of shipment.packages) {
+      for (const item of pkg.items) {
+        assigned[item.sku] = (assigned[item.sku] || 0) + item.quantity;
+      }
+    }
+    return shipment.items
+      .map((item) => ({
+        ...item,
+        remaining: item.quantity - (assigned[item.sku] || 0),
+      }))
+      .filter((item) => item.remaining > 0);
+  };
+
+  const autoDistributeItems = (shipmentId: string) => {
+    setShipments((prev) =>
+      prev.map((shipment) => {
+        if (shipment.id !== shipmentId) return shipment;
+        const pkgCount = shipment.packages.length;
+        if (pkgCount === 0) return shipment;
+
+        // For single package, assign all items
+        if (pkgCount === 1) {
+          return {
+            ...shipment,
+            packages: [
+              {
+                ...shipment.packages[0],
+                items: shipment.items.map((item) => ({ ...item })),
+              },
+            ],
+          };
+        }
+
+        // For multiple packages, spread items evenly
+        const newPackages = shipment.packages.map((pkg) => ({
+          ...pkg,
+          items: [] as ShipmentItem[],
+        }));
+
+        for (const item of shipment.items) {
+          let remaining = item.quantity;
+          const perPkg = Math.ceil(item.quantity / pkgCount);
+          for (let i = 0; i < pkgCount && remaining > 0; i++) {
+            const qty = Math.min(perPkg, remaining);
+            newPackages[i].items.push({ ...item, quantity: qty });
+            remaining -= qty;
+          }
+        }
+
+        return { ...shipment, packages: newPackages };
+      }),
+    );
+  };
+
   const addMultiplePackagesWithWeightDistribution = (
     shipmentId: string,
     count: number,
@@ -502,19 +687,31 @@ export default function ShippingLabelForm({
         orderId: order.id,
         carrierCode: carrier.carrier_code,
         serviceCode: shipment.serviceCode,
-        packages: shipment.packages.map((pkg, idx) => ({
-          packageCode: pkg.packageCode,
-          weight: parseFloat(pkg.weight),
-          length: parseFloat(pkg.dimensions.length),
-          width: parseFloat(pkg.dimensions.width),
-          height: parseFloat(pkg.dimensions.height),
-          items: shipment.items.map((item) => ({
-            productName: item.productName,
-            sku: item.sku,
-            quantity: Math.ceil(item.quantity / shipment.packages.length),
-            unitPrice: item.unitPrice,
-          })),
-        })),
+        packages: shipment.packages.map((pkg) => {
+          // Use per-package items if assigned, otherwise fall back to even distribution
+          const pkgItems =
+            pkg.items.length > 0
+              ? pkg.items.map((item) => ({
+                  productName: item.productName,
+                  sku: item.sku,
+                  quantity: item.quantity,
+                  unitPrice: item.unitPrice,
+                }))
+              : shipment.items.map((item) => ({
+                  productName: item.productName,
+                  sku: item.sku,
+                  quantity: Math.ceil(item.quantity / shipment.packages.length),
+                  unitPrice: item.unitPrice,
+                }));
+          return {
+            packageCode: pkg.packageCode,
+            weight: parseFloat(pkg.weight),
+            length: parseFloat(pkg.dimensions.length),
+            width: parseFloat(pkg.dimensions.width),
+            height: parseFloat(pkg.dimensions.height),
+            items: pkgItems,
+          };
+        }),
         shippingAddress: {
           name: order.shippingAddress.name || order.customerName,
           address1: order.shippingAddress.address1,
@@ -739,137 +936,93 @@ export default function ShippingLabelForm({
 
                 {/* Package List */}
                 <div className="space-y-3">
-                  {shipment.packages.map((pkg, idx) => (
-                    <div
-                      key={pkg.id}
-                      className="border border-border p-4 rounded bg-gray-50 space-y-3"
+                  {/* Auto-distribute button for multi-package */}
+                  {shipment.packages.length > 1 && (
+                    <button
+                      onClick={() => autoDistributeItems(shipment.id)}
+                      className="w-full px-3 py-2 text-sm bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 flex items-center justify-center gap-2 transition"
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-emerald-600">
-                          Package {idx + 1}
-                        </span>
-                        {shipment.packages.length > 1 && (
-                          <button
-                            onClick={() =>
-                              removePackageFromShipment(shipment.id, pkg.id)
-                            }
-                            className="text-red-600 hover:text-red-800 p-1"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
+                      <Shuffle className="w-4 h-4" />
+                      Auto-distribute items across packages
+                    </button>
+                  )}
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="text-xs font-medium block mb-1">
-                            Package Type
-                          </label>
-                          <select
-                            value={pkg.packageCode}
-                            onChange={(e) =>
-                              updatePackageConfig(
-                                shipment.id,
-                                pkg.id,
-                                "packageCode",
-                                e.target.value,
-                              )
-                            }
-                            className="w-full px-3 py-2 border border-border rounded text-sm"
-                          >
-                            <option value="">Select Type</option>
-                            {getCarrierOptions(shipment.carrierId).packages.map(
-                              (opt) => (
-                                <option
-                                  key={opt.package_code}
-                                  value={opt.package_code}
-                                >
-                                  {opt.name}
-                                </option>
-                              ),
-                            )}
-                          </select>
-                        </div>
+                  {shipment.packages.map((pkg, idx) => {
+                    const unassigned = getUnassignedItems(shipment);
+                    const pkgItemCount = pkg.items.reduce(
+                      (sum, i) => sum + i.quantity,
+                      0,
+                    );
 
-                        <div>
-                          <label className="text-xs font-medium block mb-1">
-                            Weight (lbs)
-                          </label>
-                          <input
-                            type="number"
-                            step="0.1"
-                            placeholder="0.0"
-                            value={pkg.weight}
-                            onChange={(e) =>
-                              updatePackageConfig(
-                                shipment.id,
-                                pkg.id,
-                                "weight",
-                                e.target.value,
-                              )
-                            }
-                            className="w-full px-3 py-2 border border-border rounded text-sm"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="text-xs font-medium block mb-1">
-                          Dimensions (in)
-                        </label>
-                        <div className="grid grid-cols-3 gap-2">
-                          <input
-                            type="number"
-                            placeholder="L"
-                            value={pkg.dimensions.length}
-                            onChange={(e) =>
-                              updatePackageConfig(
-                                shipment.id,
-                                pkg.id,
-                                "dimensions.length",
-                                e.target.value,
-                              )
-                            }
-                            className="px-3 py-2 border border-border rounded text-sm"
-                          />
-                          <input
-                            type="number"
-                            placeholder="W"
-                            value={pkg.dimensions.width}
-                            onChange={(e) =>
-                              updatePackageConfig(
-                                shipment.id,
-                                pkg.id,
-                                "dimensions.width",
-                                e.target.value,
-                              )
-                            }
-                            className="px-3 py-2 border border-border rounded text-sm"
-                          />
-                          <input
-                            type="number"
-                            placeholder="H"
-                            value={pkg.dimensions.height}
-                            onChange={(e) =>
-                              updatePackageConfig(
-                                shipment.id,
-                                pkg.id,
-                                "dimensions.height",
-                                e.target.value,
-                              )
-                            }
-                            className="px-3 py-2 border border-border rounded text-sm"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    return (
+                      <PackageCard
+                        key={pkg.id}
+                        pkg={pkg}
+                        idx={idx}
+                        shipment={shipment}
+                        unassigned={unassigned}
+                        pkgItemCount={pkgItemCount}
+                        multiPackage={shipment.packages.length > 1}
+                        carrierPackages={
+                          getCarrierOptions(shipment.carrierId).packages
+                        }
+                        onRemove={() =>
+                          removePackageFromShipment(shipment.id, pkg.id)
+                        }
+                        onUpdateConfig={(field, value) =>
+                          updatePackageConfig(shipment.id, pkg.id, field, value)
+                        }
+                        onAddItem={(item, qty) =>
+                          addItemToPackage(shipment.id, pkg.id, item, qty)
+                        }
+                        onRemoveItem={(sku) =>
+                          removeItemFromPackage(shipment.id, pkg.id, sku)
+                        }
+                        onUpdateItemQty={(sku, qty) =>
+                          updateItemQtyInPackage(shipment.id, pkg.id, sku, qty)
+                        }
+                      />
+                    );
+                  })}
                 </div>
+
+                {/* Unassigned items warning */}
+                {shipment.packages.length > 1 &&
+                  (() => {
+                    const unassigned = getUnassignedItems(shipment);
+                    if (unassigned.length === 0) return null;
+                    return (
+                      <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium text-amber-800">
+                              Unassigned items
+                            </p>
+                            <div className="mt-1 space-y-0.5">
+                              {unassigned.map((item) => (
+                                <div
+                                  key={item.sku}
+                                  className="text-xs text-amber-700"
+                                >
+                                  {item.sku} — {item.remaining} remaining
+                                </div>
+                              ))}
+                            </div>
+                            <p className="text-xs text-amber-600 mt-1">
+                              Unassigned items will be split evenly across
+                              packages
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
               </div>
             )}
 
-            {/* Items Summary */}
-            {shipment.items.length > 0 && (
+            {/* Items Summary (single package only) */}
+            {shipment.packages.length <= 1 && shipment.items.length > 0 && (
               <div className="border border-border rounded-lg p-3 bg-gray-50">
                 <h4 className="text-sm font-medium mb-2">Items to Ship</h4>
                 <div className="space-y-1">
@@ -969,6 +1122,245 @@ export default function ShippingLabelForm({
               ))}
             </div>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// Package Card with Item Assignment
+// ============================================================================
+
+function PackageCard({
+  pkg,
+  idx,
+  shipment,
+  unassigned,
+  pkgItemCount,
+  multiPackage,
+  carrierPackages,
+  onRemove,
+  onUpdateConfig,
+  onAddItem,
+  onRemoveItem,
+  onUpdateItemQty,
+}: {
+  pkg: PackageConfig;
+  idx: number;
+  shipment: Shipment;
+  unassigned: (ShipmentItem & { remaining: number })[];
+  pkgItemCount: number;
+  multiPackage: boolean;
+  carrierPackages: Array<{ package_code: string; name: string }>;
+  onRemove: () => void;
+  onUpdateConfig: (field: string, value: string) => void;
+  onAddItem: (item: ShipmentItem, qty: number) => void;
+  onRemoveItem: (sku: string) => void;
+  onUpdateItemQty: (sku: string, qty: number) => void;
+}) {
+  const [showItems, setShowItems] = useState(multiPackage);
+
+  return (
+    <div className="border border-border p-4 rounded bg-gray-50 space-y-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-emerald-600">
+            Package {idx + 1}
+          </span>
+          {multiPackage && (
+            <span className="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
+              {pkgItemCount} unit{pkgItemCount !== 1 ? "s" : ""}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-1">
+          {multiPackage && (
+            <button
+              onClick={() => setShowItems(!showItems)}
+              className="text-gray-500 hover:text-gray-700 p-1"
+              title={showItems ? "Hide items" : "Show items"}
+            >
+              {showItems ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </button>
+          )}
+          {multiPackage && (
+            <button
+              onClick={onRemove}
+              className="text-red-600 hover:text-red-800 p-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Package config */}
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="text-xs font-medium block mb-1">Package Type</label>
+          <select
+            value={pkg.packageCode}
+            onChange={(e) => onUpdateConfig("packageCode", e.target.value)}
+            className="w-full px-3 py-2 border border-border rounded text-sm"
+          >
+            <option value="">Select Type</option>
+            {carrierPackages.map((opt) => (
+              <option key={opt.package_code} value={opt.package_code}>
+                {opt.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium block mb-1">Weight (lbs)</label>
+          <input
+            type="number"
+            step="0.1"
+            placeholder="0.0"
+            value={pkg.weight}
+            onChange={(e) => onUpdateConfig("weight", e.target.value)}
+            className="w-full px-3 py-2 border border-border rounded text-sm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-xs font-medium block mb-1">
+          Dimensions (in)
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          <input
+            type="number"
+            placeholder="L"
+            value={pkg.dimensions.length}
+            onChange={(e) =>
+              onUpdateConfig("dimensions.length", e.target.value)
+            }
+            className="px-3 py-2 border border-border rounded text-sm"
+          />
+          <input
+            type="number"
+            placeholder="W"
+            value={pkg.dimensions.width}
+            onChange={(e) => onUpdateConfig("dimensions.width", e.target.value)}
+            className="px-3 py-2 border border-border rounded text-sm"
+          />
+          <input
+            type="number"
+            placeholder="H"
+            value={pkg.dimensions.height}
+            onChange={(e) =>
+              onUpdateConfig("dimensions.height", e.target.value)
+            }
+            className="px-3 py-2 border border-border rounded text-sm"
+          />
+        </div>
+      </div>
+
+      {/* Per-package item assignment (multi-package only) */}
+      {multiPackage && showItems && (
+        <div className="border-t border-border pt-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+              Items in this package
+            </span>
+          </div>
+
+          {/* Assigned items */}
+          {pkg.items.length > 0 ? (
+            <div className="space-y-1">
+              {pkg.items.map((item) => (
+                <div
+                  key={item.sku}
+                  className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200"
+                >
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-mono text-blue-600">
+                      {item.sku}
+                    </span>
+                    <span className="text-xs text-gray-400 ml-1 truncate">
+                      {item.productName}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        if (item.quantity <= 1) {
+                          onRemoveItem(item.sku);
+                        } else {
+                          onUpdateItemQty(item.sku, item.quantity - 1);
+                        }
+                      }}
+                      className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded text-gray-600 hover:bg-gray-200 text-xs font-bold"
+                    >
+                      −
+                    </button>
+                    <span className="text-sm font-bold w-8 text-center">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() =>
+                        onUpdateItemQty(item.sku, item.quantity + 1)
+                      }
+                      className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded text-gray-600 hover:bg-gray-200 text-xs font-bold"
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => onRemoveItem(item.sku)}
+                      className="ml-1 text-red-400 hover:text-red-600"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-xs text-gray-400 italic py-2 text-center">
+              No items assigned yet
+            </div>
+          )}
+
+          {/* Add from unassigned */}
+          {unassigned.length > 0 && (
+            <div className="space-y-1">
+              <span className="text-xs text-gray-500">Add items:</span>
+              {unassigned.map((item) => (
+                <button
+                  key={item.sku}
+                  onClick={() =>
+                    onAddItem(
+                      {
+                        itemId: item.itemId,
+                        productName: item.productName,
+                        sku: item.sku,
+                        unitPrice: item.unitPrice,
+                        quantity: 0,
+                      },
+                      item.remaining,
+                    )
+                  }
+                  className="w-full flex items-center justify-between p-2 bg-emerald-50 border border-emerald-200 rounded text-xs hover:bg-emerald-100 transition"
+                >
+                  <span>
+                    <span className="font-mono text-emerald-700">
+                      {item.sku}
+                    </span>
+                    <span className="text-gray-500 ml-1">
+                      ({item.remaining} available)
+                    </span>
+                  </span>
+                  <Plus className="w-3.5 h-3.5 text-emerald-600" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

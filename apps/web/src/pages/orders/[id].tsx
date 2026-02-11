@@ -28,11 +28,13 @@ import {
   ExternalLink,
   DollarSign,
   Zap,
-  CircleDot,
+  Receipt,
   Archive,
   PauseCircle,
   Tag,
   Unlink,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { Loading } from "@/components/ui/loading";
@@ -103,6 +105,19 @@ interface WorkTask {
   type: string;
   status: string;
   assignedTo: { name: string } | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  totalItems: number;
+  completedItems: number;
+  shortItems: number;
+  createdAt: string;
+}
+
+interface FulfillmentEvent {
+  id: string;
+  type: string;
+  payload: any;
+  correlationId: string | null;
   createdAt: string;
 }
 
@@ -135,6 +150,7 @@ interface Order {
   allocations: OrderAllocation[];
   workTasks: WorkTask[];
   shippingPackages?: ShippingPackage[];
+  fulfillmentEvents?: FulfillmentEvent[];
   packingImages: PackingImage[];
   createdAt: string;
   updatedAt: string;
@@ -755,27 +771,73 @@ export function OrderDetailPage() {
               </div>
               <div className="divide-y divide-border">
                 {order.workTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className="px-4 py-3 flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-medium flex items-center gap-2">
-                        {task.taskNumber || task.type}
-                        <span className="text-xs text-gray-400">
-                          {task.type}
-                        </span>
+                  <div key={task.id} className="px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Link
+                          to={`/fulfillment/${order.id}`}
+                          className="font-medium text-blue-600 hover:underline truncate"
+                        >
+                          {task.taskNumber || task.type}
+                        </Link>
+                        <TaskTypeBadge type={task.type} />
                       </div>
-                      <div className="text-sm text-gray-500">
-                        {task.assignedTo?.name || "Unassigned"} •{" "}
-                        {new Date(task.createdAt).toLocaleDateString()}
-                      </div>
+                      <TaskStatusBadge status={task.status} />
                     </div>
-                    <TaskStatusBadge status={task.status} />
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                      <span>{task.assignedTo?.name || "Unassigned"}</span>
+                      <span>
+                        Items: {task.completedItems}/{task.totalItems}
+                        {task.shortItems > 0 && (
+                          <span className="text-red-500 ml-1">
+                            ({task.shortItems} short)
+                          </span>
+                        )}
+                      </span>
+                      {task.startedAt && (
+                        <span>
+                          Started {new Date(task.startedAt).toLocaleString()}
+                        </span>
+                      )}
+                      {task.completedAt && (
+                        <span>
+                          Completed{" "}
+                          {new Date(task.completedAt).toLocaleString()}
+                        </span>
+                      )}
+                      {!task.startedAt && (
+                        <span>
+                          Created{" "}
+                          {new Date(task.createdAt).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                    {/* Progress bar */}
+                    {task.totalItems > 0 && (
+                      <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            task.status === "COMPLETED"
+                              ? "bg-green-500"
+                              : "bg-blue-500"
+                          }`}
+                          style={{
+                            width: `${Math.round(
+                              (task.completedItems / task.totalItems) * 100,
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
+          )}
+
+          {/* Fulfillment Events */}
+          {order.fulfillmentEvents && order.fulfillmentEvents.length > 0 && (
+            <FulfillmentTimeline events={order.fulfillmentEvents} />
           )}
 
           {/* Allocations Detail */}
@@ -860,7 +922,7 @@ export function OrderDetailPage() {
                   <span className="font-mono text-xs">{order.externalId}</span>
                 </SidebarRow>
               )}
-              <SidebarRow icon={CircleDot} label="Payment">
+              <SidebarRow icon={Receipt} label="Payment">
                 <PaymentBadge status={order.paymentStatus} />
               </SidebarRow>
               {order.totalAmount > 0 && (
@@ -1111,6 +1173,23 @@ function TaskStatusBadge({ status }: { status: string }) {
   );
 }
 
+function TaskTypeBadge({ type }: { type: string }) {
+  const config: Record<string, { label: string; color: string }> = {
+    PICKING: { label: "Picking", color: "bg-amber-100 text-amber-700" },
+    PACKING: { label: "Packing", color: "bg-purple-100 text-purple-700" },
+  };
+
+  const c = config[type] || { label: type, color: "bg-gray-100 text-gray-500" };
+
+  return (
+    <span
+      className={`shrink-0 text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase ${c.color}`}
+    >
+      {c.label}
+    </span>
+  );
+}
+
 function PaymentBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
     PAID: "text-green-600",
@@ -1229,4 +1308,172 @@ function ShippingPackageCard({ pkg }: { pkg: ShippingPackage }) {
       </div>
     </div>
   );
+}
+
+// ============================================================================
+// Fulfillment Events Timeline
+// ============================================================================
+
+function FulfillmentTimeline({ events }: { events: FulfillmentEvent[] }) {
+  const [expanded, setExpanded] = useState(true);
+
+  return (
+    <div className="bg-white border border-border rounded-lg overflow-hidden">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="cursor-pointer w-full flex items-center justify-between px-4 py-3 border-b border-border text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+      >
+        <span className="flex items-center gap-2">
+          <Clock className="w-4 h-4 text-gray-400" />
+          Fulfillment Activity
+          <span className="text-xs px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500">
+            {events.length}
+          </span>
+        </span>
+        {expanded ? (
+          <ChevronUp className="w-4 h-4" />
+        ) : (
+          <ChevronDown className="w-4 h-4" />
+        )}
+      </button>
+
+      {expanded && (
+        <div className="max-h-[500px] overflow-y-auto">
+          {events.length === 0 ? (
+            <div className="p-6 text-center text-gray-400 text-sm">
+              No events yet
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-50">
+              {[...events].reverse().map((event) => (
+                <div key={event.id} className="px-4 py-2.5">
+                  <div className="flex items-center justify-between">
+                    <EventBadge type={event.type} />
+                    <span className="text-[10px] text-gray-400 font-mono">
+                      {new Date(event.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-0.5 truncate">
+                    {eventDescription(event)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EventBadge({ type }: { type: string }) {
+  const config: Record<string, { label: string; color: string }> = {
+    "order:processing": {
+      label: "PROC",
+      color: "bg-green-100 text-green-700",
+    },
+    "order:picked": { label: "PICKD", color: "bg-amber-100 text-amber-700" },
+    "order:packed": { label: "PACKD", color: "bg-purple-100 text-purple-700" },
+    "order:shipped": { label: "SHIP", color: "bg-cyan-100 text-cyan-700" },
+    "picklist:generated": {
+      label: "PLIST",
+      color: "bg-amber-100 text-amber-700",
+    },
+    "picklist:item_picked": {
+      label: "SCAN",
+      color: "bg-yellow-100 text-yellow-700",
+    },
+    "picklist:completed": {
+      label: "PICK✓",
+      color: "bg-green-100 text-green-700",
+    },
+    "pickbin:created": { label: "BIN", color: "bg-blue-100 text-blue-700" },
+    "pickbin:item_verified": {
+      label: "VRFY",
+      color: "bg-purple-100 text-purple-700",
+    },
+    "pickbin:completed": {
+      label: "BIN✓",
+      color: "bg-green-100 text-green-700",
+    },
+    "packing:started": {
+      label: "PACK",
+      color: "bg-purple-100 text-purple-700",
+    },
+    "packing:item_verified": {
+      label: "VRFY",
+      color: "bg-purple-100 text-purple-700",
+    },
+    "packing:completed": {
+      label: "PACK✓",
+      color: "bg-green-100 text-green-700",
+    },
+    "packing:image_uploaded": {
+      label: "IMG",
+      color: "bg-pink-100 text-pink-700",
+    },
+    "shipping:label_created": {
+      label: "LABEL",
+      color: "bg-cyan-100 text-cyan-700",
+    },
+    "inventory:updated": {
+      label: "INV",
+      color: "bg-orange-100 text-orange-700",
+    },
+  };
+
+  const c = config[type] || {
+    label: "EVT",
+    color: "bg-gray-100 text-gray-600",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide ${c.color}`}
+    >
+      {c.label}
+    </span>
+  );
+}
+
+function eventDescription(event: { type: string; payload: any }): string {
+  const p = event.payload;
+  if (!p) return event.type;
+
+  switch (event.type) {
+    case "picklist:generated":
+      return `Pick list generated — ${p.totalItems ?? p.itemCount ?? "?"} items`;
+    case "picklist:item_picked":
+      return `${p.sku}: ${p.quantity}x from ${p.location || "—"}`;
+    case "picklist:completed":
+      return p.bin ? `Completed → Bin ${p.bin.binNumber}` : "All items picked";
+    case "pickbin:created":
+      return `Bin ${p.binNumber} created (${p.itemCount} SKUs)`;
+    case "pickbin:item_verified":
+      return `${p.sku}: verified (${p.progress})`;
+    case "pickbin:completed":
+      return `Bin verification complete`;
+    case "packing:started":
+      return `Packing started — ${p.totalItems ?? p.itemCount ?? "?"} items`;
+    case "packing:item_verified":
+      return `${p.sku}: verified`;
+    case "packing:completed":
+      return `${p.weight || "?"}${p.weightUnit || "oz"}`;
+    case "packing:image_uploaded":
+      return `Packing photo uploaded`;
+    case "shipping:label_created": {
+      const trackingNums = p.trackingNumbers?.length
+        ? `${p.trackingNumbers.length} tracking #s`
+        : p.trackingNumber || "";
+      return `${(p.carrier || "").toUpperCase()} ${p.service || ""} — ${trackingNums}`;
+    }
+    case "order:picked":
+      return "Order picked";
+    case "order:packed":
+      return "Order packed";
+    case "order:shipped":
+      return p.message || "Order shipped";
+    default:
+      return p.message || event.type;
+  }
 }

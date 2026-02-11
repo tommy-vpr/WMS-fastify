@@ -47,10 +47,15 @@ export async function authenticate(
 
   const token = authHeader.substring(7);
 
-  // 🔥 DO NOT catch here
-  const payload = verifyAccessToken(token);
-
-  request.user = payload;
+  try {
+    const payload = verifyAccessToken(token);
+    request.user = payload;
+  } catch (err) {
+    // Return 401 so frontend knows to refresh
+    return reply.status(401).send({
+      error: { code: "TOKEN_EXPIRED", message: "Invalid or expired token" },
+    });
+  }
 }
 
 export function requireRole(allowedRoles: string[]) {

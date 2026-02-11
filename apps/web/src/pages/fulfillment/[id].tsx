@@ -34,6 +34,7 @@ import {
   Inbox,
   Camera,
   Scale,
+  Plus,
 } from "lucide-react";
 import { apiClient } from "@/lib/api";
 import { useBarcodeScanner } from "@/hooks/useBarcodeScanner";
@@ -132,6 +133,19 @@ interface WorkTask {
   };
 }
 
+interface PackingPackageItem {
+  sku: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+interface PackingPackage {
+  id: string;
+  label: string;
+  items: PackingPackageItem[];
+}
+
 interface PickBinItem {
   id: string;
   sku: string;
@@ -186,7 +200,7 @@ interface FulfillmentStatus {
   picking: WorkTask | null;
   packing: WorkTask | null;
   pickBin: PickBin | null;
-  shipping: {
+  shipping: Array<{
     id: string;
     carrier: string;
     service: string;
@@ -195,7 +209,7 @@ interface FulfillmentStatus {
     rate: number;
     labelUrl: string | null;
     createdAt: string;
-  } | null;
+  }>;
   events: Array<{
     id: string;
     type: string;
@@ -254,6 +268,20 @@ export default function FulfillmentDetailPage() {
 
   // Packing mode: "direct" (old flow) or "bin" (new bin verification flow)
   const [packingMode, setPackingMode] = useState<PackingMode | null>(null);
+
+  // Scan denomination: 0 = Full (confirm entire qty), 1/5/10/50 = per-scan count
+  const [scanMultiplier, setScanMultiplier] = useState<number>(0);
+  // Tracks accumulated scans per taskItemId when using denomination mode in picking
+  const [pickAccumulator, setPickAccumulator] = useState<
+    Record<string, number>
+  >({});
+
+  // Per-package item tracking during packing (bridges to shipping form)
+  const [packingPackages, setPackingPackages] = useState<PackingPackage[]>([
+    { id: "pkg-1", label: "Package 1", items: [] },
+  ]);
+  const [activePackingPackageId, setActivePackingPackageId] = useState("pkg-1");
+  const packingPkgCounter = useRef(1);
 
   // Pack form state
   const [packWeight, setPackWeight] = useState("");
@@ -405,9 +433,46 @@ export default function FulfillmentDetailPage() {
 
         if (scanPhase === "scan_item") {
           if (current.expectedItemBarcodes.includes(barcode)) {
-            await confirmPick(current.taskItemId, current.quantityRequired);
-            setScanPhase("scan_location");
-            showFeedback("success", `✓ Picked: ${current.sku}`);
+            if (scanMultiplier === 0) {
+              // Full mode — confirm entire quantity immediately (default)
+              await confirmPick(current.taskItemId, current.quantityRequired);
+              setScanPhase("scan_location");
+              showFeedback(
+                "success",
+                `✓ Picked: ${current.sku} ×${current.quantityRequired}`,
+              );
+            } else {
+              // Denomination mode — accumulate scans
+              const prev = pickAccumulator[current.taskItemId] || 0;
+              const next = Math.min(
+                prev + scanMultiplier,
+                current.quantityRequired,
+              );
+              setPickAccumulator((a) => ({
+                ...a,
+                [current.taskItemId]: next,
+              }));
+
+              if (next >= current.quantityRequired) {
+                // Reached full quantity — auto-confirm
+                await confirmPick(current.taskItemId, current.quantityRequired);
+                setPickAccumulator((a) => {
+                  const copy = { ...a };
+                  delete copy[current.taskItemId];
+                  return copy;
+                });
+                setScanPhase("scan_location");
+                showFeedback(
+                  "success",
+                  `✓ Picked: ${current.sku} ×${current.quantityRequired}`,
+                );
+              } else {
+                showFeedback(
+                  "success",
+                  `${current.sku}: ${next}/${current.quantityRequired} scanned`,
+                );
+              }
+            }
           } else {
             showFeedback("error", `✗ Wrong item — expected ${current.sku}`);
           }
@@ -450,15 +515,41 @@ export default function FulfillmentDetailPage() {
           return;
         }
 
+        // Find matching bin item to send denomination-aware quantity
+        const matchingBinItem = status.pickBin.items.find(
+          (i) =>
+            i.sku === barcode ||
+            i.productVariant?.upc === barcode ||
+            i.productVariant?.barcode === barcode,
+        );
+        const remaining = matchingBinItem
+          ? matchingBinItem.quantity - matchingBinItem.verifiedQty
+          : undefined;
+
+        // Denomination: 0 = full remaining, otherwise use multiplier
+        const sendQty =
+          scanMultiplier === 0 || !remaining
+            ? remaining
+            : Math.min(scanMultiplier, remaining);
+
         setActionLoading(true);
         try {
           const result = await apiClient.post<{
             verified: boolean;
             item: { sku: string; verifiedQty: number; quantity: number };
             allVerified: boolean;
-          }>(`/fulfillment/bin/${status.pickBin.id}/verify`, { barcode });
+          }>(`/fulfillment/bin/${status.pickBin.id}/verify`, {
+            barcode,
+            quantity: sendQty,
+          });
 
           if (result.verified) {
+            // Assign scanned item to active packing package
+            assignItemToPackingPackage(
+              result.item.sku,
+              result.item.sku,
+              sendQty || 1,
+            );
             showFeedback(
               "success",
               `✓ ${result.item.sku} (${result.item.verifiedQty}/${result.item.quantity})`,
@@ -488,7 +579,15 @@ export default function FulfillmentDetailPage() {
         return;
       }
     },
-    [status, actionLoading, scanPhase, packingMode, binLabelPrinted],
+    [
+      status,
+      actionLoading,
+      scanPhase,
+      packingMode,
+      binLabelPrinted,
+      scanMultiplier,
+      pickAccumulator,
+    ],
   );
 
   useBarcodeScanner({
@@ -531,6 +630,23 @@ export default function FulfillmentDetailPage() {
     }
   }
 
+  async function confirmAllPick() {
+    if (!orderId || actionLoading) return;
+    setActionLoading(true);
+    try {
+      const result = await apiClient.post<{
+        confirmed: number;
+        taskComplete: boolean;
+      }>(`/fulfillment/${orderId}/pick/confirm-all`);
+      showFeedback("success", `✓ Confirmed ${result.confirmed} items`);
+      await fetchStatus();
+    } catch (err: any) {
+      showFeedback("error", err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
   async function startDirectPacking() {
     if (!orderId || actionLoading) return;
     setActionLoading(true);
@@ -557,6 +673,169 @@ export default function FulfillmentDetailPage() {
       await fetchStatus();
     } catch (err: any) {
       showFeedback("error", err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  // ── Packing Package Management ────────────────────────────────────────────
+
+  function addPackingPackage() {
+    packingPkgCounter.current += 1;
+    const id = `pkg-${packingPkgCounter.current}`;
+    setPackingPackages((prev) => [
+      ...prev,
+      { id, label: `Package ${packingPkgCounter.current}`, items: [] },
+    ]);
+    setActivePackingPackageId(id);
+  }
+
+  function removePackingPackage(pkgId: string) {
+    setPackingPackages((prev) => {
+      const updated = prev.filter((p) => p.id !== pkgId);
+      if (updated.length === 0) {
+        const fallback = { id: "pkg-1", label: "Package 1", items: [] };
+        setActivePackingPackageId("pkg-1");
+        return [fallback];
+      }
+      return updated;
+    });
+    if (activePackingPackageId === pkgId) {
+      setActivePackingPackageId((prev) => {
+        const remaining = packingPackages.filter((p) => p.id !== pkgId);
+        return remaining.length > 0 ? remaining[0].id : "pkg-1";
+      });
+    }
+  }
+
+  function assignItemToPackingPackage(
+    sku: string,
+    productName: string,
+    quantity: number,
+    unitPrice: number = 0,
+  ) {
+    setPackingPackages((prev) =>
+      prev.map((pkg) => {
+        if (pkg.id !== activePackingPackageId) return pkg;
+        const existing = pkg.items.find((i) => i.sku === sku);
+        if (existing) {
+          return {
+            ...pkg,
+            items: pkg.items.map((i) =>
+              i.sku === sku ? { ...i, quantity: i.quantity + quantity } : i,
+            ),
+          };
+        }
+        return {
+          ...pkg,
+          items: [...pkg.items, { sku, productName, quantity, unitPrice }],
+        };
+      }),
+    );
+  }
+
+  function autoDistributePackingItems() {
+    if (!status?.pickBin) return;
+    const items = status.pickBin.items;
+    const pkgCount = packingPackages.length;
+    if (pkgCount === 0) return;
+
+    setPackingPackages((prev) => {
+      const cleared = prev.map((p) => ({
+        ...p,
+        items: [] as PackingPackageItem[],
+      }));
+      for (const item of items) {
+        if (pkgCount === 1) {
+          cleared[0].items.push({
+            sku: item.sku,
+            productName: item.productVariant?.name || item.sku,
+            quantity: item.quantity,
+            unitPrice: 0,
+          });
+        } else {
+          let remaining = item.quantity;
+          const perPkg = Math.ceil(item.quantity / pkgCount);
+          for (let i = 0; i < pkgCount && remaining > 0; i++) {
+            const qty = Math.min(perPkg, remaining);
+            const existing = cleared[i].items.find((e) => e.sku === item.sku);
+            if (existing) {
+              existing.quantity += qty;
+            } else {
+              cleared[i].items.push({
+                sku: item.sku,
+                productName: item.productVariant?.name || item.sku,
+                quantity: qty,
+                unitPrice: 0,
+              });
+            }
+            remaining -= qty;
+          }
+        }
+      }
+      return cleared;
+    });
+  }
+
+  // ── Verify Functions ───────────────────────────────────────────────────
+
+  async function verifyBinItemWithQty(barcode: string, quantity: number) {
+    if (!status?.pickBin || actionLoading) return;
+    setActionLoading(true);
+    try {
+      const result = await apiClient.post<{
+        verified: boolean;
+        item: { sku: string; verifiedQty: number; quantity: number };
+        allVerified: boolean;
+      }>(`/fulfillment/bin/${status.pickBin.id}/verify`, { barcode, quantity });
+
+      if (result.verified) {
+        // Assign to active packing package
+        assignItemToPackingPackage(
+          result.item.sku,
+          result.item.sku, // productName fallback
+          quantity,
+        );
+        showFeedback(
+          "success",
+          `✓ ${result.item.sku} (${result.item.verifiedQty}/${result.item.quantity})`,
+        );
+      } else {
+        showFeedback("error", `${result.item.sku} already fully verified`);
+      }
+      await fetchStatus();
+    } catch (err: any) {
+      showFeedback("error", err.message || "Verify failed");
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function verifyAllBinItems() {
+    if (!status?.pickBin || actionLoading) return;
+    setActionLoading(true);
+    try {
+      let verified = 0;
+      for (const item of status.pickBin.items) {
+        const remaining = item.quantity - item.verifiedQty;
+        if (remaining > 0) {
+          await apiClient.post(`/fulfillment/bin/${status.pickBin.id}/verify`, {
+            barcode: item.sku,
+            quantity: remaining,
+          });
+          // Assign to active packing package
+          assignItemToPackingPackage(
+            item.sku,
+            item.productVariant?.name || item.sku,
+            remaining,
+          );
+          verified++;
+        }
+      }
+      showFeedback("success", `✓ Verified all ${verified} remaining items`);
+      await fetchStatus();
+    } catch (err: any) {
+      showFeedback("error", err.message || "Verify all failed");
     } finally {
       setActionLoading(false);
     }
@@ -827,65 +1106,93 @@ export default function FulfillmentDetailPage() {
               setScanPhase={setScanPhase}
               getCurrentPickItem={getCurrentPickItem}
               confirmPick={confirmPick}
+              confirmAllPick={confirmAllPick}
               actionLoading={actionLoading}
+              orderId={orderId!}
+              scanMultiplier={scanMultiplier}
+              setScanMultiplier={setScanMultiplier}
+              pickAccumulator={pickAccumulator}
+              setPickAccumulator={setPickAccumulator}
             />
           )}
 
-          {/* ── STEP: Awaiting Pack (Choose Mode) ────────────────────────── */}
+          {/* ── STEP: Awaiting Pack (Handoff to Pack Station) ──────────── */}
           {currentStep === "awaiting_pack" && !packingMode && (
             <StepCard
-              title="All Items Picked"
-              description={
-                pickBin
-                  ? "Choose how to proceed with packing."
-                  : "Ready for packing verification."
-              }
+              title="✅ Picking Complete"
+              description="Hand off the bin to the pack station, or continue packing yourself."
               icon={<CheckCircle2 className="w-5 h-5 text-green-500" />}
             >
               {pickBin ? (
-                <div className="space-y-3">
-                  {/* Bin info */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center gap-3">
-                      <Inbox className="w-8 h-8 text-blue-600" />
-                      <div>
-                        <div className="font-semibold text-blue-800">
-                          Bin: {pickBin.binNumber}
-                        </div>
-                        <div className="text-sm text-blue-600">
-                          {pickBin.items.length} SKUs · {binProgress.total}{" "}
-                          units ready for verification
-                        </div>
-                      </div>
+                <div className="space-y-4">
+                  {/* Handoff card — prominent */}
+                  <div className="bg-green-50 border-2 border-green-300 rounded-xl p-5 text-center">
+                    <div className="text-5xl font-black text-green-700 mb-1">
+                      {pickBin.binNumber}
+                    </div>
+                    <div className="text-sm text-green-600 mb-3">
+                      {pickBin.items.length} SKUs · {binProgress.total} units
+                    </div>
+                    <div className="bg-white rounded-lg p-3 inline-block mx-auto mb-4">
+                      <svg
+                        ref={(el) => {
+                          if (el) {
+                            try {
+                              JsBarcode(el, pickBin.barcode, {
+                                format: "CODE128",
+                                width: 2,
+                                height: 60,
+                                displayValue: true,
+                                fontSize: 12,
+                                margin: 5,
+                              });
+                            } catch {}
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="text-green-800 font-medium text-sm">
+                      Place bin at pack station for packer to scan
                     </div>
                   </div>
 
-                  {/* Option buttons */}
+                  {/* Primary: Hand off → back to pick queue */}
+                  <a
+                    href="/pick"
+                    className="block w-full py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition text-center text-lg"
+                  >
+                    ✓ Done — Back to Pick Queue
+                  </a>
+
+                  {/* Divider */}
+                  <div className="flex items-center gap-3 py-1">
+                    <div className="flex-1 h-px bg-gray-200" />
+                    <span className="text-xs text-gray-400 uppercase tracking-wider">
+                      or pack it yourself
+                    </span>
+                    <div className="flex-1 h-px bg-gray-200" />
+                  </div>
+
+                  {/* Secondary: Continue to packing */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       onClick={startBinPacking}
-                      className="cursor-pointer py-4 px-4 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition flex flex-col items-center gap-2"
+                      className="cursor-pointer py-3 px-4 border-2 border-purple-200 text-purple-700 rounded-lg font-medium hover:bg-purple-50 transition flex flex-col items-center gap-1"
                     >
-                      <ScanBarcode className="w-6 h-6" />
-                      <span>Verify from Bin</span>
-                      <span className="text-xs text-purple-200">
-                        Scan UPCs to verify items
-                      </span>
+                      <ScanBarcode className="w-5 h-5" />
+                      <span className="text-sm">Verify from Bin</span>
                     </button>
                     <button
                       onClick={startDirectPacking}
                       disabled={actionLoading}
-                      className="cursor-pointer py-4 px-4 border-2 border-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition flex flex-col items-center gap-2"
+                      className="cursor-pointer py-3 px-4 border-2 border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition flex flex-col items-center gap-1"
                     >
                       {actionLoading ? (
-                        <Loader2 className="w-6 h-6 animate-spin" />
+                        <Loader2 className="w-5 h-5 animate-spin" />
                       ) : (
-                        <BoxIcon className="w-6 h-6" />
+                        <BoxIcon className="w-5 h-5" />
                       )}
-                      <span>Direct Pack</span>
-                      <span className="text-xs text-gray-500">
-                        Skip bin, pack directly
-                      </span>
+                      <span className="text-sm">Direct Pack</span>
                     </button>
                   </div>
                 </div>
@@ -922,6 +1229,16 @@ export default function FulfillmentDetailPage() {
               pickBin={pickBin}
               binProgress={binProgress}
               actionLoading={actionLoading}
+              onVerifyItem={verifyBinItemWithQty}
+              onVerifyAll={verifyAllBinItems}
+              scanMultiplier={scanMultiplier}
+              setScanMultiplier={setScanMultiplier}
+              packingPackages={packingPackages}
+              activePackingPackageId={activePackingPackageId}
+              setActivePackingPackageId={setActivePackingPackageId}
+              onAddPackingPackage={addPackingPackage}
+              onRemovePackingPackage={removePackingPackage}
+              onAutoDistribute={autoDistributePackingItems}
             />
           )}
 
@@ -1026,13 +1343,28 @@ export default function FulfillmentDetailPage() {
                       }
                     : undefined
                 }
+                initialPackages={
+                  packingPackages.some((p) => p.items.length > 0)
+                    ? packingPackages
+                        .filter((p) => p.items.length > 0)
+                        .map((p) => ({
+                          label: p.label,
+                          items: p.items.map((i) => ({
+                            sku: i.sku,
+                            productName: i.productName,
+                            quantity: i.quantity,
+                            unitPrice: i.unitPrice,
+                          })),
+                        }))
+                    : undefined
+                }
               />
             </StepCard>
           )}
 
           {/* ── STEP: Shipped ────────────────────────────────────────────── */}
           {(currentStep === "shipped" || currentStep === "delivered") &&
-            shipping && (
+            shipping.length > 0 && (
               <ShippedStep
                 shipping={shipping}
                 packingImages={packingImages}
@@ -1168,10 +1500,65 @@ function OrderStatusBadge({ status }: { status: string }) {
 
 // ── Bin Verification Step ─────────────────────────────────────────────────
 
+// ── Scan Denomination Selector ────────────────────────────────────────────
+
+const DENOMINATIONS = [1, 5, 10, 50];
+
+function ScanDenominationSelector({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div className="flex items-center gap-1.5 p-2 bg-amber-50 border border-amber-200 rounded-lg">
+      <span className="text-xs font-medium text-amber-800 mr-1 whitespace-nowrap">
+        Per scan:
+      </span>
+      <button
+        onClick={() => onChange(0)}
+        className={`cursor-pointer px-3 py-1.5 rounded-md text-sm font-bold transition-all ${
+          value === 0
+            ? "bg-amber-500 text-white shadow-sm"
+            : "bg-white text-amber-700 border border-amber-300 hover:border-amber-400"
+        }`}
+      >
+        Full
+      </button>
+      {DENOMINATIONS.map((d) => (
+        <button
+          key={d}
+          onClick={() => onChange(d)}
+          className={`cursor-pointer px-3 py-1.5 rounded-md text-sm font-bold transition-all ${
+            value === d
+              ? "bg-amber-500 text-white shadow-sm"
+              : "bg-white text-amber-700 border border-amber-300 hover:border-amber-400"
+          }`}
+        >
+          ×{d}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Bin Verification Step ─────────────────────────────────────────────────
+
 function BinVerificationStep({
   pickBin,
   binProgress,
   actionLoading,
+  onVerifyItem,
+  onVerifyAll,
+  scanMultiplier,
+  setScanMultiplier,
+  packingPackages,
+  activePackingPackageId,
+  setActivePackingPackageId,
+  onAddPackingPackage,
+  onRemovePackingPackage,
+  onAutoDistribute,
 }: {
   pickBin: PickBin;
   binProgress: {
@@ -1181,11 +1568,32 @@ function BinVerificationStep({
     allVerified: boolean;
   };
   actionLoading: boolean;
+  onVerifyItem: (barcode: string, quantity: number) => void;
+  onVerifyAll: () => void;
+  scanMultiplier: number;
+  setScanMultiplier: (v: number) => void;
+  packingPackages: PackingPackage[];
+  activePackingPackageId: string;
+  setActivePackingPackageId: (id: string) => void;
+  onAddPackingPackage: () => void;
+  onRemovePackingPackage: (id: string) => void;
+  onAutoDistribute: () => void;
 }) {
+  const [editingItem, setEditingItem] = useState<string | null>(null);
+  const [qtyValue, setQtyValue] = useState("");
+
+  const totalUnitsRemaining = pickBin.items.reduce(
+    (sum, i) => sum + Math.max(0, i.quantity - i.verifiedQty),
+    0,
+  );
+  const remainingLines = pickBin.items.filter(
+    (i) => i.verifiedQty < i.quantity,
+  ).length;
+
   return (
     <StepCard
       title={`Verify Items (${binProgress.verified}/${binProgress.total})`}
-      description="Scan each item UPC to verify it's in the bin."
+      description="Scan item UPC or use Verify buttons to confirm quantities."
       icon={<ScanBarcode className="w-5 h-5 text-purple-500" />}
     >
       {/* Progress bar */}
@@ -1200,14 +1608,107 @@ function BinVerificationStep({
         </div>
       </div>
 
-      {/* Scan prompt */}
+      {/* Scan prompt + Verify All */}
       {!binProgress.allVerified && (
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center mb-4">
-          <ScanBarcode className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-          <p className="text-purple-800 font-medium">Scan item UPC to verify</p>
-          <p className="text-purple-600 text-sm mt-1">
-            Each scan verifies 1 unit
-          </p>
+        <div className="space-y-3 mb-4">
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+            <ScanBarcode className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+            <p className="text-purple-800 font-medium">
+              Scan UPC or verify manually below
+            </p>
+            <p className="text-purple-600 text-sm mt-1">
+              {scanMultiplier === 0
+                ? "Scanner auto-fills full quantity per scan"
+                : `Each scan verifies ×${scanMultiplier} unit${scanMultiplier > 1 ? "s" : ""}`}
+            </p>
+          </div>
+
+          {/* Denomination Selector */}
+          <ScanDenominationSelector
+            value={scanMultiplier}
+            onChange={setScanMultiplier}
+          />
+
+          {/* Package Selector — scan into active package */}
+          <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wide">
+                Scanning into:
+              </span>
+              <button
+                onClick={onAddPackingPackage}
+                className="cursor-pointer text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded hover:bg-emerald-200 font-medium flex items-center gap-1 transition"
+              >
+                <Plus className="w-3 h-3" /> Add Box
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {packingPackages.map((pkg) => {
+                const itemCount = pkg.items.reduce((s, i) => s + i.quantity, 0);
+                return (
+                  <button
+                    key={pkg.id}
+                    onClick={() => setActivePackingPackageId(pkg.id)}
+                    className={`cursor-pointer relative px-3 py-1.5 rounded-md text-sm font-bold transition-all ${
+                      pkg.id === activePackingPackageId
+                        ? "bg-emerald-500 text-white shadow-sm"
+                        : "bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-400"
+                    }`}
+                  >
+                    {pkg.label}
+                    {itemCount > 0 && (
+                      <span
+                        className={`ml-1 text-xs ${
+                          pkg.id === activePackingPackageId
+                            ? "text-emerald-100"
+                            : "text-emerald-500"
+                        }`}
+                      >
+                        ({itemCount})
+                      </span>
+                    )}
+                    {packingPackages.length > 1 && (
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemovePackingPackage(pkg.id);
+                        }}
+                        className={`ml-1 cursor-pointer text-xs hover:text-red-400 ${
+                          pkg.id === activePackingPackageId
+                            ? "text-emerald-200"
+                            : "text-emerald-400"
+                        }`}
+                      >
+                        ×
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {packingPackages.length > 1 && (
+              <button
+                onClick={onAutoDistribute}
+                className="cursor-pointer mt-2 w-full text-xs py-1.5 bg-white text-emerald-700 border border-emerald-200 rounded hover:bg-emerald-50 font-medium transition"
+              >
+                Auto-distribute items evenly
+              </button>
+            )}
+          </div>
+
+          <button
+            onClick={onVerifyAll}
+            disabled={actionLoading}
+            className="cursor-pointer w-full py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition"
+          >
+            {actionLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4" />
+            )}
+            Verify All Remaining ({remainingLines} lines · {totalUnitsRemaining}{" "}
+            units)
+          </button>
         </div>
       )}
 
@@ -1215,6 +1716,9 @@ function BinVerificationStep({
       <div className="space-y-1">
         {pickBin.items.map((item) => {
           const isComplete = item.verifiedQty >= item.quantity;
+          const remaining = item.quantity - item.verifiedQty;
+          const isEditing = editingItem === item.id;
+
           return (
             <div
               key={item.id}
@@ -1256,15 +1760,133 @@ function BinVerificationStep({
                   {item.sku}
                 </div>
               </div>
-              <div
-                className={`text-lg font-bold ${isComplete ? "text-green-600" : "text-gray-700"}`}
-              >
-                {item.verifiedQty}/{item.quantity}
-              </div>
+
+              {isComplete ? (
+                <div className="text-lg font-bold text-green-600">
+                  {item.verifiedQty}/{item.quantity}
+                </div>
+              ) : isEditing ? (
+                <div className="flex items-center gap-1">
+                  <input
+                    type="number"
+                    value={qtyValue}
+                    onChange={(e) => setQtyValue(e.target.value)}
+                    className="w-16 px-2 py-1 border border-purple-300 rounded text-sm text-center"
+                    min={1}
+                    max={remaining}
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        const qty = parseInt(qtyValue) || remaining;
+                        onVerifyItem(item.sku, Math.min(qty, remaining));
+                        setEditingItem(null);
+                      }
+                      if (e.key === "Escape") setEditingItem(null);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      const qty = parseInt(qtyValue) || remaining;
+                      onVerifyItem(item.sku, Math.min(qty, remaining));
+                      setEditingItem(null);
+                    }}
+                    disabled={actionLoading}
+                    className="cursor-pointer p-1 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <span className="text-sm font-bold text-gray-700">
+                    {item.verifiedQty}/{item.quantity}
+                  </span>
+                  {/* Denomination quick-taps */}
+                  {remaining > 1 && (
+                    <div className="flex gap-0.5">
+                      {DENOMINATIONS.filter((d) => d < remaining && d > 1)
+                        .slice(0, 2)
+                        .map((d) => (
+                          <button
+                            key={d}
+                            onClick={() =>
+                              onVerifyItem(item.sku, Math.min(d, remaining))
+                            }
+                            disabled={actionLoading}
+                            className="cursor-pointer px-1.5 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold hover:bg-amber-200 disabled:opacity-50"
+                          >
+                            +{d}
+                          </button>
+                        ))}
+                    </div>
+                  )}
+                  <button
+                    onClick={() => {
+                      if (remaining <= 1) {
+                        onVerifyItem(item.sku, remaining);
+                      } else {
+                        setEditingItem(item.id);
+                        setQtyValue(String(remaining));
+                      }
+                    }}
+                    disabled={actionLoading}
+                    className="cursor-pointer px-2 py-1 bg-purple-500 text-white rounded text-xs font-medium hover:bg-purple-600 disabled:opacity-50"
+                  >
+                    {remaining <= 1 ? "Verify" : `All ${remaining}`}
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
+
+      {/* Per-Package Summary */}
+      {packingPackages.some((p) => p.items.length > 0) && (
+        <div className="mt-4 border-t border-gray-200 pt-3">
+          <div className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+            Package Contents
+          </div>
+          <div className="space-y-2">
+            {packingPackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className={`p-2 rounded-lg border text-sm ${
+                  pkg.id === activePackingPackageId
+                    ? "border-emerald-300 bg-emerald-50"
+                    : "border-gray-200 bg-gray-50"
+                }`}
+              >
+                <div className="font-medium text-emerald-700 text-xs mb-1">
+                  {pkg.label}{" "}
+                  <span className="text-gray-400 font-normal">
+                    ({pkg.items.reduce((s, i) => s + i.quantity, 0)} units)
+                  </span>
+                </div>
+                {pkg.items.length === 0 ? (
+                  <span className="text-xs text-gray-400 italic">Empty</span>
+                ) : (
+                  <div className="space-y-0.5">
+                    {pkg.items.map((item) => (
+                      <div
+                        key={item.sku}
+                        className="flex items-center justify-between text-xs"
+                      >
+                        <span className="font-mono text-gray-600">
+                          {item.sku}
+                        </span>
+                        <span className="font-bold text-gray-700">
+                          ×{item.quantity}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </StepCard>
   );
 }
@@ -1411,7 +2033,13 @@ function PickingStep({
   setScanPhase,
   getCurrentPickItem,
   confirmPick,
+  confirmAllPick,
   actionLoading,
+  orderId,
+  scanMultiplier,
+  setScanMultiplier,
+  pickAccumulator,
+  setPickAccumulator,
 }: {
   picking: WorkTask;
   scanLookup: ScanLookup;
@@ -1419,14 +2047,43 @@ function PickingStep({
   setScanPhase: (p: ScanPhase) => void;
   getCurrentPickItem: () => PickScanDetail | null;
   confirmPick: (taskItemId: string, quantity: number) => void;
+  confirmAllPick: () => void;
   actionLoading: boolean;
+  orderId: string;
+  scanMultiplier: number;
+  setScanMultiplier: (v: number) => void;
+  pickAccumulator: Record<string, number>;
+  setPickAccumulator: React.Dispatch<
+    React.SetStateAction<Record<string, number>>
+  >;
 }) {
   const current = getCurrentPickItem();
+  const [batchMode, setBatchMode] = useState(false);
+  const [editingQty, setEditingQty] = useState<string | null>(null);
+  const [qtyValue, setQtyValue] = useState("");
+
+  const remainingItems = Object.values(scanLookup.pick)
+    .filter(
+      (i) =>
+        i.status !== "COMPLETED" &&
+        i.status !== "SHORT" &&
+        i.status !== "SKIPPED",
+    )
+    .sort((a, b) => a.sequence - b.sequence);
+
+  const totalUnitsRemaining = remainingItems.reduce(
+    (sum, i) => sum + i.quantityRequired,
+    0,
+  );
 
   return (
     <StepCard
       title={`Picking (${picking.completedItems}/${picking.totalItems})`}
-      description="Scan location barcode, then item barcode to confirm each pick."
+      description={
+        batchMode
+          ? "Confirm items individually or all at once."
+          : "Scan location barcode, then item barcode to confirm each pick."
+      }
       icon={<ScanBarcode className="w-5 h-5 text-blue-500" />}
     >
       {/* Progress bar */}
@@ -1441,160 +2098,441 @@ function PickingStep({
         </div>
       </div>
 
-      {/* Current pick item */}
-      {!current ? (
-        <div className="text-center py-6 text-green-600 font-medium">
-          <CheckCircle2 className="w-8 h-8 mx-auto mb-2" />
-          All items picked!
-        </div>
-      ) : (
-        <div className="mb-4">
-          <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
-            Current Item
-          </div>
-          <div className="bg-white border-2 border-blue-200 rounded-xl p-4">
-            {/* Location */}
-            <div className="flex items-center gap-2 mb-3">
-              <MapPin className="w-4 h-4 text-blue-500" />
-              <span className="font-semibold text-blue-700">
-                {current.locationName || "No location"}
-              </span>
-            </div>
+      {/* Mode toggle */}
+      <div className="flex items-center justify-between mb-4 p-2 bg-gray-50 rounded-lg">
+        <span className="text-sm text-gray-600 font-medium">
+          {batchMode ? "Batch Mode" : "Scan Mode"}
+        </span>
+        <button
+          onClick={() => setBatchMode(!batchMode)}
+          className={`cursor-pointer relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+            batchMode ? "bg-blue-600" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+              batchMode ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+      </div>
 
-            {/* Scan phase indicator */}
-            <div className="flex gap-2 mb-3">
-              <span
-                className={`text-xs font-semibold px-2 py-1 rounded ${
-                  scanPhase === "scan_location"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-green-100 text-green-700"
-                }`}
-              >
-                {scanPhase === "scan_location"
-                  ? "① Scan Location"
-                  : "✓ Location OK"}
-              </span>
-              <span
-                className={`text-xs font-semibold px-2 py-1 rounded ${
-                  scanPhase === "scan_item"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-gray-100 text-gray-400"
-                }`}
-              >
-                ② Scan Item
-              </span>
+      {/* ── BATCH MODE ──────────────────────────────────────────────── */}
+      {batchMode ? (
+        <>
+          {/* Denomination selector for large orders */}
+          {totalUnitsRemaining > 5 && (
+            <div className="mb-4">
+              <ScanDenominationSelector
+                value={scanMultiplier}
+                onChange={setScanMultiplier}
+              />
             </div>
+          )}
 
-            {/* Product info */}
-            <div className="flex items-center gap-3">
-              {current.imageUrl ? (
-                <img
-                  src={current.imageUrl}
-                  alt=""
-                  className="w-12 h-12 rounded-lg object-cover bg-gray-100"
-                />
+          {/* Confirm All button */}
+          {remainingItems.length > 0 && (
+            <button
+              onClick={confirmAllPick}
+              disabled={actionLoading}
+              className="cursor-pointer w-full mb-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition"
+            >
+              {actionLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <Package className="w-6 h-6 text-gray-300" />
-                </div>
+                <CheckCircle2 className="w-4 h-4" />
               )}
-              <div className="flex-1">
-                <div className="font-medium">
-                  {current.variantName || "Unknown"}
-                </div>
-                <div className="text-sm text-gray-500 font-mono">
-                  {current.sku}
-                </div>
-              </div>
-              <div className="text-2xl font-bold">
-                ×{current.quantityRequired}
-              </div>
-            </div>
+              Confirm All Remaining ({remainingItems.length} lines ·{" "}
+              {totalUnitsRemaining} units)
+            </button>
+          )}
 
-            {/* Manual confirm */}
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={() =>
-                  confirmPick(current.taskItemId, current.quantityRequired)
-                }
-                disabled={actionLoading}
-                className="cursor-pointer flex-1 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center gap-1 transition"
-              >
-                {actionLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <CheckCircle2 className="w-4 h-4" />
-                )}
-                Manual Confirm
-              </button>
-              {current.expectedLocationBarcode &&
-                scanPhase === "scan_location" && (
-                  <button
-                    onClick={() => setScanPhase("scan_item")}
-                    className="cursor-pointer px-3 py-2 border border-border rounded-lg text-sm text-gray-500 hover:bg-gray-50 transition"
-                  >
-                    Skip Location
-                  </button>
-                )}
-            </div>
-          </div>
-        </div>
-      )}
+          {/* Item list with individual confirm */}
+          <div className="space-y-1">
+            {Object.values(scanLookup.pick)
+              .sort((a, b) => a.sequence - b.sequence)
+              .map((item) => {
+                const isDone =
+                  item.status === "COMPLETED" ||
+                  item.status === "SHORT" ||
+                  item.status === "SKIPPED";
+                const isEditing = editingQty === item.taskItemId;
 
-      {/* All items list */}
-      <div>
-        <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
-          All Items
-        </div>
-        <div className="space-y-1">
-          {Object.values(scanLookup.pick)
-            .sort((a, b) => a.sequence - b.sequence)
-            .map((item) => {
-              const isDone =
-                item.status === "COMPLETED" ||
-                item.status === "SHORT" ||
-                item.status === "SKIPPED";
-              const isCurrent = current?.taskItemId === item.taskItemId;
-
-              return (
-                <div
-                  key={item.taskItemId}
-                  className={`flex items-center gap-3 p-2 rounded-lg text-sm ${
-                    isCurrent
-                      ? "bg-blue-50 border border-blue-200"
-                      : isDone
-                        ? "bg-gray-50 opacity-60"
-                        : "bg-gray-50"
-                  }`}
-                >
+                return (
                   <div
-                    className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 ${
-                      isDone
-                        ? "bg-green-500 text-white"
-                        : isCurrent
-                          ? "border-2 border-blue-400"
-                          : "border border-gray-300"
+                    key={item.taskItemId}
+                    className={`flex items-center gap-3 p-3 rounded-lg text-sm ${
+                      isDone ? "bg-green-50 opacity-70" : "bg-gray-50"
                     }`}
                   >
-                    {isDone && <CheckCircle2 className="w-3.5 h-3.5" />}
+                    <div
+                      className={`w-6 h-6 rounded flex items-center justify-center flex-shrink-0 ${
+                        isDone
+                          ? "bg-green-500 text-white"
+                          : "border-2 border-gray-300"
+                      }`}
+                    >
+                      {isDone && <CheckCircle2 className="w-4 h-4" />}
+                    </div>
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt=""
+                        className="w-8 h-8 rounded object-cover bg-gray-100 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        <Package className="w-4 h-4 text-gray-300" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium truncate text-xs">
+                        {item.variantName || "—"}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        <span className="font-mono text-blue-600">
+                          {item.sku}
+                        </span>
+                        {item.locationName && (
+                          <span className="ml-2 text-gray-400">
+                            · {item.locationName}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-sm font-bold w-8 text-center">
+                      ×{item.quantityRequired}
+                    </div>
+                    {!isDone && (
+                      <>
+                        {isEditing ? (
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number"
+                              value={qtyValue}
+                              onChange={(e) => setQtyValue(e.target.value)}
+                              className="w-14 px-2 py-1 border border-blue-300 rounded text-sm text-center"
+                              min={1}
+                              max={item.quantityRequired}
+                              autoFocus
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  const qty =
+                                    parseInt(qtyValue) || item.quantityRequired;
+                                  confirmPick(item.taskItemId, qty);
+                                  setEditingQty(null);
+                                }
+                                if (e.key === "Escape") setEditingQty(null);
+                              }}
+                            />
+                            <button
+                              onClick={() => {
+                                const qty =
+                                  parseInt(qtyValue) || item.quantityRequired;
+                                confirmPick(item.taskItemId, qty);
+                                setEditingQty(null);
+                              }}
+                              disabled={actionLoading}
+                              className="cursor-pointer p-1 bg-green-500 text-white rounded hover:bg-green-600"
+                            >
+                              <CheckCircle2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            {/* Denomination quick-taps for large qty items */}
+                            {item.quantityRequired > 1 && (
+                              <div className="flex gap-0.5">
+                                {DENOMINATIONS.filter(
+                                  (d) => d < item.quantityRequired && d > 1,
+                                )
+                                  .slice(0, 2)
+                                  .map((d) => (
+                                    <button
+                                      key={d}
+                                      onClick={() =>
+                                        confirmPick(
+                                          item.taskItemId,
+                                          Math.min(d, item.quantityRequired),
+                                        )
+                                      }
+                                      disabled={actionLoading}
+                                      className="cursor-pointer px-1.5 py-1 bg-amber-100 text-amber-700 rounded text-xs font-bold hover:bg-amber-200 disabled:opacity-50"
+                                    >
+                                      ×{d}
+                                    </button>
+                                  ))}
+                              </div>
+                            )}
+                            <button
+                              onClick={() => {
+                                if (item.quantityRequired <= 1) {
+                                  confirmPick(
+                                    item.taskItemId,
+                                    item.quantityRequired,
+                                  );
+                                } else {
+                                  setEditingQty(item.taskItemId);
+                                  setQtyValue(String(item.quantityRequired));
+                                }
+                              }}
+                              disabled={actionLoading}
+                              className="cursor-pointer px-3 py-1 bg-blue-500 text-white rounded text-xs font-medium hover:bg-blue-600 disabled:opacity-50"
+                            >
+                              {item.quantityRequired <= 1
+                                ? "Confirm"
+                                : `All ${item.quantityRequired}`}
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
-                  <span className="font-mono text-xs text-blue-600 w-20 truncate">
-                    {item.sku}
-                  </span>
-                  <span className="text-gray-600 flex-1 truncate">
-                    {item.variantName}
-                  </span>
-                  <span className="text-gray-500 w-8 text-center">
-                    ×{item.quantityRequired}
-                  </span>
-                  <span className="font-mono text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                    {item.locationName || "—"}
+                );
+              })}
+          </div>
+        </>
+      ) : (
+        /* ── SCAN MODE (original) ──────────────────────────────────── */
+        <>
+          {/* Denomination selector for scan mode */}
+          {current && current.quantityRequired > 1 && (
+            <div className="mb-4">
+              <ScanDenominationSelector
+                value={scanMultiplier}
+                onChange={setScanMultiplier}
+              />
+            </div>
+          )}
+
+          {/* Current pick item */}
+          {!current ? (
+            <div className="text-center py-6 text-green-600 font-medium">
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-2" />
+              All items picked!
+            </div>
+          ) : (
+            <div className="mb-4">
+              <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
+                Current Item
+              </div>
+              <div className="bg-white border-2 border-blue-200 rounded-xl p-4">
+                {/* Location */}
+                <div className="flex items-center gap-2 mb-3">
+                  <MapPin className="w-4 h-4 text-blue-500" />
+                  <span className="font-semibold text-blue-700">
+                    {current.locationName || "No location"}
                   </span>
                 </div>
-              );
-            })}
-        </div>
-      </div>
+
+                {/* Scan phase indicator */}
+                <div className="flex gap-2 mb-3">
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded ${
+                      scanPhase === "scan_location"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-green-100 text-green-700"
+                    }`}
+                  >
+                    {scanPhase === "scan_location"
+                      ? "① Scan Location"
+                      : "✓ Location OK"}
+                  </span>
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded ${
+                      scanPhase === "scan_item"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    ② Scan Item
+                  </span>
+                </div>
+
+                {/* Product info */}
+                <div className="flex items-center gap-3">
+                  {current.imageUrl ? (
+                    <img
+                      src={current.imageUrl}
+                      alt=""
+                      className="w-12 h-12 rounded-lg object-cover bg-gray-100"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
+                      <Package className="w-6 h-6 text-gray-300" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="font-medium">
+                      {current.variantName || "Unknown"}
+                    </div>
+                    <div className="text-sm text-gray-500 font-mono">
+                      {current.sku}
+                    </div>
+                  </div>
+                  <div className="text-2xl font-bold">
+                    ×{current.quantityRequired}
+                  </div>
+                </div>
+
+                {/* Accumulator progress bar (denomination mode only) */}
+                {scanMultiplier > 0 &&
+                  (pickAccumulator[current.taskItemId] || 0) > 0 && (
+                    <div className="mt-3">
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-amber-700 font-medium">
+                          Scanned: {pickAccumulator[current.taskItemId]}/
+                          {current.quantityRequired}
+                        </span>
+                        <span className="text-amber-600">
+                          {Math.ceil(
+                            (current.quantityRequired -
+                              (pickAccumulator[current.taskItemId] || 0)) /
+                              scanMultiplier,
+                          )}{" "}
+                          scans left
+                        </span>
+                      </div>
+                      <div className="h-3 bg-amber-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-amber-500 rounded-full transition-all duration-200"
+                          style={{
+                            width: `${((pickAccumulator[current.taskItemId] || 0) / current.quantityRequired) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                {/* Manual confirm */}
+                <div className="mt-4 flex gap-2">
+                  {/* If denomination mode with accumulated progress, show confirm partial */}
+                  {scanMultiplier > 0 &&
+                  (pickAccumulator[current.taskItemId] || 0) > 0 ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          const accum =
+                            pickAccumulator[current.taskItemId] || 0;
+                          confirmPick(current.taskItemId, accum);
+                          setPickAccumulator((a) => {
+                            const copy = { ...a };
+                            delete copy[current.taskItemId];
+                            return copy;
+                          });
+                        }}
+                        disabled={actionLoading}
+                        className="cursor-pointer flex-1 py-2 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 disabled:opacity-50 flex items-center justify-center gap-1 transition"
+                      >
+                        {actionLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <CheckCircle2 className="w-4 h-4" />
+                        )}
+                        Confirm {pickAccumulator[current.taskItemId]} (Short)
+                      </button>
+                      <button
+                        onClick={() =>
+                          confirmPick(
+                            current.taskItemId,
+                            current.quantityRequired,
+                          )
+                        }
+                        disabled={actionLoading}
+                        className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 transition"
+                      >
+                        All {current.quantityRequired}
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        confirmPick(
+                          current.taskItemId,
+                          current.quantityRequired,
+                        )
+                      }
+                      disabled={actionLoading}
+                      className="cursor-pointer flex-1 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center gap-1 transition"
+                    >
+                      {actionLoading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <CheckCircle2 className="w-4 h-4" />
+                      )}
+                      Manual Confirm
+                    </button>
+                  )}
+                  {current.expectedLocationBarcode &&
+                    scanPhase === "scan_location" && (
+                      <button
+                        onClick={() => setScanPhase("scan_item")}
+                        className="cursor-pointer px-3 py-2 border border-border rounded-lg text-sm text-gray-500 hover:bg-gray-50 transition"
+                      >
+                        Skip Location
+                      </button>
+                    )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* All items list */}
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
+              All Items
+            </div>
+            <div className="space-y-1">
+              {Object.values(scanLookup.pick)
+                .sort((a, b) => a.sequence - b.sequence)
+                .map((item) => {
+                  const isDone =
+                    item.status === "COMPLETED" ||
+                    item.status === "SHORT" ||
+                    item.status === "SKIPPED";
+                  const isCurrent = current?.taskItemId === item.taskItemId;
+
+                  return (
+                    <div
+                      key={item.taskItemId}
+                      className={`flex items-center gap-3 p-2 rounded-lg text-sm ${
+                        isCurrent
+                          ? "bg-blue-50 border border-blue-200"
+                          : isDone
+                            ? "bg-gray-50 opacity-60"
+                            : "bg-gray-50"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 ${
+                          isDone
+                            ? "bg-green-500 text-white"
+                            : isCurrent
+                              ? "border-2 border-blue-400"
+                              : "border border-gray-300"
+                        }`}
+                      >
+                        {isDone && <CheckCircle2 className="w-3.5 h-3.5" />}
+                      </div>
+                      <span className="font-mono text-xs text-blue-600 w-20 truncate">
+                        {item.sku}
+                      </span>
+                      <span className="text-gray-600 flex-1 truncate">
+                        {item.variantName}
+                      </span>
+                      <span className="text-gray-500 w-8 text-center">
+                        ×{item.quantityRequired}
+                      </span>
+                      <span className="font-mono text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                        {item.locationName || "—"}
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </>
+      )}
     </StepCard>
   );
 }
@@ -1973,12 +2911,26 @@ function ShippedStep({
   orderNumber: string;
   packingTaskId?: string;
 }) {
-  if (!shipping) return null;
+  if (!shipping || shipping.length === 0) return null;
+
+  const totalCost = shipping.reduce((sum, label) => {
+    const cost =
+      typeof label.rate === "number"
+        ? label.rate
+        : parseFloat(String(label.rate)) || 0;
+    return sum + cost;
+  }, 0);
 
   return (
     <StepCard
-      title="Label Created"
-      description={`Label created on ${new Date(shipping.createdAt).toLocaleDateString()}`}
+      title={
+        shipping.length === 1
+          ? "Label Created"
+          : `${shipping.length} Labels Created`
+      }
+      description={`Created on ${new Date(shipping[0].createdAt).toLocaleDateString()}${
+        shipping.length > 1 ? ` · Total: $${totalCost.toFixed(2)}` : ""
+      }`}
       icon={<FileText className="w-5 h-5" />}
     >
       {packingImages.length > 0 && (
@@ -1995,39 +2947,53 @@ function ShippedStep({
         </div>
       )}
 
-      <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-5">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-lg font-bold uppercase">
-            {shipping.carrier}
-          </span>
-          <span className="text-xs font-semibold px-2 py-1 rounded bg-amber-100 text-amber-700">
-            {shipping.service}
-          </span>
-        </div>
-        <div className="text-lg font-mono font-semibold mb-3">
-          {shipping.trackingNumber}
-        </div>
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>
-            Rate:{" "}
-            <span className="font-semibold">
-              $
-              {typeof shipping.rate === "number"
-                ? shipping.rate.toFixed(2)
-                : shipping.rate}
-            </span>
-          </span>
-          {shipping.labelUrl && (
-            <a
-              href={shipping.labelUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              View Label →
-            </a>
-          )}
-        </div>
+      <div className="space-y-3">
+        {shipping.map((label, idx) => (
+          <div
+            key={label.id}
+            className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-5"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold uppercase">
+                  {label.carrier}
+                </span>
+                {shipping.length > 1 && (
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-200 text-gray-600">
+                    Pkg {idx + 1}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs font-semibold px-2 py-1 rounded bg-amber-100 text-amber-700">
+                {label.service}
+              </span>
+            </div>
+            <div className="text-lg font-mono font-semibold mb-3">
+              {label.trackingNumber}
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>
+                Rate:{" "}
+                <span className="font-semibold">
+                  $
+                  {typeof label.rate === "number"
+                    ? label.rate.toFixed(2)
+                    : label.rate}
+                </span>
+              </span>
+              {label.labelUrl && (
+                <a
+                  href={label.labelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View Label →
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </StepCard>
   );

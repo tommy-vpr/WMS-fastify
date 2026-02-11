@@ -5,7 +5,9 @@
 
 import { Job } from "bullmq";
 import { prisma } from "@wms/db";
+import { publish, EVENT_TYPES } from "@wms/pubsub";
 import { SHOPIFY_JOBS, type ShopifyOrderCreateJobData } from "@wms/queue";
+import { randomUUID } from "crypto";
 
 // ============================================================================
 // Order Processing
@@ -30,7 +32,7 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
 
   console.log(`[Shopify] Processing order: ${orderNumber}`);
 
-  return await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     // 1. Idempotency check
     const existing = await tx.order.findUnique({
       where: { shopifyOrderId: realShopifyOrderId },
@@ -171,6 +173,35 @@ async function processShopifyOrderCreate(job: Job<ShopifyOrderCreateJobData>) {
       status: "created",
     };
   });
+
+  // 8. Publish order:created event for real-time dashboard updates
+  if (result.status === "created") {
+    try {
+      await publish({
+        id: randomUUID(),
+        type: EVENT_TYPES.ORDER_CREATED,
+        orderId: result.orderId,
+        payload: {
+          orderNumber: result.orderNumber,
+          itemCount: result.itemsCreated,
+          unmatchedItems: result.unmatchedItems,
+          source: "SHOPIFY",
+          customerName: shopifyOrder.shipping_address
+            ? `${shopifyOrder.shipping_address.first_name || ""} ${shopifyOrder.shipping_address.last_name || ""}`.trim()
+            : shopifyOrder.customer
+              ? `${shopifyOrder.customer.first_name || ""} ${shopifyOrder.customer.last_name || ""}`.trim()
+              : "Unknown",
+          message: `New Shopify order ${result.orderNumber}`,
+        },
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err) {
+      // Non-critical — don't fail the job if pubsub is down
+      console.warn("[Shopify] Failed to publish order:created event:", err);
+    }
+  }
+
+  return result;
 }
 
 // ============================================================================

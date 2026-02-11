@@ -283,23 +283,18 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
             },
           },
         },
-        taskItems: {
-          include: {
-            task: {
-              include: {
-                assignedUser: {
-                  select: { name: true },
-                },
-              },
-            },
-          },
-        },
         allocations: {
           include: {
             location: {
               select: { id: true, name: true },
             },
           },
+        },
+        shippingPackages: {
+          include: {
+            items: true,
+          },
+          orderBy: { createdAt: "asc" },
         },
       },
     });
@@ -308,23 +303,25 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
       return reply.status(404).send({ error: "Order not found" });
     }
 
+    // Fetch fulfillment events separately (not on Order model directly)
+    const [fulfillmentEvents, workTasks] = await Promise.all([
+      prisma.fulfillmentEvent.findMany({
+        where: { orderId: id },
+        orderBy: { createdAt: "asc" },
+        take: 200,
+      }),
+      // Query WorkTasks directly by orderIds array — catches both PICKING and PACKING
+      prisma.workTask.findMany({
+        where: { orderIds: { has: id } },
+        include: {
+          assignedUser: { select: { name: true } },
+        },
+        orderBy: { createdAt: "asc" },
+      }),
+    ]);
+
     // Parse shipping address from JSON
     const shippingAddr = order.shippingAddress as any;
-
-    // Get unique work tasks from task items
-    const workTasksMap = new Map();
-    order.taskItems.forEach((ti) => {
-      if (ti.task && !workTasksMap.has(ti.task.id)) {
-        workTasksMap.set(ti.task.id, {
-          id: ti.task.id,
-          taskNumber: ti.task.taskNumber,
-          type: ti.task.type,
-          status: ti.task.status,
-          assignedTo: ti.task.assignedUser,
-          createdAt: ti.task.createdAt,
-        });
-      }
-    });
 
     // Transform response
     const response = {
@@ -393,8 +390,50 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
         location: alloc.location,
         lotNumber: alloc.lotNumber,
       })),
-      // Work tasks
-      workTasks: Array.from(workTasksMap.values()),
+      // Work tasks (queried directly by orderIds)
+      workTasks: workTasks.map((task) => ({
+        id: task.id,
+        taskNumber: task.taskNumber,
+        type: task.type,
+        status: task.status,
+        assignedTo: task.assignedUser,
+        startedAt: task.startedAt,
+        completedAt: task.completedAt,
+        totalItems: task.totalItems,
+        completedItems: task.completedItems,
+        shortItems: task.shortItems,
+        createdAt: task.createdAt,
+      })),
+      // Shipping packages + items
+      shippingPackages: (order.shippingPackages || []).map((pkg) => ({
+        id: pkg.id,
+        carrierCode: pkg.carrierCode,
+        serviceCode: pkg.serviceCode,
+        packageCode: pkg.packageCode,
+        trackingNumber: pkg.trackingNumber,
+        labelUrl: pkg.labelUrl,
+        cost: Number(pkg.cost),
+        weight: pkg.weight ? Number(pkg.weight) : null,
+        dimensions: pkg.dimensions as any,
+        voidedAt: pkg.voidedAt,
+        shippedAt: pkg.shippedAt,
+        items: pkg.items.map((item) => ({
+          id: item.id,
+          productName: item.productName,
+          sku: item.sku,
+          quantity: item.quantity,
+          unitPrice: Number(item.unitPrice),
+        })),
+        createdAt: pkg.createdAt,
+      })),
+      // Fulfillment events
+      fulfillmentEvents: fulfillmentEvents.map((evt) => ({
+        id: evt.id,
+        type: evt.type,
+        payload: evt.payload,
+        correlationId: evt.correlationId,
+        createdAt: evt.createdAt,
+      })),
       // Timestamps
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,

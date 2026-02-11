@@ -38,6 +38,7 @@ import {
   MapPin,
   Combine,
   RefreshCw,
+  FileText,
 } from "lucide-react";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth, type User as AuthUser } from "../lib/auth";
@@ -126,6 +127,12 @@ const allNavItems: NavItem[] = [
     to: "/shipping",
     label: "Shipping",
     icon: Truck,
+    roles: ["ADMIN", "MANAGER"],
+  },
+  {
+    to: "/invoices",
+    label: "Invoices",
+    icon: FileText,
     roles: ["ADMIN", "MANAGER"],
   },
   {
@@ -399,6 +406,7 @@ export function AppLayout() {
                 "/inventory",
                 "/locations",
                 "/shipping",
+                "/invoices",
                 "/reports",
               ].includes(i.to),
             ) && (
@@ -416,6 +424,7 @@ export function AppLayout() {
                       "/inventory",
                       "/locations",
                       "/shipping",
+                      "/invoices",
                       "/reports",
                     ].includes(i.to),
                   )
@@ -583,7 +592,7 @@ export function AppLayout() {
           </header>
 
           {/* Content */}
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto w-full max-w-[1100px] mx-auto">
             <Outlet />
           </main>
         </div>

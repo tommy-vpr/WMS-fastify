@@ -4,35 +4,25 @@
  *
  * Save to: apps/api/src/routes/fulfillment.routes.ts
  *
- * Wires up PickingService, PackingService, and FulfillmentService (read-only).
- * All endpoints are unchanged — zero frontend modifications needed.
+ * Register in your route index:
+ *   import { fulfillmentRoutes } from "./fulfillment.routes.js";
+ *   app.register(fulfillmentRoutes, { prefix: "/api/fulfillment" });
  */
 
 import { FastifyPluginAsync, FastifyRequest, FastifyReply } from "fastify";
-import {
-  PickingService,
-  PackingService,
-  FulfillmentService,
-} from "@wms/domain";
-import {
-  pickingRepository,
-  packingRepository,
-  fulfillmentRepository,
-} from "@wms/db";
+import { FulfillmentService } from "@wms/domain"; // Adjust import path
+import { prisma } from "@wms/db"; // Adjust to your prisma singleton
 
 // =============================================================================
 // Route Plugin
 // =============================================================================
 
 export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
-  const pickingService = new PickingService({ pickingRepo: pickingRepository });
-  const packingService = new PackingService({ packingRepo: packingRepository });
-  const fulfillmentService = new FulfillmentService({
-    fulfillmentRepo: fulfillmentRepository,
-  });
+  const service = new FulfillmentService(prisma);
 
   // ─────────────────────────────────────────────────────────────────────────
   // GET /api/fulfillment/:orderId/status
+  // Get current fulfillment status + events for an order
   // ─────────────────────────────────────────────────────────────────────────
 
   app.get(
@@ -42,8 +32,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
       reply: FastifyReply,
     ) => {
       const { orderId } = request.params;
+
       try {
-        const status = await fulfillmentService.getFulfillmentStatus(orderId);
+        const status = await service.getFulfillmentStatus(orderId);
         return reply.send(status);
       } catch (err: any) {
         return reply.status(404).send({ error: err.message });
@@ -53,6 +44,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // GET /api/fulfillment/:orderId/events
+  // Replay events for SSE catch-up (e.g., page refresh)
   // ─────────────────────────────────────────────────────────────────────────
 
   app.get(
@@ -66,11 +58,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     ) => {
       const { orderId } = request.params;
       const { sinceEventId } = request.query;
+
       try {
-        const events = await fulfillmentService.getEventsSince(
-          orderId,
-          sinceEventId,
-        );
+        const events = await service.getEventsSince(orderId, sinceEventId);
         return reply.send({ events });
       } catch (err: any) {
         return reply.status(400).send({ error: err.message });
@@ -80,6 +70,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pick
+  // Generate a pick list for the order
   // ─────────────────────────────────────────────────────────────────────────
 
   app.post(
@@ -89,9 +80,10 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
       reply: FastifyReply,
     ) => {
       const { orderId } = request.params;
-      const userId = (request as any).user?.id;
+      const userId = (request as any).user?.id; // Adjust to your auth pattern
+
       try {
-        const result = await pickingService.generatePickList(orderId, userId);
+        const result = await service.generatePickList(orderId, userId);
         return reply.status(201).send(result);
       } catch (err: any) {
         const status = err.message.includes("not found") ? 404 : 400;
@@ -102,6 +94,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pick/:taskItemId/confirm
+  // Confirm a single pick item (barcode scan or manual)
   // ─────────────────────────────────────────────────────────────────────────
 
   app.post(
@@ -120,8 +113,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
       const { taskItemId } = request.params;
       const body = (request.body ?? {}) as any;
       const userId = (request as any).user?.id;
+
       try {
-        const result = await pickingService.confirmPickItem(taskItemId, {
+        const result = await service.confirmPickItem(taskItemId, {
           quantity: body.quantity,
           locationScanned: body.locationScanned,
           itemScanned: body.itemScanned,
@@ -136,9 +130,30 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
   );
 
   // ─────────────────────────────────────────────────────────────────────────
-  // POST /api/fulfillment/:orderId/pack/complete-from-bin
+  // POST /api/fulfillment/:orderId/pick/confirm-all
+  // Bulk confirm all remaining pick items (batch mode for large orders)
   // ─────────────────────────────────────────────────────────────────────────
 
+  app.post(
+    "/:orderId/pick/confirm-all",
+    async (
+      request: FastifyRequest<{ Params: { orderId: string } }>,
+      reply: FastifyReply,
+    ) => {
+      const { orderId } = request.params;
+      const userId = (request as any).user?.id;
+
+      try {
+        const result = await service.confirmAllPickItems(orderId, { userId });
+        return reply.send(result);
+      } catch (err: any) {
+        const status = err.message.includes("not found") ? 404 : 400;
+        return reply.status(status).send({ error: err.message });
+      }
+    },
+  );
+
+  // Complete packing from bin (called from pack station)
   app.post(
     "/:orderId/pack/complete-from-bin",
     async (
@@ -161,12 +176,16 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
       const { orderId } = request.params;
       const { binId, weight, weightUnit, dimensions } = request.body as any;
       const userId = (request as any).user?.id;
+
       try {
-        const result = await packingService.completePackingFromBin(
-          orderId,
-          binId,
-          { weight, weightUnit, dimensions, userId },
-        );
+        // This creates the pack task and completes it in one step
+        // since bin verification already happened
+        const result = await service.completePackingFromBin(orderId, binId, {
+          weight,
+          weightUnit,
+          dimensions,
+          userId,
+        });
         return reply.send(result);
       } catch (err: any) {
         return reply.status(400).send({ error: err.message });
@@ -176,6 +195,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pack
+  // Generate a packing verification list
   // ─────────────────────────────────────────────────────────────────────────
 
   app.post(
@@ -186,8 +206,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     ) => {
       const { orderId } = request.params;
       const userId = (request as any).user?.id;
+
       try {
-        const result = await packingService.generatePackList(orderId, userId);
+        const result = await service.generatePackList(orderId, userId);
         return reply.status(201).send(result);
       } catch (err: any) {
         const status = err.message.includes("not found") ? 404 : 400;
@@ -198,6 +219,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pack/:taskItemId/verify
+  // Verify a single pack item (scan check)
   // ─────────────────────────────────────────────────────────────────────────
 
   app.post(
@@ -210,10 +232,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     ) => {
       const { taskItemId } = request.params;
       const userId = (request as any).user?.id;
+
       try {
-        const result = await packingService.verifyPackItem(taskItemId, {
-          userId,
-        });
+        const result = await service.verifyPackItem(taskItemId, { userId });
         return reply.send(result);
       } catch (err: any) {
         const status = err.message.includes("not found") ? 404 : 400;
@@ -224,6 +245,7 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
 
   // ─────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/:orderId/pack/complete
+  // Complete packing with weight and dimensions
   // ─────────────────────────────────────────────────────────────────────────
 
   app.post(
@@ -247,13 +269,15 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     ) => {
       const body = request.body as any;
       const userId = (request as any).user?.id;
+
       if (!body.taskId || body.weight == null) {
         return reply
           .status(400)
           .send({ error: "taskId and weight are required" });
       }
+
       try {
-        const result = await packingService.completePacking(body.taskId, {
+        const result = await service.completePacking(body.taskId, {
           weight: body.weight,
           weightUnit: body.weightUnit,
           dimensions: body.dimensions,
@@ -266,9 +290,12 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     },
   );
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // Add to fulfillment.routes.ts
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // GET /api/fulfillment/bin/:barcode
-  // ─────────────────────────────────────────────────────────────────────────
+  // Lookup order by scanning bin barcode (for pack station)
+  // ─────────────────────────────────────────────────────────────────────────────
 
   app.get(
     "/bin/:barcode",
@@ -277,8 +304,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
       reply: FastifyReply,
     ) => {
       const { barcode } = request.params;
+
       try {
-        const result = await pickingService.getOrderByBinBarcode(barcode);
+        const result = await service.getOrderByBinBarcode(barcode);
         return reply.send(result);
       } catch (err: any) {
         return reply.status(404).send({ error: err.message });
@@ -286,29 +314,34 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     },
   );
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/bin/:binId/verify
-  // ─────────────────────────────────────────────────────────────────────────
+  // Verify an item in the bin by scanning its UPC
+  // ─────────────────────────────────────────────────────────────────────────────
 
   app.post(
     "/bin/:binId/verify",
     async (
       request: FastifyRequest<{
         Params: { binId: string };
-        Body: { barcode: string };
+        Body: { barcode: string; quantity?: number };
       }>,
       reply: FastifyReply,
     ) => {
       const { binId } = request.params;
-      const { barcode } = request.body as any;
+      const { barcode, quantity } = request.body as any;
       const userId = (request as any).user?.id;
-      if (!barcode)
+
+      if (!barcode) {
         return reply.status(400).send({ error: "barcode is required" });
+      }
+
       try {
-        const result = await packingService.verifyBinItem(
+        const result = await service.verifyBinItem(
           binId,
           barcode,
           userId,
+          quantity,
         );
         return reply.send(result);
       } catch (err: any) {
@@ -317,9 +350,10 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     },
   );
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────────────────────────
   // POST /api/fulfillment/bin/:binId/complete
-  // ─────────────────────────────────────────────────────────────────────────
+  // Mark bin as fully verified/packed
+  // ─────────────────────────────────────────────────────────────────────────────
 
   app.post(
     "/bin/:binId/complete",
@@ -329,8 +363,9 @@ export const fulfillmentRoutes: FastifyPluginAsync = async (app) => {
     ) => {
       const { binId } = request.params;
       const userId = (request as any).user?.id;
+
       try {
-        await packingService.completeBin(binId, userId);
+        await service.completeBin(binId, userId);
         return reply.send({ success: true });
       } catch (err: any) {
         return reply.status(400).send({ error: err.message });

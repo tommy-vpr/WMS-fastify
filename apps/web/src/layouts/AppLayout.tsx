@@ -38,10 +38,10 @@ import {
   MapPin,
   Combine,
   RefreshCw,
-  FileText,
 } from "lucide-react";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth, type User as AuthUser } from "../lib/auth";
+import { useWorkflowCounts } from "../hooks/useWorkflowCounts";
 import type { UserRole } from "@wms/types";
 
 import logo from "@/assets/headquarter-logo.png";
@@ -130,12 +130,6 @@ const allNavItems: NavItem[] = [
     roles: ["ADMIN", "MANAGER"],
   },
   {
-    to: "/invoices",
-    label: "Invoices",
-    icon: FileText,
-    roles: ["ADMIN", "MANAGER"],
-  },
-  {
     to: "/reports",
     label: "Reports",
     icon: BarChart3,
@@ -178,6 +172,37 @@ function getNavItemsForRole(role: UserRole, compactMode: boolean): NavItem[] {
 }
 
 // ============================================================================
+// Count Badge Component
+// ============================================================================
+
+function CountBadge({
+  count,
+  compact = false,
+}: {
+  count: number;
+  compact?: boolean;
+}) {
+  if (count <= 0) return null;
+  const display = count > 99 ? "99+" : String(count);
+
+  if (compact) {
+    // Small dot-style badge for compact bottom nav
+    return (
+      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1 leading-none">
+        {display}
+      </span>
+    );
+  }
+
+  // Sidebar pill badge
+  return (
+    <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 leading-none">
+      {display}
+    </span>
+  );
+}
+
+// ============================================================================
 // AppLayout Component
 // ============================================================================
 
@@ -190,6 +215,8 @@ export function AppLayout() {
   });
   const [sidebarOpen, setSidebarOpen] = useState(!compactMode);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const counts = useWorkflowCounts(30_000); // Poll every 30s
 
   // Persist compact mode
   useEffect(() => {
@@ -217,6 +244,24 @@ export function AppLayout() {
   }
 
   const navItems = getNavItemsForRole(user.role, compactMode);
+
+  /** Map nav route → count value. 0 = no badge. */
+  function getBadgeCount(to: string): number {
+    switch (to) {
+      case "/fulfillment":
+        return counts.fulfillment;
+      case "/pick":
+        return counts.pick;
+      case "/pack":
+        return counts.pack;
+      case "/shipping":
+        return counts.ship;
+      case "/orders":
+        return counts.orders;
+      default:
+        return 0;
+    }
+  }
 
   const contextValue: LayoutContextType = {
     compactMode,
@@ -312,6 +357,7 @@ export function AppLayout() {
               const isActive =
                 location.pathname === item.to ||
                 location.pathname.startsWith(item.to + "/");
+              const badge = getBadgeCount(item.to);
               return (
                 <NavLink
                   key={item.to}
@@ -320,7 +366,10 @@ export function AppLayout() {
                     isActive ? "text-blue-600 bg-blue-50" : "text-gray-500"
                   }`}
                 >
-                  <item.icon className="w-6 h-6" />
+                  <div className="relative">
+                    <item.icon className="w-6 h-6" />
+                    <CountBadge count={badge} compact />
+                  </div>
                   <span className="text-xs mt-1">{item.label}</span>
                 </NavLink>
               );
@@ -381,23 +430,34 @@ export function AppLayout() {
                   "/scan",
                 ].includes(i.to),
               )
-              .map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-600 hover:bg-gray-100"
-                    }`
-                  }
-                  title={!sidebarOpen ? item.label : undefined}
-                >
-                  <item.icon className="w-5 h-5 flex-shrink-0" />
-                  {sidebarOpen && <span>{item.label}</span>}
-                </NavLink>
-              ))}
+              .map((item) => {
+                const badge = getBadgeCount(item.to);
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
+                        isActive
+                          ? "bg-blue-50 text-blue-600 font-medium"
+                          : "text-gray-600 hover:bg-gray-100"
+                      }`
+                    }
+                    title={!sidebarOpen ? item.label : undefined}
+                  >
+                    <div className="relative flex-shrink-0">
+                      <item.icon className="w-5 h-5" />
+                      {!sidebarOpen && <CountBadge count={badge} compact />}
+                    </div>
+                    {sidebarOpen && (
+                      <>
+                        <span>{item.label}</span>
+                        <CountBadge count={badge} />
+                      </>
+                    )}
+                  </NavLink>
+                );
+              })}
 
             {navItems.some((i) =>
               [
@@ -406,7 +466,6 @@ export function AppLayout() {
                 "/inventory",
                 "/locations",
                 "/shipping",
-                "/invoices",
                 "/reports",
               ].includes(i.to),
             ) && (
@@ -424,27 +483,37 @@ export function AppLayout() {
                       "/inventory",
                       "/locations",
                       "/shipping",
-                      "/invoices",
                       "/reports",
                     ].includes(i.to),
                   )
-                  .map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
-                          isActive
-                            ? "bg-blue-50 text-blue-600 font-medium"
-                            : "text-gray-600 hover:bg-gray-100"
-                        }`
-                      }
-                      title={!sidebarOpen ? item.label : undefined}
-                    >
-                      <item.icon className="w-5 h-5 flex-shrink-0" />
-                      {sidebarOpen && <span>{item.label}</span>}
-                    </NavLink>
-                  ))}
+                  .map((item) => {
+                    const badge = getBadgeCount(item.to);
+                    return (
+                      <NavLink
+                        key={item.to}
+                        to={item.to}
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg ${
+                            isActive
+                              ? "bg-blue-50 text-blue-600 font-medium"
+                              : "text-gray-600 hover:bg-gray-100"
+                          }`
+                        }
+                        title={!sidebarOpen ? item.label : undefined}
+                      >
+                        <div className="relative flex-shrink-0">
+                          <item.icon className="w-5 h-5" />
+                          {!sidebarOpen && <CountBadge count={badge} compact />}
+                        </div>
+                        {sidebarOpen && (
+                          <>
+                            <span>{item.label}</span>
+                            <CountBadge count={badge} />
+                          </>
+                        )}
+                      </NavLink>
+                    );
+                  })}
               </>
             )}
 
@@ -592,7 +661,7 @@ export function AppLayout() {
           </header>
 
           {/* Content */}
-          <main className="flex-1 overflow-auto w-full max-w-[1100px] mx-auto">
+          <main className="flex-1 overflow-auto">
             <Outlet />
           </main>
         </div>

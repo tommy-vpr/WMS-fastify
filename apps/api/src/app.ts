@@ -23,6 +23,7 @@ import cycleCountRoutes from "./routes/cycle-count.routes.js";
 import scanRoutes from "./routes/scan.routes.js";
 import packingImageRoutes from "./routes/packing-images.routes.js";
 import { invoiceRoutes } from "./routes/invoice.routes.js";
+import { workflowCountsRoutes } from "./routes/workflow-counts.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -112,6 +113,10 @@ export async function buildApp() {
     // Invoices
     await protectedRoutes.register(invoiceRoutes, {
       prefix: "/invoices",
+    });
+    // Workflow counts
+    await protectedRoutes.register(workflowCountsRoutes, {
+      prefix: "/workflow-counts",
     });
 
     // await protectedRoutes.register(taskRoutes, { prefix: "/tasks" });

@@ -188,7 +188,7 @@ function CountBadge({
   if (compact) {
     // Small dot-style badge for compact bottom nav
     return (
-      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1 leading-none">
+      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-rose-400 text-white text-[10px] font-bold rounded-full px-1 leading-none">
         {display}
       </span>
     );
@@ -196,7 +196,7 @@ function CountBadge({
 
   // Sidebar pill badge
   return (
-    <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 leading-none">
+    <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center bg-rose-400 text-white text-[10px] font-bold rounded-full px-1.5 leading-none">
       {display}
     </span>
   );
@@ -215,7 +215,6 @@ export function AppLayout() {
   });
   const [sidebarOpen, setSidebarOpen] = useState(!compactMode);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-
   const counts = useWorkflowCounts(30_000); // Poll every 30s
 
   // Persist compact mode
@@ -249,7 +248,7 @@ export function AppLayout() {
   function getBadgeCount(to: string): number {
     switch (to) {
       case "/fulfillment":
-        return counts.fulfillment;
+        return counts.pick + counts.pack + counts.ship; // Active pipeline only
       case "/pick":
         return counts.pick;
       case "/pack":

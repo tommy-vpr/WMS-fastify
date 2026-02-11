@@ -34,6 +34,7 @@ const EMPTY_COUNTS: WorkflowCounts = {
 // Events that should trigger an immediate re-fetch
 const NUDGE_EVENTS = [
   "order:created",
+  "order:allocated",
   "order:processing",
   "order:picked",
   "order:packed",

@@ -15,6 +15,7 @@ import { inventoryPlannerRoutes } from "./routes/inventory-planner.routes.js";
 import { locationImportRoutes } from "./routes/location-import.routes.js";
 import { locationRoutes } from "./routes/location.routes.js";
 import { fulfillmentRoutes } from "./routes/fulfillment.routes.js";
+import { fulfillmentIndividualRoutes } from "./routes/fulfillment-individual.routes.js";
 // Server Sent Event
 import { ssePlugin } from "./plugins/sse.plugin.js";
 import { shippingRoutes } from "./routes/shipping.routes.js";
@@ -76,8 +77,12 @@ export async function buildApp() {
     await protectedRoutes.register(fulfillmentRoutes, {
       prefix: "/fulfillment",
     });
-    //Packing Image
-    await protectedRoutes.register(packingImageRoutes, {
+
+    await protectedRoutes.register(fulfillmentIndividualRoutes, {
+      prefix: "/fulfillment-individual",
+    });
+
+    http: await protectedRoutes.register(packingImageRoutes, {
       prefix: "/packing-images",
     });
     // Shipping Label

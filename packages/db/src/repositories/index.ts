@@ -1,6 +1,4 @@
-// export * from "./inventory.repo.js";
-// export * from "./allocation.repo.js";
-// export * from "./order.repo.js";
+// packages/db/src/repositories/index.ts
 
 export {
   workTaskRepository,
@@ -12,3 +10,16 @@ export { inventoryRepository } from "./inventory.repo.js";
 export { orderRepository } from "./order.repo.js";
 
 export * from "./product.repo.js";
+
+// Fulfillment pipeline
+export { pickingRepository } from "./picking.repo.js";
+export type { PickingRepository } from "./picking.repo.js";
+
+export { packingRepository } from "./packing.repo.js";
+export type { PackingRepository } from "./packing.repo.js";
+
+export { fulfillmentRepository } from "./fulfillment.repo.js";
+export type {
+  FulfillmentRepository,
+  FulfillmentWorkTask,
+} from "./fulfillment.repo.js";

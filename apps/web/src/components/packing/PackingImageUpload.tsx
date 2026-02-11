@@ -35,6 +35,7 @@ export interface PackingImage {
 interface PackingImageUploadProps {
   orderId: string;
   taskId?: string;
+  pickBinId?: string;
   orderNumber: string;
   images: PackingImage[];
   onUploadSuccess: (image: PackingImage) => void;
@@ -48,6 +49,7 @@ interface PackingImageUploadProps {
 export function PackingImageUpload({
   orderId,
   taskId,
+  pickBinId,
   orderNumber,
   images,
   onUploadSuccess,

@@ -183,6 +183,16 @@ export type FulfillmentMetric = $Result.DefaultSelection<Prisma.$FulfillmentMetr
  * 
  */
 export type UserPerformance = $Result.DefaultSelection<Prisma.$UserPerformancePayload>
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = $Result.DefaultSelection<Prisma.$InvoicePayload>
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = $Result.DefaultSelection<Prisma.$InvoiceItemPayload>
 
 /**
  * Enums
@@ -455,6 +465,17 @@ export const PickBinStatus: {
 
 export type PickBinStatus = (typeof PickBinStatus)[keyof typeof PickBinStatus]
 
+
+export const InvoiceStatus: {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
 }
 
 export type ShippingLabelStatus = $Enums.ShippingLabelStatus
@@ -544,6 +565,10 @@ export const AdjustmentStatus: typeof $Enums.AdjustmentStatus
 export type PickBinStatus = $Enums.PickBinStatus
 
 export const PickBinStatus: typeof $Enums.PickBinStatus
+
+export type InvoiceStatus = $Enums.InvoiceStatus
+
+export const InvoiceStatus: typeof $Enums.InvoiceStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1001,6 +1026,26 @@ export class PrismaClient<
     * ```
     */
   get userPerformance(): Prisma.UserPerformanceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.invoice`: Exposes CRUD operations for the **Invoice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Invoices
+    * const invoices = await prisma.invoice.findMany()
+    * ```
+    */
+  get invoice(): Prisma.InvoiceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.invoiceItem`: Exposes CRUD operations for the **InvoiceItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InvoiceItems
+    * const invoiceItems = await prisma.invoiceItem.findMany()
+    * ```
+    */
+  get invoiceItem(): Prisma.InvoiceItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1468,7 +1513,9 @@ export namespace Prisma {
     PickBinItem: 'PickBinItem',
     InventoryDiscrepancy: 'InventoryDiscrepancy',
     FulfillmentMetric: 'FulfillmentMetric',
-    UserPerformance: 'UserPerformance'
+    UserPerformance: 'UserPerformance',
+    Invoice: 'Invoice',
+    InvoiceItem: 'InvoiceItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1484,7 +1531,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "packingImage" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException" | "cycleCountTask" | "cycleCountSession" | "cycleCountLine" | "cycleCountAudit" | "inventoryAdjustment" | "pickBin" | "pickBinItem" | "inventoryDiscrepancy" | "fulfillmentMetric" | "userPerformance"
+      modelProps: "user" | "refreshToken" | "passwordResetToken" | "product" | "productVariant" | "location" | "inventoryUnit" | "allocation" | "order" | "orderItem" | "packingImage" | "shippingLabel" | "shippingPackage" | "shippingPackageItem" | "fulfillmentEvent" | "workTask" | "taskItem" | "taskEvent" | "jobRecord" | "auditLog" | "notification" | "receivingSession" | "receivingLine" | "receivingException" | "cycleCountTask" | "cycleCountSession" | "cycleCountLine" | "cycleCountAudit" | "inventoryAdjustment" | "pickBin" | "pickBinItem" | "inventoryDiscrepancy" | "fulfillmentMetric" | "userPerformance" | "invoice" | "invoiceItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4004,6 +4051,154 @@ export namespace Prisma {
           }
         }
       }
+      Invoice: {
+        payload: Prisma.$InvoicePayload<ExtArgs>
+        fields: Prisma.InvoiceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InvoiceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InvoiceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          findFirst: {
+            args: Prisma.InvoiceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InvoiceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          findMany: {
+            args: Prisma.InvoiceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+          }
+          create: {
+            args: Prisma.InvoiceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          createMany: {
+            args: Prisma.InvoiceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InvoiceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+          }
+          delete: {
+            args: Prisma.InvoiceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          update: {
+            args: Prisma.InvoiceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          deleteMany: {
+            args: Prisma.InvoiceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InvoiceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InvoiceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+          }
+          upsert: {
+            args: Prisma.InvoiceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoicePayload>
+          }
+          aggregate: {
+            args: Prisma.InvoiceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInvoice>
+          }
+          groupBy: {
+            args: Prisma.InvoiceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InvoiceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InvoiceCountArgs<ExtArgs>
+            result: $Utils.Optional<InvoiceCountAggregateOutputType> | number
+          }
+        }
+      }
+      InvoiceItem: {
+        payload: Prisma.$InvoiceItemPayload<ExtArgs>
+        fields: Prisma.InvoiceItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InvoiceItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InvoiceItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          findFirst: {
+            args: Prisma.InvoiceItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InvoiceItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          findMany: {
+            args: Prisma.InvoiceItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+          }
+          create: {
+            args: Prisma.InvoiceItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          createMany: {
+            args: Prisma.InvoiceItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InvoiceItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+          }
+          delete: {
+            args: Prisma.InvoiceItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          update: {
+            args: Prisma.InvoiceItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.InvoiceItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InvoiceItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InvoiceItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.InvoiceItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvoiceItemPayload>
+          }
+          aggregate: {
+            args: Prisma.InvoiceItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInvoiceItem>
+          }
+          groupBy: {
+            args: Prisma.InvoiceItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InvoiceItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InvoiceItemCountArgs<ExtArgs>
+            result: $Utils.Optional<InvoiceItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4146,6 +4341,8 @@ export namespace Prisma {
     inventoryDiscrepancy?: InventoryDiscrepancyOmit
     fulfillmentMetric?: FulfillmentMetricOmit
     userPerformance?: UserPerformanceOmit
+    invoice?: InvoiceOmit
+    invoiceItem?: InvoiceItemOmit
   }
 
   /* Types for Logging */
@@ -4248,6 +4445,8 @@ export namespace Prisma {
     cycleCountAudits: number
     adjustmentsCreated: number
     adjustmentsApproved: number
+    invoicesCreated: number
+    invoicesApproved: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4273,6 +4472,8 @@ export namespace Prisma {
     cycleCountAudits?: boolean | UserCountOutputTypeCountCycleCountAuditsArgs
     adjustmentsCreated?: boolean | UserCountOutputTypeCountAdjustmentsCreatedArgs
     adjustmentsApproved?: boolean | UserCountOutputTypeCountAdjustmentsApprovedArgs
+    invoicesCreated?: boolean | UserCountOutputTypeCountInvoicesCreatedArgs
+    invoicesApproved?: boolean | UserCountOutputTypeCountInvoicesApprovedArgs
   }
 
   // Custom InputTypes
@@ -4440,6 +4641,20 @@ export namespace Prisma {
     where?: InventoryAdjustmentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInvoicesCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInvoicesApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -4487,6 +4702,7 @@ export namespace Prisma {
     inventoryAdjustments: number
     inventoryDiscrepancies: number
     pickBinItems: number
+    invoiceItems: number
   }
 
   export type ProductVariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4500,6 +4716,7 @@ export namespace Prisma {
     inventoryAdjustments?: boolean | ProductVariantCountOutputTypeCountInventoryAdjustmentsArgs
     inventoryDiscrepancies?: boolean | ProductVariantCountOutputTypeCountInventoryDiscrepanciesArgs
     pickBinItems?: boolean | ProductVariantCountOutputTypeCountPickBinItemsArgs
+    invoiceItems?: boolean | ProductVariantCountOutputTypeCountInvoiceItemsArgs
   }
 
   // Custom InputTypes
@@ -4583,6 +4800,13 @@ export namespace Prisma {
     where?: PickBinItemWhereInput
   }
 
+  /**
+   * ProductVariantCountOutputType without action
+   */
+  export type ProductVariantCountOutputTypeCountInvoiceItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceItemWhereInput
+  }
+
 
   /**
    * Count Type LocationCountOutputType
@@ -4596,6 +4820,7 @@ export namespace Prisma {
     cycleCountSessions: number
     inventoryAdjustments: number
     inventoryDiscrepancies: number
+    invoiceItems: number
   }
 
   export type LocationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4606,6 +4831,7 @@ export namespace Prisma {
     cycleCountSessions?: boolean | LocationCountOutputTypeCountCycleCountSessionsArgs
     inventoryAdjustments?: boolean | LocationCountOutputTypeCountInventoryAdjustmentsArgs
     inventoryDiscrepancies?: boolean | LocationCountOutputTypeCountInventoryDiscrepanciesArgs
+    invoiceItems?: boolean | LocationCountOutputTypeCountInvoiceItemsArgs
   }
 
   // Custom InputTypes
@@ -4666,6 +4892,13 @@ export namespace Prisma {
    */
   export type LocationCountOutputTypeCountInventoryDiscrepanciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InventoryDiscrepancyWhereInput
+  }
+
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeCountInvoiceItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceItemWhereInput
   }
 
 
@@ -5084,6 +5317,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type InvoiceCountOutputType
+   */
+
+  export type InvoiceCountOutputType = {
+    items: number
+  }
+
+  export type InvoiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | InvoiceCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InvoiceCountOutputType without action
+   */
+  export type InvoiceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceCountOutputType
+     */
+    select?: InvoiceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InvoiceCountOutputType without action
+   */
+  export type InvoiceCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceItemWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -5313,6 +5577,8 @@ export namespace Prisma {
     cycleCountAudits?: boolean | User$cycleCountAuditsArgs<ExtArgs>
     adjustmentsCreated?: boolean | User$adjustmentsCreatedArgs<ExtArgs>
     adjustmentsApproved?: boolean | User$adjustmentsApprovedArgs<ExtArgs>
+    invoicesCreated?: boolean | User$invoicesCreatedArgs<ExtArgs>
+    invoicesApproved?: boolean | User$invoicesApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5379,6 +5645,8 @@ export namespace Prisma {
     cycleCountAudits?: boolean | User$cycleCountAuditsArgs<ExtArgs>
     adjustmentsCreated?: boolean | User$adjustmentsCreatedArgs<ExtArgs>
     adjustmentsApproved?: boolean | User$adjustmentsApprovedArgs<ExtArgs>
+    invoicesCreated?: boolean | User$invoicesCreatedArgs<ExtArgs>
+    invoicesApproved?: boolean | User$invoicesApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5409,6 +5677,8 @@ export namespace Prisma {
       cycleCountAudits: Prisma.$CycleCountAuditPayload<ExtArgs>[]
       adjustmentsCreated: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
       adjustmentsApproved: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
+      invoicesCreated: Prisma.$InvoicePayload<ExtArgs>[]
+      invoicesApproved: Prisma.$InvoicePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5837,6 +6107,8 @@ export namespace Prisma {
     cycleCountAudits<T extends User$cycleCountAuditsArgs<ExtArgs> = {}>(args?: Subset<T, User$cycleCountAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     adjustmentsCreated<T extends User$adjustmentsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$adjustmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     adjustmentsApproved<T extends User$adjustmentsApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$adjustmentsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoicesCreated<T extends User$invoicesCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$invoicesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoicesApproved<T extends User$invoicesApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$invoicesApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6789,6 +7061,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InventoryAdjustmentScalarFieldEnum | InventoryAdjustmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.invoicesCreated
+   */
+  export type User$invoicesCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    where?: InvoiceWhereInput
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    cursor?: InvoiceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
+  }
+
+  /**
+   * User.invoicesApproved
+   */
+  export type User$invoicesApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    where?: InvoiceWhereInput
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    cursor?: InvoiceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
   }
 
   /**
@@ -10371,6 +10691,7 @@ export namespace Prisma {
     inventoryAdjustments?: boolean | ProductVariant$inventoryAdjustmentsArgs<ExtArgs>
     inventoryDiscrepancies?: boolean | ProductVariant$inventoryDiscrepanciesArgs<ExtArgs>
     pickBinItems?: boolean | ProductVariant$pickBinItemsArgs<ExtArgs>
+    invoiceItems?: boolean | ProductVariant$invoiceItemsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["productVariant"]>
 
@@ -10443,6 +10764,7 @@ export namespace Prisma {
     inventoryAdjustments?: boolean | ProductVariant$inventoryAdjustmentsArgs<ExtArgs>
     inventoryDiscrepancies?: boolean | ProductVariant$inventoryDiscrepanciesArgs<ExtArgs>
     pickBinItems?: boolean | ProductVariant$pickBinItemsArgs<ExtArgs>
+    invoiceItems?: boolean | ProductVariant$invoiceItemsArgs<ExtArgs>
     _count?: boolean | ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductVariantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10466,6 +10788,7 @@ export namespace Prisma {
       inventoryAdjustments: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
       inventoryDiscrepancies: Prisma.$InventoryDiscrepancyPayload<ExtArgs>[]
       pickBinItems: Prisma.$PickBinItemPayload<ExtArgs>[]
+      invoiceItems: Prisma.$InvoiceItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10888,6 +11211,7 @@ export namespace Prisma {
     inventoryAdjustments<T extends ProductVariant$inventoryAdjustmentsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryAdjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryDiscrepancies<T extends ProductVariant$inventoryDiscrepanciesArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$inventoryDiscrepanciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryDiscrepancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pickBinItems<T extends ProductVariant$pickBinItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$pickBinItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PickBinItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoiceItems<T extends ProductVariant$invoiceItemsArgs<ExtArgs> = {}>(args?: Subset<T, ProductVariant$invoiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11568,6 +11892,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProductVariant.invoiceItems
+   */
+  export type ProductVariant$invoiceItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    where?: InvoiceItemWhereInput
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    cursor?: InvoiceItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
+  }
+
+  /**
    * ProductVariant without action
    */
   export type ProductVariantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11895,6 +12243,7 @@ export namespace Prisma {
     cycleCountSessions?: boolean | Location$cycleCountSessionsArgs<ExtArgs>
     inventoryAdjustments?: boolean | Location$inventoryAdjustmentsArgs<ExtArgs>
     inventoryDiscrepancies?: boolean | Location$inventoryDiscrepanciesArgs<ExtArgs>
+    invoiceItems?: boolean | Location$invoiceItemsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["location"]>
 
@@ -11970,6 +12319,7 @@ export namespace Prisma {
     cycleCountSessions?: boolean | Location$cycleCountSessionsArgs<ExtArgs>
     inventoryAdjustments?: boolean | Location$inventoryAdjustmentsArgs<ExtArgs>
     inventoryDiscrepancies?: boolean | Location$inventoryDiscrepanciesArgs<ExtArgs>
+    invoiceItems?: boolean | Location$invoiceItemsArgs<ExtArgs>
     _count?: boolean | LocationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LocationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11985,6 +12335,7 @@ export namespace Prisma {
       cycleCountSessions: Prisma.$CycleCountSessionPayload<ExtArgs>[]
       inventoryAdjustments: Prisma.$InventoryAdjustmentPayload<ExtArgs>[]
       inventoryDiscrepancies: Prisma.$InventoryDiscrepancyPayload<ExtArgs>[]
+      invoiceItems: Prisma.$InvoiceItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12406,6 +12757,7 @@ export namespace Prisma {
     cycleCountSessions<T extends Location$cycleCountSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Location$cycleCountSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CycleCountSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryAdjustments<T extends Location$inventoryAdjustmentsArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryAdjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryDiscrepancies<T extends Location$inventoryDiscrepanciesArgs<ExtArgs> = {}>(args?: Subset<T, Location$inventoryDiscrepanciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryDiscrepancyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invoiceItems<T extends Location$invoiceItemsArgs<ExtArgs> = {}>(args?: Subset<T, Location$invoiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13006,6 +13358,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InventoryDiscrepancyScalarFieldEnum | InventoryDiscrepancyScalarFieldEnum[]
+  }
+
+  /**
+   * Location.invoiceItems
+   */
+  export type Location$invoiceItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    where?: InvoiceItemWhereInput
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    cursor?: InvoiceItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
   }
 
   /**
@@ -48139,6 +48515,2645 @@ export namespace Prisma {
 
 
   /**
+   * Model Invoice
+   */
+
+  export type AggregateInvoice = {
+    _count: InvoiceCountAggregateOutputType | null
+    _avg: InvoiceAvgAggregateOutputType | null
+    _sum: InvoiceSumAggregateOutputType | null
+    _min: InvoiceMinAggregateOutputType | null
+    _max: InvoiceMaxAggregateOutputType | null
+  }
+
+  export type InvoiceAvgAggregateOutputType = {
+    totalItems: number | null
+    totalQuantity: number | null
+    totalCost: Decimal | null
+    tax: Decimal | null
+    fees: Decimal | null
+    grandTotal: Decimal | null
+  }
+
+  export type InvoiceSumAggregateOutputType = {
+    totalItems: number | null
+    totalQuantity: number | null
+    totalCost: Decimal | null
+    tax: Decimal | null
+    fees: Decimal | null
+    grandTotal: Decimal | null
+  }
+
+  export type InvoiceMinAggregateOutputType = {
+    id: string | null
+    invoiceNumber: string | null
+    vendor: string | null
+    status: $Enums.InvoiceStatus | null
+    imageUrl: string | null
+    imageFilename: string | null
+    totalItems: number | null
+    totalQuantity: number | null
+    totalCost: Decimal | null
+    tax: Decimal | null
+    fees: Decimal | null
+    grandTotal: Decimal | null
+    notes: string | null
+    createdBy: string | null
+    submittedAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InvoiceMaxAggregateOutputType = {
+    id: string | null
+    invoiceNumber: string | null
+    vendor: string | null
+    status: $Enums.InvoiceStatus | null
+    imageUrl: string | null
+    imageFilename: string | null
+    totalItems: number | null
+    totalQuantity: number | null
+    totalCost: Decimal | null
+    tax: Decimal | null
+    fees: Decimal | null
+    grandTotal: Decimal | null
+    notes: string | null
+    createdBy: string | null
+    submittedAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InvoiceCountAggregateOutputType = {
+    id: number
+    invoiceNumber: number
+    vendor: number
+    status: number
+    imageUrl: number
+    imageFilename: number
+    totalItems: number
+    totalQuantity: number
+    totalCost: number
+    tax: number
+    fees: number
+    grandTotal: number
+    notes: number
+    createdBy: number
+    submittedAt: number
+    approvedBy: number
+    approvedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InvoiceAvgAggregateInputType = {
+    totalItems?: true
+    totalQuantity?: true
+    totalCost?: true
+    tax?: true
+    fees?: true
+    grandTotal?: true
+  }
+
+  export type InvoiceSumAggregateInputType = {
+    totalItems?: true
+    totalQuantity?: true
+    totalCost?: true
+    tax?: true
+    fees?: true
+    grandTotal?: true
+  }
+
+  export type InvoiceMinAggregateInputType = {
+    id?: true
+    invoiceNumber?: true
+    vendor?: true
+    status?: true
+    imageUrl?: true
+    imageFilename?: true
+    totalItems?: true
+    totalQuantity?: true
+    totalCost?: true
+    tax?: true
+    fees?: true
+    grandTotal?: true
+    notes?: true
+    createdBy?: true
+    submittedAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InvoiceMaxAggregateInputType = {
+    id?: true
+    invoiceNumber?: true
+    vendor?: true
+    status?: true
+    imageUrl?: true
+    imageFilename?: true
+    totalItems?: true
+    totalQuantity?: true
+    totalCost?: true
+    tax?: true
+    fees?: true
+    grandTotal?: true
+    notes?: true
+    createdBy?: true
+    submittedAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InvoiceCountAggregateInputType = {
+    id?: true
+    invoiceNumber?: true
+    vendor?: true
+    status?: true
+    imageUrl?: true
+    imageFilename?: true
+    totalItems?: true
+    totalQuantity?: true
+    totalCost?: true
+    tax?: true
+    fees?: true
+    grandTotal?: true
+    notes?: true
+    createdBy?: true
+    submittedAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InvoiceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Invoice to aggregate.
+     */
+    where?: InvoiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invoices to fetch.
+     */
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InvoiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invoices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invoices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Invoices
+    **/
+    _count?: true | InvoiceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InvoiceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InvoiceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InvoiceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InvoiceMaxAggregateInputType
+  }
+
+  export type GetInvoiceAggregateType<T extends InvoiceAggregateArgs> = {
+        [P in keyof T & keyof AggregateInvoice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInvoice[P]>
+      : GetScalarType<T[P], AggregateInvoice[P]>
+  }
+
+
+
+
+  export type InvoiceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceWhereInput
+    orderBy?: InvoiceOrderByWithAggregationInput | InvoiceOrderByWithAggregationInput[]
+    by: InvoiceScalarFieldEnum[] | InvoiceScalarFieldEnum
+    having?: InvoiceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InvoiceCountAggregateInputType | true
+    _avg?: InvoiceAvgAggregateInputType
+    _sum?: InvoiceSumAggregateInputType
+    _min?: InvoiceMinAggregateInputType
+    _max?: InvoiceMaxAggregateInputType
+  }
+
+  export type InvoiceGroupByOutputType = {
+    id: string
+    invoiceNumber: string
+    vendor: string
+    status: $Enums.InvoiceStatus
+    imageUrl: string | null
+    imageFilename: string | null
+    totalItems: number
+    totalQuantity: number
+    totalCost: Decimal
+    tax: Decimal
+    fees: Decimal
+    grandTotal: Decimal
+    notes: string | null
+    createdBy: string
+    submittedAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InvoiceCountAggregateOutputType | null
+    _avg: InvoiceAvgAggregateOutputType | null
+    _sum: InvoiceSumAggregateOutputType | null
+    _min: InvoiceMinAggregateOutputType | null
+    _max: InvoiceMaxAggregateOutputType | null
+  }
+
+  type GetInvoiceGroupByPayload<T extends InvoiceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InvoiceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InvoiceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InvoiceGroupByOutputType[P]>
+            : GetScalarType<T[P], InvoiceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InvoiceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceNumber?: boolean
+    vendor?: boolean
+    status?: boolean
+    imageUrl?: boolean
+    imageFilename?: boolean
+    totalItems?: boolean
+    totalQuantity?: boolean
+    totalCost?: boolean
+    tax?: boolean
+    fees?: boolean
+    grandTotal?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    submittedAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    items?: boolean | Invoice$itemsArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+    _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["invoice"]>
+
+  export type InvoiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceNumber?: boolean
+    vendor?: boolean
+    status?: boolean
+    imageUrl?: boolean
+    imageFilename?: boolean
+    totalItems?: boolean
+    totalQuantity?: boolean
+    totalCost?: boolean
+    tax?: boolean
+    fees?: boolean
+    grandTotal?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    submittedAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+  }, ExtArgs["result"]["invoice"]>
+
+  export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceNumber?: boolean
+    vendor?: boolean
+    status?: boolean
+    imageUrl?: boolean
+    imageFilename?: boolean
+    totalItems?: boolean
+    totalQuantity?: boolean
+    totalCost?: boolean
+    tax?: boolean
+    fees?: boolean
+    grandTotal?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    submittedAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+  }, ExtArgs["result"]["invoice"]>
+
+  export type InvoiceSelectScalar = {
+    id?: boolean
+    invoiceNumber?: boolean
+    vendor?: boolean
+    status?: boolean
+    imageUrl?: boolean
+    imageFilename?: boolean
+    totalItems?: boolean
+    totalQuantity?: boolean
+    totalCost?: boolean
+    tax?: boolean
+    fees?: boolean
+    grandTotal?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    submittedAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceNumber" | "vendor" | "status" | "imageUrl" | "imageFilename" | "totalItems" | "totalQuantity" | "totalCost" | "tax" | "fees" | "grandTotal" | "notes" | "createdBy" | "submittedAt" | "approvedBy" | "approvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+  export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | Invoice$itemsArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+    _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+  }
+  export type InvoiceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    approver?: boolean | Invoice$approverArgs<ExtArgs>
+  }
+
+  export type $InvoicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Invoice"
+    objects: {
+      items: Prisma.$InvoiceItemPayload<ExtArgs>[]
+      creator: Prisma.$UserPayload<ExtArgs>
+      approver: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      invoiceNumber: string
+      vendor: string
+      status: $Enums.InvoiceStatus
+      imageUrl: string | null
+      imageFilename: string | null
+      totalItems: number
+      totalQuantity: number
+      totalCost: Prisma.Decimal
+      tax: Prisma.Decimal
+      fees: Prisma.Decimal
+      grandTotal: Prisma.Decimal
+      notes: string | null
+      createdBy: string
+      submittedAt: Date | null
+      approvedBy: string | null
+      approvedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["invoice"]>
+    composites: {}
+  }
+
+  type InvoiceGetPayload<S extends boolean | null | undefined | InvoiceDefaultArgs> = $Result.GetResult<Prisma.$InvoicePayload, S>
+
+  type InvoiceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InvoiceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InvoiceCountAggregateInputType | true
+    }
+
+  export interface InvoiceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Invoice'], meta: { name: 'Invoice' } }
+    /**
+     * Find zero or one Invoice that matches the filter.
+     * @param {InvoiceFindUniqueArgs} args - Arguments to find a Invoice
+     * @example
+     * // Get one Invoice
+     * const invoice = await prisma.invoice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InvoiceFindUniqueArgs>(args: SelectSubset<T, InvoiceFindUniqueArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Invoice that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InvoiceFindUniqueOrThrowArgs} args - Arguments to find a Invoice
+     * @example
+     * // Get one Invoice
+     * const invoice = await prisma.invoice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InvoiceFindUniqueOrThrowArgs>(args: SelectSubset<T, InvoiceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Invoice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceFindFirstArgs} args - Arguments to find a Invoice
+     * @example
+     * // Get one Invoice
+     * const invoice = await prisma.invoice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InvoiceFindFirstArgs>(args?: SelectSubset<T, InvoiceFindFirstArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Invoice that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceFindFirstOrThrowArgs} args - Arguments to find a Invoice
+     * @example
+     * // Get one Invoice
+     * const invoice = await prisma.invoice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InvoiceFindFirstOrThrowArgs>(args?: SelectSubset<T, InvoiceFindFirstOrThrowArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Invoices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Invoices
+     * const invoices = await prisma.invoice.findMany()
+     * 
+     * // Get first 10 Invoices
+     * const invoices = await prisma.invoice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const invoiceWithIdOnly = await prisma.invoice.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InvoiceFindManyArgs>(args?: SelectSubset<T, InvoiceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Invoice.
+     * @param {InvoiceCreateArgs} args - Arguments to create a Invoice.
+     * @example
+     * // Create one Invoice
+     * const Invoice = await prisma.invoice.create({
+     *   data: {
+     *     // ... data to create a Invoice
+     *   }
+     * })
+     * 
+     */
+    create<T extends InvoiceCreateArgs>(args: SelectSubset<T, InvoiceCreateArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Invoices.
+     * @param {InvoiceCreateManyArgs} args - Arguments to create many Invoices.
+     * @example
+     * // Create many Invoices
+     * const invoice = await prisma.invoice.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InvoiceCreateManyArgs>(args?: SelectSubset<T, InvoiceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Invoices and returns the data saved in the database.
+     * @param {InvoiceCreateManyAndReturnArgs} args - Arguments to create many Invoices.
+     * @example
+     * // Create many Invoices
+     * const invoice = await prisma.invoice.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Invoices and only return the `id`
+     * const invoiceWithIdOnly = await prisma.invoice.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InvoiceCreateManyAndReturnArgs>(args?: SelectSubset<T, InvoiceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Invoice.
+     * @param {InvoiceDeleteArgs} args - Arguments to delete one Invoice.
+     * @example
+     * // Delete one Invoice
+     * const Invoice = await prisma.invoice.delete({
+     *   where: {
+     *     // ... filter to delete one Invoice
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InvoiceDeleteArgs>(args: SelectSubset<T, InvoiceDeleteArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Invoice.
+     * @param {InvoiceUpdateArgs} args - Arguments to update one Invoice.
+     * @example
+     * // Update one Invoice
+     * const invoice = await prisma.invoice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InvoiceUpdateArgs>(args: SelectSubset<T, InvoiceUpdateArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Invoices.
+     * @param {InvoiceDeleteManyArgs} args - Arguments to filter Invoices to delete.
+     * @example
+     * // Delete a few Invoices
+     * const { count } = await prisma.invoice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InvoiceDeleteManyArgs>(args?: SelectSubset<T, InvoiceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Invoices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Invoices
+     * const invoice = await prisma.invoice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InvoiceUpdateManyArgs>(args: SelectSubset<T, InvoiceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Invoices and returns the data updated in the database.
+     * @param {InvoiceUpdateManyAndReturnArgs} args - Arguments to update many Invoices.
+     * @example
+     * // Update many Invoices
+     * const invoice = await prisma.invoice.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Invoices and only return the `id`
+     * const invoiceWithIdOnly = await prisma.invoice.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InvoiceUpdateManyAndReturnArgs>(args: SelectSubset<T, InvoiceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Invoice.
+     * @param {InvoiceUpsertArgs} args - Arguments to update or create a Invoice.
+     * @example
+     * // Update or create a Invoice
+     * const invoice = await prisma.invoice.upsert({
+     *   create: {
+     *     // ... data to create a Invoice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Invoice we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InvoiceUpsertArgs>(args: SelectSubset<T, InvoiceUpsertArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Invoices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceCountArgs} args - Arguments to filter Invoices to count.
+     * @example
+     * // Count the number of Invoices
+     * const count = await prisma.invoice.count({
+     *   where: {
+     *     // ... the filter for the Invoices we want to count
+     *   }
+     * })
+    **/
+    count<T extends InvoiceCountArgs>(
+      args?: Subset<T, InvoiceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InvoiceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Invoice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InvoiceAggregateArgs>(args: Subset<T, InvoiceAggregateArgs>): Prisma.PrismaPromise<GetInvoiceAggregateType<T>>
+
+    /**
+     * Group by Invoice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InvoiceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InvoiceGroupByArgs['orderBy'] }
+        : { orderBy?: InvoiceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InvoiceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInvoiceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Invoice model
+   */
+  readonly fields: InvoiceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Invoice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    items<T extends Invoice$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    approver<T extends Invoice$approverArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$approverArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Invoice model
+   */
+  interface InvoiceFieldRefs {
+    readonly id: FieldRef<"Invoice", 'String'>
+    readonly invoiceNumber: FieldRef<"Invoice", 'String'>
+    readonly vendor: FieldRef<"Invoice", 'String'>
+    readonly status: FieldRef<"Invoice", 'InvoiceStatus'>
+    readonly imageUrl: FieldRef<"Invoice", 'String'>
+    readonly imageFilename: FieldRef<"Invoice", 'String'>
+    readonly totalItems: FieldRef<"Invoice", 'Int'>
+    readonly totalQuantity: FieldRef<"Invoice", 'Int'>
+    readonly totalCost: FieldRef<"Invoice", 'Decimal'>
+    readonly tax: FieldRef<"Invoice", 'Decimal'>
+    readonly fees: FieldRef<"Invoice", 'Decimal'>
+    readonly grandTotal: FieldRef<"Invoice", 'Decimal'>
+    readonly notes: FieldRef<"Invoice", 'String'>
+    readonly createdBy: FieldRef<"Invoice", 'String'>
+    readonly submittedAt: FieldRef<"Invoice", 'DateTime'>
+    readonly approvedBy: FieldRef<"Invoice", 'String'>
+    readonly approvedAt: FieldRef<"Invoice", 'DateTime'>
+    readonly createdAt: FieldRef<"Invoice", 'DateTime'>
+    readonly updatedAt: FieldRef<"Invoice", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Invoice findUnique
+   */
+  export type InvoiceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter, which Invoice to fetch.
+     */
+    where: InvoiceWhereUniqueInput
+  }
+
+  /**
+   * Invoice findUniqueOrThrow
+   */
+  export type InvoiceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter, which Invoice to fetch.
+     */
+    where: InvoiceWhereUniqueInput
+  }
+
+  /**
+   * Invoice findFirst
+   */
+  export type InvoiceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter, which Invoice to fetch.
+     */
+    where?: InvoiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invoices to fetch.
+     */
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Invoices.
+     */
+    cursor?: InvoiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invoices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invoices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Invoices.
+     */
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
+  }
+
+  /**
+   * Invoice findFirstOrThrow
+   */
+  export type InvoiceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter, which Invoice to fetch.
+     */
+    where?: InvoiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invoices to fetch.
+     */
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Invoices.
+     */
+    cursor?: InvoiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invoices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invoices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Invoices.
+     */
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
+  }
+
+  /**
+   * Invoice findMany
+   */
+  export type InvoiceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter, which Invoices to fetch.
+     */
+    where?: InvoiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invoices to fetch.
+     */
+    orderBy?: InvoiceOrderByWithRelationInput | InvoiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Invoices.
+     */
+    cursor?: InvoiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invoices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invoices.
+     */
+    skip?: number
+    distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
+  }
+
+  /**
+   * Invoice create
+   */
+  export type InvoiceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Invoice.
+     */
+    data: XOR<InvoiceCreateInput, InvoiceUncheckedCreateInput>
+  }
+
+  /**
+   * Invoice createMany
+   */
+  export type InvoiceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Invoices.
+     */
+    data: InvoiceCreateManyInput | InvoiceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Invoice createManyAndReturn
+   */
+  export type InvoiceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * The data used to create many Invoices.
+     */
+    data: InvoiceCreateManyInput | InvoiceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Invoice update
+   */
+  export type InvoiceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Invoice.
+     */
+    data: XOR<InvoiceUpdateInput, InvoiceUncheckedUpdateInput>
+    /**
+     * Choose, which Invoice to update.
+     */
+    where: InvoiceWhereUniqueInput
+  }
+
+  /**
+   * Invoice updateMany
+   */
+  export type InvoiceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Invoices.
+     */
+    data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyInput>
+    /**
+     * Filter which Invoices to update
+     */
+    where?: InvoiceWhereInput
+    /**
+     * Limit how many Invoices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Invoice updateManyAndReturn
+   */
+  export type InvoiceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * The data used to update Invoices.
+     */
+    data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyInput>
+    /**
+     * Filter which Invoices to update
+     */
+    where?: InvoiceWhereInput
+    /**
+     * Limit how many Invoices to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Invoice upsert
+   */
+  export type InvoiceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Invoice to update in case it exists.
+     */
+    where: InvoiceWhereUniqueInput
+    /**
+     * In case the Invoice found by the `where` argument doesn't exist, create a new Invoice with this data.
+     */
+    create: XOR<InvoiceCreateInput, InvoiceUncheckedCreateInput>
+    /**
+     * In case the Invoice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InvoiceUpdateInput, InvoiceUncheckedUpdateInput>
+  }
+
+  /**
+   * Invoice delete
+   */
+  export type InvoiceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    /**
+     * Filter which Invoice to delete.
+     */
+    where: InvoiceWhereUniqueInput
+  }
+
+  /**
+   * Invoice deleteMany
+   */
+  export type InvoiceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Invoices to delete
+     */
+    where?: InvoiceWhereInput
+    /**
+     * Limit how many Invoices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Invoice.items
+   */
+  export type Invoice$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    where?: InvoiceItemWhereInput
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    cursor?: InvoiceItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
+  }
+
+  /**
+   * Invoice.approver
+   */
+  export type Invoice$approverArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Invoice without action
+   */
+  export type InvoiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InvoiceItem
+   */
+
+  export type AggregateInvoiceItem = {
+    _count: InvoiceItemCountAggregateOutputType | null
+    _avg: InvoiceItemAvgAggregateOutputType | null
+    _sum: InvoiceItemSumAggregateOutputType | null
+    _min: InvoiceItemMinAggregateOutputType | null
+    _max: InvoiceItemMaxAggregateOutputType | null
+  }
+
+  export type InvoiceItemAvgAggregateOutputType = {
+    sequence: number | null
+    quantity: number | null
+    unitCost: Decimal | null
+    totalCost: Decimal | null
+  }
+
+  export type InvoiceItemSumAggregateOutputType = {
+    sequence: number | null
+    quantity: number | null
+    unitCost: Decimal | null
+    totalCost: Decimal | null
+  }
+
+  export type InvoiceItemMinAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    sequence: number | null
+    sku: string | null
+    productName: string | null
+    productVariantId: string | null
+    barcode: string | null
+    quantity: number | null
+    unitCost: Decimal | null
+    totalCost: Decimal | null
+    locationId: string | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InvoiceItemMaxAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    sequence: number | null
+    sku: string | null
+    productName: string | null
+    productVariantId: string | null
+    barcode: string | null
+    quantity: number | null
+    unitCost: Decimal | null
+    totalCost: Decimal | null
+    locationId: string | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InvoiceItemCountAggregateOutputType = {
+    id: number
+    invoiceId: number
+    sequence: number
+    sku: number
+    productName: number
+    productVariantId: number
+    barcode: number
+    quantity: number
+    unitCost: number
+    totalCost: number
+    locationId: number
+    lotNumber: number
+    expiryDate: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InvoiceItemAvgAggregateInputType = {
+    sequence?: true
+    quantity?: true
+    unitCost?: true
+    totalCost?: true
+  }
+
+  export type InvoiceItemSumAggregateInputType = {
+    sequence?: true
+    quantity?: true
+    unitCost?: true
+    totalCost?: true
+  }
+
+  export type InvoiceItemMinAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    sequence?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    barcode?: true
+    quantity?: true
+    unitCost?: true
+    totalCost?: true
+    locationId?: true
+    lotNumber?: true
+    expiryDate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InvoiceItemMaxAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    sequence?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    barcode?: true
+    quantity?: true
+    unitCost?: true
+    totalCost?: true
+    locationId?: true
+    lotNumber?: true
+    expiryDate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InvoiceItemCountAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    sequence?: true
+    sku?: true
+    productName?: true
+    productVariantId?: true
+    barcode?: true
+    quantity?: true
+    unitCost?: true
+    totalCost?: true
+    locationId?: true
+    lotNumber?: true
+    expiryDate?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InvoiceItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InvoiceItem to aggregate.
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InvoiceItems to fetch.
+     */
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InvoiceItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InvoiceItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InvoiceItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InvoiceItems
+    **/
+    _count?: true | InvoiceItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InvoiceItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InvoiceItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InvoiceItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InvoiceItemMaxAggregateInputType
+  }
+
+  export type GetInvoiceItemAggregateType<T extends InvoiceItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateInvoiceItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInvoiceItem[P]>
+      : GetScalarType<T[P], AggregateInvoiceItem[P]>
+  }
+
+
+
+
+  export type InvoiceItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InvoiceItemWhereInput
+    orderBy?: InvoiceItemOrderByWithAggregationInput | InvoiceItemOrderByWithAggregationInput[]
+    by: InvoiceItemScalarFieldEnum[] | InvoiceItemScalarFieldEnum
+    having?: InvoiceItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InvoiceItemCountAggregateInputType | true
+    _avg?: InvoiceItemAvgAggregateInputType
+    _sum?: InvoiceItemSumAggregateInputType
+    _min?: InvoiceItemMinAggregateInputType
+    _max?: InvoiceItemMaxAggregateInputType
+  }
+
+  export type InvoiceItemGroupByOutputType = {
+    id: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId: string | null
+    barcode: string | null
+    quantity: number
+    unitCost: Decimal
+    totalCost: Decimal
+    locationId: string | null
+    lotNumber: string | null
+    expiryDate: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InvoiceItemCountAggregateOutputType | null
+    _avg: InvoiceItemAvgAggregateOutputType | null
+    _sum: InvoiceItemSumAggregateOutputType | null
+    _min: InvoiceItemMinAggregateOutputType | null
+    _max: InvoiceItemMaxAggregateOutputType | null
+  }
+
+  type GetInvoiceItemGroupByPayload<T extends InvoiceItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InvoiceItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InvoiceItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InvoiceItemGroupByOutputType[P]>
+            : GetScalarType<T[P], InvoiceItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InvoiceItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    sequence?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    barcode?: boolean
+    quantity?: boolean
+    unitCost?: boolean
+    totalCost?: boolean
+    locationId?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }, ExtArgs["result"]["invoiceItem"]>
+
+  export type InvoiceItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    sequence?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    barcode?: boolean
+    quantity?: boolean
+    unitCost?: boolean
+    totalCost?: boolean
+    locationId?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }, ExtArgs["result"]["invoiceItem"]>
+
+  export type InvoiceItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    sequence?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    barcode?: boolean
+    quantity?: boolean
+    unitCost?: boolean
+    totalCost?: boolean
+    locationId?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }, ExtArgs["result"]["invoiceItem"]>
+
+  export type InvoiceItemSelectScalar = {
+    id?: boolean
+    invoiceId?: boolean
+    sequence?: boolean
+    sku?: boolean
+    productName?: boolean
+    productVariantId?: boolean
+    barcode?: boolean
+    quantity?: boolean
+    unitCost?: boolean
+    totalCost?: boolean
+    locationId?: boolean
+    lotNumber?: boolean
+    expiryDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InvoiceItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "sequence" | "sku" | "productName" | "productVariantId" | "barcode" | "quantity" | "unitCost" | "totalCost" | "locationId" | "lotNumber" | "expiryDate" | "createdAt" | "updatedAt", ExtArgs["result"]["invoiceItem"]>
+  export type InvoiceItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }
+  export type InvoiceItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }
+  export type InvoiceItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    productVariant?: boolean | InvoiceItem$productVariantArgs<ExtArgs>
+    location?: boolean | InvoiceItem$locationArgs<ExtArgs>
+  }
+
+  export type $InvoiceItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InvoiceItem"
+    objects: {
+      invoice: Prisma.$InvoicePayload<ExtArgs>
+      productVariant: Prisma.$ProductVariantPayload<ExtArgs> | null
+      location: Prisma.$LocationPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      invoiceId: string
+      sequence: number
+      sku: string
+      productName: string
+      productVariantId: string | null
+      barcode: string | null
+      quantity: number
+      unitCost: Prisma.Decimal
+      totalCost: Prisma.Decimal
+      locationId: string | null
+      lotNumber: string | null
+      expiryDate: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["invoiceItem"]>
+    composites: {}
+  }
+
+  type InvoiceItemGetPayload<S extends boolean | null | undefined | InvoiceItemDefaultArgs> = $Result.GetResult<Prisma.$InvoiceItemPayload, S>
+
+  type InvoiceItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InvoiceItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InvoiceItemCountAggregateInputType | true
+    }
+
+  export interface InvoiceItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InvoiceItem'], meta: { name: 'InvoiceItem' } }
+    /**
+     * Find zero or one InvoiceItem that matches the filter.
+     * @param {InvoiceItemFindUniqueArgs} args - Arguments to find a InvoiceItem
+     * @example
+     * // Get one InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InvoiceItemFindUniqueArgs>(args: SelectSubset<T, InvoiceItemFindUniqueArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InvoiceItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InvoiceItemFindUniqueOrThrowArgs} args - Arguments to find a InvoiceItem
+     * @example
+     * // Get one InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InvoiceItemFindUniqueOrThrowArgs>(args: SelectSubset<T, InvoiceItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InvoiceItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemFindFirstArgs} args - Arguments to find a InvoiceItem
+     * @example
+     * // Get one InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InvoiceItemFindFirstArgs>(args?: SelectSubset<T, InvoiceItemFindFirstArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InvoiceItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemFindFirstOrThrowArgs} args - Arguments to find a InvoiceItem
+     * @example
+     * // Get one InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InvoiceItemFindFirstOrThrowArgs>(args?: SelectSubset<T, InvoiceItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InvoiceItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InvoiceItems
+     * const invoiceItems = await prisma.invoiceItem.findMany()
+     * 
+     * // Get first 10 InvoiceItems
+     * const invoiceItems = await prisma.invoiceItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const invoiceItemWithIdOnly = await prisma.invoiceItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InvoiceItemFindManyArgs>(args?: SelectSubset<T, InvoiceItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InvoiceItem.
+     * @param {InvoiceItemCreateArgs} args - Arguments to create a InvoiceItem.
+     * @example
+     * // Create one InvoiceItem
+     * const InvoiceItem = await prisma.invoiceItem.create({
+     *   data: {
+     *     // ... data to create a InvoiceItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends InvoiceItemCreateArgs>(args: SelectSubset<T, InvoiceItemCreateArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InvoiceItems.
+     * @param {InvoiceItemCreateManyArgs} args - Arguments to create many InvoiceItems.
+     * @example
+     * // Create many InvoiceItems
+     * const invoiceItem = await prisma.invoiceItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InvoiceItemCreateManyArgs>(args?: SelectSubset<T, InvoiceItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InvoiceItems and returns the data saved in the database.
+     * @param {InvoiceItemCreateManyAndReturnArgs} args - Arguments to create many InvoiceItems.
+     * @example
+     * // Create many InvoiceItems
+     * const invoiceItem = await prisma.invoiceItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InvoiceItems and only return the `id`
+     * const invoiceItemWithIdOnly = await prisma.invoiceItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InvoiceItemCreateManyAndReturnArgs>(args?: SelectSubset<T, InvoiceItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InvoiceItem.
+     * @param {InvoiceItemDeleteArgs} args - Arguments to delete one InvoiceItem.
+     * @example
+     * // Delete one InvoiceItem
+     * const InvoiceItem = await prisma.invoiceItem.delete({
+     *   where: {
+     *     // ... filter to delete one InvoiceItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InvoiceItemDeleteArgs>(args: SelectSubset<T, InvoiceItemDeleteArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InvoiceItem.
+     * @param {InvoiceItemUpdateArgs} args - Arguments to update one InvoiceItem.
+     * @example
+     * // Update one InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InvoiceItemUpdateArgs>(args: SelectSubset<T, InvoiceItemUpdateArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InvoiceItems.
+     * @param {InvoiceItemDeleteManyArgs} args - Arguments to filter InvoiceItems to delete.
+     * @example
+     * // Delete a few InvoiceItems
+     * const { count } = await prisma.invoiceItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InvoiceItemDeleteManyArgs>(args?: SelectSubset<T, InvoiceItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InvoiceItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InvoiceItems
+     * const invoiceItem = await prisma.invoiceItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InvoiceItemUpdateManyArgs>(args: SelectSubset<T, InvoiceItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InvoiceItems and returns the data updated in the database.
+     * @param {InvoiceItemUpdateManyAndReturnArgs} args - Arguments to update many InvoiceItems.
+     * @example
+     * // Update many InvoiceItems
+     * const invoiceItem = await prisma.invoiceItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InvoiceItems and only return the `id`
+     * const invoiceItemWithIdOnly = await prisma.invoiceItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InvoiceItemUpdateManyAndReturnArgs>(args: SelectSubset<T, InvoiceItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InvoiceItem.
+     * @param {InvoiceItemUpsertArgs} args - Arguments to update or create a InvoiceItem.
+     * @example
+     * // Update or create a InvoiceItem
+     * const invoiceItem = await prisma.invoiceItem.upsert({
+     *   create: {
+     *     // ... data to create a InvoiceItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InvoiceItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InvoiceItemUpsertArgs>(args: SelectSubset<T, InvoiceItemUpsertArgs<ExtArgs>>): Prisma__InvoiceItemClient<$Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InvoiceItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemCountArgs} args - Arguments to filter InvoiceItems to count.
+     * @example
+     * // Count the number of InvoiceItems
+     * const count = await prisma.invoiceItem.count({
+     *   where: {
+     *     // ... the filter for the InvoiceItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends InvoiceItemCountArgs>(
+      args?: Subset<T, InvoiceItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InvoiceItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InvoiceItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InvoiceItemAggregateArgs>(args: Subset<T, InvoiceItemAggregateArgs>): Prisma.PrismaPromise<GetInvoiceItemAggregateType<T>>
+
+    /**
+     * Group by InvoiceItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InvoiceItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InvoiceItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InvoiceItemGroupByArgs['orderBy'] }
+        : { orderBy?: InvoiceItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InvoiceItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInvoiceItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InvoiceItem model
+   */
+  readonly fields: InvoiceItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InvoiceItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InvoiceItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    invoice<T extends InvoiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InvoiceDefaultArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    productVariant<T extends InvoiceItem$productVariantArgs<ExtArgs> = {}>(args?: Subset<T, InvoiceItem$productVariantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    location<T extends InvoiceItem$locationArgs<ExtArgs> = {}>(args?: Subset<T, InvoiceItem$locationArgs<ExtArgs>>): Prisma__LocationClient<$Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InvoiceItem model
+   */
+  interface InvoiceItemFieldRefs {
+    readonly id: FieldRef<"InvoiceItem", 'String'>
+    readonly invoiceId: FieldRef<"InvoiceItem", 'String'>
+    readonly sequence: FieldRef<"InvoiceItem", 'Int'>
+    readonly sku: FieldRef<"InvoiceItem", 'String'>
+    readonly productName: FieldRef<"InvoiceItem", 'String'>
+    readonly productVariantId: FieldRef<"InvoiceItem", 'String'>
+    readonly barcode: FieldRef<"InvoiceItem", 'String'>
+    readonly quantity: FieldRef<"InvoiceItem", 'Int'>
+    readonly unitCost: FieldRef<"InvoiceItem", 'Decimal'>
+    readonly totalCost: FieldRef<"InvoiceItem", 'Decimal'>
+    readonly locationId: FieldRef<"InvoiceItem", 'String'>
+    readonly lotNumber: FieldRef<"InvoiceItem", 'String'>
+    readonly expiryDate: FieldRef<"InvoiceItem", 'DateTime'>
+    readonly createdAt: FieldRef<"InvoiceItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"InvoiceItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InvoiceItem findUnique
+   */
+  export type InvoiceItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter, which InvoiceItem to fetch.
+     */
+    where: InvoiceItemWhereUniqueInput
+  }
+
+  /**
+   * InvoiceItem findUniqueOrThrow
+   */
+  export type InvoiceItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter, which InvoiceItem to fetch.
+     */
+    where: InvoiceItemWhereUniqueInput
+  }
+
+  /**
+   * InvoiceItem findFirst
+   */
+  export type InvoiceItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter, which InvoiceItem to fetch.
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InvoiceItems to fetch.
+     */
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InvoiceItems.
+     */
+    cursor?: InvoiceItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InvoiceItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InvoiceItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InvoiceItems.
+     */
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
+  }
+
+  /**
+   * InvoiceItem findFirstOrThrow
+   */
+  export type InvoiceItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter, which InvoiceItem to fetch.
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InvoiceItems to fetch.
+     */
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InvoiceItems.
+     */
+    cursor?: InvoiceItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InvoiceItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InvoiceItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InvoiceItems.
+     */
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
+  }
+
+  /**
+   * InvoiceItem findMany
+   */
+  export type InvoiceItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter, which InvoiceItems to fetch.
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InvoiceItems to fetch.
+     */
+    orderBy?: InvoiceItemOrderByWithRelationInput | InvoiceItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InvoiceItems.
+     */
+    cursor?: InvoiceItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InvoiceItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InvoiceItems.
+     */
+    skip?: number
+    distinct?: InvoiceItemScalarFieldEnum | InvoiceItemScalarFieldEnum[]
+  }
+
+  /**
+   * InvoiceItem create
+   */
+  export type InvoiceItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InvoiceItem.
+     */
+    data: XOR<InvoiceItemCreateInput, InvoiceItemUncheckedCreateInput>
+  }
+
+  /**
+   * InvoiceItem createMany
+   */
+  export type InvoiceItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InvoiceItems.
+     */
+    data: InvoiceItemCreateManyInput | InvoiceItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InvoiceItem createManyAndReturn
+   */
+  export type InvoiceItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many InvoiceItems.
+     */
+    data: InvoiceItemCreateManyInput | InvoiceItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InvoiceItem update
+   */
+  export type InvoiceItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InvoiceItem.
+     */
+    data: XOR<InvoiceItemUpdateInput, InvoiceItemUncheckedUpdateInput>
+    /**
+     * Choose, which InvoiceItem to update.
+     */
+    where: InvoiceItemWhereUniqueInput
+  }
+
+  /**
+   * InvoiceItem updateMany
+   */
+  export type InvoiceItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InvoiceItems.
+     */
+    data: XOR<InvoiceItemUpdateManyMutationInput, InvoiceItemUncheckedUpdateManyInput>
+    /**
+     * Filter which InvoiceItems to update
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * Limit how many InvoiceItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InvoiceItem updateManyAndReturn
+   */
+  export type InvoiceItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * The data used to update InvoiceItems.
+     */
+    data: XOR<InvoiceItemUpdateManyMutationInput, InvoiceItemUncheckedUpdateManyInput>
+    /**
+     * Filter which InvoiceItems to update
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * Limit how many InvoiceItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InvoiceItem upsert
+   */
+  export type InvoiceItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InvoiceItem to update in case it exists.
+     */
+    where: InvoiceItemWhereUniqueInput
+    /**
+     * In case the InvoiceItem found by the `where` argument doesn't exist, create a new InvoiceItem with this data.
+     */
+    create: XOR<InvoiceItemCreateInput, InvoiceItemUncheckedCreateInput>
+    /**
+     * In case the InvoiceItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InvoiceItemUpdateInput, InvoiceItemUncheckedUpdateInput>
+  }
+
+  /**
+   * InvoiceItem delete
+   */
+  export type InvoiceItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+    /**
+     * Filter which InvoiceItem to delete.
+     */
+    where: InvoiceItemWhereUniqueInput
+  }
+
+  /**
+   * InvoiceItem deleteMany
+   */
+  export type InvoiceItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InvoiceItems to delete
+     */
+    where?: InvoiceItemWhereInput
+    /**
+     * Limit how many InvoiceItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InvoiceItem.productVariant
+   */
+  export type InvoiceItem$productVariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductVariant
+     */
+    select?: ProductVariantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductVariant
+     */
+    omit?: ProductVariantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductVariantInclude<ExtArgs> | null
+    where?: ProductVariantWhereInput
+  }
+
+  /**
+   * InvoiceItem.location
+   */
+  export type InvoiceItem$locationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Location
+     */
+    omit?: LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LocationInclude<ExtArgs> | null
+    where?: LocationWhereInput
+  }
+
+  /**
+   * InvoiceItem without action
+   */
+  export type InvoiceItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceItem
+     */
+    select?: InvoiceItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InvoiceItem
+     */
+    omit?: InvoiceItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -48814,6 +51829,52 @@ export namespace Prisma {
   export type UserPerformanceScalarFieldEnum = (typeof UserPerformanceScalarFieldEnum)[keyof typeof UserPerformanceScalarFieldEnum]
 
 
+  export const InvoiceScalarFieldEnum: {
+    id: 'id',
+    invoiceNumber: 'invoiceNumber',
+    vendor: 'vendor',
+    status: 'status',
+    imageUrl: 'imageUrl',
+    imageFilename: 'imageFilename',
+    totalItems: 'totalItems',
+    totalQuantity: 'totalQuantity',
+    totalCost: 'totalCost',
+    tax: 'tax',
+    fees: 'fees',
+    grandTotal: 'grandTotal',
+    notes: 'notes',
+    createdBy: 'createdBy',
+    submittedAt: 'submittedAt',
+    approvedBy: 'approvedBy',
+    approvedAt: 'approvedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+  export const InvoiceItemScalarFieldEnum: {
+    id: 'id',
+    invoiceId: 'invoiceId',
+    sequence: 'sequence',
+    sku: 'sku',
+    productName: 'productName',
+    productVariantId: 'productVariantId',
+    barcode: 'barcode',
+    quantity: 'quantity',
+    unitCost: 'unitCost',
+    totalCost: 'totalCost',
+    locationId: 'locationId',
+    lotNumber: 'lotNumber',
+    expiryDate: 'expiryDate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -49264,6 +52325,20 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'InvoiceStatus'
+   */
+  export type EnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvoiceStatus[]'
+   */
+  export type ListEnumInvoiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvoiceStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -49305,6 +52380,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditListRelationFilter
     adjustmentsCreated?: InventoryAdjustmentListRelationFilter
     adjustmentsApproved?: InventoryAdjustmentListRelationFilter
+    invoicesCreated?: InvoiceListRelationFilter
+    invoicesApproved?: InvoiceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -49340,6 +52417,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditOrderByRelationAggregateInput
     adjustmentsCreated?: InventoryAdjustmentOrderByRelationAggregateInput
     adjustmentsApproved?: InventoryAdjustmentOrderByRelationAggregateInput
+    invoicesCreated?: InvoiceOrderByRelationAggregateInput
+    invoicesApproved?: InvoiceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -49378,6 +52457,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditListRelationFilter
     adjustmentsCreated?: InventoryAdjustmentListRelationFilter
     adjustmentsApproved?: InventoryAdjustmentListRelationFilter
+    invoicesCreated?: InvoiceListRelationFilter
+    invoicesApproved?: InvoiceListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -49637,6 +52718,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentListRelationFilter
     inventoryDiscrepancies?: InventoryDiscrepancyListRelationFilter
     pickBinItems?: PickBinItemListRelationFilter
+    invoiceItems?: InvoiceItemListRelationFilter
   }
 
   export type ProductVariantOrderByWithRelationInput = {
@@ -49666,6 +52748,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentOrderByRelationAggregateInput
     inventoryDiscrepancies?: InventoryDiscrepancyOrderByRelationAggregateInput
     pickBinItems?: PickBinItemOrderByRelationAggregateInput
+    invoiceItems?: InvoiceItemOrderByRelationAggregateInput
   }
 
   export type ProductVariantWhereUniqueInput = Prisma.AtLeast<{
@@ -49698,6 +52781,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentListRelationFilter
     inventoryDiscrepancies?: InventoryDiscrepancyListRelationFilter
     pickBinItems?: PickBinItemListRelationFilter
+    invoiceItems?: InvoiceItemListRelationFilter
   }, "id" | "sku" | "upc" | "shopifyVariantId">
 
   export type ProductVariantOrderByWithAggregationInput = {
@@ -49773,6 +52857,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionListRelationFilter
     inventoryAdjustments?: InventoryAdjustmentListRelationFilter
     inventoryDiscrepancies?: InventoryDiscrepancyListRelationFilter
+    invoiceItems?: InvoiceItemListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -49801,6 +52886,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionOrderByRelationAggregateInput
     inventoryAdjustments?: InventoryAdjustmentOrderByRelationAggregateInput
     inventoryDiscrepancies?: InventoryDiscrepancyOrderByRelationAggregateInput
+    invoiceItems?: InvoiceItemOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = Prisma.AtLeast<{
@@ -49832,6 +52918,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionListRelationFilter
     inventoryAdjustments?: InventoryAdjustmentListRelationFilter
     inventoryDiscrepancies?: InventoryDiscrepancyListRelationFilter
+    invoiceItems?: InvoiceItemListRelationFilter
   }, "id" | "name" | "barcode">
 
   export type LocationOrderByWithAggregationInput = {
@@ -52924,6 +56011,253 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"UserPerformance"> | Date | string
   }
 
+  export type InvoiceWhereInput = {
+    AND?: InvoiceWhereInput | InvoiceWhereInput[]
+    OR?: InvoiceWhereInput[]
+    NOT?: InvoiceWhereInput | InvoiceWhereInput[]
+    id?: StringFilter<"Invoice"> | string
+    invoiceNumber?: StringFilter<"Invoice"> | string
+    vendor?: StringFilter<"Invoice"> | string
+    status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
+    imageUrl?: StringNullableFilter<"Invoice"> | string | null
+    imageFilename?: StringNullableFilter<"Invoice"> | string | null
+    totalItems?: IntFilter<"Invoice"> | number
+    totalQuantity?: IntFilter<"Invoice"> | number
+    totalCost?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"Invoice"> | string | null
+    createdBy?: StringFilter<"Invoice"> | string
+    submittedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Invoice"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    createdAt?: DateTimeFilter<"Invoice"> | Date | string
+    updatedAt?: DateTimeFilter<"Invoice"> | Date | string
+    items?: InvoiceItemListRelationFilter
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type InvoiceOrderByWithRelationInput = {
+    id?: SortOrder
+    invoiceNumber?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    imageFilename?: SortOrderInput | SortOrder
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    items?: InvoiceItemOrderByRelationAggregateInput
+    creator?: UserOrderByWithRelationInput
+    approver?: UserOrderByWithRelationInput
+  }
+
+  export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    invoiceNumber?: string
+    AND?: InvoiceWhereInput | InvoiceWhereInput[]
+    OR?: InvoiceWhereInput[]
+    NOT?: InvoiceWhereInput | InvoiceWhereInput[]
+    vendor?: StringFilter<"Invoice"> | string
+    status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
+    imageUrl?: StringNullableFilter<"Invoice"> | string | null
+    imageFilename?: StringNullableFilter<"Invoice"> | string | null
+    totalItems?: IntFilter<"Invoice"> | number
+    totalQuantity?: IntFilter<"Invoice"> | number
+    totalCost?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"Invoice"> | string | null
+    createdBy?: StringFilter<"Invoice"> | string
+    submittedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Invoice"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    createdAt?: DateTimeFilter<"Invoice"> | Date | string
+    updatedAt?: DateTimeFilter<"Invoice"> | Date | string
+    items?: InvoiceItemListRelationFilter
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "invoiceNumber">
+
+  export type InvoiceOrderByWithAggregationInput = {
+    id?: SortOrder
+    invoiceNumber?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    imageFilename?: SortOrderInput | SortOrder
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InvoiceCountOrderByAggregateInput
+    _avg?: InvoiceAvgOrderByAggregateInput
+    _max?: InvoiceMaxOrderByAggregateInput
+    _min?: InvoiceMinOrderByAggregateInput
+    _sum?: InvoiceSumOrderByAggregateInput
+  }
+
+  export type InvoiceScalarWhereWithAggregatesInput = {
+    AND?: InvoiceScalarWhereWithAggregatesInput | InvoiceScalarWhereWithAggregatesInput[]
+    OR?: InvoiceScalarWhereWithAggregatesInput[]
+    NOT?: InvoiceScalarWhereWithAggregatesInput | InvoiceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Invoice"> | string
+    invoiceNumber?: StringWithAggregatesFilter<"Invoice"> | string
+    vendor?: StringWithAggregatesFilter<"Invoice"> | string
+    status?: EnumInvoiceStatusWithAggregatesFilter<"Invoice"> | $Enums.InvoiceStatus
+    imageUrl?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    imageFilename?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    totalItems?: IntWithAggregatesFilter<"Invoice"> | number
+    totalQuantity?: IntWithAggregatesFilter<"Invoice"> | number
+    totalCost?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    tax?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    fees?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    createdBy?: StringWithAggregatesFilter<"Invoice"> | string
+    submittedAt?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
+    approvedBy?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
+  }
+
+  export type InvoiceItemWhereInput = {
+    AND?: InvoiceItemWhereInput | InvoiceItemWhereInput[]
+    OR?: InvoiceItemWhereInput[]
+    NOT?: InvoiceItemWhereInput | InvoiceItemWhereInput[]
+    id?: StringFilter<"InvoiceItem"> | string
+    invoiceId?: StringFilter<"InvoiceItem"> | string
+    sequence?: IntFilter<"InvoiceItem"> | number
+    sku?: StringFilter<"InvoiceItem"> | string
+    productName?: StringFilter<"InvoiceItem"> | string
+    productVariantId?: StringNullableFilter<"InvoiceItem"> | string | null
+    barcode?: StringNullableFilter<"InvoiceItem"> | string | null
+    quantity?: IntFilter<"InvoiceItem"> | number
+    unitCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    locationId?: StringNullableFilter<"InvoiceItem"> | string | null
+    lotNumber?: StringNullableFilter<"InvoiceItem"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InvoiceItem"> | Date | string | null
+    createdAt?: DateTimeFilter<"InvoiceItem"> | Date | string
+    updatedAt?: DateTimeFilter<"InvoiceItem"> | Date | string
+    invoice?: XOR<InvoiceScalarRelationFilter, InvoiceWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+    location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
+  }
+
+  export type InvoiceItemOrderByWithRelationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    sequence?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+    locationId?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    invoice?: InvoiceOrderByWithRelationInput
+    productVariant?: ProductVariantOrderByWithRelationInput
+    location?: LocationOrderByWithRelationInput
+  }
+
+  export type InvoiceItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    invoiceId_sku?: InvoiceItemInvoiceIdSkuCompoundUniqueInput
+    AND?: InvoiceItemWhereInput | InvoiceItemWhereInput[]
+    OR?: InvoiceItemWhereInput[]
+    NOT?: InvoiceItemWhereInput | InvoiceItemWhereInput[]
+    invoiceId?: StringFilter<"InvoiceItem"> | string
+    sequence?: IntFilter<"InvoiceItem"> | number
+    sku?: StringFilter<"InvoiceItem"> | string
+    productName?: StringFilter<"InvoiceItem"> | string
+    productVariantId?: StringNullableFilter<"InvoiceItem"> | string | null
+    barcode?: StringNullableFilter<"InvoiceItem"> | string | null
+    quantity?: IntFilter<"InvoiceItem"> | number
+    unitCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    locationId?: StringNullableFilter<"InvoiceItem"> | string | null
+    lotNumber?: StringNullableFilter<"InvoiceItem"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InvoiceItem"> | Date | string | null
+    createdAt?: DateTimeFilter<"InvoiceItem"> | Date | string
+    updatedAt?: DateTimeFilter<"InvoiceItem"> | Date | string
+    invoice?: XOR<InvoiceScalarRelationFilter, InvoiceWhereInput>
+    productVariant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+    location?: XOR<LocationNullableScalarRelationFilter, LocationWhereInput> | null
+  }, "id" | "invoiceId_sku">
+
+  export type InvoiceItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    sequence?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+    locationId?: SortOrderInput | SortOrder
+    lotNumber?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InvoiceItemCountOrderByAggregateInput
+    _avg?: InvoiceItemAvgOrderByAggregateInput
+    _max?: InvoiceItemMaxOrderByAggregateInput
+    _min?: InvoiceItemMinOrderByAggregateInput
+    _sum?: InvoiceItemSumOrderByAggregateInput
+  }
+
+  export type InvoiceItemScalarWhereWithAggregatesInput = {
+    AND?: InvoiceItemScalarWhereWithAggregatesInput | InvoiceItemScalarWhereWithAggregatesInput[]
+    OR?: InvoiceItemScalarWhereWithAggregatesInput[]
+    NOT?: InvoiceItemScalarWhereWithAggregatesInput | InvoiceItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InvoiceItem"> | string
+    invoiceId?: StringWithAggregatesFilter<"InvoiceItem"> | string
+    sequence?: IntWithAggregatesFilter<"InvoiceItem"> | number
+    sku?: StringWithAggregatesFilter<"InvoiceItem"> | string
+    productName?: StringWithAggregatesFilter<"InvoiceItem"> | string
+    productVariantId?: StringNullableWithAggregatesFilter<"InvoiceItem"> | string | null
+    barcode?: StringNullableWithAggregatesFilter<"InvoiceItem"> | string | null
+    quantity?: IntWithAggregatesFilter<"InvoiceItem"> | number
+    unitCost?: DecimalWithAggregatesFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalWithAggregatesFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    locationId?: StringNullableWithAggregatesFilter<"InvoiceItem"> | string | null
+    lotNumber?: StringNullableWithAggregatesFilter<"InvoiceItem"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"InvoiceItem"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InvoiceItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InvoiceItem"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -52957,6 +56291,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -52992,6 +56328,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserUpdateInput = {
@@ -53027,6 +56365,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -53062,6 +56402,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -53341,6 +56683,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateInput = {
@@ -53369,6 +56712,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUpdateInput = {
@@ -53397,6 +56741,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateInput = {
@@ -53425,6 +56770,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantCreateManyInput = {
@@ -53506,6 +56852,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -53534,6 +56881,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUpdateInput = {
@@ -53562,6 +56910,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -53590,6 +56939,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -57042,6 +60392,285 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InvoiceCreateInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemCreateNestedManyWithoutInvoiceInput
+    creator: UserCreateNestedOneWithoutInvoicesCreatedInput
+    approver?: UserCreateNestedOneWithoutInvoicesApprovedInput
+  }
+
+  export type InvoiceUncheckedCreateInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdBy: string
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUpdateManyWithoutInvoiceNestedInput
+    creator?: UserUpdateOneRequiredWithoutInvoicesCreatedNestedInput
+    approver?: UserUpdateOneWithoutInvoicesApprovedNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceCreateManyInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdBy: string
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemCreateInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutInvoiceItemsInput
+    location?: LocationCreateNestedOneWithoutInvoiceItemsInput
+  }
+
+  export type InvoiceItemUncheckedCreateInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutInvoiceItemsNestedInput
+    location?: LocationUpdateOneWithoutInvoiceItemsNestedInput
+  }
+
+  export type InvoiceItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemCreateManyInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -57190,6 +60819,12 @@ export namespace Prisma {
     none?: InventoryAdjustmentWhereInput
   }
 
+  export type InvoiceListRelationFilter = {
+    every?: InvoiceWhereInput
+    some?: InvoiceWhereInput
+    none?: InvoiceWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -57248,6 +60883,10 @@ export namespace Prisma {
   }
 
   export type InventoryAdjustmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InvoiceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57541,6 +61180,12 @@ export namespace Prisma {
     none?: PickBinItemWhereInput
   }
 
+  export type InvoiceItemListRelationFilter = {
+    every?: InvoiceItemWhereInput
+    some?: InvoiceItemWhereInput
+    none?: InvoiceItemWhereInput
+  }
+
   export type ShippingPackageItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -57570,6 +61215,10 @@ export namespace Prisma {
   }
 
   export type PickBinItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InvoiceItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -60113,6 +63762,185 @@ export namespace Prisma {
     taskCount?: SortOrder
   }
 
+  export type EnumInvoiceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+  }
+
+  export type InvoiceCountOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceNumber?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    imageUrl?: SortOrder
+    imageFilename?: SortOrder
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    submittedAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceAvgOrderByAggregateInput = {
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+  }
+
+  export type InvoiceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceNumber?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    imageUrl?: SortOrder
+    imageFilename?: SortOrder
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    submittedAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceMinOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceNumber?: SortOrder
+    vendor?: SortOrder
+    status?: SortOrder
+    imageUrl?: SortOrder
+    imageFilename?: SortOrder
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    submittedAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceSumOrderByAggregateInput = {
+    totalItems?: SortOrder
+    totalQuantity?: SortOrder
+    totalCost?: SortOrder
+    tax?: SortOrder
+    fees?: SortOrder
+    grandTotal?: SortOrder
+  }
+
+  export type EnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+    _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+  }
+
+  export type InvoiceScalarRelationFilter = {
+    is?: InvoiceWhereInput
+    isNot?: InvoiceWhereInput
+  }
+
+  export type InvoiceItemInvoiceIdSkuCompoundUniqueInput = {
+    invoiceId: string
+    sku: string
+  }
+
+  export type InvoiceItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    sequence?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    barcode?: SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+    locationId?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceItemAvgOrderByAggregateInput = {
+    sequence?: SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+  }
+
+  export type InvoiceItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    sequence?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    barcode?: SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+    locationId?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    sequence?: SortOrder
+    sku?: SortOrder
+    productName?: SortOrder
+    productVariantId?: SortOrder
+    barcode?: SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+    locationId?: SortOrder
+    lotNumber?: SortOrder
+    expiryDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InvoiceItemSumOrderByAggregateInput = {
+    sequence?: SortOrder
+    quantity?: SortOrder
+    unitCost?: SortOrder
+    totalCost?: SortOrder
+  }
+
   export type RefreshTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -60267,6 +64095,20 @@ export namespace Prisma {
     connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
   }
 
+  export type InvoiceCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput> | InvoiceCreateWithoutCreatorInput[] | InvoiceUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutCreatorInput | InvoiceCreateOrConnectWithoutCreatorInput[]
+    createMany?: InvoiceCreateManyCreatorInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type InvoiceCreateNestedManyWithoutApproverInput = {
+    create?: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput> | InvoiceCreateWithoutApproverInput[] | InvoiceUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutApproverInput | InvoiceCreateOrConnectWithoutApproverInput[]
+    createMany?: InvoiceCreateManyApproverInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
   export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -60419,6 +64261,20 @@ export namespace Prisma {
     connectOrCreate?: InventoryAdjustmentCreateOrConnectWithoutApprovedByInput | InventoryAdjustmentCreateOrConnectWithoutApprovedByInput[]
     createMany?: InventoryAdjustmentCreateManyApprovedByInputEnvelope
     connect?: InventoryAdjustmentWhereUniqueInput | InventoryAdjustmentWhereUniqueInput[]
+  }
+
+  export type InvoiceUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput> | InvoiceCreateWithoutCreatorInput[] | InvoiceUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutCreatorInput | InvoiceCreateOrConnectWithoutCreatorInput[]
+    createMany?: InvoiceCreateManyCreatorInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type InvoiceUncheckedCreateNestedManyWithoutApproverInput = {
+    create?: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput> | InvoiceCreateWithoutApproverInput[] | InvoiceUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutApproverInput | InvoiceCreateOrConnectWithoutApproverInput[]
+    createMany?: InvoiceCreateManyApproverInputEnvelope
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -60753,6 +64609,34 @@ export namespace Prisma {
     deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
   }
 
+  export type InvoiceUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput> | InvoiceCreateWithoutCreatorInput[] | InvoiceUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutCreatorInput | InvoiceCreateOrConnectWithoutCreatorInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutCreatorInput | InvoiceUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: InvoiceCreateManyCreatorInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutCreatorInput | InvoiceUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutCreatorInput | InvoiceUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type InvoiceUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput> | InvoiceCreateWithoutApproverInput[] | InvoiceUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutApproverInput | InvoiceCreateOrConnectWithoutApproverInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutApproverInput | InvoiceUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: InvoiceCreateManyApproverInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutApproverInput | InvoiceUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutApproverInput | InvoiceUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
   export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
@@ -61061,6 +64945,34 @@ export namespace Prisma {
     deleteMany?: InventoryAdjustmentScalarWhereInput | InventoryAdjustmentScalarWhereInput[]
   }
 
+  export type InvoiceUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput> | InvoiceCreateWithoutCreatorInput[] | InvoiceUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutCreatorInput | InvoiceCreateOrConnectWithoutCreatorInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutCreatorInput | InvoiceUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: InvoiceCreateManyCreatorInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutCreatorInput | InvoiceUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutCreatorInput | InvoiceUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput> | InvoiceCreateWithoutApproverInput[] | InvoiceUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: InvoiceCreateOrConnectWithoutApproverInput | InvoiceCreateOrConnectWithoutApproverInput[]
+    upsert?: InvoiceUpsertWithWhereUniqueWithoutApproverInput | InvoiceUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: InvoiceCreateManyApproverInputEnvelope
+    set?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    disconnect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    delete?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+    update?: InvoiceUpdateWithWhereUniqueWithoutApproverInput | InvoiceUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: InvoiceUpdateManyWithWhereWithoutApproverInput | InvoiceUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
     create?: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutRefreshTokensInput
@@ -61207,6 +65119,13 @@ export namespace Prisma {
     connect?: PickBinItemWhereUniqueInput | PickBinItemWhereUniqueInput[]
   }
 
+  export type InvoiceItemCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput> | InvoiceItemCreateWithoutProductVariantInput[] | InvoiceItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutProductVariantInput | InvoiceItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InvoiceItemCreateManyProductVariantInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+  }
+
   export type ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -61275,6 +65194,13 @@ export namespace Prisma {
     connectOrCreate?: PickBinItemCreateOrConnectWithoutProductVariantInput | PickBinItemCreateOrConnectWithoutProductVariantInput[]
     createMany?: PickBinItemCreateManyProductVariantInputEnvelope
     connect?: PickBinItemWhereUniqueInput | PickBinItemWhereUniqueInput[]
+  }
+
+  export type InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput = {
+    create?: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput> | InvoiceItemCreateWithoutProductVariantInput[] | InvoiceItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutProductVariantInput | InvoiceItemCreateOrConnectWithoutProductVariantInput[]
+    createMany?: InvoiceItemCreateManyProductVariantInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -61433,6 +65359,20 @@ export namespace Prisma {
     deleteMany?: PickBinItemScalarWhereInput | PickBinItemScalarWhereInput[]
   }
 
+  export type InvoiceItemUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput> | InvoiceItemCreateWithoutProductVariantInput[] | InvoiceItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutProductVariantInput | InvoiceItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutProductVariantInput | InvoiceItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InvoiceItemCreateManyProductVariantInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutProductVariantInput | InvoiceItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutProductVariantInput | InvoiceItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+  }
+
   export type ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -61573,6 +65513,20 @@ export namespace Prisma {
     deleteMany?: PickBinItemScalarWhereInput | PickBinItemScalarWhereInput[]
   }
 
+  export type InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput> | InvoiceItemCreateWithoutProductVariantInput[] | InvoiceItemUncheckedCreateWithoutProductVariantInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutProductVariantInput | InvoiceItemCreateOrConnectWithoutProductVariantInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutProductVariantInput | InvoiceItemUpsertWithWhereUniqueWithoutProductVariantInput[]
+    createMany?: InvoiceItemCreateManyProductVariantInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutProductVariantInput | InvoiceItemUpdateWithWhereUniqueWithoutProductVariantInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutProductVariantInput | InvoiceItemUpdateManyWithWhereWithoutProductVariantInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+  }
+
   export type InventoryUnitCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -61622,6 +65576,13 @@ export namespace Prisma {
     connect?: InventoryDiscrepancyWhereUniqueInput | InventoryDiscrepancyWhereUniqueInput[]
   }
 
+  export type InvoiceItemCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput> | InvoiceItemCreateWithoutLocationInput[] | InvoiceItemUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutLocationInput | InvoiceItemCreateOrConnectWithoutLocationInput[]
+    createMany?: InvoiceItemCreateManyLocationInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+  }
+
   export type InventoryUnitUncheckedCreateNestedManyWithoutLocationInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -61669,6 +65630,13 @@ export namespace Prisma {
     connectOrCreate?: InventoryDiscrepancyCreateOrConnectWithoutLocationInput | InventoryDiscrepancyCreateOrConnectWithoutLocationInput[]
     createMany?: InventoryDiscrepancyCreateManyLocationInputEnvelope
     connect?: InventoryDiscrepancyWhereUniqueInput | InventoryDiscrepancyWhereUniqueInput[]
+  }
+
+  export type InvoiceItemUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput> | InvoiceItemCreateWithoutLocationInput[] | InvoiceItemUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutLocationInput | InvoiceItemCreateOrConnectWithoutLocationInput[]
+    createMany?: InvoiceItemCreateManyLocationInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
   }
 
   export type EnumLocationTypeFieldUpdateOperationsInput = {
@@ -61781,6 +65749,20 @@ export namespace Prisma {
     deleteMany?: InventoryDiscrepancyScalarWhereInput | InventoryDiscrepancyScalarWhereInput[]
   }
 
+  export type InvoiceItemUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput> | InvoiceItemCreateWithoutLocationInput[] | InvoiceItemUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutLocationInput | InvoiceItemCreateOrConnectWithoutLocationInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutLocationInput | InvoiceItemUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InvoiceItemCreateManyLocationInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutLocationInput | InvoiceItemUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutLocationInput | InvoiceItemUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+  }
+
   export type InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput = {
     create?: XOR<InventoryUnitCreateWithoutLocationInput, InventoryUnitUncheckedCreateWithoutLocationInput> | InventoryUnitCreateWithoutLocationInput[] | InventoryUnitUncheckedCreateWithoutLocationInput[]
     connectOrCreate?: InventoryUnitCreateOrConnectWithoutLocationInput | InventoryUnitCreateOrConnectWithoutLocationInput[]
@@ -61877,6 +65859,20 @@ export namespace Prisma {
     update?: InventoryDiscrepancyUpdateWithWhereUniqueWithoutLocationInput | InventoryDiscrepancyUpdateWithWhereUniqueWithoutLocationInput[]
     updateMany?: InventoryDiscrepancyUpdateManyWithWhereWithoutLocationInput | InventoryDiscrepancyUpdateManyWithWhereWithoutLocationInput[]
     deleteMany?: InventoryDiscrepancyScalarWhereInput | InventoryDiscrepancyScalarWhereInput[]
+  }
+
+  export type InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput> | InvoiceItemCreateWithoutLocationInput[] | InvoiceItemUncheckedCreateWithoutLocationInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutLocationInput | InvoiceItemCreateOrConnectWithoutLocationInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutLocationInput | InvoiceItemUpsertWithWhereUniqueWithoutLocationInput[]
+    createMany?: InvoiceItemCreateManyLocationInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutLocationInput | InvoiceItemUpdateWithWhereUniqueWithoutLocationInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutLocationInput | InvoiceItemUpdateManyWithWhereWithoutLocationInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
   }
 
   export type ProductVariantCreateNestedOneWithoutInventoryUnitsInput = {
@@ -64013,6 +68009,128 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type InvoiceItemCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput> | InvoiceItemCreateWithoutInvoiceInput[] | InvoiceItemUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutInvoiceInput | InvoiceItemCreateOrConnectWithoutInvoiceInput[]
+    createMany?: InvoiceItemCreateManyInvoiceInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutInvoicesCreatedInput = {
+    create?: XOR<UserCreateWithoutInvoicesCreatedInput, UserUncheckedCreateWithoutInvoicesCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvoicesCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutInvoicesApprovedInput = {
+    create?: XOR<UserCreateWithoutInvoicesApprovedInput, UserUncheckedCreateWithoutInvoicesApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvoicesApprovedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput> | InvoiceItemCreateWithoutInvoiceInput[] | InvoiceItemUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutInvoiceInput | InvoiceItemCreateOrConnectWithoutInvoiceInput[]
+    createMany?: InvoiceItemCreateManyInvoiceInputEnvelope
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+  }
+
+  export type EnumInvoiceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.InvoiceStatus
+  }
+
+  export type InvoiceItemUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput> | InvoiceItemCreateWithoutInvoiceInput[] | InvoiceItemUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutInvoiceInput | InvoiceItemCreateOrConnectWithoutInvoiceInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutInvoiceInput | InvoiceItemUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: InvoiceItemCreateManyInvoiceInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutInvoiceInput | InvoiceItemUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutInvoiceInput | InvoiceItemUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutInvoicesCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutInvoicesCreatedInput, UserUncheckedCreateWithoutInvoicesCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvoicesCreatedInput
+    upsert?: UserUpsertWithoutInvoicesCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvoicesCreatedInput, UserUpdateWithoutInvoicesCreatedInput>, UserUncheckedUpdateWithoutInvoicesCreatedInput>
+  }
+
+  export type UserUpdateOneWithoutInvoicesApprovedNestedInput = {
+    create?: XOR<UserCreateWithoutInvoicesApprovedInput, UserUncheckedCreateWithoutInvoicesApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvoicesApprovedInput
+    upsert?: UserUpsertWithoutInvoicesApprovedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvoicesApprovedInput, UserUpdateWithoutInvoicesApprovedInput>, UserUncheckedUpdateWithoutInvoicesApprovedInput>
+  }
+
+  export type InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput> | InvoiceItemCreateWithoutInvoiceInput[] | InvoiceItemUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: InvoiceItemCreateOrConnectWithoutInvoiceInput | InvoiceItemCreateOrConnectWithoutInvoiceInput[]
+    upsert?: InvoiceItemUpsertWithWhereUniqueWithoutInvoiceInput | InvoiceItemUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: InvoiceItemCreateManyInvoiceInputEnvelope
+    set?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    disconnect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    delete?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    connect?: InvoiceItemWhereUniqueInput | InvoiceItemWhereUniqueInput[]
+    update?: InvoiceItemUpdateWithWhereUniqueWithoutInvoiceInput | InvoiceItemUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: InvoiceItemUpdateManyWithWhereWithoutInvoiceInput | InvoiceItemUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+  }
+
+  export type InvoiceCreateNestedOneWithoutItemsInput = {
+    create?: XOR<InvoiceCreateWithoutItemsInput, InvoiceUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutItemsInput
+    connect?: InvoiceWhereUniqueInput
+  }
+
+  export type ProductVariantCreateNestedOneWithoutInvoiceItemsInput = {
+    create?: XOR<ProductVariantCreateWithoutInvoiceItemsInput, ProductVariantUncheckedCreateWithoutInvoiceItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInvoiceItemsInput
+    connect?: ProductVariantWhereUniqueInput
+  }
+
+  export type LocationCreateNestedOneWithoutInvoiceItemsInput = {
+    create?: XOR<LocationCreateWithoutInvoiceItemsInput, LocationUncheckedCreateWithoutInvoiceItemsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInvoiceItemsInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type InvoiceUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<InvoiceCreateWithoutItemsInput, InvoiceUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutItemsInput
+    upsert?: InvoiceUpsertWithoutItemsInput
+    connect?: InvoiceWhereUniqueInput
+    update?: XOR<XOR<InvoiceUpdateToOneWithWhereWithoutItemsInput, InvoiceUpdateWithoutItemsInput>, InvoiceUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ProductVariantUpdateOneWithoutInvoiceItemsNestedInput = {
+    create?: XOR<ProductVariantCreateWithoutInvoiceItemsInput, ProductVariantUncheckedCreateWithoutInvoiceItemsInput>
+    connectOrCreate?: ProductVariantCreateOrConnectWithoutInvoiceItemsInput
+    upsert?: ProductVariantUpsertWithoutInvoiceItemsInput
+    disconnect?: ProductVariantWhereInput | boolean
+    delete?: ProductVariantWhereInput | boolean
+    connect?: ProductVariantWhereUniqueInput
+    update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutInvoiceItemsInput, ProductVariantUpdateWithoutInvoiceItemsInput>, ProductVariantUncheckedUpdateWithoutInvoiceItemsInput>
+  }
+
+  export type LocationUpdateOneWithoutInvoiceItemsNestedInput = {
+    create?: XOR<LocationCreateWithoutInvoiceItemsInput, LocationUncheckedCreateWithoutInvoiceItemsInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutInvoiceItemsInput
+    upsert?: LocationUpsertWithoutInvoiceItemsInput
+    disconnect?: LocationWhereInput | boolean
+    delete?: LocationWhereInput | boolean
+    connect?: LocationWhereUniqueInput
+    update?: XOR<XOR<LocationUpdateToOneWithWhereWithoutInvoiceItemsInput, LocationUpdateWithoutInvoiceItemsInput>, LocationUncheckedUpdateWithoutInvoiceItemsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -64702,6 +68820,23 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInvoiceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+  }
+
+  export type NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvoiceStatus | EnumInvoiceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvoiceStatus[] | ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+    _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
   }
 
   export type RefreshTokenCreateWithoutUserInput = {
@@ -65726,6 +69861,114 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type InvoiceCreateWithoutCreatorInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemCreateNestedManyWithoutInvoiceInput
+    approver?: UserCreateNestedOneWithoutInvoicesApprovedInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceCreateOrConnectWithoutCreatorInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type InvoiceCreateManyCreatorInputEnvelope = {
+    data: InvoiceCreateManyCreatorInput | InvoiceCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InvoiceCreateWithoutApproverInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemCreateNestedManyWithoutInvoiceInput
+    creator: UserCreateNestedOneWithoutInvoicesCreatedInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutApproverInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdBy: string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
+  }
+
+  export type InvoiceCreateOrConnectWithoutApproverInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput>
+  }
+
+  export type InvoiceCreateManyApproverInputEnvelope = {
+    data: InvoiceCreateManyApproverInput | InvoiceCreateManyApproverInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
     where: RefreshTokenWhereUniqueInput
     update: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
@@ -66347,6 +70590,63 @@ export namespace Prisma {
     data: XOR<InventoryAdjustmentUpdateManyMutationInput, InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByInput>
   }
 
+  export type InvoiceUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: InvoiceWhereUniqueInput
+    update: XOR<InvoiceUpdateWithoutCreatorInput, InvoiceUncheckedUpdateWithoutCreatorInput>
+    create: XOR<InvoiceCreateWithoutCreatorInput, InvoiceUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type InvoiceUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: InvoiceWhereUniqueInput
+    data: XOR<InvoiceUpdateWithoutCreatorInput, InvoiceUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type InvoiceUpdateManyWithWhereWithoutCreatorInput = {
+    where: InvoiceScalarWhereInput
+    data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type InvoiceScalarWhereInput = {
+    AND?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+    OR?: InvoiceScalarWhereInput[]
+    NOT?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+    id?: StringFilter<"Invoice"> | string
+    invoiceNumber?: StringFilter<"Invoice"> | string
+    vendor?: StringFilter<"Invoice"> | string
+    status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
+    imageUrl?: StringNullableFilter<"Invoice"> | string | null
+    imageFilename?: StringNullableFilter<"Invoice"> | string | null
+    totalItems?: IntFilter<"Invoice"> | number
+    totalQuantity?: IntFilter<"Invoice"> | number
+    totalCost?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"Invoice"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"Invoice"> | string | null
+    createdBy?: StringFilter<"Invoice"> | string
+    submittedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Invoice"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    createdAt?: DateTimeFilter<"Invoice"> | Date | string
+    updatedAt?: DateTimeFilter<"Invoice"> | Date | string
+  }
+
+  export type InvoiceUpsertWithWhereUniqueWithoutApproverInput = {
+    where: InvoiceWhereUniqueInput
+    update: XOR<InvoiceUpdateWithoutApproverInput, InvoiceUncheckedUpdateWithoutApproverInput>
+    create: XOR<InvoiceCreateWithoutApproverInput, InvoiceUncheckedCreateWithoutApproverInput>
+  }
+
+  export type InvoiceUpdateWithWhereUniqueWithoutApproverInput = {
+    where: InvoiceWhereUniqueInput
+    data: XOR<InvoiceUpdateWithoutApproverInput, InvoiceUncheckedUpdateWithoutApproverInput>
+  }
+
+  export type InvoiceUpdateManyWithWhereWithoutApproverInput = {
+    where: InvoiceScalarWhereInput
+    data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutApproverInput>
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -66379,6 +70679,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -66413,6 +70715,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -66463,6 +70767,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -66497,6 +70803,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -66531,6 +70839,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -66565,6 +70875,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -66615,6 +70927,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -66649,6 +70963,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type ProductVariantCreateWithoutProductInput = {
@@ -66676,6 +70992,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
@@ -66703,6 +71020,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutProductInput = {
@@ -67213,6 +71531,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type InvoiceItemCreateWithoutProductVariantInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutItemsInput
+    location?: LocationCreateNestedOneWithoutInvoiceItemsInput
+  }
+
+  export type InvoiceItemUncheckedCreateWithoutProductVariantInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemCreateOrConnectWithoutProductVariantInput = {
+    where: InvoiceItemWhereUniqueInput
+    create: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type InvoiceItemCreateManyProductVariantInputEnvelope = {
+    data: InvoiceItemCreateManyProductVariantInput | InvoiceItemCreateManyProductVariantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ShippingPackageItemUpsertWithWhereUniqueWithoutProductVariantInput = {
     where: ShippingPackageItemWhereUniqueInput
     update: XOR<ShippingPackageItemUpdateWithoutProductVariantInput, ShippingPackageItemUncheckedUpdateWithoutProductVariantInput>
@@ -67559,6 +71921,43 @@ export namespace Prisma {
     verifiedAt?: DateTimeNullableFilter<"PickBinItem"> | Date | string | null
     verifiedBy?: StringNullableFilter<"PickBinItem"> | string | null
     createdAt?: DateTimeFilter<"PickBinItem"> | Date | string
+  }
+
+  export type InvoiceItemUpsertWithWhereUniqueWithoutProductVariantInput = {
+    where: InvoiceItemWhereUniqueInput
+    update: XOR<InvoiceItemUpdateWithoutProductVariantInput, InvoiceItemUncheckedUpdateWithoutProductVariantInput>
+    create: XOR<InvoiceItemCreateWithoutProductVariantInput, InvoiceItemUncheckedCreateWithoutProductVariantInput>
+  }
+
+  export type InvoiceItemUpdateWithWhereUniqueWithoutProductVariantInput = {
+    where: InvoiceItemWhereUniqueInput
+    data: XOR<InvoiceItemUpdateWithoutProductVariantInput, InvoiceItemUncheckedUpdateWithoutProductVariantInput>
+  }
+
+  export type InvoiceItemUpdateManyWithWhereWithoutProductVariantInput = {
+    where: InvoiceItemScalarWhereInput
+    data: XOR<InvoiceItemUpdateManyMutationInput, InvoiceItemUncheckedUpdateManyWithoutProductVariantInput>
+  }
+
+  export type InvoiceItemScalarWhereInput = {
+    AND?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+    OR?: InvoiceItemScalarWhereInput[]
+    NOT?: InvoiceItemScalarWhereInput | InvoiceItemScalarWhereInput[]
+    id?: StringFilter<"InvoiceItem"> | string
+    invoiceId?: StringFilter<"InvoiceItem"> | string
+    sequence?: IntFilter<"InvoiceItem"> | number
+    sku?: StringFilter<"InvoiceItem"> | string
+    productName?: StringFilter<"InvoiceItem"> | string
+    productVariantId?: StringNullableFilter<"InvoiceItem"> | string | null
+    barcode?: StringNullableFilter<"InvoiceItem"> | string | null
+    quantity?: IntFilter<"InvoiceItem"> | number
+    unitCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFilter<"InvoiceItem"> | Decimal | DecimalJsLike | number | string
+    locationId?: StringNullableFilter<"InvoiceItem"> | string | null
+    lotNumber?: StringNullableFilter<"InvoiceItem"> | string | null
+    expiryDate?: DateTimeNullableFilter<"InvoiceItem"> | Date | string | null
+    createdAt?: DateTimeFilter<"InvoiceItem"> | Date | string
+    updatedAt?: DateTimeFilter<"InvoiceItem"> | Date | string
   }
 
   export type InventoryUnitCreateWithoutLocationInput = {
@@ -67909,6 +72308,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type InvoiceItemCreateWithoutLocationInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutItemsInput
+    productVariant?: ProductVariantCreateNestedOneWithoutInvoiceItemsInput
+  }
+
+  export type InvoiceItemUncheckedCreateWithoutLocationInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemCreateOrConnectWithoutLocationInput = {
+    where: InvoiceItemWhereUniqueInput
+    create: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput>
+  }
+
+  export type InvoiceItemCreateManyLocationInputEnvelope = {
+    data: InvoiceItemCreateManyLocationInput | InvoiceItemCreateManyLocationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type InventoryUnitUpsertWithWhereUniqueWithoutLocationInput = {
     where: InventoryUnitWhereUniqueInput
     update: XOR<InventoryUnitUpdateWithoutLocationInput, InventoryUnitUncheckedUpdateWithoutLocationInput>
@@ -68021,6 +72464,22 @@ export namespace Prisma {
     data: XOR<InventoryDiscrepancyUpdateManyMutationInput, InventoryDiscrepancyUncheckedUpdateManyWithoutLocationInput>
   }
 
+  export type InvoiceItemUpsertWithWhereUniqueWithoutLocationInput = {
+    where: InvoiceItemWhereUniqueInput
+    update: XOR<InvoiceItemUpdateWithoutLocationInput, InvoiceItemUncheckedUpdateWithoutLocationInput>
+    create: XOR<InvoiceItemCreateWithoutLocationInput, InvoiceItemUncheckedCreateWithoutLocationInput>
+  }
+
+  export type InvoiceItemUpdateWithWhereUniqueWithoutLocationInput = {
+    where: InvoiceItemWhereUniqueInput
+    data: XOR<InvoiceItemUpdateWithoutLocationInput, InvoiceItemUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type InvoiceItemUpdateManyWithWhereWithoutLocationInput = {
+    where: InvoiceItemScalarWhereInput
+    data: XOR<InvoiceItemUpdateManyMutationInput, InvoiceItemUncheckedUpdateManyWithoutLocationInput>
+  }
+
   export type ProductVariantCreateWithoutInventoryUnitsInput = {
     id?: string
     sku: string
@@ -68046,6 +72505,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutInventoryUnitsInput = {
@@ -68073,6 +72533,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutInventoryUnitsInput = {
@@ -68105,6 +72566,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutInventoryUnitsInput = {
@@ -68132,6 +72594,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutInventoryUnitsInput = {
@@ -68261,6 +72724,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -68288,6 +72752,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutInventoryUnitsInput = {
@@ -68326,6 +72791,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutInventoryUnitsInput = {
@@ -68353,6 +72819,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type AllocationUpsertWithWhereUniqueWithoutInventoryUnitInput = {
@@ -68557,6 +73024,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutAllocationsInput = {
@@ -68584,6 +73052,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutAllocationsInput = {
@@ -68616,6 +73085,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutAllocationsInput = {
@@ -68643,6 +73113,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutAllocationsInput = {
@@ -68896,6 +73367,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutAllocationsInput = {
@@ -68923,6 +73395,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutAllocationsInput = {
@@ -68961,6 +73434,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutAllocationsInput = {
@@ -68988,6 +73462,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type TaskItemUpsertWithoutAllocationInput = {
@@ -69645,6 +74120,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutOrderItemsInput = {
@@ -69672,6 +74148,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutOrderItemsInput = {
@@ -69880,6 +74357,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutOrderItemsInput = {
@@ -69907,6 +74385,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutOrderItemInput = {
@@ -70154,6 +74633,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutPackingImagesUploadedInput = {
@@ -70188,6 +74669,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutPackingImagesUploadedInput = {
@@ -70437,6 +74920,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPackingImagesUploadedInput = {
@@ -70471,6 +74956,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type OrderCreateWithoutShippingLabelsInput = {
@@ -70865,6 +75352,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutShippingPackageItemsInput = {
@@ -70892,6 +75380,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutShippingPackageItemsInput = {
@@ -70984,6 +75473,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutShippingPackageItemsInput = {
@@ -71011,6 +75501,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type PackingImageCreateWithoutTaskInput = {
@@ -71129,6 +75620,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -71163,6 +75656,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -71378,6 +75873,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -71412,6 +75909,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type TaskItemUpsertWithWhereUniqueWithoutTaskInput = {
@@ -71711,6 +76210,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutTaskItemsInput = {
@@ -71738,6 +76238,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutTaskItemsInput = {
@@ -71770,6 +76271,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutTaskItemsInput = {
@@ -71797,6 +76299,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutTaskItemsInput = {
@@ -71836,6 +76339,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCompletedTaskItemsInput = {
@@ -71870,6 +76375,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCompletedTaskItemsInput = {
@@ -72147,6 +76654,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutTaskItemsInput = {
@@ -72174,6 +76682,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutTaskItemsInput = {
@@ -72212,6 +76721,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutTaskItemsInput = {
@@ -72239,6 +76749,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type UserUpsertWithoutCompletedTaskItemsInput = {
@@ -72284,6 +76795,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedTaskItemsInput = {
@@ -72318,6 +76831,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type AllocationUpsertWithoutTaskItemInput = {
@@ -72466,6 +76981,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutTaskEventsInput = {
@@ -72500,6 +77017,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutTaskEventsInput = {
@@ -72629,6 +77148,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTaskEventsInput = {
@@ -72663,6 +77184,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -72697,6 +77220,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -72731,6 +77256,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -72781,6 +77308,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -72815,6 +77344,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -72849,6 +77380,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -72883,6 +77416,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -72933,6 +77468,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -72967,6 +77504,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type ReceivingLineCreateWithoutSessionInput = {
@@ -73083,6 +77622,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsCountedInput = {
@@ -73117,6 +77658,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsCountedInput = {
@@ -73156,6 +77699,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsLockedInput = {
@@ -73190,6 +77735,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsLockedInput = {
@@ -73229,6 +77776,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsAssignedInput = {
@@ -73263,6 +77812,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsAssignedInput = {
@@ -73302,6 +77853,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutReceivingSessionsApprovedInput = {
@@ -73336,6 +77889,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutReceivingSessionsApprovedInput = {
@@ -73368,6 +77923,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutReceivingSessionsInput = {
@@ -73395,6 +77951,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutReceivingSessionsInput = {
@@ -73550,6 +78107,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsCountedInput = {
@@ -73584,6 +78143,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsLockedInput = {
@@ -73629,6 +78190,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsLockedInput = {
@@ -73663,6 +78226,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsAssignedInput = {
@@ -73708,6 +78273,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsAssignedInput = {
@@ -73742,6 +78309,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutReceivingSessionsApprovedInput = {
@@ -73787,6 +78356,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivingSessionsApprovedInput = {
@@ -73821,6 +78392,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type LocationUpsertWithoutReceivingSessionsInput = {
@@ -73859,6 +78432,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutReceivingSessionsInput = {
@@ -73886,6 +78460,7 @@ export namespace Prisma {
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type WorkTaskUpsertWithoutReceivingSessionInput = {
@@ -74045,6 +78620,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutReceivingLinesInput = {
@@ -74072,6 +78648,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutReceivingLinesInput = {
@@ -74174,6 +78751,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutReceivingLinesInput = {
@@ -74201,6 +78779,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ReceivingSessionCreateWithoutExceptionsInput = {
@@ -74288,6 +78867,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutExceptionsReportedInput = {
@@ -74322,6 +78903,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutExceptionsReportedInput = {
@@ -74361,6 +78944,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutExceptionsResolvedInput = {
@@ -74395,6 +78980,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutExceptionsResolvedInput = {
@@ -74504,6 +79091,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExceptionsReportedInput = {
@@ -74538,6 +79127,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutExceptionsResolvedInput = {
@@ -74583,6 +79174,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExceptionsResolvedInput = {
@@ -74617,6 +79210,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserCreateWithoutCycleCountTasksAssignedInput = {
@@ -74651,6 +79246,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountTasksAssignedInput = {
@@ -74685,6 +79282,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountTasksAssignedInput = {
@@ -74724,6 +79323,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountTasksCreatedInput = {
@@ -74758,6 +79359,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountTasksCreatedInput = {
@@ -74866,6 +79469,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountTasksAssignedInput = {
@@ -74900,6 +79505,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutCycleCountTasksCreatedInput = {
@@ -74945,6 +79552,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountTasksCreatedInput = {
@@ -74979,6 +79588,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type CycleCountSessionUpsertWithWhereUniqueWithoutTaskInput = {
@@ -75071,6 +79682,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutCycleCountSessionsInput = {
@@ -75098,6 +79710,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutCycleCountSessionsInput = {
@@ -75137,6 +79750,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountSessionsLockedInput = {
@@ -75171,6 +79786,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountSessionsLockedInput = {
@@ -75210,6 +79827,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountSessionsCountedInput = {
@@ -75244,6 +79863,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountSessionsCountedInput = {
@@ -75283,6 +79904,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountSessionsReviewedInput = {
@@ -75317,6 +79940,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountSessionsReviewedInput = {
@@ -75541,6 +80166,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutCycleCountSessionsInput = {
@@ -75568,6 +80194,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type UserUpsertWithoutCycleCountSessionsLockedInput = {
@@ -75613,6 +80240,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountSessionsLockedInput = {
@@ -75647,6 +80276,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutCycleCountSessionsCountedInput = {
@@ -75692,6 +80323,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountSessionsCountedInput = {
@@ -75726,6 +80359,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutCycleCountSessionsReviewedInput = {
@@ -75771,6 +80406,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountSessionsReviewedInput = {
@@ -75805,6 +80442,8 @@ export namespace Prisma {
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type CycleCountLineUpsertWithWhereUniqueWithoutSessionInput = {
@@ -75933,6 +80572,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutCycleCountLinesInput = {
@@ -75960,6 +80600,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutCycleCountLinesInput = {
@@ -76099,6 +80740,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutCycleCountLinesInput = {
@@ -76126,6 +80768,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type InventoryUnitUpsertWithoutCycleCountLinesInput = {
@@ -76256,6 +80899,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutCycleCountAuditsInput = {
@@ -76290,6 +80935,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutCycleCountAuditsInput = {
@@ -76399,6 +81046,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCycleCountAuditsInput = {
@@ -76433,6 +81082,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type CycleCountSessionCreateWithoutAdjustmentsInput = {
@@ -76513,6 +81164,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutInventoryAdjustmentsInput = {
@@ -76540,6 +81192,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutInventoryAdjustmentsInput = {
@@ -76572,6 +81225,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutInventoryAdjustmentsInput = {
@@ -76599,6 +81253,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutInventoryAdjustmentsInput = {
@@ -76638,6 +81293,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutAdjustmentsCreatedInput = {
@@ -76672,6 +81329,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutAdjustmentsCreatedInput = {
@@ -76711,6 +81370,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
     cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
   }
 
   export type UserUncheckedCreateWithoutAdjustmentsApprovedInput = {
@@ -76745,6 +81406,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
     cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type UserCreateOrConnectWithoutAdjustmentsApprovedInput = {
@@ -76847,6 +81510,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutInventoryAdjustmentsInput = {
@@ -76874,6 +81538,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutInventoryAdjustmentsInput = {
@@ -76912,6 +81577,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutInventoryAdjustmentsInput = {
@@ -76939,6 +81605,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type UserUpsertWithoutAdjustmentsCreatedInput = {
@@ -76984,6 +81651,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdjustmentsCreatedInput = {
@@ -77018,6 +81687,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUpsertWithoutAdjustmentsApprovedInput = {
@@ -77063,6 +81734,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
     cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdjustmentsApprovedInput = {
@@ -77097,6 +81770,8 @@ export namespace Prisma {
     cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
     cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
     adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type OrderCreateWithoutPickBinsInput = {
@@ -77559,6 +82234,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutPickBinItemsInput = {
@@ -77586,6 +82262,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutPickBinItemsInput = {
@@ -77676,6 +82353,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutPickBinItemsInput = {
@@ -77703,6 +82381,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantCreateWithoutInventoryDiscrepanciesInput = {
@@ -77730,6 +82409,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantUncheckedCreateWithoutInventoryDiscrepanciesInput = {
@@ -77757,6 +82437,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
     pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutProductVariantInput
   }
 
   export type ProductVariantCreateOrConnectWithoutInventoryDiscrepanciesInput = {
@@ -77789,6 +82470,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
     cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutInventoryDiscrepanciesInput = {
@@ -77816,6 +82498,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
     cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
+    invoiceItems?: InvoiceItemUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutInventoryDiscrepanciesInput = {
@@ -77859,6 +82542,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutInventoryDiscrepanciesInput = {
@@ -77886,6 +82570,7 @@ export namespace Prisma {
     cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type LocationUpsertWithoutInventoryDiscrepanciesInput = {
@@ -77924,6 +82609,7 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
     cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutInventoryDiscrepanciesInput = {
@@ -77951,6 +82637,747 @@ export namespace Prisma {
     receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
     cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutLocationNestedInput
+  }
+
+  export type InvoiceItemCreateWithoutInvoiceInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productVariant?: ProductVariantCreateNestedOneWithoutInvoiceItemsInput
+    location?: LocationCreateNestedOneWithoutInvoiceItemsInput
+  }
+
+  export type InvoiceItemUncheckedCreateWithoutInvoiceInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemCreateOrConnectWithoutInvoiceInput = {
+    where: InvoiceItemWhereUniqueInput
+    create: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type InvoiceItemCreateManyInvoiceInputEnvelope = {
+    data: InvoiceItemCreateManyInvoiceInput | InvoiceItemCreateManyInvoiceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutInvoicesCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesApproved?: InvoiceCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserUncheckedCreateWithoutInvoicesCreatedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesApproved?: InvoiceUncheckedCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserCreateOrConnectWithoutInvoicesCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInvoicesCreatedInput, UserUncheckedCreateWithoutInvoicesCreatedInput>
+  }
+
+  export type UserCreateWithoutInvoicesApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageCreateNestedManyWithoutUploaderInput
+    receivingSessionsCounted?: ReceivingSessionCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutInvoicesApprovedInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name?: string | null
+    image?: string | null
+    role?: $Enums.UserRole
+    active?: boolean
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: WorkTaskUncheckedCreateNestedManyWithoutAssignedUserInput
+    taskEvents?: TaskEventUncheckedCreateNestedManyWithoutUserInput
+    completedTaskItems?: TaskItemUncheckedCreateNestedManyWithoutCompletedByUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    packingImagesUploaded?: PackingImageUncheckedCreateNestedManyWithoutUploaderInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedCreateNestedManyWithoutCountedByUserInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedCreateNestedManyWithoutAssignedToUserInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedCreateNestedManyWithoutApprovedByUserInput
+    exceptionsReported?: ReceivingExceptionUncheckedCreateNestedManyWithoutReporterInput
+    exceptionsResolved?: ReceivingExceptionUncheckedCreateNestedManyWithoutResolverInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedCreateNestedManyWithoutAssignedToInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedCreateNestedManyWithoutCreatedByInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedCreateNestedManyWithoutLockedByUserInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedCreateNestedManyWithoutCountedByInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedCreateNestedManyWithoutReviewedByInput
+    cycleCountAudits?: CycleCountAuditUncheckedCreateNestedManyWithoutUserInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+    invoicesCreated?: InvoiceUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutInvoicesApprovedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInvoicesApprovedInput, UserUncheckedCreateWithoutInvoicesApprovedInput>
+  }
+
+  export type InvoiceItemUpsertWithWhereUniqueWithoutInvoiceInput = {
+    where: InvoiceItemWhereUniqueInput
+    update: XOR<InvoiceItemUpdateWithoutInvoiceInput, InvoiceItemUncheckedUpdateWithoutInvoiceInput>
+    create: XOR<InvoiceItemCreateWithoutInvoiceInput, InvoiceItemUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type InvoiceItemUpdateWithWhereUniqueWithoutInvoiceInput = {
+    where: InvoiceItemWhereUniqueInput
+    data: XOR<InvoiceItemUpdateWithoutInvoiceInput, InvoiceItemUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type InvoiceItemUpdateManyWithWhereWithoutInvoiceInput = {
+    where: InvoiceItemScalarWhereInput
+    data: XOR<InvoiceItemUpdateManyMutationInput, InvoiceItemUncheckedUpdateManyWithoutInvoiceInput>
+  }
+
+  export type UserUpsertWithoutInvoicesCreatedInput = {
+    update: XOR<UserUpdateWithoutInvoicesCreatedInput, UserUncheckedUpdateWithoutInvoicesCreatedInput>
+    create: XOR<UserCreateWithoutInvoicesCreatedInput, UserUncheckedCreateWithoutInvoicesCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutInvoicesCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutInvoicesCreatedInput, UserUncheckedUpdateWithoutInvoicesCreatedInput>
+  }
+
+  export type UserUpdateWithoutInvoicesCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesApproved?: InvoiceUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutInvoicesCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesApproved?: InvoiceUncheckedUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUpsertWithoutInvoicesApprovedInput = {
+    update: XOR<UserUpdateWithoutInvoicesApprovedInput, UserUncheckedUpdateWithoutInvoicesApprovedInput>
+    create: XOR<UserCreateWithoutInvoicesApprovedInput, UserUncheckedCreateWithoutInvoicesApprovedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutInvoicesApprovedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutInvoicesApprovedInput, UserUncheckedUpdateWithoutInvoicesApprovedInput>
+  }
+
+  export type UserUpdateWithoutInvoicesApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUpdateManyWithoutUploaderNestedInput
+    receivingSessionsCounted?: ReceivingSessionUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutInvoicesApprovedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: WorkTaskUncheckedUpdateManyWithoutAssignedUserNestedInput
+    taskEvents?: TaskEventUncheckedUpdateManyWithoutUserNestedInput
+    completedTaskItems?: TaskItemUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    packingImagesUploaded?: PackingImageUncheckedUpdateManyWithoutUploaderNestedInput
+    receivingSessionsCounted?: ReceivingSessionUncheckedUpdateManyWithoutCountedByUserNestedInput
+    receivingSessionsLocked?: ReceivingSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    receivingSessionsAssigned?: ReceivingSessionUncheckedUpdateManyWithoutAssignedToUserNestedInput
+    receivingSessionsApproved?: ReceivingSessionUncheckedUpdateManyWithoutApprovedByUserNestedInput
+    exceptionsReported?: ReceivingExceptionUncheckedUpdateManyWithoutReporterNestedInput
+    exceptionsResolved?: ReceivingExceptionUncheckedUpdateManyWithoutResolverNestedInput
+    cycleCountTasksAssigned?: CycleCountTaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    cycleCountTasksCreated?: CycleCountTaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    cycleCountSessionsLocked?: CycleCountSessionUncheckedUpdateManyWithoutLockedByUserNestedInput
+    cycleCountSessionsCounted?: CycleCountSessionUncheckedUpdateManyWithoutCountedByNestedInput
+    cycleCountSessionsReviewed?: CycleCountSessionUncheckedUpdateManyWithoutReviewedByNestedInput
+    cycleCountAudits?: CycleCountAuditUncheckedUpdateManyWithoutUserNestedInput
+    adjustmentsCreated?: InventoryAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+    adjustmentsApproved?: InventoryAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+    invoicesCreated?: InvoiceUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type InvoiceCreateWithoutItemsInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    creator: UserCreateNestedOneWithoutInvoicesCreatedInput
+    approver?: UserCreateNestedOneWithoutInvoicesApprovedInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutItemsInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdBy: string
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceCreateOrConnectWithoutItemsInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutItemsInput, InvoiceUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ProductVariantCreateWithoutInvoiceItemsInput = {
+    id?: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemCreateNestedManyWithoutProductVariantInput
+    product: ProductCreateNestedOneWithoutVariantsInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutProductVariantInput
+    inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutProductVariantInput
+    pickBinItems?: PickBinItemCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantUncheckedCreateWithoutInvoiceItemsInput = {
+    id?: string
+    productId: string
+    sku: string
+    upc?: string | null
+    barcode?: string | null
+    name: string
+    imageUrl?: string | null
+    shopifyVariantId?: string | null
+    costPrice?: Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: Decimal | DecimalJsLike | number | string | null
+    weight?: Decimal | DecimalJsLike | number | string | null
+    trackLots?: boolean
+    trackExpiry?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedCreateNestedManyWithoutProductVariantInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutProductVariantInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutProductVariantInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutProductVariantInput
+    receivingLines?: ReceivingLineUncheckedCreateNestedManyWithoutProductVariantInput
+    cycleCountLines?: CycleCountLineUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutProductVariantInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutProductVariantInput
+    pickBinItems?: PickBinItemUncheckedCreateNestedManyWithoutProductVariantInput
+  }
+
+  export type ProductVariantCreateOrConnectWithoutInvoiceItemsInput = {
+    where: ProductVariantWhereUniqueInput
+    create: XOR<ProductVariantCreateWithoutInvoiceItemsInput, ProductVariantUncheckedCreateWithoutInvoiceItemsInput>
+  }
+
+  export type LocationCreateWithoutInvoiceItemsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    needsCycleCount?: boolean
+    cycleCountPriority?: string | null
+    cycleCountReason?: string | null
+    lastCountedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemCreateNestedManyWithoutLocationInput
+    allocations?: AllocationCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentCreateNestedManyWithoutLocationInput
+    inventoryDiscrepancies?: InventoryDiscrepancyCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationUncheckedCreateWithoutInvoiceItemsInput = {
+    id?: string
+    name: string
+    barcode?: string | null
+    type?: $Enums.LocationType
+    zone?: string | null
+    aisle?: string | null
+    rack?: string | null
+    shelf?: string | null
+    bin?: string | null
+    pickSequence?: number | null
+    isPickable?: boolean
+    active?: boolean
+    needsCycleCount?: boolean
+    cycleCountPriority?: string | null
+    cycleCountReason?: string | null
+    lastCountedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventoryUnits?: InventoryUnitUncheckedCreateNestedManyWithoutLocationInput
+    taskItems?: TaskItemUncheckedCreateNestedManyWithoutLocationInput
+    allocations?: AllocationUncheckedCreateNestedManyWithoutLocationInput
+    receivingSessions?: ReceivingSessionUncheckedCreateNestedManyWithoutReceivingLocationInput
+    cycleCountSessions?: CycleCountSessionUncheckedCreateNestedManyWithoutLocationInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedCreateNestedManyWithoutLocationInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUncheckedCreateNestedManyWithoutLocationInput
+  }
+
+  export type LocationCreateOrConnectWithoutInvoiceItemsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutInvoiceItemsInput, LocationUncheckedCreateWithoutInvoiceItemsInput>
+  }
+
+  export type InvoiceUpsertWithoutItemsInput = {
+    update: XOR<InvoiceUpdateWithoutItemsInput, InvoiceUncheckedUpdateWithoutItemsInput>
+    create: XOR<InvoiceCreateWithoutItemsInput, InvoiceUncheckedCreateWithoutItemsInput>
+    where?: InvoiceWhereInput
+  }
+
+  export type InvoiceUpdateToOneWithWhereWithoutItemsInput = {
+    where?: InvoiceWhereInput
+    data: XOR<InvoiceUpdateWithoutItemsInput, InvoiceUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type InvoiceUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutInvoicesCreatedNestedInput
+    approver?: UserUpdateOneWithoutInvoicesApprovedNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductVariantUpsertWithoutInvoiceItemsInput = {
+    update: XOR<ProductVariantUpdateWithoutInvoiceItemsInput, ProductVariantUncheckedUpdateWithoutInvoiceItemsInput>
+    create: XOR<ProductVariantCreateWithoutInvoiceItemsInput, ProductVariantUncheckedCreateWithoutInvoiceItemsInput>
+    where?: ProductVariantWhereInput
+  }
+
+  export type ProductVariantUpdateToOneWithWhereWithoutInvoiceItemsInput = {
+    where?: ProductVariantWhereInput
+    data: XOR<ProductVariantUpdateWithoutInvoiceItemsInput, ProductVariantUncheckedUpdateWithoutInvoiceItemsInput>
+  }
+
+  export type ProductVariantUpdateWithoutInvoiceItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUpdateManyWithoutProductVariantNestedInput
+    product?: ProductUpdateOneRequiredWithoutVariantsNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
+    pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type ProductVariantUncheckedUpdateWithoutInvoiceItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sku?: StringFieldUpdateOperationsInput | string
+    upc?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shopifyVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    trackLots?: BoolFieldUpdateOperationsInput | boolean
+    trackExpiry?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shippingPackageItems?: ShippingPackageItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutProductVariantNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutProductVariantNestedInput
+    receivingLines?: ReceivingLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    cycleCountLines?: CycleCountLineUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
+    pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+  }
+
+  export type LocationUpsertWithoutInvoiceItemsInput = {
+    update: XOR<LocationUpdateWithoutInvoiceItemsInput, LocationUncheckedUpdateWithoutInvoiceItemsInput>
+    create: XOR<LocationCreateWithoutInvoiceItemsInput, LocationUncheckedCreateWithoutInvoiceItemsInput>
+    where?: LocationWhereInput
+  }
+
+  export type LocationUpdateToOneWithWhereWithoutInvoiceItemsInput = {
+    where?: LocationWhereInput
+    data: XOR<LocationUpdateWithoutInvoiceItemsInput, LocationUncheckedUpdateWithoutInvoiceItemsInput>
+  }
+
+  export type LocationUpdateWithoutInvoiceItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    needsCycleCount?: BoolFieldUpdateOperationsInput | boolean
+    cycleCountPriority?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleCountReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCountedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutLocationNestedInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutLocationNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutInvoiceItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    aisle?: NullableStringFieldUpdateOperationsInput | string | null
+    rack?: NullableStringFieldUpdateOperationsInput | string | null
+    shelf?: NullableStringFieldUpdateOperationsInput | string | null
+    bin?: NullableStringFieldUpdateOperationsInput | string | null
+    pickSequence?: NullableIntFieldUpdateOperationsInput | number | null
+    isPickable?: BoolFieldUpdateOperationsInput | boolean
+    active?: BoolFieldUpdateOperationsInput | boolean
+    needsCycleCount?: BoolFieldUpdateOperationsInput | boolean
+    cycleCountPriority?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleCountReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCountedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventoryUnits?: InventoryUnitUncheckedUpdateManyWithoutLocationNestedInput
+    taskItems?: TaskItemUncheckedUpdateManyWithoutLocationNestedInput
+    allocations?: AllocationUncheckedUpdateManyWithoutLocationNestedInput
+    receivingSessions?: ReceivingSessionUncheckedUpdateManyWithoutReceivingLocationNestedInput
+    cycleCountSessions?: CycleCountSessionUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutLocationNestedInput
+    inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type RefreshTokenCreateManyUserInput = {
@@ -78325,6 +83752,48 @@ export namespace Prisma {
     createdById: string
     approvedAt?: Date | string | null
     notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceCreateManyCreatorInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    submittedAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceCreateManyApproverInput = {
+    id?: string
+    invoiceNumber: string
+    vendor: string
+    status?: $Enums.InvoiceStatus
+    imageUrl?: string | null
+    imageFilename?: string | null
+    totalItems?: number
+    totalQuantity?: number
+    totalCost?: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    fees?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdBy: string
+    submittedAt?: Date | string | null
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -79507,6 +84976,136 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InvoiceUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUpdateManyWithoutInvoiceNestedInput
+    approver?: UserUpdateOneWithoutInvoicesApprovedNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceUpdateWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUpdateManyWithoutInvoiceNestedInput
+    creator?: UserUpdateOneRequiredWithoutInvoicesCreatedNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateManyWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    vendor?: StringFieldUpdateOperationsInput | string
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    totalItems?: IntFieldUpdateOperationsInput | number
+    totalQuantity?: IntFieldUpdateOperationsInput | number
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fees?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductVariantCreateManyProductInput = {
     id?: string
     sku: string
@@ -79549,6 +85148,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
@@ -79576,6 +85176,7 @@ export namespace Prisma {
     inventoryAdjustments?: InventoryAdjustmentUncheckedUpdateManyWithoutProductVariantNestedInput
     inventoryDiscrepancies?: InventoryDiscrepancyUncheckedUpdateManyWithoutProductVariantNestedInput
     pickBinItems?: PickBinItemUncheckedUpdateManyWithoutProductVariantNestedInput
+    invoiceItems?: InvoiceItemUncheckedUpdateManyWithoutProductVariantNestedInput
   }
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
@@ -79753,6 +85354,23 @@ export namespace Prisma {
     verifiedAt?: Date | string | null
     verifiedBy?: string | null
     createdAt?: Date | string
+  }
+
+  export type InvoiceItemCreateManyProductVariantInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ShippingPackageItemUpdateWithoutProductVariantInput = {
@@ -80245,6 +85863,57 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InvoiceItemUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutItemsNestedInput
+    location?: LocationUpdateOneWithoutInvoiceItemsNestedInput
+  }
+
+  export type InvoiceItemUncheckedUpdateWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemUncheckedUpdateManyWithoutProductVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InventoryUnitCreateManyLocationInput = {
     id?: string
     productVariantId: string
@@ -80372,6 +86041,23 @@ export namespace Prisma {
     resolvedBy?: string | null
     resolvedAt?: Date | string | null
     notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemCreateManyLocationInput = {
+    id?: string
+    invoiceId: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -80781,6 +86467,57 @@ export namespace Prisma {
     resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutItemsNestedInput
+    productVariant?: ProductVariantUpdateOneWithoutInvoiceItemsNestedInput
+  }
+
+  export type InvoiceItemUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -82345,6 +88082,74 @@ export namespace Prisma {
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemCreateManyInvoiceInput = {
+    id?: string
+    sequence: number
+    sku: string
+    productName: string
+    productVariantId?: string | null
+    barcode?: string | null
+    quantity?: number
+    unitCost?: Decimal | DecimalJsLike | number | string
+    totalCost?: Decimal | DecimalJsLike | number | string
+    locationId?: string | null
+    lotNumber?: string | null
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceItemUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productVariant?: ProductVariantUpdateOneWithoutInvoiceItemsNestedInput
+    location?: LocationUpdateOneWithoutInvoiceItemsNestedInput
+  }
+
+  export type InvoiceItemUncheckedUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceItemUncheckedUpdateManyWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    sku?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationId?: NullableStringFieldUpdateOperationsInput | string | null
+    lotNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

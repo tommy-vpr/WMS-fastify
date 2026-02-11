@@ -680,6 +680,46 @@ exports.Prisma.UserPerformanceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNumber: 'invoiceNumber',
+  vendor: 'vendor',
+  status: 'status',
+  imageUrl: 'imageUrl',
+  imageFilename: 'imageFilename',
+  totalItems: 'totalItems',
+  totalQuantity: 'totalQuantity',
+  totalCost: 'totalCost',
+  tax: 'tax',
+  fees: 'fees',
+  grandTotal: 'grandTotal',
+  notes: 'notes',
+  createdBy: 'createdBy',
+  submittedAt: 'submittedAt',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  sequence: 'sequence',
+  sku: 'sku',
+  productName: 'productName',
+  productVariantId: 'productVariantId',
+  barcode: 'barcode',
+  quantity: 'quantity',
+  unitCost: 'unitCost',
+  totalCost: 'totalCost',
+  locationId: 'locationId',
+  lotNumber: 'lotNumber',
+  expiryDate: 'expiryDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -911,6 +951,14 @@ exports.PickBinStatus = exports.$Enums.PickBinStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
@@ -945,7 +993,9 @@ exports.Prisma.ModelName = {
   PickBinItem: 'PickBinItem',
   InventoryDiscrepancy: 'InventoryDiscrepancy',
   FulfillmentMetric: 'FulfillmentMetric',
-  UserPerformance: 'UserPerformance'
+  UserPerformance: 'UserPerformance',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem'
 };
 
 /**

@@ -188,14 +188,14 @@ export default function ReceivingDashboard() {
           {toast.type === "success" && <CheckCircle className="w-5 h-5" />}
           {toast.type === "error" && <AlertTriangle className="w-5 h-5" />}
           <span className="flex-1 font-medium">{toast.message}</span>
-          <button onClick={() => setToast(null)}>
+          <button onClick={() => setToast(null)} className="cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="border-b border-gray-200 sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold text-gray-900">Receiving</h1>
@@ -203,7 +203,7 @@ export default function ReceivingDashboard() {
               <button
                 onClick={() => fetchData(true)}
                 disabled={isRefreshing}
-                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg disabled:opacity-50"
+                className="cursor-pointer p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg disabled:opacity-50"
               >
                 <RefreshCw
                   className={cn("w-5 h-5", isRefreshing && "animate-spin")}
@@ -211,7 +211,7 @@ export default function ReceivingDashboard() {
               </button>
               <button
                 onClick={() => navigate("/receiving/purchase-orders")}
-                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 active:bg-blue-800"
+                className="cursor-pointer flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 active:bg-blue-800"
               >
                 <Plus className="w-5 h-5" />
                 <span>New</span>
@@ -227,7 +227,7 @@ export default function ReceivingDashboard() {
               placeholder="Search PO# or vendor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="cursor-pointer w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function ReceivingDashboard() {
           <button
             onClick={() => setActiveTab("active")}
             className={cn(
-              "flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
+              "cursor-pointer flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
               activeTab === "active"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700",
@@ -253,7 +253,7 @@ export default function ReceivingDashboard() {
           <button
             onClick={() => setActiveTab("pending")}
             className={cn(
-              "flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
+              "cursor-pointer flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
               activeTab === "pending"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700",
@@ -269,7 +269,7 @@ export default function ReceivingDashboard() {
           <button
             onClick={() => setActiveTab("history")}
             className={cn(
-              "flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
+              "cursor-pointer flex-1 py-3 text-sm font-medium text-center border-b-2 transition-colors",
               activeTab === "history"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700",
@@ -290,7 +290,7 @@ export default function ReceivingDashboard() {
             emptyAction={
               <button
                 onClick={() => navigate("/receiving/purchase-orders")}
-                className="mt-4 text-blue-600 font-medium"
+                className="cursor-pointer mt-4 text-blue-600 font-medium"
               >
                 Start New Session
               </button>
@@ -485,7 +485,7 @@ function PendingList({
           <button
             key={session.id}
             onClick={() => onSessionClick(session.id)}
-            className="w-full bg-white rounded-lg p-4 shadow-sm border border-gray-200 text-left hover:border-blue-300 hover:shadow transition-all active:bg-gray-50"
+            className="cursor-pointer w-full bg-white rounded-lg p-4 shadow-sm border border-gray-200 text-left hover:border-blue-300 hover:shadow transition-all active:bg-gray-50"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">

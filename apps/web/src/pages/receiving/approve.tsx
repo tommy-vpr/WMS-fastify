@@ -536,61 +536,58 @@ export default function ReceivingApprovePage() {
         </div>
       </div>
 
-      {/* Bottom Action Bar */}
-      {isPending && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-          <div className="flex gap-3">
-            <button
-              onClick={() => setShowRejectModal(true)}
-              disabled={isApproving || isRejecting}
-              className="flex-1 py-4 bg-red-100 text-red-700 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-red-200 active:bg-red-300 disabled:opacity-50"
-            >
-              <XCircle className="w-5 h-5" />
-              Reject
-            </button>
-            <button
-              onClick={handleApprove}
-              disabled={isApproving || isRejecting}
-              className="flex-1 py-4 bg-green-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-green-700 active:bg-green-800 disabled:opacity-50"
-            >
-              {isApproving ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Approving...
-                </>
-              ) : (
-                <>
-                  <CheckCircle className="w-5 h-5" />
-                  Approve
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        <div className="ml-auto flex gap-2">
+          {/* Bottom Action Bar */}
+          {isPending && (
+            <div className="p-4">
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowRejectModal(true)}
+                  disabled={isApproving || isRejecting}
+                  className="cursor-pointer py-2.5 px-4 bg-red-500 text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-red-400 active:bg-red-300 disabled:opacity-50"
+                >
+                  Reject
+                </button>
+                <button
+                  onClick={handleApprove}
+                  disabled={isApproving || isRejecting}
+                  className="cursor-pointer py-2.5 px-4 bg-green-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-green-500 active:bg-green-800 disabled:opacity-50"
+                >
+                  {isApproving ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Approving...
+                    </>
+                  ) : (
+                    <>Approve</>
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
 
-      {/* Rejected - Reopen Button */}
-      {isRejected && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-          <button
-            onClick={handleReopen}
-            disabled={isReopening}
-            className="w-full py-4 bg-blue-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-blue-700 disabled:opacity-50"
-          >
-            {isReopening ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Reopening...
-              </>
-            ) : (
-              <>
-                <RotateCcw className="w-5 h-5" />
-                Reopen for Re-counting
-              </>
-            )}
-          </button>
+          {/* Rejected - Reopen Button */}
+          {isRejected && (
+            <div className="p-4">
+              <button
+                onClick={handleReopen}
+                disabled={isReopening}
+                className="cursor-pointer py-4 bg-blue-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isReopening ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Reopening...
+                  </>
+                ) : (
+                  <>Reopen for Re-counting</>
+                )}
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Reject Modal */}
       {showRejectModal && (
@@ -704,7 +701,7 @@ function RejectModal({
             <button
               key={quickReason}
               onClick={() => onReasonChange(quickReason)}
-              className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200"
+              className="cursor-pointer px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-xs hover:bg-gray-200"
             >
               {quickReason}
             </button>
@@ -715,14 +712,14 @@ function RejectModal({
           <button
             onClick={onCancel}
             disabled={isSubmitting}
-            className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 disabled:opacity-50"
+            className="cursor-pointer flex-1 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={isSubmitting || !reason.trim()}
-            className="flex-1 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="cursor-pointer flex-1 py-3 bg-red-400 text-white rounded-lg font-medium hover:bg-red-500 disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>
@@ -730,10 +727,7 @@ function RejectModal({
                 Rejecting...
               </>
             ) : (
-              <>
-                <XCircle className="w-5 h-5" />
-                Reject
-              </>
+              <>Reject</>
             )}
           </button>
         </div>

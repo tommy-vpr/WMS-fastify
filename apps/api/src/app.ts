@@ -15,7 +15,6 @@ import { inventoryPlannerRoutes } from "./routes/inventory-planner.routes.js";
 import { locationImportRoutes } from "./routes/location-import.routes.js";
 import { locationRoutes } from "./routes/location.routes.js";
 import { fulfillmentRoutes } from "./routes/fulfillment.routes.js";
-import { fulfillmentIndividualRoutes } from "./routes/fulfillment-individual.routes.js";
 // Server Sent Event
 import { ssePlugin } from "./plugins/sse.plugin.js";
 import { shippingRoutes } from "./routes/shipping.routes.js";
@@ -23,6 +22,7 @@ import { receivingRoutes } from "./routes/receiving.routes.js";
 import cycleCountRoutes from "./routes/cycle-count.routes.js";
 import scanRoutes from "./routes/scan.routes.js";
 import packingImageRoutes from "./routes/packing-images.routes.js";
+import { invoiceRoutes } from "./routes/invoice.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -78,11 +78,7 @@ export async function buildApp() {
       prefix: "/fulfillment",
     });
 
-    await protectedRoutes.register(fulfillmentIndividualRoutes, {
-      prefix: "/fulfillment-individual",
-    });
-
-    http: await protectedRoutes.register(packingImageRoutes, {
+    await protectedRoutes.register(packingImageRoutes, {
       prefix: "/packing-images",
     });
     // Shipping Label
@@ -112,6 +108,10 @@ export async function buildApp() {
     // Cycle Count
     await protectedRoutes.register(cycleCountRoutes, {
       prefix: "/cycle-count",
+    });
+    // Invoices
+    await protectedRoutes.register(invoiceRoutes, {
+      prefix: "/invoices",
     });
 
     // await protectedRoutes.register(taskRoutes, { prefix: "/tasks" });

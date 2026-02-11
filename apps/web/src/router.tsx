@@ -75,6 +75,12 @@ const CycleCountReview = lazy(() => import("./pages/cycle-count/review"));
 const ScanPage = lazy(() => import("./pages/scan/index"));
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Invoices (lazy loaded)
+// ─────────────────────────────────────────────────────────────────────────────
+const InvoicesPage = lazy(() => import("./pages/invoices"));
+const InvoiceDetailPage = lazy(() => import("./pages/invoices/[id]"));
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const PageLoader = () => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -186,6 +192,10 @@ export const router = createBrowserRouter([
             path: "/cycle-count/review/:sessionId",
             element: withSuspense(CycleCountReview),
           },
+
+          // Invoices
+          { path: "/invoices", element: <InvoicesPage /> },
+          { path: "/invoices/:id", element: <InvoiceDetailPage /> },
 
           // Scan
           { path: "/scan", element: withSuspense(ScanPage) },

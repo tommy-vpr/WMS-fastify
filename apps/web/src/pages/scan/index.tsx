@@ -229,26 +229,28 @@ export function ScanPage() {
   // ─────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="border-b border-gray-200 sticky top-0 z-10">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-gray-900">Scan</h1>
+          <h1 className="text-lg font-bold text-gray-900">
+            Product/Location Look Up
+          </h1>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowHistory(!showHistory)}
               className={cn(
-                "p-2 rounded-lg cursor-pointer",
+                "p-2 rounded-lg cursor-pointer transition",
                 showHistory
                   ? "bg-blue-100 text-blue-600"
-                  : "text-gray-500 hover:bg-gray-100",
+                  : "text-gray-500 hover:bg-gray-200",
               )}
             >
               <History className="w-5 h-5" />
             </button>
             <button
               onClick={() => setShowManualInput(true)}
-              className="cursor-pointer p-2 text-gray-500 hover:bg-gray-100 rounded-lg"
+              className="cursor-pointer p-2 text-gray-500 hover:bg-gray-200 rounded-lg transition"
             >
               <Keyboard className="w-5 h-5" />
             </button>
@@ -333,11 +335,11 @@ function ScanPrompt() {
       </p>
 
       <div className="mt-8 flex gap-4">
-        <div className="flex items-center gap-2 text-sm text-blue-700 bg-blue-50 border-x-2 border-blue-700 px-4 py-2">
+        <div className="flex items-center gap-2 text-sm text-blue-700 bg-blue-50 border-x-2 border-blue-300 px-4 py-2">
           <Package className="w-4 h-4" />
           <span>Products</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border-x-2 border-amber-700 px-4 py-2">
+        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border-x-2 border-green-300 px-4 py-2">
           <MapPin className="w-4 h-4" />
           <span>Locations</span>
         </div>

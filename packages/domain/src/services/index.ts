@@ -23,15 +23,6 @@ export {
 // Fulfillment pipeline (split services)
 export { PickingService, type PickingServiceDeps } from "./picking.service.js";
 export { PackingService, type PackingServiceDeps } from "./packing.service.js";
-export {
-  FulfillmentService,
-  type FulfillmentServiceDeps,
-  type FulfillmentStatusResult,
-  type ScanLookup,
-  type PickScanDetail,
-  type ScanItemDetail,
-  type PackingImageDetail,
-} from "./fulfillmentIndividual.service.js";
 
 // Shipping management
 export * from "./fulfillment.service.js";
@@ -50,6 +41,9 @@ export * from "./receiving.service.js";
 
 // Cycle Count
 export * from "./cycle-count.service.js";
+
+// Invoice
+export * from "./invoice.service.js";
 
 // GCP
 export {

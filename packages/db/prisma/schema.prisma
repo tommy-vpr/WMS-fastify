@@ -122,7 +122,24 @@ model ProductVariant {
   shopifyVariantId String?  @unique
   costPrice        Decimal? @db.Decimal(10, 2)
   sellingPrice     Decimal? @db.Decimal(10, 2)
-  weight           Decimal? @db.Decimal(8, 2)
+  
+  // Single unit dimensions & weight
+  weight           Decimal?  @db.Decimal(8, 2)
+  weightUnit       String?   @default("oz")       // oz, lbs, g, kg
+  length           Decimal?  @db.Decimal(8, 2)
+  width            Decimal?  @db.Decimal(8, 2)
+  height           Decimal?  @db.Decimal(8, 2)
+  dimensionUnit    String?   @default("in")        // in, cm
+
+  // Master case
+  mcQuantity       Int?                             // units per case
+  mcWeight         Decimal?  @db.Decimal(8, 2)
+  mcWeightUnit     String?   @default("lbs")
+  mcLength         Decimal?  @db.Decimal(8, 2)
+  mcWidth          Decimal?  @db.Decimal(8, 2)
+  mcHeight         Decimal?  @db.Decimal(8, 2)
+  mcDimensionUnit  String?   @default("in")
+
   // Track if this variant requires lot/expiry tracking
   shippingPackageItems  ShippingPackageItem[]
   trackLots        Boolean  @default(false)

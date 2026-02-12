@@ -32,6 +32,8 @@ export * from "./shipping.service.js";
 
 // Product management
 export * from "./product.service.js";
+// parser function
+export * from "./product-csv-parser.js";
 
 // Work tasks
 export * from "./work-task.service.js";

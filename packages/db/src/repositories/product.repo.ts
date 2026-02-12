@@ -64,6 +64,18 @@ export interface UpsertVariantData {
   costPrice?: number;
   sellingPrice?: number;
   weight?: number;
+  weightUnit?: string;
+  length?: number;
+  width?: number;
+  height?: number;
+  dimensionUnit?: string;
+  mcQuantity?: number;
+  mcWeight?: number;
+  mcWeightUnit?: string;
+  mcLength?: number;
+  mcWidth?: number;
+  mcHeight?: number;
+  mcDimensionUnit?: string;
   trackLots?: boolean;
   trackExpiry?: boolean;
 }
@@ -408,23 +420,30 @@ export const productRepository = {
    */
   async getStats(): Promise<{
     totalProducts: number;
+    activeProducts: number;
     totalVariants: number;
     byBrand: Record<string, number>;
     byCategory: Record<string, number>;
   }> {
-    const [totalProducts, totalVariants, brandCounts, categoryCounts] =
-      await Promise.all([
-        prisma.product.count(),
-        prisma.productVariant.count(),
-        prisma.product.groupBy({
-          by: ["brand"],
-          _count: true,
-        }),
-        prisma.product.groupBy({
-          by: ["category"],
-          _count: true,
-        }),
-      ]);
+    const [
+      totalProducts,
+      activeProducts,
+      totalVariants,
+      brandCounts,
+      categoryCounts,
+    ] = await Promise.all([
+      prisma.product.count(),
+      prisma.product.count({ where: { active: true } }),
+      prisma.productVariant.count(),
+      prisma.product.groupBy({
+        by: ["brand"],
+        _count: true,
+      }),
+      prisma.product.groupBy({
+        by: ["category"],
+        _count: true,
+      }),
+    ]);
 
     const byBrand: Record<string, number> = {};
     brandCounts.forEach((b) => {
@@ -436,6 +455,12 @@ export const productRepository = {
       if (c.category) byCategory[c.category] = c._count;
     });
 
-    return { totalProducts, totalVariants, byBrand, byCategory };
+    return {
+      totalProducts,
+      activeProducts,
+      totalVariants,
+      byBrand,
+      byCategory,
+    };
   },
 };

@@ -10410,12 +10410,28 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    length: Decimal | null
+    width: Decimal | null
+    height: Decimal | null
+    mcQuantity: number | null
+    mcWeight: Decimal | null
+    mcLength: Decimal | null
+    mcWidth: Decimal | null
+    mcHeight: Decimal | null
   }
 
   export type ProductVariantSumAggregateOutputType = {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    length: Decimal | null
+    width: Decimal | null
+    height: Decimal | null
+    mcQuantity: number | null
+    mcWeight: Decimal | null
+    mcLength: Decimal | null
+    mcWidth: Decimal | null
+    mcHeight: Decimal | null
   }
 
   export type ProductVariantMinAggregateOutputType = {
@@ -10430,6 +10446,18 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    weightUnit: string | null
+    length: Decimal | null
+    width: Decimal | null
+    height: Decimal | null
+    dimensionUnit: string | null
+    mcQuantity: number | null
+    mcWeight: Decimal | null
+    mcWeightUnit: string | null
+    mcLength: Decimal | null
+    mcWidth: Decimal | null
+    mcHeight: Decimal | null
+    mcDimensionUnit: string | null
     trackLots: boolean | null
     trackExpiry: boolean | null
     createdAt: Date | null
@@ -10448,6 +10476,18 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    weightUnit: string | null
+    length: Decimal | null
+    width: Decimal | null
+    height: Decimal | null
+    dimensionUnit: string | null
+    mcQuantity: number | null
+    mcWeight: Decimal | null
+    mcWeightUnit: string | null
+    mcLength: Decimal | null
+    mcWidth: Decimal | null
+    mcHeight: Decimal | null
+    mcDimensionUnit: string | null
     trackLots: boolean | null
     trackExpiry: boolean | null
     createdAt: Date | null
@@ -10466,6 +10506,18 @@ export namespace Prisma {
     costPrice: number
     sellingPrice: number
     weight: number
+    weightUnit: number
+    length: number
+    width: number
+    height: number
+    dimensionUnit: number
+    mcQuantity: number
+    mcWeight: number
+    mcWeightUnit: number
+    mcLength: number
+    mcWidth: number
+    mcHeight: number
+    mcDimensionUnit: number
     trackLots: number
     trackExpiry: number
     createdAt: number
@@ -10478,12 +10530,28 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    length?: true
+    width?: true
+    height?: true
+    mcQuantity?: true
+    mcWeight?: true
+    mcLength?: true
+    mcWidth?: true
+    mcHeight?: true
   }
 
   export type ProductVariantSumAggregateInputType = {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    length?: true
+    width?: true
+    height?: true
+    mcQuantity?: true
+    mcWeight?: true
+    mcLength?: true
+    mcWidth?: true
+    mcHeight?: true
   }
 
   export type ProductVariantMinAggregateInputType = {
@@ -10498,6 +10566,18 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    weightUnit?: true
+    length?: true
+    width?: true
+    height?: true
+    dimensionUnit?: true
+    mcQuantity?: true
+    mcWeight?: true
+    mcWeightUnit?: true
+    mcLength?: true
+    mcWidth?: true
+    mcHeight?: true
+    mcDimensionUnit?: true
     trackLots?: true
     trackExpiry?: true
     createdAt?: true
@@ -10516,6 +10596,18 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    weightUnit?: true
+    length?: true
+    width?: true
+    height?: true
+    dimensionUnit?: true
+    mcQuantity?: true
+    mcWeight?: true
+    mcWeightUnit?: true
+    mcLength?: true
+    mcWidth?: true
+    mcHeight?: true
+    mcDimensionUnit?: true
     trackLots?: true
     trackExpiry?: true
     createdAt?: true
@@ -10534,6 +10626,18 @@ export namespace Prisma {
     costPrice?: true
     sellingPrice?: true
     weight?: true
+    weightUnit?: true
+    length?: true
+    width?: true
+    height?: true
+    dimensionUnit?: true
+    mcQuantity?: true
+    mcWeight?: true
+    mcWeightUnit?: true
+    mcLength?: true
+    mcWidth?: true
+    mcHeight?: true
+    mcDimensionUnit?: true
     trackLots?: true
     trackExpiry?: true
     createdAt?: true
@@ -10639,6 +10743,18 @@ export namespace Prisma {
     costPrice: Decimal | null
     sellingPrice: Decimal | null
     weight: Decimal | null
+    weightUnit: string | null
+    length: Decimal | null
+    width: Decimal | null
+    height: Decimal | null
+    dimensionUnit: string | null
+    mcQuantity: number | null
+    mcWeight: Decimal | null
+    mcWeightUnit: string | null
+    mcLength: Decimal | null
+    mcWidth: Decimal | null
+    mcHeight: Decimal | null
+    mcDimensionUnit: string | null
     trackLots: boolean
     trackExpiry: boolean
     createdAt: Date
@@ -10676,6 +10792,18 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    weightUnit?: boolean
+    length?: boolean
+    width?: boolean
+    height?: boolean
+    dimensionUnit?: boolean
+    mcQuantity?: boolean
+    mcWeight?: boolean
+    mcWeightUnit?: boolean
+    mcLength?: boolean
+    mcWidth?: boolean
+    mcHeight?: boolean
+    mcDimensionUnit?: boolean
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: boolean
@@ -10707,6 +10835,18 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    weightUnit?: boolean
+    length?: boolean
+    width?: boolean
+    height?: boolean
+    dimensionUnit?: boolean
+    mcQuantity?: boolean
+    mcWeight?: boolean
+    mcWeightUnit?: boolean
+    mcLength?: boolean
+    mcWidth?: boolean
+    mcHeight?: boolean
+    mcDimensionUnit?: boolean
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: boolean
@@ -10726,6 +10866,18 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    weightUnit?: boolean
+    length?: boolean
+    width?: boolean
+    height?: boolean
+    dimensionUnit?: boolean
+    mcQuantity?: boolean
+    mcWeight?: boolean
+    mcWeightUnit?: boolean
+    mcLength?: boolean
+    mcWidth?: boolean
+    mcHeight?: boolean
+    mcDimensionUnit?: boolean
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: boolean
@@ -10745,13 +10897,25 @@ export namespace Prisma {
     costPrice?: boolean
     sellingPrice?: boolean
     weight?: boolean
+    weightUnit?: boolean
+    length?: boolean
+    width?: boolean
+    height?: boolean
+    dimensionUnit?: boolean
+    mcQuantity?: boolean
+    mcWeight?: boolean
+    mcWeightUnit?: boolean
+    mcLength?: boolean
+    mcWidth?: boolean
+    mcHeight?: boolean
+    mcDimensionUnit?: boolean
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "shopifyVariantId" | "costPrice" | "sellingPrice" | "weight" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
+  export type ProductVariantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sku" | "upc" | "barcode" | "name" | "imageUrl" | "shopifyVariantId" | "costPrice" | "sellingPrice" | "weight" | "weightUnit" | "length" | "width" | "height" | "dimensionUnit" | "mcQuantity" | "mcWeight" | "mcWeightUnit" | "mcLength" | "mcWidth" | "mcHeight" | "mcDimensionUnit" | "trackLots" | "trackExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["productVariant"]>
   export type ProductVariantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shippingPackageItems?: boolean | ProductVariant$shippingPackageItemsArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -10802,6 +10966,18 @@ export namespace Prisma {
       costPrice: Prisma.Decimal | null
       sellingPrice: Prisma.Decimal | null
       weight: Prisma.Decimal | null
+      weightUnit: string | null
+      length: Prisma.Decimal | null
+      width: Prisma.Decimal | null
+      height: Prisma.Decimal | null
+      dimensionUnit: string | null
+      mcQuantity: number | null
+      mcWeight: Prisma.Decimal | null
+      mcWeightUnit: string | null
+      mcLength: Prisma.Decimal | null
+      mcWidth: Prisma.Decimal | null
+      mcHeight: Prisma.Decimal | null
+      mcDimensionUnit: string | null
       trackLots: boolean
       trackExpiry: boolean
       createdAt: Date
@@ -11252,6 +11428,18 @@ export namespace Prisma {
     readonly costPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly sellingPrice: FieldRef<"ProductVariant", 'Decimal'>
     readonly weight: FieldRef<"ProductVariant", 'Decimal'>
+    readonly weightUnit: FieldRef<"ProductVariant", 'String'>
+    readonly length: FieldRef<"ProductVariant", 'Decimal'>
+    readonly width: FieldRef<"ProductVariant", 'Decimal'>
+    readonly height: FieldRef<"ProductVariant", 'Decimal'>
+    readonly dimensionUnit: FieldRef<"ProductVariant", 'String'>
+    readonly mcQuantity: FieldRef<"ProductVariant", 'Int'>
+    readonly mcWeight: FieldRef<"ProductVariant", 'Decimal'>
+    readonly mcWeightUnit: FieldRef<"ProductVariant", 'String'>
+    readonly mcLength: FieldRef<"ProductVariant", 'Decimal'>
+    readonly mcWidth: FieldRef<"ProductVariant", 'Decimal'>
+    readonly mcHeight: FieldRef<"ProductVariant", 'Decimal'>
+    readonly mcDimensionUnit: FieldRef<"ProductVariant", 'String'>
     readonly trackLots: FieldRef<"ProductVariant", 'Boolean'>
     readonly trackExpiry: FieldRef<"ProductVariant", 'Boolean'>
     readonly createdAt: FieldRef<"ProductVariant", 'DateTime'>
@@ -51234,6 +51422,18 @@ export namespace Prisma {
     costPrice: 'costPrice',
     sellingPrice: 'sellingPrice',
     weight: 'weight',
+    weightUnit: 'weightUnit',
+    length: 'length',
+    width: 'width',
+    height: 'height',
+    dimensionUnit: 'dimensionUnit',
+    mcQuantity: 'mcQuantity',
+    mcWeight: 'mcWeight',
+    mcWeightUnit: 'mcWeightUnit',
+    mcLength: 'mcLength',
+    mcWidth: 'mcWidth',
+    mcHeight: 'mcHeight',
+    mcDimensionUnit: 'mcDimensionUnit',
     trackLots: 'trackLots',
     trackExpiry: 'trackExpiry',
     createdAt: 'createdAt',
@@ -51992,20 +52192,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'LocationType'
-   */
-  export type EnumLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationType'>
-    
-
-
-  /**
-   * Reference to a field of type 'LocationType[]'
-   */
-  export type ListEnumLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -52016,6 +52202,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LocationType'
+   */
+  export type EnumLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'LocationType[]'
+   */
+  export type ListEnumLocationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationType[]'>
     
 
 
@@ -52703,6 +52903,18 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    length?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    width?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    height?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcQuantity?: IntNullableFilter<"ProductVariant"> | number | null
+    mcWeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcLength?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
     trackLots?: BoolFilter<"ProductVariant"> | boolean
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
@@ -52733,6 +52945,18 @@ export namespace Prisma {
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
+    weightUnit?: SortOrderInput | SortOrder
+    length?: SortOrderInput | SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    dimensionUnit?: SortOrderInput | SortOrder
+    mcQuantity?: SortOrderInput | SortOrder
+    mcWeight?: SortOrderInput | SortOrder
+    mcWeightUnit?: SortOrderInput | SortOrder
+    mcLength?: SortOrderInput | SortOrder
+    mcWidth?: SortOrderInput | SortOrder
+    mcHeight?: SortOrderInput | SortOrder
+    mcDimensionUnit?: SortOrderInput | SortOrder
     trackLots?: SortOrder
     trackExpiry?: SortOrder
     createdAt?: SortOrder
@@ -52766,6 +52990,18 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    length?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    width?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    height?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcQuantity?: IntNullableFilter<"ProductVariant"> | number | null
+    mcWeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcLength?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
     trackLots?: BoolFilter<"ProductVariant"> | boolean
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
@@ -52796,6 +53032,18 @@ export namespace Prisma {
     costPrice?: SortOrderInput | SortOrder
     sellingPrice?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
+    weightUnit?: SortOrderInput | SortOrder
+    length?: SortOrderInput | SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    dimensionUnit?: SortOrderInput | SortOrder
+    mcQuantity?: SortOrderInput | SortOrder
+    mcWeight?: SortOrderInput | SortOrder
+    mcWeightUnit?: SortOrderInput | SortOrder
+    mcLength?: SortOrderInput | SortOrder
+    mcWidth?: SortOrderInput | SortOrder
+    mcHeight?: SortOrderInput | SortOrder
+    mcDimensionUnit?: SortOrderInput | SortOrder
     trackLots?: SortOrder
     trackExpiry?: SortOrder
     createdAt?: SortOrder
@@ -52822,6 +53070,18 @@ export namespace Prisma {
     costPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
+    length?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    width?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    height?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
+    mcQuantity?: IntNullableWithAggregatesFilter<"ProductVariant"> | number | null
+    mcWeight?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
+    mcLength?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: DecimalNullableWithAggregatesFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     trackLots?: BoolWithAggregatesFilter<"ProductVariant"> | boolean
     trackExpiry?: BoolWithAggregatesFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"ProductVariant"> | Date | string
@@ -56668,6 +56928,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -56698,6 +56970,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -56726,6 +57010,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56756,6 +57052,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56785,6 +57093,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -56802,6 +57122,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56820,6 +57152,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61127,6 +61471,17 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ShippingPackageItemListRelationFilter = {
     every?: ShippingPackageItemWhereInput
     some?: ShippingPackageItemWhereInput
@@ -61234,6 +61589,18 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    weightUnit?: SortOrder
+    length?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    dimensionUnit?: SortOrder
+    mcQuantity?: SortOrder
+    mcWeight?: SortOrder
+    mcWeightUnit?: SortOrder
+    mcLength?: SortOrder
+    mcWidth?: SortOrder
+    mcHeight?: SortOrder
+    mcDimensionUnit?: SortOrder
     trackLots?: SortOrder
     trackExpiry?: SortOrder
     createdAt?: SortOrder
@@ -61244,6 +61611,14 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    length?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    mcQuantity?: SortOrder
+    mcWeight?: SortOrder
+    mcLength?: SortOrder
+    mcWidth?: SortOrder
+    mcHeight?: SortOrder
   }
 
   export type ProductVariantMaxOrderByAggregateInput = {
@@ -61258,6 +61633,18 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    weightUnit?: SortOrder
+    length?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    dimensionUnit?: SortOrder
+    mcQuantity?: SortOrder
+    mcWeight?: SortOrder
+    mcWeightUnit?: SortOrder
+    mcLength?: SortOrder
+    mcWidth?: SortOrder
+    mcHeight?: SortOrder
+    mcDimensionUnit?: SortOrder
     trackLots?: SortOrder
     trackExpiry?: SortOrder
     createdAt?: SortOrder
@@ -61276,6 +61663,18 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    weightUnit?: SortOrder
+    length?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    dimensionUnit?: SortOrder
+    mcQuantity?: SortOrder
+    mcWeight?: SortOrder
+    mcWeightUnit?: SortOrder
+    mcLength?: SortOrder
+    mcWidth?: SortOrder
+    mcHeight?: SortOrder
+    mcDimensionUnit?: SortOrder
     trackLots?: SortOrder
     trackExpiry?: SortOrder
     createdAt?: SortOrder
@@ -61286,6 +61685,14 @@ export namespace Prisma {
     costPrice?: SortOrder
     sellingPrice?: SortOrder
     weight?: SortOrder
+    length?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    mcQuantity?: SortOrder
+    mcWeight?: SortOrder
+    mcLength?: SortOrder
+    mcWidth?: SortOrder
+    mcHeight?: SortOrder
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -61304,14 +61711,7 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type EnumLocationTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLocationTypeFilter<$PrismaModel> | $Enums.LocationType
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -61319,7 +61719,19 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumLocationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLocationTypeFilter<$PrismaModel> | $Enums.LocationType
   }
 
   export type LocationCountOrderByAggregateInput = {
@@ -61401,22 +61813,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLocationTypeFilter<$PrismaModel>
     _max?: NestedEnumLocationTypeFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -65211,6 +65607,14 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type ShippingPackageItemUpdateManyWithoutProductVariantNestedInput = {
     create?: XOR<ShippingPackageItemCreateWithoutProductVariantInput, ShippingPackageItemUncheckedCreateWithoutProductVariantInput> | ShippingPackageItemCreateWithoutProductVariantInput[] | ShippingPackageItemUncheckedCreateWithoutProductVariantInput[]
     connectOrCreate?: ShippingPackageItemCreateOrConnectWithoutProductVariantInput | ShippingPackageItemCreateOrConnectWithoutProductVariantInput[]
@@ -65641,14 +66045,6 @@ export namespace Prisma {
 
   export type EnumLocationTypeFieldUpdateOperationsInput = {
     set?: $Enums.LocationType
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type InventoryUnitUpdateManyWithoutLocationNestedInput = {
@@ -68322,23 +68718,6 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumLocationTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLocationTypeFilter<$PrismaModel> | $Enums.LocationType
-  }
-
-  export type NestedEnumLocationTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLocationTypeWithAggregatesFilter<$PrismaModel> | $Enums.LocationType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumLocationTypeFilter<$PrismaModel>
-    _max?: NestedEnumLocationTypeFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -68364,6 +68743,23 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumLocationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLocationTypeFilter<$PrismaModel> | $Enums.LocationType
+  }
+
+  export type NestedEnumLocationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LocationType | EnumLocationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LocationType[] | ListEnumLocationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLocationTypeWithAggregatesFilter<$PrismaModel> | $Enums.LocationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLocationTypeFilter<$PrismaModel>
+    _max?: NestedEnumLocationTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumInventoryStatusFilter<$PrismaModel = never> = {
@@ -70978,6 +71374,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -71006,6 +71414,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -71064,6 +71484,18 @@ export namespace Prisma {
     costPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
     weight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    length?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    width?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    height?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcQuantity?: IntNullableFilter<"ProductVariant"> | number | null
+    mcWeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: StringNullableFilter<"ProductVariant"> | string | null
+    mcLength?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: DecimalNullableFilter<"ProductVariant"> | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: StringNullableFilter<"ProductVariant"> | string | null
     trackLots?: BoolFilter<"ProductVariant"> | boolean
     trackExpiry?: BoolFilter<"ProductVariant"> | boolean
     createdAt?: DateTimeFilter<"ProductVariant"> | Date | string
@@ -72491,6 +72923,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -72520,6 +72964,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -72710,6 +73166,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72739,6 +73207,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73010,6 +73490,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -73039,6 +73531,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -73353,6 +73857,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73382,6 +73898,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74106,6 +74634,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -74135,6 +74675,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -74343,6 +74895,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74372,6 +74936,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75338,6 +75914,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -75367,6 +75955,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -75459,6 +76059,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75488,6 +76100,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76196,6 +76820,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -76225,6 +76861,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -76640,6 +77288,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76669,6 +77329,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78606,6 +79278,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -78635,6 +79319,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -78737,6 +79433,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78766,6 +79474,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80558,6 +81278,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -80587,6 +81319,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -80726,6 +81470,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80755,6 +81511,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81150,6 +81918,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -81179,6 +81959,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -81496,6 +82288,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81525,6 +82329,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82220,6 +83036,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -82249,6 +83077,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -82339,6 +83179,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82368,6 +83220,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82395,6 +83259,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -82424,6 +83300,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -82528,6 +83416,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82557,6 +83457,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -83080,6 +83992,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -83109,6 +84033,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -83268,6 +84204,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -83297,6 +84245,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85117,6 +86077,18 @@ export namespace Prisma {
     costPrice?: Decimal | DecimalJsLike | number | string | null
     sellingPrice?: Decimal | DecimalJsLike | number | string | null
     weight?: Decimal | DecimalJsLike | number | string | null
+    weightUnit?: string | null
+    length?: Decimal | DecimalJsLike | number | string | null
+    width?: Decimal | DecimalJsLike | number | string | null
+    height?: Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: string | null
+    mcQuantity?: number | null
+    mcWeight?: Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: string | null
+    mcLength?: Decimal | DecimalJsLike | number | string | null
+    mcWidth?: Decimal | DecimalJsLike | number | string | null
+    mcHeight?: Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: string | null
     trackLots?: boolean
     trackExpiry?: boolean
     createdAt?: Date | string
@@ -85134,6 +86106,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85162,6 +86146,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85190,6 +86186,18 @@ export namespace Prisma {
     costPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sellingPrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     weight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    length?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    width?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    height?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcQuantity?: NullableIntFieldUpdateOperationsInput | number | null
+    mcWeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWeightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    mcLength?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcWidth?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcHeight?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    mcDimensionUnit?: NullableStringFieldUpdateOperationsInput | string | null
     trackLots?: BoolFieldUpdateOperationsInput | boolean
     trackExpiry?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

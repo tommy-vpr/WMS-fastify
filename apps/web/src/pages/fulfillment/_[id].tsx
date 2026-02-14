@@ -39,12 +39,7 @@ import {
 import { apiClient } from "@/lib/api";
 import { useBarcodeScanner } from "@/hooks/useBarcodeScanner";
 import { useFulfillmentStream } from "@/hooks/useFulfillmentStream";
-import { ShippingLabelForm } from "@/components/fulfillment/ShippingLabelForm";
-import {
-  PackingCompleteForm,
-  type PackingCompleteData,
-} from "@/components/fulfillment/PackingCompleteForm";
-
+import ShippingLabelForm from "@/components/shipping/ShippingLabelForm";
 import {
   PackingImageUpload,
   type PackingImage,
@@ -287,6 +282,13 @@ export default function FulfillmentDetailPage() {
   ]);
   const [activePackingPackageId, setActivePackingPackageId] = useState("pkg-1");
   const packingPkgCounter = useRef(1);
+
+  // Pack form state
+  const [packWeight, setPackWeight] = useState("");
+  const [packWeightUnit, setPackWeightUnit] = useState("ounce");
+  const [packLength, setPackLength] = useState("");
+  const [packWidth, setPackWidth] = useState("");
+  const [packHeight, setPackHeight] = useState("");
 
   // Packing images state
   const packingImages = status?.packingImages ?? [];
@@ -839,25 +841,53 @@ export default function FulfillmentDetailPage() {
     }
   }
 
-  async function completePacking(data: PackingCompleteData) {
+  async function completePacking() {
     if (!orderId || actionLoading) return;
+
+    const weight = parseFloat(packWeight);
+    if (!weight || weight <= 0) {
+      setError("Enter a valid weight");
+      return;
+    }
+
+    if (packingImages.length === 0) {
+      setError("Add at least one packing photo");
+      return;
+    }
+
     setActionLoading(true);
     try {
       if (packingMode === "bin" && status?.pickBin) {
         // Complete bin + packing in one call
         await apiClient.post(`/fulfillment/${orderId}/pack/complete-from-bin`, {
           binId: status.pickBin.id,
-          weight: data.totalWeight,
-          weightUnit: data.weightUnit,
-          dimensions: data.dimensions,
+          weight,
+          weightUnit: packWeightUnit,
+          dimensions:
+            packLength && packWidth && packHeight
+              ? {
+                  length: parseFloat(packLength),
+                  width: parseFloat(packWidth),
+                  height: parseFloat(packHeight),
+                  unit: "inch",
+                }
+              : undefined,
         });
       } else if (status?.packing) {
         // Direct packing completion
         await apiClient.post(`/fulfillment/${orderId}/pack/complete`, {
           taskId: status.packing.id,
-          weight: data.totalWeight,
-          weightUnit: data.weightUnit,
-          dimensions: data.dimensions,
+          weight,
+          weightUnit: packWeightUnit,
+          dimensions:
+            packLength && packWidth && packHeight
+              ? {
+                  length: parseFloat(packLength),
+                  width: parseFloat(packWidth),
+                  height: parseFloat(packHeight),
+                  unit: "inch",
+                }
+              : undefined,
         });
       }
       await fetchStatus();
@@ -1224,9 +1254,19 @@ export default function FulfillmentDetailPage() {
                 taskId={packing?.id}
                 orderNumber={order.orderNumber}
                 packingImages={packingImages}
-                onFetchStatus={fetchStatus}
+                packWeight={packWeight}
+                setPackWeight={setPackWeight}
+                packWeightUnit={packWeightUnit}
+                setPackWeightUnit={setPackWeightUnit}
+                packLength={packLength}
+                setPackLength={setPackLength}
+                packWidth={packWidth}
+                setPackWidth={setPackWidth}
+                packHeight={packHeight}
+                setPackHeight={setPackHeight}
                 onComplete={completePacking}
                 actionLoading={actionLoading}
+                fetchStatus={fetchStatus}
               />
             </StepCard>
           )}
@@ -1241,8 +1281,17 @@ export default function FulfillmentDetailPage() {
               actionLoading={actionLoading}
               packingImages={packingImages}
               orderId={order.id}
-              taskId={packing.id}
               orderNumber={order.orderNumber}
+              packWeight={packWeight}
+              setPackWeight={setPackWeight}
+              packWeightUnit={packWeightUnit}
+              setPackWeightUnit={setPackWeightUnit}
+              packLength={packLength}
+              setPackLength={setPackLength}
+              packWidth={packWidth}
+              setPackWidth={setPackWidth}
+              packHeight={packHeight}
+              setPackHeight={setPackHeight}
               onComplete={completePacking}
               fetchStatus={fetchStatus}
             />
@@ -1256,13 +1305,63 @@ export default function FulfillmentDetailPage() {
               icon={<Truck className="w-5 h-5" />}
             >
               <ShippingLabelForm
-                orderId={order.id}
-                orderNumber={order.orderNumber}
-                shippingAddress={order.shippingAddress}
-                onComplete={() => fetchStatus()}
+                order={{
+                  id: order.id,
+                  orderNumber: order.orderNumber,
+                  customerName: order.customerName,
+                  status: order.status,
+                  lineItems: order.items.map((item) => ({
+                    id: item.id,
+                    sku: item.sku,
+                    name: item.productVariant?.name || item.sku,
+                    quantity: item.quantity,
+                    quantityPicked: item.quantityPicked,
+                    unitPrice: 0,
+                  })),
+                  shippingAddress: order.shippingAddress,
+                }}
+                onSuccess={(labels) => {
+                  labels.forEach((label) => {
+                    if (label.labelUrl) {
+                      window.open(label.labelUrl, "_blank");
+                    }
+                  });
+                  fetchStatus();
+                }}
+                embedded
+                initialWeight={
+                  packing?.packedWeight
+                    ? Number(packing.packedWeight)
+                    : undefined
+                }
+                initialDimensions={
+                  packing?.packedDimensions
+                    ? {
+                        length: packing.packedDimensions.length,
+                        width: packing.packedDimensions.width,
+                        height: packing.packedDimensions.height,
+                      }
+                    : undefined
+                }
+                initialPackages={
+                  packingPackages.some((p) => p.items.length > 0)
+                    ? packingPackages
+                        .filter((p) => p.items.length > 0)
+                        .map((p) => ({
+                          label: p.label,
+                          items: p.items.map((i) => ({
+                            sku: i.sku,
+                            productName: i.productName,
+                            quantity: i.quantity,
+                            unitPrice: i.unitPrice,
+                          })),
+                        }))
+                    : undefined
+                }
               />
             </StepCard>
           )}
+
           {/* ── STEP: Shipped ────────────────────────────────────────────── */}
           {(currentStep === "shipped" || currentStep === "delivered") &&
             shipping.length > 0 && (
@@ -1789,6 +1888,139 @@ function BinVerificationStep({
         </div>
       )}
     </StepCard>
+  );
+}
+
+// ── Packing Complete Form ─────────────────────────────────────────────────
+
+function PackingCompleteForm({
+  orderId,
+  taskId,
+  orderNumber,
+  packingImages,
+  packWeight,
+  setPackWeight,
+  packWeightUnit,
+  setPackWeightUnit,
+  packLength,
+  setPackLength,
+  packWidth,
+  setPackWidth,
+  packHeight,
+  setPackHeight,
+  onComplete,
+  actionLoading,
+  fetchStatus,
+}: {
+  orderId: string;
+  taskId?: string;
+  orderNumber: string;
+  packingImages: PackingImage[];
+  packWeight: string;
+  setPackWeight: (v: string) => void;
+  packWeightUnit: string;
+  setPackWeightUnit: (v: string) => void;
+  packLength: string;
+  setPackLength: (v: string) => void;
+  packWidth: string;
+  setPackWidth: (v: string) => void;
+  packHeight: string;
+  setPackHeight: (v: string) => void;
+  onComplete: () => void;
+  actionLoading: boolean;
+  fetchStatus: () => void;
+}) {
+  return (
+    <div className="space-y-4">
+      {/* Packing Images */}
+      <PackingImageUpload
+        orderId={orderId}
+        taskId={taskId}
+        orderNumber={orderNumber}
+        images={packingImages}
+        onUploadSuccess={fetchStatus}
+        onDeleteSuccess={fetchStatus}
+        required
+        maxImages={5}
+      />
+
+      {/* Package Details */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <Scale className="w-4 h-4 text-gray-500" />
+          <span className="text-sm font-semibold text-gray-700">
+            Package Details
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">
+              Weight <span className="text-red-500">*</span>
+            </label>
+            <div className="flex gap-1">
+              <input
+                type="number"
+                step="0.1"
+                value={packWeight}
+                onChange={(e) => setPackWeight(e.target.value)}
+                placeholder="0.0"
+                className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              />
+              <select
+                value={packWeightUnit}
+                onChange={(e) => setPackWeightUnit(e.target.value)}
+                className="px-2 py-2 border border-border rounded-lg text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              >
+                <option value="ounce">oz</option>
+                <option value="pound">lb</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {[
+            { label: "Length", val: packLength, set: setPackLength },
+            { label: "Width", val: packWidth, set: setPackWidth },
+            { label: "Height", val: packHeight, set: setPackHeight },
+          ].map(({ label, val, set }) => (
+            <div key={label}>
+              <label className="block text-xs text-gray-500 mb-1">
+                {label} (in)
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={val}
+                onChange={(e) => set(e.target.value)}
+                placeholder="0"
+                className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              />
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={onComplete}
+          disabled={actionLoading || packingImages.length === 0 || !packWeight}
+          className="cursor-pointer w-full py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 flex items-center justify-center gap-2 transition"
+        >
+          {actionLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <CheckCircle2 className="w-4 h-4" />
+          )}
+          Complete Packing
+        </button>
+
+        {packingImages.length === 0 && (
+          <p className="text-xs text-amber-600 text-center mt-2">
+            Add at least one packing photo to continue
+          </p>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -2535,8 +2767,17 @@ function DirectPackingStep({
   actionLoading,
   packingImages,
   orderId,
-  taskId,
   orderNumber,
+  packWeight,
+  setPackWeight,
+  packWeightUnit,
+  setPackWeightUnit,
+  packLength,
+  setPackLength,
+  packWidth,
+  setPackWidth,
+  packHeight,
+  setPackHeight,
   onComplete,
   fetchStatus,
 }: {
@@ -2547,9 +2788,18 @@ function DirectPackingStep({
   actionLoading: boolean;
   packingImages: PackingImage[];
   orderId: string;
-  taskId: string;
   orderNumber: string;
-  onComplete: (data: PackingCompleteData) => void;
+  packWeight: string;
+  setPackWeight: (v: string) => void;
+  packWeightUnit: string;
+  setPackWeightUnit: (v: string) => void;
+  packLength: string;
+  setPackLength: (v: string) => void;
+  packWidth: string;
+  setPackWidth: (v: string) => void;
+  packHeight: string;
+  setPackHeight: (v: string) => void;
+  onComplete: () => void;
   fetchStatus: () => void;
 }) {
   const allVerified =
@@ -2623,12 +2873,22 @@ function DirectPackingStep({
         <div className="border-t pt-4 mt-4">
           <PackingCompleteForm
             orderId={orderId}
-            taskId={taskId}
+            taskId={packing.id}
             orderNumber={orderNumber}
             packingImages={packingImages}
-            onFetchStatus={fetchStatus}
+            packWeight={packWeight}
+            setPackWeight={setPackWeight}
+            packWeightUnit={packWeightUnit}
+            setPackWeightUnit={setPackWeightUnit}
+            packLength={packLength}
+            setPackLength={setPackLength}
+            packWidth={packWidth}
+            setPackWidth={setPackWidth}
+            packHeight={packHeight}
+            setPackHeight={setPackHeight}
             onComplete={onComplete}
             actionLoading={actionLoading}
+            fetchStatus={fetchStatus}
           />
         </div>
       )}

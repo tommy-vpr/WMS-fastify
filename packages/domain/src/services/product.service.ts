@@ -33,7 +33,21 @@ export interface ProductVariant {
   shopifyVariantId?: string | null;
   costPrice?: number | null;
   sellingPrice?: number | null;
+  // Single unit weight & dimensions
   weight?: number | null;
+  weightUnit?: string | null;
+  length?: number | null;
+  width?: number | null;
+  height?: number | null;
+  dimensionUnit?: string | null;
+  // Master case
+  mcQuantity?: number | null;
+  mcWeight?: number | null;
+  mcWeightUnit?: string | null;
+  mcLength?: number | null;
+  mcWidth?: number | null;
+  mcHeight?: number | null;
+  mcDimensionUnit?: string | null;
   trackLots: boolean;
   trackExpiry: boolean;
   createdAt: Date;
@@ -73,7 +87,21 @@ export interface ImportVariantData {
   shopifyVariantId?: string;
   costPrice?: number;
   sellingPrice?: number;
+  // Single unit weight & dimensions
   weight?: number;
+  weightUnit?: string;
+  length?: number;
+  width?: number;
+  height?: number;
+  dimensionUnit?: string;
+  // Master case
+  mcQuantity?: number;
+  mcWeight?: number;
+  mcWeightUnit?: string;
+  mcLength?: number;
+  mcWidth?: number;
+  mcHeight?: number;
+  mcDimensionUnit?: string;
   trackLots?: boolean;
   trackExpiry?: boolean;
 }
@@ -171,23 +199,14 @@ export class ProductService {
   // Queries
   // ==========================================================================
 
-  /**
-   * Get product by ID with variants
-   */
   async getProduct(id: string): Promise<ProductWithVariants | null> {
     return this.productRepo.findByIdWithVariants(id);
   }
 
-  /**
-   * Get product by SKU with variants
-   */
   async getProductBySku(sku: string): Promise<ProductWithVariants | null> {
     return this.productRepo.findBySkuWithVariants(sku);
   }
 
-  /**
-   * Get product with inventory levels
-   */
   async getProductWithInventory(
     id: string,
   ): Promise<ProductWithInventory | null> {
@@ -204,7 +223,6 @@ export class ProductService {
       };
     }
 
-    // Aggregate inventory across all variants
     let totalInventory = 0;
     let availableInventory = 0;
     const locationMap = new Map<
@@ -255,9 +273,6 @@ export class ProductService {
     };
   }
 
-  /**
-   * Search products
-   */
   async search(query: string, limit = 20): Promise<ProductWithVariants[]> {
     if (query.length < 2) {
       throw new ProductSearchError(
@@ -267,9 +282,6 @@ export class ProductService {
     return this.productRepo.search(query, limit);
   }
 
-  /**
-   * List products with pagination and filters
-   */
   async list(options: {
     skip?: number;
     take?: number;
@@ -284,26 +296,17 @@ export class ProductService {
     };
   }
 
-  /**
-   * Find variant by identifier (SKU, UPC, or barcode)
-   */
   async findVariant(identifier: string): Promise<ProductVariant | null> {
-    // Try SKU first
     let variant = await this.productRepo.findVariantBySku(identifier);
     if (variant) return variant;
 
-    // Try UPC
     variant = await this.productRepo.findVariantByUpc(identifier);
     if (variant) return variant;
 
-    // Try barcode
     variant = await this.productRepo.findVariantByBarcode(identifier);
     return variant;
   }
 
-  /**
-   * Get product statistics
-   */
   async getStats(): Promise<ProductStats> {
     return this.productRepo.getStats();
   }
@@ -312,9 +315,6 @@ export class ProductService {
   // Import / Create
   // ==========================================================================
 
-  /**
-   * Validate import data before processing
-   */
   validateImport(
     product: ImportProductData,
     variants: ImportVariantData[],
@@ -364,7 +364,6 @@ export class ProductService {
           variantUpcs.add(v.upc);
         }
 
-        // UPC validation (should be 12 digits for UPC-A)
         if (!/^\d{12,14}$/.test(v.upc)) {
           warnings.push(
             `${prefix}: UPC "${v.upc}" doesn't match standard format`,
@@ -375,13 +374,17 @@ export class ProductService {
       if (v.costPrice !== undefined && v.costPrice < 0) {
         errors.push(`${prefix}: Cost price cannot be negative`);
       }
-
       if (v.sellingPrice !== undefined && v.sellingPrice < 0) {
         errors.push(`${prefix}: Selling price cannot be negative`);
       }
-
       if (v.weight !== undefined && v.weight < 0) {
         errors.push(`${prefix}: Weight cannot be negative`);
+      }
+      if (v.mcWeight !== undefined && v.mcWeight < 0) {
+        errors.push(`${prefix}: MC weight cannot be negative`);
+      }
+      if (v.mcQuantity !== undefined && v.mcQuantity < 0) {
+        errors.push(`${prefix}: MC quantity cannot be negative`);
       }
     }
 
@@ -392,14 +395,10 @@ export class ProductService {
     };
   }
 
-  /**
-   * Import/upsert a product with variants
-   */
   async importProduct(
     product: ImportProductData,
     variants: ImportVariantData[],
   ): Promise<ImportResult> {
-    // Validate first
     const validation = this.validateImport(product, variants);
     if (!validation.valid) {
       throw new ProductImportError(
@@ -410,9 +409,6 @@ export class ProductService {
     return this.productRepo.upsertWithVariants(product, variants);
   }
 
-  /**
-   * Bulk import products
-   */
   async importBulk(
     items: Array<{ product: ImportProductData; variants: ImportVariantData[] }>,
   ): Promise<{
@@ -441,9 +437,6 @@ export class ProductService {
   // Updates
   // ==========================================================================
 
-  /**
-   * Update product
-   */
   async updateProduct(
     id: string,
     data: Partial<ImportProductData>,
@@ -452,13 +445,9 @@ export class ProductService {
     if (!existing) {
       throw new ProductNotFoundError(id);
     }
-
     return this.productRepo.update(id, data);
   }
 
-  /**
-   * Update variant
-   */
   async updateVariant(
     id: string,
     data: Partial<ImportVariantData>,
@@ -468,7 +457,6 @@ export class ProductService {
       throw new VariantNotFoundError(id);
     }
 
-    // Validate updates
     if (data.costPrice !== undefined && data.costPrice < 0) {
       throw new ProductValidationError("Cost price cannot be negative");
     }
@@ -479,16 +467,12 @@ export class ProductService {
     return this.productRepo.updateVariant(id, data);
   }
 
-  /**
-   * Deactivate a product (soft delete)
-   */
   async deactivateProduct(id: string): Promise<Product> {
     const existing = await this.productRepo.findByIdWithVariants(id);
     if (!existing) {
       throw new ProductNotFoundError(id);
     }
 
-    // Check for allocated inventory
     if (this.inventoryRepo) {
       for (const variant of existing.variants) {
         const hasAllocated = await this.inventoryRepo.hasAllocatedInventory(

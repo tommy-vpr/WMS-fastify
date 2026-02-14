@@ -7,8 +7,18 @@
 
 import { FastifyPluginAsync } from "fastify";
 import { prisma, orderRepository, Prisma } from "@wms/db";
-import { OrderService, orderAllocationService } from "@wms/domain";
+import {
+  OrderService,
+  orderAllocationService,
+  OrderPackageService,
+  BoxRecommendationService,
+} from "@wms/domain";
+import { orderPackageRepository } from "@wms/db";
 
+const orderPackageService = new OrderPackageService(
+  orderPackageRepository,
+  new BoxRecommendationService(),
+);
 // Adapter to match OrderService's OrderRepository interface
 const orderServiceRepo = {
   async findById(id: string) {
@@ -476,6 +486,19 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
           allowPartial,
         );
 
+        // Generate box recommendations after successful allocation
+        if (result.status === "ALLOCATED") {
+          try {
+            const { recommendation, packages } =
+              await orderPackageService.recommendAndSave(id);
+            console.log(
+              `[Orders] Box recommendation for order: ${packages.length} package(s)`,
+            );
+          } catch (err) {
+            console.error("[Orders] Box recommendation failed:", err);
+          }
+        }
+
         return reply.send({
           success: true,
           status: result.status,
@@ -804,6 +827,18 @@ export const orderRoutes: FastifyPluginAsync = async (app) => {
           orderIds,
           allowPartial,
         });
+
+        // Generate box recommendations for fully allocated orders
+        for (const allocated of result.fullyAllocated) {
+          try {
+            await orderPackageService.recommendAndSave(allocated.orderId);
+          } catch (err) {
+            console.error(
+              `[Orders] Box recommendation failed for ${allocated.orderId}:`,
+              err,
+            );
+          }
+        }
 
         return reply.send({
           success: true,

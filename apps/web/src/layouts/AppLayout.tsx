@@ -188,7 +188,7 @@ function CountBadge({
   if (compact) {
     // Small dot-style badge for compact bottom nav
     return (
-      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-rose-400 text-white text-[10px] font-bold rounded-full px-1 leading-none">
+      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-violet-500 text-white text-[10px] font-bold rounded-full px-1 leading-none">
         {display}
       </span>
     );
@@ -196,7 +196,7 @@ function CountBadge({
 
   // Sidebar pill badge
   return (
-    <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center bg-rose-400 text-white text-[10px] font-bold rounded-full px-1.5 leading-none">
+    <span className="ml-auto min-w-[20px] h-5 flex items-center justify-center bg-violet-500 text-white text-[10px] font-bold rounded-full px-1.5 leading-none">
       {display}
     </span>
   );

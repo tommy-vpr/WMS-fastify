@@ -464,7 +464,21 @@ export interface ProductImportItem {
     upc?: string;
     barcode?: string;
     name: string;
+    // Single unit weight & dimensions
     weight?: number;
+    weightUnit?: string;
+    length?: number;
+    width?: number;
+    height?: number;
+    dimensionUnit?: string;
+    // Master case
+    mcQuantity?: number;
+    mcWeight?: number;
+    mcWeightUnit?: string;
+    mcLength?: number;
+    mcWidth?: number;
+    mcHeight?: number;
+    mcDimensionUnit?: string;
     costPrice?: number;
     sellingPrice?: number;
     shopifyVariantId?: string;

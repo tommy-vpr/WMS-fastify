@@ -9,6 +9,8 @@ import { FastifyPluginAsync } from "fastify";
 import { prisma, productRepository } from "@wms/db";
 import {
   ProductService,
+  parseProductCsv,
+  parseProductCsvFlat,
   ProductNotFoundError,
   ProductImportError,
   ProductSearchError,
@@ -64,7 +66,6 @@ const inventoryQueryRepo = {
       },
     });
 
-    // Group by location
     const locationMap = new Map<
       string,
       { locationName: string; quantity: number }
@@ -107,7 +108,6 @@ const inventoryQueryRepo = {
 const productRepoAdapter = {
   ...productRepository,
 
-  // Add missing method for barcode lookup
   async findVariantByBarcode(barcode: string) {
     return prisma.productVariant.findFirst({
       where: { barcode },
@@ -200,7 +200,6 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
         return reply.status(404).send({ error: "Variant not found" });
       }
 
-      // Get full product with this variant
       const product = await productService.getProduct(variant.productId);
 
       return reply.send({
@@ -285,6 +284,18 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
       costPrice?: number;
       sellingPrice?: number;
       weight?: number;
+      weightUnit?: string;
+      length?: number;
+      width?: number;
+      height?: number;
+      dimensionUnit?: string;
+      mcQuantity?: number;
+      mcWeight?: number;
+      mcWeightUnit?: string;
+      mcLength?: number;
+      mcWidth?: number;
+      mcHeight?: number;
+      mcDimensionUnit?: string;
       trackLots?: boolean;
       trackExpiry?: boolean;
     };
@@ -346,7 +357,6 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
       return reply.status(400).send({ error: "No products provided" });
     }
 
-    // Validate all products using service
     const validationErrors: string[] = [];
 
     for (let i = 0; i < products.length; i++) {
@@ -391,6 +401,99 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
   });
 
   /**
+   * POST /products/import/csv
+   * Parse CSV rows server-side, then enqueue the import job
+   *
+   * Body: { rows: Record<string, string>[], mode?: "grouped" | "flat" }
+   *
+   * Returns a jobId for polling progress via GET /products/import/job/:jobId
+   */
+  app.post<{
+    Body: {
+      rows: Record<string, string>[];
+      mode?: "grouped" | "flat";
+    };
+  }>("/import/csv", async (request, reply) => {
+    const { rows, mode = "grouped" } = request.body;
+
+    if (!rows || rows.length === 0) {
+      return reply.status(400).send({ error: "No CSV rows provided" });
+    }
+
+    // Parse CSV rows into product + variant groups
+    const parseResult =
+      mode === "flat" ? parseProductCsvFlat(rows) : parseProductCsv(rows);
+
+    if (parseResult.groups.length === 0) {
+      return reply.status(400).send({
+        error: "No valid products found in CSV",
+        parseErrors: parseResult.errors,
+        skipped: parseResult.skipped,
+      });
+    }
+
+    // Convert parsed groups into ProductImportItem[] for the queue
+    const products: ProductImportItem[] = parseResult.groups.map((group) => ({
+      product: group.product,
+      variants: group.variants,
+    }));
+
+    // Validate before enqueuing
+    const validationErrors: string[] = [];
+
+    for (let i = 0; i < products.length; i++) {
+      const item = products[i];
+      const validation = productService.validateImport(
+        item.product,
+        item.variants,
+      );
+
+      if (!validation.valid) {
+        validationErrors.push(
+          `Product ${i + 1} (${item.product?.sku || "unknown"}): ${validation.errors.join(", ")}`,
+        );
+      }
+    }
+
+    if (validationErrors.length > 0) {
+      return reply.status(400).send({
+        error: "Validation failed",
+        parseErrors: parseResult.errors,
+        details: validationErrors,
+      });
+    }
+
+    // Enqueue the import job
+    const idempotencyKey = `csv-import-${Date.now()}-${products.length}`;
+
+    const job = await enqueueImportProducts({
+      products,
+      idempotencyKey,
+    });
+
+    app.log.info(
+      {
+        jobId: job.id,
+        totalRows: parseResult.totalRows,
+        productCount: products.length,
+        skipped: parseResult.skipped,
+      },
+      "CSV product import job queued",
+    );
+
+    return reply.status(202).send({
+      success: true,
+      jobId: job.id,
+      totalRows: parseResult.totalRows,
+      productsQueued: products.length,
+      parseErrors: parseResult.errors,
+      skipped: parseResult.skipped,
+      message: `Import of ${products.length} products queued from ${parseResult.totalRows} CSV rows`,
+      statusUrl: `/products/import/job/${job.id}`,
+    });
+  });
+
+  /**
    * POST /products/import/single
    * Import a single product immediately
    */
@@ -411,6 +514,18 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
         costPrice?: number;
         sellingPrice?: number;
         weight?: number;
+        weightUnit?: string;
+        length?: number;
+        width?: number;
+        height?: number;
+        dimensionUnit?: string;
+        mcQuantity?: number;
+        mcWeight?: number;
+        mcWeightUnit?: string;
+        mcLength?: number;
+        mcWidth?: number;
+        mcHeight?: number;
+        mcDimensionUnit?: string;
       }>;
     };
   }>("/import/single", async (request, reply) => {
@@ -433,7 +548,6 @@ export const productRoutes: FastifyPluginAsync = async (app) => {
 
       app.log.error(error, "Product import failed");
 
-      // Handle Prisma unique constraint violations
       if ((error as any).code === "P2002") {
         return reply.status(409).send({ error: "Duplicate SKU or UPC" });
       }

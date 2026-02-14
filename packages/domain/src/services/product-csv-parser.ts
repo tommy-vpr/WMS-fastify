@@ -1,67 +1,53 @@
 /**
- * Product CSV Import Parser
- *
- * Parses the WH1 location-product CSV format into UpsertProductData + UpsertVariantData
- * ready for productRepository.upsertWithVariants().
- *
- * CSV columns:
- *   PRODUCT, UPC, SKU, NAME, CATEGORY, VOLUME, STRENGTH,
- *   MC WEIGHT, MC QTY, MC DIMENSION, SINGLE DIMENSION, SINGLE WEIGHT
+ * Product CSV Parser
+ * Transforms raw CSV rows into ImportProductData + ImportVariantData
  *
  * Save to: packages/domain/src/services/product-csv-parser.ts
- *         (or wherever your import logic lives)
  */
 
-import type { UpsertProductData, UpsertVariantData } from "@wms/db";
+import type {
+  ImportProductData,
+  ImportVariantData,
+} from "./product.service.js";
 
 // ============================================================================
 // Types
 // ============================================================================
 
-export interface ParsedWeight {
-  value: number;
-  unit: string; // "oz", "lbs", "g", "kg"
-}
-
-export interface ParsedDimensions {
-  length: number;
-  width: number;
-  height: number;
-  unit: string; // "in", "cm"
-}
-
 export interface CsvRow {
-  PRODUCT: string;
-  UPC: string;
-  SKU: string;
-  NAME: string;
-  CATEGORY: string;
-  VOLUME: string;
-  STRENGTH: string;
-  "MC WEIGHT": string;
-  "MC QTY": string;
-  "MC DIMENSION": string;
-  "SINGLE DIMENSION": string;
-  "SINGLE WEIGHT": string;
+  [key: string]: string;
 }
 
 export interface ProductImportGroup {
-  product: UpsertProductData;
-  variants: UpsertVariantData[];
+  product: ImportProductData;
+  variants: ImportVariantData[];
 }
 
-export interface ParseResult {
+export interface CsvParseResult {
   groups: ProductImportGroup[];
   errors: string[];
   skipped: number;
+  totalRows: number;
+}
+
+interface ParsedWeight {
+  value: number;
+  unit: string;
+}
+
+interface ParsedDimensions {
+  length: number;
+  width: number;
+  height: number;
+  unit: string;
 }
 
 // ============================================================================
-// Parsers
+// Field Parsers
 // ============================================================================
 
 /**
- * Parse weight string like "35 lbs", "5.59oz", "12 lbs"
+ * Parse weight string: "35 lbs", "5.59oz", "12 lbs"
  */
 export function parseWeight(raw: string | undefined): ParsedWeight | null {
   if (!raw || !raw.trim()) return null;
@@ -70,25 +56,19 @@ export function parseWeight(raw: string | undefined): ParsedWeight | null {
   if (!match) return null;
 
   let unit = match[2].toLowerCase();
-  // Normalize "lb" → "lbs"
   if (unit === "lb") unit = "lbs";
 
-  return {
-    value: parseFloat(match[1]),
-    unit,
-  };
+  return { value: parseFloat(match[1]), unit };
 }
 
 /**
- * Parse dimension string like "17 in x17 in x 5 in", "1.6 in x 4.7 in x 1.6 in"
- * Handles inconsistent spacing around "x"
+ * Parse dimension string: "17 in x17 in x 5 in", "1.6 in x 4.7 in x 1.6 in"
  */
 export function parseDimensions(
   raw: string | undefined,
 ): ParsedDimensions | null {
   if (!raw || !raw.trim()) return null;
 
-  // Match patterns: "17 in x17 in x 5 in" or "1.6 in x 4.7 in x 1.6 in"
   const match = raw
     .trim()
     .match(/([\d.]+)\s*(\w+)\s*x\s*([\d.]+)\s*\w*\s*x\s*([\d.]+)\s*(\w+)/i);
@@ -103,37 +83,44 @@ export function parseDimensions(
   };
 }
 
-/**
- * Parse MC QTY string like "100"
- */
-export function parseMcQuantity(raw: string | undefined): number | undefined {
-  if (!raw || !raw.trim()) return undefined;
-  const parsed = parseInt(raw.trim(), 10);
-  return isNaN(parsed) ? undefined : parsed;
-}
-
 // ============================================================================
 // Row → Variant
 // ============================================================================
 
 /**
- * Convert a single CSV row into variant data
+ * Normalize CSV headers to uppercase for consistent access
  */
-export function rowToVariantData(row: CsvRow): UpsertVariantData {
-  const singleWeight = parseWeight(row["SINGLE WEIGHT"]);
-  const singleDims = parseDimensions(row["SINGLE DIMENSION"]);
-  const mcWeight = parseWeight(row["MC WEIGHT"]);
-  const mcDims = parseDimensions(row["MC DIMENSION"]);
-  const mcQty = parseMcQuantity(row["MC QTY"]);
+function normalizeRow(row: CsvRow): CsvRow {
+  const normalized: CsvRow = {};
+  for (const [key, value] of Object.entries(row)) {
+    normalized[key.toUpperCase().trim()] = (value ?? "").trim();
+  }
+  return normalized;
+}
 
-  // Build variant name from available fields: "Banana 100ml 00mg"
-  const parts = [row.NAME, row.VOLUME, row.STRENGTH].filter(Boolean);
-  const variantName = parts.join(" ") || row.PRODUCT || row.SKU;
+/**
+ * Convert a normalized CSV row into ImportVariantData with all weight/dimension fields
+ */
+function rowToVariantData(row: CsvRow): ImportVariantData {
+  const singleWeight = parseWeight(
+    row["SINGLE WEIGHT"] || row["SINGLE_WEIGHT"] || row["WEIGHT"],
+  );
+  const singleDims = parseDimensions(
+    row["SINGLE DIMENSION"] || row["SINGLE_DIMENSION"],
+  );
+  const mcWeight = parseWeight(row["MC WEIGHT"] || row["MC_WEIGHT"]);
+  const mcDims = parseDimensions(row["MC DIMENSION"] || row["MC_DIMENSION"]);
+  const mcQty = row["MC QTY"] || row["MC_QTY"];
+  const parsedMcQty = mcQty ? parseInt(mcQty, 10) : undefined;
+
+  // Build a descriptive variant name
+  const parts = [row["NAME"], row["VOLUME"], row["STRENGTH"]].filter(Boolean);
+  const variantName = parts.join(" ") || row["PRODUCT"] || row["SKU"];
 
   return {
-    sku: row.SKU.trim(),
-    upc: row.UPC?.trim() || undefined,
-    barcode: row.UPC?.trim() || undefined,
+    sku: row["SKU"],
+    upc: row["UPC"] || undefined,
+    barcode: row["UPC"] || row["BARCODE"] || undefined,
     name: variantName,
 
     // Single unit
@@ -145,7 +132,7 @@ export function rowToVariantData(row: CsvRow): UpsertVariantData {
     dimensionUnit: singleDims?.unit,
 
     // Master case
-    mcQuantity: mcQty,
+    mcQuantity: isNaN(parsedMcQty!) ? undefined : parsedMcQty,
     mcWeight: mcWeight?.value,
     mcWeightUnit: mcWeight?.unit,
     mcLength: mcDims?.length,
@@ -156,141 +143,118 @@ export function rowToVariantData(row: CsvRow): UpsertVariantData {
 }
 
 // ============================================================================
-// Grouping Strategy
+// Grouped Parse (multiple variants per product)
 // ============================================================================
 
 /**
- * Build a product group key from a CSV row.
+ * Parse CSV rows into grouped ProductImportGroups.
  *
- * Groups by CATEGORY + NAME to create one Product per flavor-per-line,
- * e.g. "Skwezed ICE::Banana" → product with variants for each volume/strength.
+ * Groups by CATEGORY + NAME so each flavor/product line becomes one Product
+ * with multiple variants (one per volume/strength combo).
  *
- * Adjust this function if your grouping needs differ.
- */
-function getProductGroupKey(row: CsvRow): string {
-  const category = (row.CATEGORY || "Unknown").trim();
-  const name = (row.NAME || "Unknown").trim();
-  return `${category}::${name}`;
-}
-
-/**
- * Derive the product-level SKU from the group key.
- * Uses the first variant's SKU base (strips the strength suffix).
- * e.g. "SKWBAI100-00" → "SKWBAI100"
- */
-function deriveProductSku(rows: CsvRow[]): string {
-  const firstSku = rows[0].SKU.trim();
-  // Try to strip trailing -XX suffix for a product-level SKU
-  const baseSku = firstSku.replace(/-\d+$/, "");
-  return baseSku;
-}
-
-// ============================================================================
-// Main Parser
-// ============================================================================
-
-/**
- * Parse an array of CSV rows into grouped ProductImportGroups.
+ * CSV columns (case-insensitive):
+ *   PRODUCT, UPC, SKU, NAME, CATEGORY, VOLUME, STRENGTH,
+ *   MC WEIGHT, MC QTY, MC DIMENSION, SINGLE DIMENSION, SINGLE WEIGHT
  *
  * Usage:
  * ```ts
- * import { parse } from "csv-parse/sync";
+ * import { parseProductCsv } from "@wms/domain";
  *
- * const rows = parse(csvContent, { columns: true, skip_empty_lines: true });
- * const result = parseProductCsv(rows);
- *
+ * const result = parseProductCsv(csvRows);
  * for (const group of result.groups) {
- *   await productRepository.upsertWithVariants(group.product, group.variants);
+ *   await productService.importProduct(group.product, group.variants);
  * }
  * ```
  */
-export function parseProductCsv(rows: CsvRow[]): ParseResult {
+export function parseProductCsv(rows: CsvRow[]): CsvParseResult {
   const errors: string[] = [];
   let skipped = 0;
 
-  // Group rows by product
-  const groupMap = new Map<string, CsvRow[]>();
+  const groupMap = new Map<
+    string,
+    { product: ImportProductData; variants: ImportVariantData[] }
+  >();
 
   for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
+    const row = normalizeRow(rows[i]);
+    const rowNum = i + 2; // +2 for 1-indexed + header row
 
     // Validate required fields
-    if (!row.SKU?.trim()) {
-      errors.push(`Row ${i + 1}: missing SKU`);
+    if (!row["SKU"]) {
+      errors.push(`Row ${rowNum}: missing SKU`);
       skipped++;
       continue;
     }
 
-    if (!row.NAME?.trim() && !row.PRODUCT?.trim()) {
-      errors.push(`Row ${i + 1} (${row.SKU}): missing NAME and PRODUCT`);
+    if (!row["NAME"] && !row["PRODUCT"]) {
+      errors.push(`Row ${rowNum} (${row["SKU"]}): missing NAME and PRODUCT`);
       skipped++;
       continue;
     }
 
-    const key = getProductGroupKey(row);
-    const existing = groupMap.get(key);
-    if (existing) {
-      existing.push(row);
-    } else {
-      groupMap.set(key, [row]);
+    // Group key: CATEGORY + NAME → one product per flavor-per-line
+    const category = row["CATEGORY"] || "General";
+    const name = row["NAME"] || row["PRODUCT"] || "Unknown";
+    const groupKey = `${category}::${name}`;
+
+    if (!groupMap.has(groupKey)) {
+      // Derive a product-level SKU from the first variant's SKU base
+      const baseSku = row["SKU"].replace(/-\d+$/, "");
+
+      groupMap.set(groupKey, {
+        product: {
+          sku: baseSku,
+          name,
+          brand: category,
+          category,
+        },
+        variants: [],
+      });
     }
+
+    groupMap.get(groupKey)!.variants.push(rowToVariantData(row));
   }
 
-  // Convert groups to import format
-  const groups: ProductImportGroup[] = [];
-
-  for (const [key, groupRows] of groupMap) {
-    const [category, name] = key.split("::");
-    const productSku = deriveProductSku(groupRows);
-
-    const product: UpsertProductData = {
-      sku: productSku,
-      name: name || groupRows[0].PRODUCT,
-      brand: category, // CATEGORY = brand/product line (e.g. "Skwezed ICE")
-      category: category,
-    };
-
-    const variants: UpsertVariantData[] = groupRows.map(rowToVariantData);
-
-    groups.push({ product, variants });
-  }
-
-  return { groups, errors, skipped };
+  return {
+    groups: Array.from(groupMap.values()),
+    errors,
+    skipped,
+    totalRows: rows.length,
+  };
 }
 
 // ============================================================================
-// Flat mode (no grouping — each row = 1 product + 1 variant)
+// Flat Parse (each row = one product + one variant)
 // ============================================================================
 
 /**
- * Alternative: parse each CSV row as its own product with a single variant.
- * Use this if every SKU should be its own product.
+ * Alternative: each CSV row becomes its own product with a single variant.
+ * Use this when every SKU should be its own product.
  */
-export function parseProductCsvFlat(rows: CsvRow[]): ParseResult {
+export function parseProductCsvFlat(rows: CsvRow[]): CsvParseResult {
   const errors: string[] = [];
   let skipped = 0;
   const groups: ProductImportGroup[] = [];
 
   for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
+    const row = normalizeRow(rows[i]);
+    const rowNum = i + 2;
 
-    if (!row.SKU?.trim()) {
-      errors.push(`Row ${i + 1}: missing SKU`);
+    if (!row["SKU"]) {
+      errors.push(`Row ${rowNum}: missing SKU`);
       skipped++;
       continue;
     }
 
-    const product: UpsertProductData = {
-      sku: row.SKU.trim(),
-      name: row.PRODUCT?.trim() || row.NAME?.trim() || row.SKU.trim(),
-      brand: row.CATEGORY?.trim() || undefined,
-      category: row.CATEGORY?.trim() || undefined,
+    const product: ImportProductData = {
+      sku: row["SKU"],
+      name: row["PRODUCT"] || row["NAME"] || row["SKU"],
+      brand: row["CATEGORY"] || undefined,
+      category: row["CATEGORY"] || undefined,
     };
 
-    const variant = rowToVariantData(row);
-
-    groups.push({ product, variants: [variant] });
+    groups.push({ product, variants: [rowToVariantData(row)] });
   }
 
-  return { groups, errors, skipped };
+  return { groups, errors, skipped, totalRows: rows.length };
 }

@@ -308,6 +308,28 @@ export class OrderAllocationService {
     });
   }
 
+  /**
+   * Find backordered/partially allocated orders that need a specific variant
+   * Called when new inventory arrives (receiving, adjustments)
+   */
+  async checkBackorderedOrders(productVariantId: string): Promise<string[]> {
+    const orders = await prisma.order.findMany({
+      where: {
+        status: { in: ["BACKORDERED", "PARTIALLY_ALLOCATED"] },
+        items: {
+          some: {
+            productVariantId,
+            matched: true,
+          },
+        },
+      },
+      select: { id: true },
+      orderBy: { createdAt: "asc" }, // FIFO - oldest orders first
+    });
+
+    return orders.map((o) => o.id);
+  }
+
   // ============================================================================
   // Release allocations
   // ============================================================================

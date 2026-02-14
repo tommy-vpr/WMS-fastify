@@ -47,6 +47,19 @@ export * from "./cycle-count.service.js";
 // Invoice
 export * from "./invoice.service.js";
 
+// Order packaging
+// Order packaging
+export {
+  BoxRecommendationService,
+  type OrderItemInput,
+  type PackageRecommendation,
+  type PackageItemRecommendation,
+  type RecommendationResult,
+  type BoxRecommendationServiceDeps,
+  type VariantDimensions,
+} from "./box-recommendation.service.js";
+export * from "./order-package.service.js";
+
 // GCP
 export {
   PackingImageService,

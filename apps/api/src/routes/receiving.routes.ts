@@ -126,7 +126,9 @@ export const receivingRoutes: FastifyPluginAsync = async (app) => {
   /**
    * GET /receiving/inventory-planner/purchase-orders
    */
-  app.get("/inventory-planner/purchase-orders", async (request, reply) => {
+  app.get<{
+    Querystring: { status?: string; limit?: string; page?: string };
+  }>("/inventory-planner/purchase-orders", async (request, reply) => {
     if (!IP_API_URL || !IP_API_KEY || !IP_ACCOUNT_ID) {
       return reply
         .status(500)
@@ -218,84 +220,83 @@ export const receivingRoutes: FastifyPluginAsync = async (app) => {
   /**
    * GET /receiving/inventory-planner/purchase-orders/:poId
    */
-  app.get(
-    "/inventory-planner/purchase-orders/:poId",
-    async (request, reply) => {
-      if (!IP_API_URL || !IP_API_KEY || !IP_ACCOUNT_ID) {
-        return reply
-          .status(500)
-          .send({ error: "Inventory Planner not configured" });
+  app.get<{
+    Params: { poId: string };
+  }>("/inventory-planner/purchase-orders/:poId", async (request, reply) => {
+    if (!IP_API_URL || !IP_API_KEY || !IP_ACCOUNT_ID) {
+      return reply
+        .status(500)
+        .send({ error: "Inventory Planner not configured" });
+    }
+
+    const { poId } = request.params;
+
+    try {
+      const response = await fetch(`${IP_API_URL}/purchase-orders/${poId}`, {
+        headers: {
+          Authorization: IP_API_KEY,
+          Account: IP_ACCOUNT_ID,
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          "[Receiving] IP single PO error:",
+          response.status,
+          errorText,
+        );
+        return reply.status(response.status).send({ error: errorText });
       }
 
-      const { poId } = request.params;
+      const data = await response.json();
 
-      try {
-        const response = await fetch(`${IP_API_URL}/purchase-orders/${poId}`, {
-          headers: {
-            Authorization: IP_API_KEY,
-            Account: IP_ACCOUNT_ID,
-            Accept: "application/json",
-          },
-        });
+      // 👇 ADD LOGGING
+      console.log("IP Single PO Response keys:", Object.keys(data));
+      console.log("IP Single PO Response:", JSON.stringify(data, null, 2));
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error(
-            "[Receiving] IP single PO error:",
-            response.status,
-            errorText,
-          );
-          return reply.status(response.status).send({ error: errorText });
-        }
+      // 👇 Handle different response formats (likely "purchase-order" with hyphen)
+      const rawPO =
+        data["purchase-order"] ||
+        data.purchase_order ||
+        data.purchaseOrder ||
+        data;
 
-        const data = await response.json();
+      const existingSession = await prisma.receivingSession.findFirst({
+        where: { poId },
+        select: { id: true, status: true },
+        orderBy: { createdAt: "desc" },
+      });
 
-        // 👇 ADD LOGGING
-        console.log("IP Single PO Response keys:", Object.keys(data));
-        console.log("IP Single PO Response:", JSON.stringify(data, null, 2));
+      // Transform to frontend format
+      const purchaseOrder = {
+        id: rawPO.id,
+        reference: rawPO.reference,
+        vendor:
+          rawPO.vendor_display_name ||
+          rawPO.vendor ||
+          rawPO.source_display_name,
+        status: rawPO.status,
+        expectedDate: rawPO.expected_date,
+        items: (rawPO.items || []).map((item: any) => ({
+          sku: item.sku?.trim(),
+          productName: item.title || item.name || item.sku,
+          quantity: item.replenishment || item.remaining || 0,
+        })),
+      };
 
-        // 👇 Handle different response formats (likely "purchase-order" with hyphen)
-        const rawPO =
-          data["purchase-order"] ||
-          data.purchase_order ||
-          data.purchaseOrder ||
-          data;
-
-        const existingSession = await prisma.receivingSession.findFirst({
-          where: { poId },
-          select: { id: true, status: true },
-          orderBy: { createdAt: "desc" },
-        });
-
-        // Transform to frontend format
-        const purchaseOrder = {
-          id: rawPO.id,
-          reference: rawPO.reference,
-          vendor:
-            rawPO.vendor_display_name ||
-            rawPO.vendor ||
-            rawPO.source_display_name,
-          status: rawPO.status,
-          expectedDate: rawPO.expected_date,
-          items: (rawPO.items || []).map((item: any) => ({
-            sku: item.sku?.trim(),
-            productName: item.title || item.name || item.sku,
-            quantity: item.replenishment || item.remaining || 0,
-          })),
-        };
-
-        return reply.send({
-          purchaseOrder,
-          receivingSession: existingSession,
-        });
-      } catch (err: any) {
-        console.error("[Receiving] IP API error:", err);
-        return reply
-          .status(500)
-          .send({ error: "Failed to fetch purchase order" });
-      }
-    },
-  );
+      return reply.send({
+        purchaseOrder,
+        receivingSession: existingSession,
+      });
+    } catch (err: any) {
+      console.error("[Receiving] IP API error:", err);
+      return reply
+        .status(500)
+        .send({ error: "Failed to fetch purchase order" });
+    }
+  });
 
   // ─────────────────────────────────────────────────────────────────────────
   // PARAMETRIC ROUTES (/:sessionId) - MUST BE LAST

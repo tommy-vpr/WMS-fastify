@@ -833,7 +833,34 @@ export class ShippingService {
         },
       });
 
-      for (const shippedItem of items || []) {
+      // Derive shipped items from packages (primary) or top-level items (legacy fallback)
+      const shippedItems: Array<{ sku: string; quantity: number }> = [];
+
+      // Collect from package items first
+      for (const lp of allLabelPackages) {
+        for (const item of lp.items || []) {
+          const existing = shippedItems.find((si) => si.sku === item.sku);
+          if (existing) {
+            existing.quantity += item.quantity;
+          } else {
+            shippedItems.push({ sku: item.sku, quantity: item.quantity });
+          }
+        }
+      }
+
+      // Fallback: top-level items or all order items
+      if (shippedItems.length === 0) {
+        const fallback =
+          items && items.length > 0
+            ? items
+            : order.items.map((oi) => ({
+                sku: oi.productVariant?.sku || oi.sku,
+                quantity: oi.quantity,
+              }));
+        shippedItems.push(...fallback);
+      }
+
+      for (const shippedItem of shippedItems) {
         const orderItem = order.items.find(
           (oi) => oi.productVariant?.sku === shippedItem.sku,
         );

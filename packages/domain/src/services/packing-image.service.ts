@@ -5,7 +5,7 @@
  */
 
 import { PrismaClient } from "@wms/db";
-import { getStorageService, type UploadResult } from "./storage.service";
+import { getStorageService, type UploadResult } from "./storage.service.js";
 import sharp from "sharp";
 
 // ─────────────────────────────────────────────────────────────────────────────

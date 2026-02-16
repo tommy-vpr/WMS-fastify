@@ -9,7 +9,7 @@ import type {
   PaymentStatus,
   Priority,
   Prisma,
-} from "../../prisma/generated/client/index.js";
+} from "@prisma/client";
 
 export type { OrderStatus, PaymentStatus, Priority };
 

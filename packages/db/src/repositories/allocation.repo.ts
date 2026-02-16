@@ -7,7 +7,7 @@ import { prisma } from "../client.js";
 import type {
   AllocationStatus,
   Prisma,
-} from "../../prisma/generated/client/index.js";
+} from "@prisma/client";
 
 export type { AllocationStatus };
 

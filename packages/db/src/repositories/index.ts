@@ -9,8 +9,9 @@ export { allocationRepository } from "./allocation.repo.js";
 export { inventoryRepository } from "./inventory.repo.js";
 export { orderRepository } from "./order.repo.js";
 
-export * from "./product.repo.js";
-export * from "./order-package.repo.js";
+// Use named exports instead of export *
+export { productRepository } from "./product.repo.js";
+export { orderPackageRepository } from "./order-package.repo.js";
 
 // Fulfillment pipeline
 export { pickingRepository } from "./picking.repo.js";

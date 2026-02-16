@@ -1,13 +1,8 @@
-// export { prisma, PrismaClient } from "./client.js";
-// export * from "../prisma/generated/client";
-
-// Client
 export { prisma, PrismaClient } from "./client.js";
+export * from "@prisma/client";
+export * from "./repositories/index.js";
 
-// Prisma namespace (for error types, etc.)
-export { Prisma } from "../prisma/generated/client/index.js";
-
-// Prisma types
+// Prisma enums / types
 export type {
   OrderStatus,
   PaymentStatus,
@@ -21,7 +16,4 @@ export type {
   WorkTaskEventType,
   LocationType,
   UserRole,
-} from "../prisma/generated/client/index.js";
-
-// Repositories
-export * from "./repositories/index.js";
+} from "@prisma/client";

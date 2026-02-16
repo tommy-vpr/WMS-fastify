@@ -7,7 +7,7 @@ import { prisma } from "../client.js";
 import type {
   InventoryStatus,
   Prisma,
-} from "../../prisma/generated/client/index.js";
+} from "@prisma/client";
 
 export type { InventoryStatus };
 

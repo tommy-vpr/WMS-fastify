@@ -11,7 +11,7 @@ import type {
   WorkTaskItemStatus,
   WorkTaskEventType,
   Prisma,
-} from "../../prisma/generated/client/index.js";
+} from "@prisma/client";
 
 export type {
   WorkTaskType,

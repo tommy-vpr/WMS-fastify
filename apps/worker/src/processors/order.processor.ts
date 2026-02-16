@@ -1,6 +1,8 @@
 /**
  * Order Processor
- * Handles order allocation jobs
+ * Handles order allocation jobs + triggers box recommendation after allocation
+ *
+ * Save to: apps/worker/src/processors/order.processor.ts
  */
 
 import { Job } from "bullmq";
@@ -13,10 +15,21 @@ import {
   enqueueAllocateOrder,
 } from "@wms/queue";
 import { orderAllocationService } from "@wms/domain";
+import { OrderPackageService, BoxRecommendationService } from "@wms/domain";
+import { orderPackageRepository } from "@wms/db";
 
-// ============================================================================
+// =============================================================================
+// Initialize Services
+// =============================================================================
+
+const orderPackageService = new OrderPackageService(
+  orderPackageRepository,
+  new BoxRecommendationService(),
+);
+
+// =============================================================================
 // Job Processors
-// ============================================================================
+// =============================================================================
 
 async function processAllocateOrder(job: Job<AllocateOrderJobData>) {
   const { orderId, allowPartial = true } = job.data;
@@ -32,6 +45,35 @@ async function processAllocateOrder(job: Job<AllocateOrderJobData>) {
     `[Orders] Order ${result.orderNumber}: ${result.status} ` +
       `(${result.allocatedItems} allocated, ${result.backorderedItems} backordered, ${result.unmatchedItems} unmatched)`,
   );
+
+  // ── Box Recommendation ──────────────────────────────────────────────────
+  // After successful full allocation, generate package recommendations
+  // so the packing UI has pre-computed box assignments
+  if (result.status === "ALLOCATED") {
+    try {
+      const { recommendation, packages } =
+        await orderPackageService.recommendAndSave(orderId);
+
+      console.log(
+        `[Orders] Box recommendation for ${result.orderNumber}: ` +
+          `${packages.length} package(s), ` +
+          `${recommendation.warnings.length} warning(s)`,
+      );
+
+      if (recommendation.itemsMissingWeight.length > 0) {
+        console.warn(
+          `[Orders] Missing weight data for: ${recommendation.itemsMissingWeight.join(", ")}`,
+        );
+      }
+    } catch (err) {
+      // Don't fail allocation if box recommendation fails
+      // Packer can still manually assign boxes
+      console.error(
+        `[Orders] Box recommendation failed for ${result.orderNumber}:`,
+        err,
+      );
+    }
+  }
 
   return result;
 }
@@ -54,6 +96,18 @@ async function processAllocateOrders(job: Job<AllocateOrdersJobData>) {
       `${result.onHold.length} on hold, ` +
       `${result.errors.length} errors`,
   );
+
+  // ── Box Recommendations for fully allocated orders ──────────────────────
+  for (const allocated of result.fullyAllocated) {
+    try {
+      await orderPackageService.recommendAndSave(allocated.orderId);
+    } catch (err) {
+      console.error(
+        `[Orders] Box recommendation failed for order ${allocated.orderId}:`,
+        err,
+      );
+    }
+  }
 
   return result;
 }
@@ -86,7 +140,6 @@ async function processCheckBackorders(job: Job<CheckBackordersJobData>) {
       `[Orders] Found ${orderIds.length} backordered orders to retry`,
     );
 
-    // Enqueue allocation jobs for each order
     for (const orderId of orderIds) {
       await enqueueAllocateOrder({
         orderId,
@@ -99,9 +152,9 @@ async function processCheckBackorders(job: Job<CheckBackordersJobData>) {
   return { productVariantId, ordersFound: orderIds.length, orderIds };
 }
 
-// ============================================================================
+// =============================================================================
 // Main Processor
-// ============================================================================
+// =============================================================================
 
 export async function processOrderJob(job: Job): Promise<unknown> {
   console.log(`[Orders] Processing job: ${job.name} (${job.id})`);

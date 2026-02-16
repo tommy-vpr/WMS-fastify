@@ -34,7 +34,21 @@ export interface ProductVariant {
   shopifyVariantId: string | null;
   costPrice: Prisma.Decimal | null;
   sellingPrice: Prisma.Decimal | null;
+  // Single unit weight & dimensions
   weight: Prisma.Decimal | null;
+  weightUnit: string | null;
+  length: Prisma.Decimal | null;
+  width: Prisma.Decimal | null;
+  height: Prisma.Decimal | null;
+  dimensionUnit: string | null;
+  // Master case
+  mcQuantity: number | null;
+  mcWeight: Prisma.Decimal | null;
+  mcWeightUnit: string | null;
+  mcLength: Prisma.Decimal | null;
+  mcWidth: Prisma.Decimal | null;
+  mcHeight: Prisma.Decimal | null;
+  mcDimensionUnit: string | null;
   trackLots: boolean;
   trackExpiry: boolean;
   createdAt: Date;
@@ -63,7 +77,21 @@ export interface UpsertVariantData {
   shopifyVariantId?: string;
   costPrice?: number;
   sellingPrice?: number;
+  // Single unit weight & dimensions
   weight?: number;
+  weightUnit?: string;
+  length?: number;
+  width?: number;
+  height?: number;
+  dimensionUnit?: string;
+  // Master case
+  mcQuantity?: number;
+  mcWeight?: number;
+  mcWeightUnit?: string;
+  mcLength?: number;
+  mcWidth?: number;
+  mcHeight?: number;
+  mcDimensionUnit?: string;
   trackLots?: boolean;
   trackExpiry?: boolean;
 }
@@ -74,6 +102,47 @@ export interface ImportResult {
   created: boolean;
   variantsCreated: number;
   variantsUpdated: number;
+}
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+/**
+ * Build the data object for variant create/update from UpsertVariantData.
+ * Keeps it DRY — used in both upsert paths.
+ */
+function buildVariantFields(data: UpsertVariantData, productId?: string) {
+  return {
+    ...(productId !== undefined && { productId }),
+    upc: data.upc,
+    barcode: data.barcode || data.upc,
+    name: data.name,
+    imageUrl: data.imageUrl,
+    shopifyVariantId: data.shopifyVariantId,
+    costPrice: data.costPrice,
+    sellingPrice: data.sellingPrice,
+    // Single unit
+    weight: data.weight,
+    weightUnit: data.weightUnit ?? (data.weight != null ? "oz" : undefined),
+    length: data.length,
+    width: data.width,
+    height: data.height,
+    dimensionUnit:
+      data.dimensionUnit ?? (data.length != null ? "in" : undefined),
+    // Master case
+    mcQuantity: data.mcQuantity,
+    mcWeight: data.mcWeight,
+    mcWeightUnit:
+      data.mcWeightUnit ?? (data.mcWeight != null ? "lbs" : undefined),
+    mcLength: data.mcLength,
+    mcWidth: data.mcWidth,
+    mcHeight: data.mcHeight,
+    mcDimensionUnit:
+      data.mcDimensionUnit ?? (data.mcLength != null ? "in" : undefined),
+    trackLots: data.trackLots ?? false,
+    trackExpiry: data.trackExpiry ?? false,
+  };
 }
 
 // ============================================================================
@@ -270,34 +339,15 @@ export const productRepository = {
           where: { sku: variantData.sku },
         });
 
+        const fields = buildVariantFields(variantData, product.id);
+
         const variant = await tx.productVariant.upsert({
           where: { sku: variantData.sku },
-          update: {
-            productId: product.id,
-            upc: variantData.upc,
-            barcode: variantData.barcode || variantData.upc,
-            name: variantData.name,
-            imageUrl: variantData.imageUrl,
-            shopifyVariantId: variantData.shopifyVariantId,
-            costPrice: variantData.costPrice,
-            sellingPrice: variantData.sellingPrice,
-            weight: variantData.weight,
-            trackLots: variantData.trackLots ?? false,
-            trackExpiry: variantData.trackExpiry ?? false,
-          },
+          update: fields,
           create: {
+            ...fields,
             productId: product.id,
             sku: variantData.sku,
-            upc: variantData.upc,
-            barcode: variantData.barcode || variantData.upc,
-            name: variantData.name,
-            imageUrl: variantData.imageUrl,
-            shopifyVariantId: variantData.shopifyVariantId,
-            costPrice: variantData.costPrice,
-            sellingPrice: variantData.sellingPrice,
-            weight: variantData.weight,
-            trackLots: variantData.trackLots ?? false,
-            trackExpiry: variantData.trackExpiry ?? false,
           },
         });
 
@@ -345,18 +395,9 @@ export const productRepository = {
   ): Promise<ProductVariant> {
     return prisma.productVariant.create({
       data: {
+        ...buildVariantFields(data),
         productId,
         sku: data.sku,
-        upc: data.upc,
-        barcode: data.barcode || data.upc,
-        name: data.name,
-        imageUrl: data.imageUrl,
-        shopifyVariantId: data.shopifyVariantId,
-        costPrice: data.costPrice,
-        sellingPrice: data.sellingPrice,
-        weight: data.weight,
-        trackLots: data.trackLots ?? false,
-        trackExpiry: data.trackExpiry ?? false,
       },
     });
   },
@@ -408,23 +449,30 @@ export const productRepository = {
    */
   async getStats(): Promise<{
     totalProducts: number;
+    activeProducts: number;
     totalVariants: number;
     byBrand: Record<string, number>;
     byCategory: Record<string, number>;
   }> {
-    const [totalProducts, totalVariants, brandCounts, categoryCounts] =
-      await Promise.all([
-        prisma.product.count(),
-        prisma.productVariant.count(),
-        prisma.product.groupBy({
-          by: ["brand"],
-          _count: true,
-        }),
-        prisma.product.groupBy({
-          by: ["category"],
-          _count: true,
-        }),
-      ]);
+    const [
+      totalProducts,
+      activeProducts,
+      totalVariants,
+      brandCounts,
+      categoryCounts,
+    ] = await Promise.all([
+      prisma.product.count(),
+      prisma.product.count({ where: { active: true } }),
+      prisma.productVariant.count(),
+      prisma.product.groupBy({
+        by: ["brand"],
+        _count: true,
+      }),
+      prisma.product.groupBy({
+        by: ["category"],
+        _count: true,
+      }),
+    ]);
 
     const byBrand: Record<string, number> = {};
     brandCounts.forEach((b) => {
@@ -436,6 +484,12 @@ export const productRepository = {
       if (c.category) byCategory[c.category] = c._count;
     });
 
-    return { totalProducts, totalVariants, byBrand, byCategory };
+    return {
+      totalProducts,
+      activeProducts,
+      totalVariants,
+      byBrand,
+      byCategory,
+    };
   },
 };

@@ -32,6 +32,8 @@ export * from "./shipping.service.js";
 
 // Product management
 export * from "./product.service.js";
+// parser function
+export * from "./product-csv-parser.js";
 
 // Work tasks
 export * from "./work-task.service.js";
@@ -44,6 +46,19 @@ export * from "./cycle-count.service.js";
 
 // Invoice
 export * from "./invoice.service.js";
+
+// Order packaging
+// Order packaging
+export {
+  BoxRecommendationService,
+  type OrderItemInput,
+  type PackageRecommendation,
+  type PackageItemRecommendation,
+  type RecommendationResult,
+  type BoxRecommendationServiceDeps,
+  type VariantDimensions,
+} from "./box-recommendation.service.js";
+export * from "./order-package.service.js";
 
 // GCP
 export {

@@ -36,9 +36,6 @@ import ProductImportPage from "./pages/products/import";
 import { InventoryPage } from "./pages/inventory";
 import { InventoryDetailPage } from "./pages/inventory/[id]";
 
-// Shipping
-import { ShippingPage } from "./pages/shipping";
-
 // Reports
 import { ReportsPage } from "./pages/reports";
 
@@ -73,6 +70,11 @@ const CycleCountReview = lazy(() => import("./pages/cycle-count/review"));
 // Scan (lazy loaded)
 // ─────────────────────────────────────────────────────────────────────────────
 const ScanPage = lazy(() => import("./pages/scan/index"));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Shipping (lazy loaded)
+// ─────────────────────────────────────────────────────────────────────────────
+const ShipPage = lazy(() => import("./pages/shipping/index"));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Invoices (lazy loaded)
@@ -149,9 +151,6 @@ export const router = createBrowserRouter([
           { path: "/locations", element: <LocationsPage /> },
           { path: "/locations/:id", element: <LocationDetailPage /> },
 
-          // Shipping
-          { path: "/shipping", element: <ShippingPage /> },
-
           // Inventory
           { path: "/inventory", element: <InventoryPage /> },
           { path: "/inventory/:id", element: <InventoryDetailPage /> },
@@ -199,6 +198,8 @@ export const router = createBrowserRouter([
 
           // Scan
           { path: "/scan", element: withSuspense(ScanPage) },
+
+          { path: "/shipping", element: withSuspense(ShipPage) },
 
           { path: "/reports", element: <ReportsPage /> },
           { path: "/users", element: <UsersPage /> },

@@ -127,6 +127,7 @@ export function useFulfillmentStream(
     // Listen to each event type from the pubsub package
     const eventTypes = [
       "order:created",
+      "order:allocated",
       "order:processing",
       "order:picked",
       "order:packed",

@@ -25,6 +25,7 @@ export type ChannelName = (typeof CHANNELS)[keyof typeof CHANNELS];
 export const EVENT_TYPES = {
   // Order lifecycle
   ORDER_CREATED: "order:created",
+  ORDER_ALLOCATED: "order:allocated",
   ORDER_PROCESSING: "order:processing",
   ORDER_PICKED: "order:picked",
   ORDER_PACKED: "order:packed",

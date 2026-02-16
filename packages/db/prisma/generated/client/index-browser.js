@@ -175,6 +175,18 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
   costPrice: 'costPrice',
   sellingPrice: 'sellingPrice',
   weight: 'weight',
+  weightUnit: 'weightUnit',
+  length: 'length',
+  width: 'width',
+  height: 'height',
+  dimensionUnit: 'dimensionUnit',
+  mcQuantity: 'mcQuantity',
+  mcWeight: 'mcWeight',
+  mcWeightUnit: 'mcWeightUnit',
+  mcLength: 'mcLength',
+  mcWidth: 'mcWidth',
+  mcHeight: 'mcHeight',
+  mcDimensionUnit: 'mcDimensionUnit',
   trackLots: 'trackLots',
   trackExpiry: 'trackExpiry',
   createdAt: 'createdAt',
@@ -680,6 +692,35 @@ exports.Prisma.UserPerformanceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.OrderPackageScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  sequence: 'sequence',
+  boxId: 'boxId',
+  boxLabel: 'boxLabel',
+  length: 'length',
+  width: 'width',
+  height: 'height',
+  dimensionUnit: 'dimensionUnit',
+  estimatedWeight: 'estimatedWeight',
+  actualWeight: 'actualWeight',
+  weightUnit: 'weightUnit',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderPackageItemScalarFieldEnum = {
+  id: 'id',
+  orderPackageId: 'orderPackageId',
+  productVariantId: 'productVariantId',
+  sku: 'sku',
+  quantity: 'quantity',
+  unitWeight: 'unitWeight',
+  unitWeightUnit: 'unitWeightUnit',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.InvoiceScalarFieldEnum = {
   id: 'id',
   invoiceNumber: 'invoiceNumber',
@@ -951,6 +992,12 @@ exports.PickBinStatus = exports.$Enums.PickBinStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.OrderPackageStatus = exports.$Enums.OrderPackageStatus = {
+  DRAFT: 'DRAFT',
+  PACKED: 'PACKED',
+  SHIPPED: 'SHIPPED'
+};
+
 exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
   DRAFT: 'DRAFT',
   SUBMITTED: 'SUBMITTED',
@@ -994,6 +1041,8 @@ exports.Prisma.ModelName = {
   InventoryDiscrepancy: 'InventoryDiscrepancy',
   FulfillmentMetric: 'FulfillmentMetric',
   UserPerformance: 'UserPerformance',
+  OrderPackage: 'OrderPackage',
+  OrderPackageItem: 'OrderPackageItem',
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem'
 };

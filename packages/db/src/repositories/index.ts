@@ -10,6 +10,7 @@ export { inventoryRepository } from "./inventory.repo.js";
 export { orderRepository } from "./order.repo.js";
 
 export * from "./product.repo.js";
+export * from "./order-package.repo.js";
 
 // Fulfillment pipeline
 export { pickingRepository } from "./picking.repo.js";

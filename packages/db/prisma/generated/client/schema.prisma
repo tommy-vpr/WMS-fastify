@@ -112,17 +112,34 @@ model Product {
 }
 
 model ProductVariant {
-  id                   String                @id @default(cuid())
-  productId            String
-  sku                  String                @unique
-  upc                  String?               @unique
-  barcode              String?
-  name                 String
-  imageUrl             String?
-  shopifyVariantId     String?               @unique
-  costPrice            Decimal?              @db.Decimal(10, 2)
-  sellingPrice         Decimal?              @db.Decimal(10, 2)
-  weight               Decimal?              @db.Decimal(8, 2)
+  id               String   @id @default(cuid())
+  productId        String
+  sku              String   @unique
+  upc              String?  @unique
+  barcode          String?
+  name             String
+  imageUrl         String?
+  shopifyVariantId String?  @unique
+  costPrice        Decimal? @db.Decimal(10, 2)
+  sellingPrice     Decimal? @db.Decimal(10, 2)
+
+  // Single unit dimensions & weight
+  weight        Decimal? @db.Decimal(8, 2)
+  weightUnit    String?  @default("oz") // oz, lbs, g, kg
+  length        Decimal? @db.Decimal(8, 2)
+  width         Decimal? @db.Decimal(8, 2)
+  height        Decimal? @db.Decimal(8, 2)
+  dimensionUnit String?  @default("in") // in, cm
+
+  // Master case
+  mcQuantity      Int? // units per case
+  mcWeight        Decimal? @db.Decimal(8, 2)
+  mcWeightUnit    String?  @default("lbs")
+  mcLength        Decimal? @db.Decimal(8, 2)
+  mcWidth         Decimal? @db.Decimal(8, 2)
+  mcHeight        Decimal? @db.Decimal(8, 2)
+  mcDimensionUnit String?  @default("in")
+
   // Track if this variant requires lot/expiry tracking
   shippingPackageItems ShippingPackageItem[]
   trackLots            Boolean               @default(false)
@@ -147,6 +164,9 @@ model ProductVariant {
 
   // Bin 
   pickBinItems PickBinItem[]
+
+  // Order Package Items
+  orderPackageItems OrderPackageItem[]
 
   // Invoice
   invoiceItems InvoiceItem[]
@@ -311,6 +331,8 @@ model Order {
   updatedAt        DateTime          @updatedAt
   // Bin
   pickBins         PickBin[]
+  // Order Packages
+  orderPackages    OrderPackage[]
 
   items          OrderItem[]
   taskItems      TaskItem[]
@@ -1312,6 +1334,66 @@ enum PickBinStatus {
   PACKING
   COMPLETED
   CANCELLED
+}
+
+// =============================================================================
+// ORDER PACKAGES (Box recommendation + packing persistence)
+// =============================================================================
+
+model OrderPackage {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  sequence Int // 1, 2, 3...
+  boxId    String? // "small-box", "usps-flat-medium"
+  boxLabel String? // "Small Box (8x6x4)"
+
+  // Dimensions (from box definition or manual override)
+  length        Decimal? @db.Decimal(8, 2)
+  width         Decimal? @db.Decimal(8, 2)
+  height        Decimal? @db.Decimal(8, 2)
+  dimensionUnit String?  @default("in")
+
+  // Weight
+  estimatedWeight Decimal? @db.Decimal(8, 2) // sum of item weights
+  actualWeight    Decimal? @db.Decimal(8, 2) // packer override
+  weightUnit      String?  @default("oz")
+
+  status OrderPackageStatus @default(DRAFT)
+
+  items OrderPackageItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orderId])
+  @@map("order_packages")
+}
+
+model OrderPackageItem {
+  id             String       @id @default(cuid())
+  orderPackageId String
+  orderPackage   OrderPackage @relation(fields: [orderPackageId], references: [id], onDelete: Cascade)
+
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  sku            String
+  quantity       Int
+  unitWeight     Decimal? @db.Decimal(8, 2) // snapshot from variant at time of recommendation
+  unitWeightUnit String?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderPackageId])
+  @@map("order_package_items")
+}
+
+enum OrderPackageStatus {
+  DRAFT
+  PACKED
+  SHIPPED
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

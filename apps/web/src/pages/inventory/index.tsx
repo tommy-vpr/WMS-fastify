@@ -413,7 +413,7 @@ export default function InventoryPage() {
           <tbody className="divide-y">
             {loading ? (
               Array.from({ length: 10 }).map((_, i) => (
-                <TableRowSkeleton key={i} columns={6} />
+                <TableRowSkeleton key={i} cols={6} />
               ))
             ) : inventory.length === 0 ? (
               <tr>

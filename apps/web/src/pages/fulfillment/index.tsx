@@ -378,7 +378,7 @@ export default function FulfillmentListPage() {
           <tbody className="divide-y">
             {loading ? (
               Array.from({ length: 10 }).map((_, i) => (
-                <TableRowSkeleton key={i} columns={8} />
+                <TableRowSkeleton key={i} cols={8} />
               ))
             ) : orders.length === 0 ? (
               <tr>

@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { prisma } from "@wms/db";
 import Redis from "ioredis";
+import type { Redis as RedisClient } from "ioredis";
 
 export async function healthRoutes(app: FastifyInstance) {
   app.get("/", async () => {
@@ -23,10 +24,8 @@ export async function healthRoutes(app: FastifyInstance) {
     // Check Redis (with TLS for Upstash)
     try {
       const redisUrl = process.env.REDIS_URL!;
-      const redis = new Redis(redisUrl, {
-        tls: redisUrl.startsWith("rediss://") ? {} : undefined,
-        maxRetriesPerRequest: 3,
-      });
+      const redis: RedisClient = new (Redis as any)(process.env.REDIS_URL!);
+
       const pong = await redis.ping();
       checks.redis = pong === "PONG";
       await redis.quit();

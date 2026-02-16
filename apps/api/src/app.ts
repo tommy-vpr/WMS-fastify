@@ -9,6 +9,8 @@ import { shopifyWebhookRoutes } from "./routes/webhooks/shopify/orders/create.js
 import { authenticate } from "./middleware/auth.js";
 import { errorHandler } from "./middleware/error.js";
 import Redis from "ioredis";
+import type { Redis as RedisClient } from "ioredis";
+
 import { inventoryRoutes } from "./routes/inventory.routes.js";
 import { productRoutes } from "./routes/product.routes.js";
 import { inventoryPlannerRoutes } from "./routes/inventory-planner.routes.js";
@@ -32,9 +34,7 @@ export async function buildApp() {
   });
 
   // Redis-backed rate limiting
-  const redis = new Redis(process.env.REDIS_URL!, {
-    tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
-  });
+  const redis: RedisClient = new (Redis as any)(process.env.REDIS_URL!);
 
   await app.register(rateLimit, {
     max: 100,
